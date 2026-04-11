@@ -469,10 +469,31 @@ async function scrapeHoogvliet(browser) {
 // ─── ANA FONKSİYON ────────────────────────────────────────────────────────────
 export async function scrapeFlyerProducts() {
   console.log('🔍 Süpermarket scraper başlatılıyor...')
-  const browser = await puppeteerExtra.launch({
+
+  // Chromium path: env var > common Linux paths > default
+  let executablePath = process.env.PUPPETEER_EXECUTABLE_PATH
+  if (!executablePath) {
+    const fs = await import('fs')
+    for (const p of ['/usr/bin/chromium', '/usr/bin/chromium-browser', '/usr/bin/google-chrome']) {
+      try { fs.accessSync(p); executablePath = p; break } catch {}
+    }
+  }
+
+  const launchOptions = {
     headless: 'new',
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
-  })
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
+      '--no-first-run',
+      '--no-zygote',
+      '--single-process',
+    ]
+  }
+  if (executablePath) launchOptions.executablePath = executablePath
+
+  const browser = await puppeteerExtra.launch(launchOptions)
 
   let allResults = []
 
