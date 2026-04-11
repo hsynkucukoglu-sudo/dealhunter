@@ -98,6 +98,19 @@ async function scrapeHoogvliet() {
   try {
     const res = await fetch('https://www.hoogvliet.com/aanbiedingen', { headers: HEADERS })
     const html = await res.text()
+    // Build ID → image URL map (img src encoded as &#47; instead of /)
+    const imgMap = {}
+    const $ = cheerio.load(html)
+    $('img.product-image, .product-image-container img').each((_, el) => {
+      const src = $(el).attr('src') || $(el).attr('data-original') || ''
+      const decoded = src.replace(/&#47;/g, '/').replace(/&amp;/g, '&')
+      const idMatch = decoded.match(/\/ACT\/[^/]+\/[^/]+\/(\d+)\.(?:jpg|png|webp)/)
+      if (idMatch) {
+        const id = idMatch[1]
+        if (!imgMap[id]) imgMap[id] = decoded.startsWith('http') ? decoded : `https://www.hoogvliet.com${decoded}`
+      }
+    })
+
     const jsonBlocks = html.match(/\{[^{}]*"price"\s*:\s*"[\d.]+[^{}]*\}/g) || []
     const seen = new Set()
     const results = []
@@ -114,7 +127,7 @@ async function scrapeHoogvliet() {
           market: 'Hoogvliet',
           originalPrice: parseFloat((discountedPrice * 1.35).toFixed(2)),
           discountedPrice,
-          imageUrl: null,
+          imageUrl: imgMap[obj.id] || null,
           isCampaign: true,
           source: 'hoogvliet.com/aanbiedingen',
           expiresAt: EXPIRES_AT,
