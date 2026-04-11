@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+.git
+.gitignore
+*.md
+.env
+.env.*
+frontend/node_modules
+frontend/.vite
+backend/node_modules
+backend/data.db
+backend/public/screenshots

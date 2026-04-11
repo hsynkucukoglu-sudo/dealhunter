@@ -1,0 +1,273 @@
+@import "tailwindcss";
+
+/* ============================================
+   DEALHUNTER — Rekki / Chirpley Inspired
+   Warm Cream + Bold Red Premium Theme
+   ============================================ */
+
+@theme {
+  /* — Primary (Vibrant Red) — */
+  --color-primary: #E33D26;
+  --color-primary-dark: #C22D18;
+  --color-primary-light: #FF6B52;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #E33D26;
+  --color-on-primary-container: #ffffff;
+  --color-primary-surface: rgba(227, 61, 38, 0.08);
+  --color-primary-surface-hover: rgba(227, 61, 38, 0.14);
+
+  /* — Secondary (Warm Dark) — */
+  --color-secondary: #1A1A1A;
+  --color-secondary-light: #333333;
+  --color-on-secondary: #ffffff;
+
+  /* — Tertiary (Warm Gold) — */
+  --color-tertiary: #D4A855;
+  --color-tertiary-container: #F5E6C8;
+  --color-on-tertiary: #5B3E00;
+
+  /* — Success (Green) — */
+  --color-success: #1B9E4B;
+  --color-success-light: #D1FAE5;
+  --color-on-success: #ffffff;
+
+  /* — Error — */
+  --color-error: #DC2626;
+  --color-error-container: #FEE2E2;
+  --color-on-error: #ffffff;
+
+  /* — Warm Surfaces — */
+  --color-background: #F5EDE3;
+  --color-on-background: #1A1A1A;
+  --color-surface: #ffffff;
+  --color-on-surface: #1A1A1A;
+  --color-surface-warm: #F0E6D9;
+  --color-surface-warmer: #E8DCCB;
+  --color-surface-card: #ffffff;
+  --color-surface-elevated: #ffffff;
+  --color-surface-input: #EDE5DA;
+  --color-surface-hover: #F8F2EA;
+
+  /* — Outline — */
+  --color-outline: #8C8478;
+  --color-outline-light: #C9C1B6;
+  --color-outline-faint: #E0D8CE;
+
+  /* — Text — */
+  --color-text-primary: #1A1A1A;
+  --color-text-secondary: #6B6259;
+  --color-text-muted: #9C9389;
+  --color-text-inverse: #ffffff;
+
+  /* — Shadows — */
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+  --shadow-card-hover: 0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+  --shadow-elevated: 0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-navbar: 0 2px 20px rgba(0,0,0,0.06);
+}
+
+/* ============================================
+   Base Styles
+   ============================================ */
+@layer base {
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--color-background);
+    color: var(--color-on-background);
+  }
+
+  h1, h2, h3, h4, .font-headline {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .font-label {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  ::selection {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+
+  .material-filled {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+}
+
+/* ============================================
+   Component Utilities
+   ============================================ */
+@layer components {
+  /* — No Scrollbar — */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* — Floating Pill Navbar — */
+  .navbar-pill {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(201, 193, 182, 0.35);
+    box-shadow: var(--shadow-navbar);
+  }
+
+  /* — Product Card — */
+  .card-product {
+    @apply bg-surface rounded-3xl relative flex flex-col transition-all duration-300 overflow-hidden;
+    box-shadow: var(--shadow-card);
+  }
+  .card-product:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-4px);
+  }
+
+  /* — Slide-up basket button — */
+  .basket-slide {
+    @apply absolute bottom-2 right-2 p-3 rounded-2xl;
+    background: var(--color-primary);
+    color: white;
+    box-shadow: 0 4px 14px rgba(227, 61, 38, 0.35);
+    @apply transform translate-y-12 opacity-0 transition-all duration-300;
+  }
+  .group:hover .basket-slide {
+    @apply translate-y-0 opacity-100;
+  }
+
+  /* — Badge Variants — */
+  .badge-deal {
+    @apply px-3 py-1 rounded-full text-xs font-bold tracking-tight;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .badge-red {
+    background: var(--color-primary);
+    color: white;
+  }
+  .badge-gold {
+    background: var(--color-tertiary-container);
+    color: var(--color-on-tertiary);
+  }
+
+  /* — Pill Button — */
+  .btn-pill {
+    @apply px-8 py-4 rounded-full font-bold text-base transition-all;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .btn-pill:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  }
+
+  .btn-pill-primary {
+    background: var(--color-primary);
+    color: white;
+  }
+  .btn-pill-primary:hover {
+    background: var(--color-primary-dark);
+    box-shadow: 0 6px 24px rgba(227, 61, 38, 0.3);
+  }
+
+  .btn-pill-dark {
+    background: var(--color-secondary);
+    color: white;
+  }
+  .btn-pill-dark:hover {
+    background: var(--color-secondary-light);
+  }
+
+  .btn-pill-outline {
+    background: transparent;
+    border: 1.5px solid var(--color-outline-light);
+    color: var(--color-text-primary);
+  }
+  .btn-pill-outline:hover {
+    background: var(--color-surface-warm);
+    border-color: var(--color-outline);
+  }
+
+  /* — Full-width card button — */
+  .btn-card {
+    @apply w-full py-3 rounded-xl font-bold text-xs uppercase tracking-widest transition-all cursor-pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--color-surface-warm);
+    color: var(--color-text-primary);
+  }
+  .btn-card:hover {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  /* — Market Pill — */
+  .market-pill {
+    @apply flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all cursor-pointer whitespace-nowrap;
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+    border: 1.5px solid var(--color-outline-faint);
+  }
+  .market-pill:hover {
+    background: var(--color-surface-warm);
+    border-color: var(--color-outline-light);
+  }
+  .market-pill-active {
+    background: var(--color-secondary);
+    color: white;
+    border-color: transparent;
+  }
+  .market-pill-active:hover {
+    background: var(--color-secondary-light);
+    border-color: transparent;
+  }
+
+  /* — Giant Search — */
+  .search-giant {
+    @apply w-full rounded-full text-lg transition-all;
+    font-family: 'Space Grotesk', sans-serif;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1.5px solid var(--color-outline-faint);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+    padding: 1.25rem 1.75rem 1.25rem 3.5rem;
+    color: var(--color-text-primary);
+  }
+  .search-giant::placeholder {
+    color: var(--color-text-muted);
+    font-weight: 400;
+  }
+  .search-giant:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(227, 61, 38, 0.1), 0 4px 16px rgba(0,0,0,0.05);
+    background: rgba(255,255,255,0.95);
+  }
+
+  /* — Stat Pill — */
+  .stat-pill {
+    @apply flex items-center gap-3 px-5 py-3 rounded-full;
+    background: var(--color-surface);
+    border: 1.5px solid var(--color-outline-faint);
+  }
+
+  /* — Store Card — */
+  .store-card {
+    @apply flex-none flex flex-col items-center gap-2 cursor-pointer transition-all;
+  }
+  .store-card:hover {
+    transform: translateY(-2px);
+  }
+}

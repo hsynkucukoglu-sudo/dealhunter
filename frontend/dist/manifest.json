@@ -1,0 +1,40 @@
+{
+  "name": "DEALHUNTER — Haftalık Market İndirimleri",
+  "short_name": "DEALHUNTER",
+  "description": "Hollanda market zincirlerinin haftalık indirimli ürünlerini keşfedin. Albert Heijn, Lidl, Jumbo, Aldi ve daha fazlası.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5EDE3",
+  "theme_color": "#E33D26",
+  "orientation": "portrait-primary",
+  "categories": ["shopping", "food"],
+  "lang": "tr",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Fırsatları Gör",
+      "url": "/",
+      "icons": [
+        {
+          "src": "/icon-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}
