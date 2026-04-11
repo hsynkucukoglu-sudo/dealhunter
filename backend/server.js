@@ -164,7 +164,18 @@ async function startServer() {
       console.log(`🚀 Backend çalışıyor: http://localhost:${PORT}`)
       console.log(`📊 Health check: http://localhost:${PORT}/health`)
     })
-    server.setTimeout(600000); // 10 minutes timeout
+    server.setTimeout(600000)
+
+    // Açılışta otomatik tarama — 5 sn bekle ki sunucu tam ayağa kalksın
+    setTimeout(async () => {
+      try {
+        console.log('🚀 Açılış taraması başlatılıyor...')
+        await runScraperJob()
+      } catch (e) {
+        console.error('❌ Açılış tarama hatası:', e.message)
+      }
+    }, 5000)
+
   } catch (error) {
     console.error('❌ Başlatma hatası:', error)
     process.exit(1)
