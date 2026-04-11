@@ -184,18 +184,69 @@ async function scrapePlus() {
   }
 }
 
+// ─── LIDL — ID'leri HTML'den çek, her ürünü JSON-LD ile fetch et ─────────────
+async function scrapeLidl() {
+  console.log('🏪 [Lidl] lidl.nl/aanbiedingen...')
+  try {
+    // Offers sayfasından ürün ID'lerini topla
+    const res = await fetch('https://www.lidl.nl/aanbiedingen', { headers: HEADERS })
+    const html = await res.text()
+    const ids = [...new Set(html.match(/p10\d{6}/g) || [])]
+    if (!ids.length) return []
+
+    // Her ürünü JSON-LD ile çek (5'li batch, max 40 ürün)
+    const results = []
+    const BATCH = 5
+    for (let i = 0; i < Math.min(ids.length, 40); i += BATCH) {
+      const batch = ids.slice(i, i + BATCH)
+      const batchResults = await Promise.all(batch.map(async id => {
+        try {
+          const pRes = await fetch(`https://www.lidl.nl/p/${id}`, { headers: HEADERS })
+          const pHtml = await pRes.text()
+          const jsonLd = pHtml.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)?.[1]
+          if (!jsonLd) return null
+          const data = JSON.parse(jsonLd)
+          if (data['@type'] !== 'Product') return null
+          const offer = Array.isArray(data.offers) ? data.offers[0] : data.offers
+          const discountedPrice = parseFloat(offer?.price)
+          if (!discountedPrice) return null
+          const img = Array.isArray(data.image) ? data.image[0] : (data.image || null)
+          return {
+            name: data.name,
+            market: 'Lidl',
+            originalPrice: parseFloat((discountedPrice * 1.35).toFixed(2)),
+            discountedPrice,
+            imageUrl: img || null,
+            isCampaign: true,
+            source: 'lidl.nl/aanbiedingen',
+            expiresAt: EXPIRES_AT,
+          }
+        } catch { return null }
+      }))
+      results.push(...batchResults.filter(Boolean))
+    }
+
+    console.log(`  ✅ Lidl: ${results.length} ürün`)
+    return results
+  } catch (e) {
+    console.error('  ❌ Lidl:', e.message)
+    return []
+  }
+}
+
 // ─── ANA FONKSİYON ────────────────────────────────────────────────────────────
 export async function scrapeFlyerProducts() {
   console.log('🔍 Fetch-only scraper başlatılıyor...')
 
-  const [dirk, jumbo, hoogvliet, plus] = await Promise.all([
+  const [dirk, jumbo, hoogvliet, plus, lidl] = await Promise.all([
     scrapeDirk(),
     scrapeJumbo(),
     scrapeHoogvliet(),
     scrapePlus(),
+    scrapeLidl(),
   ])
 
-  let all = [...dirk, ...jumbo, ...hoogvliet, ...plus]
+  let all = [...dirk, ...jumbo, ...hoogvliet, ...plus, ...lidl]
 
   // Duplicate temizliği
   const seen = new Set()
@@ -206,6 +257,6 @@ export async function scrapeFlyerProducts() {
     return true
   })
 
-  console.log(`\n✅ Toplam ${all.length} ürün (${dirk.length} Dirk, ${jumbo.length} Jumbo, ${hoogvliet.length} Hoogvliet, ${plus.length} Plus)`)
+  console.log(`\n✅ Toplam ${all.length} ürün (${dirk.length} Dirk, ${jumbo.length} Jumbo, ${hoogvliet.length} Hoogvliet, ${plus.length} Plus, ${lidl.length} Lidl)`)
   return all
 }
