@@ -102,20 +102,26 @@ import cron from 'node-cron'
 // Scraper iş mantığı
 async function runScraperJob() {
   console.log('⏰ Otomatik Zamanlanmış Scraper Görevi Başlıyor...')
-  // Eski ürünleri temizle (in-memory, her taramada taze veri)
-  await clearAllProducts()
   
   const newProducts = await scrapeFlyerProducts()
   
-  // Bulunan ürünleri veritabanına ekle
-  const createdProducts = []
-  for(const p of newProducts) {
-     const saved = await createProduct(p)
-     createdProducts.push(saved)
+  // Sadece ürünler başarıyla geldiyse eskileri temizle
+  if (newProducts && newProducts.length > 0) {
+    await clearAllProducts()
+    
+    // Bulunan ürünleri veritabanına ekle
+    const createdProducts = []
+    for(const p of newProducts) {
+       const saved = await createProduct(p)
+       createdProducts.push(saved)
+    }
+    
+    console.log(`⏰ Görev Tamamlandı. ${createdProducts.length} yeni ürün eklendi.`)
+    return createdProducts
+  } else {
+    console.log('❌ Yeni ürün bulunamadı, tablo güncellenmedi.')
+    return []
   }
-  
-  console.log(`⏰ Görev Tamamlandı. ${createdProducts.length} yeni ürün eklendi.`)
-  return createdProducts
 }
 
 // "Her Pazartesi sabah 08:00'de" otomatik çalışacak Cron Job
