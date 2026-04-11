@@ -9,6 +9,22 @@ function wait(ms) {
   return new Promise(r => setTimeout(r, ms))
 }
 
+// Gereksiz kaynakları engelle → bellek kullanımını azaltır
+// CSS'i ENGELLEMİYORUZ — bazı siteler (Lidl/Vue) CSS olmadan render etmiyor
+async function blockHeavyRequests(page) {
+  await page.setRequestInterception(true)
+  page.on('request', (req) => {
+    const type = req.resourceType()
+    if (['font', 'media'].includes(type)) {
+      req.abort()
+    } else if (type === 'image') {
+      req.abort() // Görselleri indirme, src attr'ü DOM'da zaten var
+    } else {
+      req.continue()
+    }
+  })
+}
+
 async function acceptCookies(page) {
   const selectors = [
     '#onetrust-accept-btn-handler',
@@ -29,8 +45,9 @@ async function acceptCookies(page) {
 // ─── ALBERT HEIJN ─────────────────────────────────────────────────────────────
 async function scrapeAH(browser) {
   const page = await browser.newPage()
-  await page.setViewport({ width: 1280, height: 900 })
+  await page.setViewport({ width: 800, height: 600 })
   await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
+  await blockHeavyRequests(page)
   const results = []
 
   try {
@@ -109,8 +126,9 @@ async function scrapeAH(browser) {
 // ─── JUMBO ────────────────────────────────────────────────────────────────────
 async function scrapeJumbo(browser) {
   const page = await browser.newPage()
-  await page.setViewport({ width: 1280, height: 900 })
+  await page.setViewport({ width: 800, height: 600 })
   await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
+  await blockHeavyRequests(page)
   const results = []
 
   try {
@@ -177,8 +195,9 @@ async function scrapeJumbo(browser) {
 // ─── DIRK ─────────────────────────────────────────────────────────────────────
 async function scrapeDirk(browser) {
   const page = await browser.newPage()
-  await page.setViewport({ width: 1280, height: 900 })
+  await page.setViewport({ width: 800, height: 600 })
   await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
+  await blockHeavyRequests(page)
   const results = []
 
   try {
@@ -244,8 +263,9 @@ async function scrapeDirk(browser) {
 // ─── PLUS ─────────────────────────────────────────────────────────────────────
 async function scrapePlus(browser) {
   const page = await browser.newPage()
-  await page.setViewport({ width: 1280, height: 900 })
+  await page.setViewport({ width: 800, height: 600 })
   await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
+  await blockHeavyRequests(page)
   const results = []
 
   try {
@@ -331,8 +351,9 @@ async function scrapePlus(browser) {
 // ─── LIDL ─────────────────────────────────────────────────────────────────────
 async function scrapeLidl(browser) {
   const page = await browser.newPage()
-  await page.setViewport({ width: 1280, height: 900 })
+  await page.setViewport({ width: 800, height: 600 })
   await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
+  await blockHeavyRequests(page)
   const results = []
 
   try {
@@ -393,8 +414,9 @@ async function scrapeLidl(browser) {
 // ─── HOOGVLIET ────────────────────────────────────────────────────────────────
 async function scrapeHoogvliet(browser) {
   const page = await browser.newPage()
-  await page.setViewport({ width: 1280, height: 900 })
+  await page.setViewport({ width: 800, height: 600 })
   await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
+  await blockHeavyRequests(page)
   const results = []
 
   try {
@@ -489,6 +511,14 @@ export async function scrapeFlyerProducts() {
       '--no-first-run',
       '--no-zygote',
       '--single-process',
+      '--disable-extensions',
+      '--disable-plugins',
+      '--disable-background-networking',
+      '--disable-sync',
+      '--disable-translate',
+      '--hide-scrollbars',
+      '--mute-audio',
+      '--js-flags=--max-old-space-size=256',
     ]
   }
   if (executablePath) launchOptions.executablePath = executablePath
