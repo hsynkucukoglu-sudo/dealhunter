@@ -33,11 +33,18 @@ const asyncHandler = (fn) => (req, res, next) => {
 
 // ===== API Routes =====
 
+let scraperRunning = false
+
 // GET /api/products - Tüm ürünleri getir
 app.get('/api/products', asyncHandler(async (req, res) => {
   const products = await getProducts()
   res.json(products || [])
 }))
+
+// GET /api/status - Scraper durumu
+app.get('/api/status', (req, res) => {
+  res.json({ scraperRunning })
+})
 
 // GET /api/products/:id - Belirli ürünü getir
 app.get('/api/products/:id', asyncHandler(async (req, res) => {
@@ -101,26 +108,35 @@ import cron from 'node-cron'
 
 // Scraper iş mantığı
 async function runScraperJob() {
+  if (scraperRunning) {
+    console.log('⏰ Scraper zaten çalışıyor, atlanıyor...')
+    return []
+  }
+  scraperRunning = true
   console.log('⏰ Otomatik Zamanlanmış Scraper Görevi Başlıyor...')
-  
+
+  try {
   const newProducts = await scrapeFlyerProducts()
-  
+
   // Sadece ürünler başarıyla geldiyse eskileri temizle
   if (newProducts && newProducts.length > 0) {
     await clearAllProducts()
-    
+
     // Bulunan ürünleri veritabanına ekle
     const createdProducts = []
     for(const p of newProducts) {
        const saved = await createProduct(p)
        createdProducts.push(saved)
     }
-    
+
     console.log(`⏰ Görev Tamamlandı. ${createdProducts.length} yeni ürün eklendi.`)
     return createdProducts
   } else {
     console.log('❌ Yeni ürün bulunamadı, tablo güncellenmedi.')
     return []
+  }
+  } finally {
+    scraperRunning = false
   }
 }
 

@@ -36,7 +36,36 @@ export function App() {
 
   const { itemCount, setIsCartOpen, totalSavings } = useShoppingList()
 
-  useEffect(() => { fetchProducts() }, [])
+  useEffect(() => {
+    fetchProducts()
+
+    // Scraper arka planda çalışıyorsa ürünler gelene kadar polling yap
+    const pollInterval = setInterval(async () => {
+      try {
+        const statusRes = await fetch('/api/status')
+        const { scraperRunning } = await statusRes.json()
+        if (scraperRunning) {
+          setIsScraping(true)
+        } else {
+          setIsScraping(false)
+          const res = await fetch('/api/products')
+          const data = await res.json()
+          if (data && data.length > 0) {
+            setProducts(data)
+            clearInterval(pollInterval)
+          }
+        }
+      } catch {}
+    }, 5000)
+
+    // 3 dakika sonra polling'i durdur
+    const stopTimeout = setTimeout(() => clearInterval(pollInterval), 180000)
+
+    return () => {
+      clearInterval(pollInterval)
+      clearTimeout(stopTimeout)
+    }
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => setNavScrolled(window.scrollY > 60)
@@ -352,10 +381,13 @@ export function App() {
           </div>
 
           {/* Grid */}
-          {loading ? (
-            <div className="flex justify-center items-center h-64">
-              <div className="w-12 h-12 rounded-full border-4 border-t-transparent animate-spin" 
+          {loading || (isScraping && products.length === 0) ? (
+            <div className="flex flex-col justify-center items-center h-64 gap-4">
+              <div className="w-12 h-12 rounded-full border-4 border-t-transparent animate-spin"
                 style={{ borderColor: '#E8DCCB', borderTopColor: '#E33D26' }} />
+              <p className="text-sm font-medium" style={{ color: '#8C8478' }}>
+                {isScraping ? 'Süpermarket bültenleri taranıyor, lütfen bekleyin...' : 'Yükleniyor...'}
+              </p>
             </div>
           ) : filteredProducts.length === 0 ? (
             <motion.div
