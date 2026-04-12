@@ -2,10 +2,10 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { useLanguage, Lang } from '@/context/LanguageContext'
 
-const LANGS: { code: Lang; flag: string }[] = [
-  { code: 'nl', flag: '🇳🇱' },
-  { code: 'en', flag: '🇬🇧' },
-  { code: 'tr', flag: '🇹🇷' },
+const LANGS: { code: Lang; flag: string; label: string }[] = [
+  { code: 'nl', flag: '🇳🇱', label: 'NL' },
+  { code: 'en', flag: '🇬🇧', label: 'EN' },
+  { code: 'tr', flag: '🇹🇷', label: 'TR' },
 ]
 
 export function LanguageSwitcher() {
@@ -16,19 +16,22 @@ export function LanguageSwitcher() {
       className="flex items-center gap-0.5 p-1 rounded-full"
       style={{ background: '#1A1A1A' }}
     >
-      {LANGS.map(({ code, flag }) => (
+      {LANGS.map(({ code, flag, label }) => (
         <motion.button
           key={code}
           onClick={() => setLang(code)}
           whileTap={{ scale: 0.88 }}
-          className="w-8 h-8 flex items-center justify-center rounded-full text-base transition-all cursor-pointer"
+          className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-black cursor-pointer transition-all"
           style={{
             background: lang === code ? '#E33D26' : 'transparent',
-            boxShadow: lang === code ? '0 2px 8px rgba(227,61,38,0.4)' : 'none',
+            color: '#FFFFFF',
+            fontFamily: 'Space Grotesk',
+            letterSpacing: '0.05em',
           }}
           title={code.toUpperCase()}
         >
-          {flag}
+          <span style={{ fontSize: '14px' }}>{flag}</span>
+          <span>{label}</span>
         </motion.button>
       ))}
     </div>
