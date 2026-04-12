@@ -252,9 +252,6 @@ export function App() {
             )}
           </AnimatePresence>
 
-          {/* Language Switcher */}
-          <LanguageSwitcher />
-
           {/* Scrape Button */}
           <motion.button
             whileTap={{ scale: 0.92 }}
@@ -270,6 +267,9 @@ export function App() {
             )}
             {isScraping ? t.scanning : t.scanBtn}
           </motion.button>
+
+          {/* Language Switcher */}
+          <LanguageSwitcher />
 
           {/* Cart */}
           <motion.button
