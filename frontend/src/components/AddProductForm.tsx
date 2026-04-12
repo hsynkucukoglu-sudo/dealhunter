@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useLanguage } from '@/context/LanguageContext'
 
 interface AddProductFormProps {
   onSubmit: (product: {
@@ -16,6 +17,7 @@ interface AddProductFormProps {
 export function AddProductForm({ onSubmit }: AddProductFormProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const { t } = useLanguage()
   const [formData, setFormData] = useState({
     name: '',
     market: 'Albert Heijn',
@@ -82,24 +84,24 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                   <span className="material-symbols-outlined text-white">add_shopping_cart</span>
                 </div>
                 <div>
-                  <h2 className="text-lg font-headline font-bold text-white">Yeni Ürün Ekle</h2>
-                  <p className="text-xs" style={{ color: '#9C9389' }}>Manuel olarak kampanya ürünü ekleyin</p>
+                  <h2 className="text-lg font-headline font-bold text-white">{t.addProduct}</h2>
+                  <p className="text-xs" style={{ color: '#9C9389' }}>{t.addProductDesc}</p>
                 </div>
               </div>
 
               <form onSubmit={handleSubmit} className="p-5 space-y-4">
                 <div>
-                  <label className={labelClass} style={{ color: '#8C8478' }}>Ürün Adı</label>
+                  <label className={labelClass} style={{ color: '#8C8478' }}>{t.productName}</label>
                   <input
                     type="text" required value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className={inputClass} placeholder="ör: Organik Domates"
+                    className={inputClass} placeholder={t.productNamePlaceholder}
                     style={{ background: 'white', border: '1.5px solid #E0D8CE', color: '#1A1A1A' }}
                   />
                 </div>
 
                 <div>
-                  <label className={labelClass} style={{ color: '#8C8478' }}>Market</label>
+                  <label className={labelClass} style={{ color: '#8C8478' }}>{t.market}</label>
                   <select
                     value={formData.market}
                     onChange={(e) => setFormData({ ...formData, market: e.target.value })}
@@ -112,7 +114,7 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className={labelClass} style={{ color: '#8C8478' }}>Normal Fiyat</label>
+                    <label className={labelClass} style={{ color: '#8C8478' }}>{t.originalPrice}</label>
                     <input
                       type="number" step="0.01" required value={formData.originalPrice}
                       onChange={(e) => setFormData({ ...formData, originalPrice: e.target.value })}
@@ -121,7 +123,7 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                     />
                   </div>
                   <div>
-                    <label className={labelClass} style={{ color: '#8C8478' }}>İndirimli Fiyat</label>
+                    <label className={labelClass} style={{ color: '#8C8478' }}>{t.discountedPrice}</label>
                     <input
                       type="number" step="0.01" required value={formData.discountedPrice}
                       onChange={(e) => setFormData({ ...formData, discountedPrice: e.target.value })}
@@ -133,7 +135,7 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
 
                 <div>
                   <label className={labelClass} style={{ color: '#8C8478' }}>
-                    Resim URL <span className="font-normal normal-case tracking-normal" style={{ color: '#9C9389' }}>(opsiyonel)</span>
+                    {t.imageUrl} <span className="font-normal normal-case tracking-normal" style={{ color: '#9C9389' }}>{t.imageUrlOptional}</span>
                   </label>
                   <input
                     type="url" value={formData.imageUrl}
@@ -144,7 +146,7 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                 </div>
 
                 <div>
-                  <label className={labelClass} style={{ color: '#8C8478' }}>Son Geçerlilik</label>
+                  <label className={labelClass} style={{ color: '#8C8478' }}>{t.validUntilLabel}</label>
                   <input
                     type="date" required value={formData.expiresAt}
                     onChange={(e) => setFormData({ ...formData, expiresAt: e.target.value })}
@@ -165,8 +167,8 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                     style={{ accentColor: '#E33D26' }}
                   />
                   <div>
-                    <span className="text-sm font-headline font-bold" style={{ color: '#1A1A1A' }}>Kampanya Ürünü</span>
-                    <p className="text-xs" style={{ color: '#8C8478' }}>Haftalık özel kampanya olarak işaretle</p>
+                    <span className="text-sm font-headline font-bold" style={{ color: '#1A1A1A' }}>{t.campaignProduct}</span>
+                    <p className="text-xs" style={{ color: '#8C8478' }}>{t.campaignProductDesc}</p>
                   </div>
                 </label>
 
@@ -178,7 +180,7 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                     className="flex-1 py-3 rounded-full font-headline font-bold text-xs uppercase tracking-widest transition-colors cursor-pointer"
                     style={{ background: '#EDE5DA', color: '#6B6259' }}
                   >
-                    İptal
+                    {t.cancel}
                   </motion.button>
                   <motion.button
                     type="submit" disabled={isLoading}
@@ -191,7 +193,7 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                     ) : (
                       <span className="material-symbols-outlined text-lg">check</span>
                     )}
-                    {isLoading ? 'Ekleniyor…' : 'Ekle'}
+                    {isLoading ? t.adding : t.add}
                   </motion.button>
                 </div>
               </form>

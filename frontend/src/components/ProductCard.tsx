@@ -1,6 +1,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { Product, useShoppingList } from '@/context/ShoppingListContext'
+import { useLanguage } from '@/context/LanguageContext'
 
 const MARKET_COLORS: Record<string, string> = {
   'Albert Heijn': '#00A0E2',
@@ -14,6 +15,7 @@ const MARKET_COLORS: Record<string, string> = {
 
 export function ProductCard({ product }: { product: Product }) {
   const { addToCart } = useShoppingList()
+  const { t } = useLanguage()
 
   const hasValidDiscount = product.originalPrice > product.discountedPrice && product.originalPrice > 0
   const discountPercent = hasValidDiscount ? (product.discount || Math.round(((product.originalPrice - product.discountedPrice) / product.originalPrice) * 100)) : 0
@@ -87,7 +89,7 @@ export function ProductCard({ product }: { product: Product }) {
         {/* Expire date */}
         <p className="text-[11px] mt-1.5 flex items-center gap-1" style={{ color: '#9C9389' }}>
           <span className="material-symbols-outlined text-sm">schedule</span>
-          {product.expiresAt} tarihine kadar
+          {product.expiresAt} {t.validUntil}
         </p>
       </div>
 
@@ -98,7 +100,7 @@ export function ProductCard({ product }: { product: Product }) {
           onClick={() => addToCart(product)}
           className="btn-card"
         >
-          Sepete Ekle
+          {t.addToCart}
         </motion.button>
       </div>
     </div>

@@ -1,14 +1,16 @@
 import React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useShoppingList } from '@/context/ShoppingListContext'
+import { useLanguage } from '@/context/LanguageContext'
 
 export function ShoppingListSidebar() {
   const { isCartOpen, setIsCartOpen, items, updateQuantity, removeFromCart, clearCart, totalCost, totalSavings } = useShoppingList()
+  const { t } = useLanguage()
 
   const handleWhatsAppShare = () => {
     if (items.length === 0) return
 
-    let message = '🛍️ *Dealhunter Alışveriş Listem*\n\n'
+    let message = t.whatsappHeader
 
     const groupedItems = items.reduce((acc, item) => {
       if (!acc[item.market]) acc[item.market] = []
@@ -24,8 +26,8 @@ export function ShoppingListSidebar() {
       message += '\n'
     })
 
-    message += `💰 *Toplam Tutar:* €${totalCost.toFixed(2)}\n`
-    message += `🔥 *Toplam Tasarruf:* €${totalSavings.toFixed(2)}\n`
+    message += `${t.whatsappTotal} €${totalCost.toFixed(2)}\n`
+    message += `${t.whatsappSavings} €${totalSavings.toFixed(2)}\n`
 
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')
@@ -64,8 +66,8 @@ export function ShoppingListSidebar() {
                   <span className="material-symbols-outlined text-white text-xl">shopping_bag</span>
                 </div>
                 <div>
-                  <h2 className="text-lg font-headline font-bold" style={{ color: '#1A1A1A' }}>Sepetim</h2>
-                  <p className="text-xs" style={{ color: '#8C8478' }}>{items.length} ürün</p>
+                  <h2 className="text-lg font-headline font-bold" style={{ color: '#1A1A1A' }}>{t.myCart}</h2>
+                  <p className="text-xs" style={{ color: '#8C8478' }}>{items.length} {items.length === 1 ? t.item : t.items}</p>
                 </div>
               </div>
               <motion.button
@@ -86,9 +88,9 @@ export function ShoppingListSidebar() {
                   <div className="w-20 h-20 rounded-3xl flex items-center justify-center" style={{ background: '#EDE5DA' }}>
                     <span className="material-symbols-outlined text-4xl" style={{ color: '#C9C1B6' }}>shopping_bag</span>
                   </div>
-                  <p className="font-headline font-bold text-sm uppercase tracking-widest" style={{ color: '#8C8478' }}>Sepet Boş</p>
+                  <p className="font-headline font-bold text-sm uppercase tracking-widest" style={{ color: '#8C8478' }}>{t.cartEmpty}</p>
                   <p className="text-xs text-center max-w-[220px]" style={{ color: '#9C9389' }}>
-                    Ürün kartlarındaki sepet butonuna tıklayarak ürün ekleyin
+                    {t.cartEmptyDesc}
                   </p>
                 </div>
               ) : (
@@ -147,7 +149,7 @@ export function ShoppingListSidebar() {
                   <div className="flex items-center justify-between p-3 rounded-xl" style={{ background: 'rgba(27, 158, 75, 0.08)' }}>
                     <div className="flex items-center gap-2">
                       <span className="material-symbols-outlined text-lg" style={{ color: '#1B9E4B' }}>savings</span>
-                      <span className="text-sm font-medium" style={{ color: '#1A1A1A' }}>Toplam Tasarruf</span>
+                      <span className="text-sm font-medium" style={{ color: '#1A1A1A' }}>{t.totalSavings}</span>
                     </div>
                     <span className="text-lg font-headline font-black" style={{ color: '#1B9E4B' }}>€{totalSavings.toFixed(2)}</span>
                   </div>
@@ -155,7 +157,7 @@ export function ShoppingListSidebar() {
 
                 {/* Total */}
                 <div className="flex justify-between items-end">
-                  <span className="font-medium" style={{ color: '#8C8478' }}>Toplam Tutar</span>
+                  <span className="font-medium" style={{ color: '#8C8478' }}>{t.totalCost}</span>
                   <span className="text-3xl font-headline font-black" style={{ color: '#1A1A1A' }}>€{totalCost.toFixed(2)}</span>
                 </div>
 
@@ -167,7 +169,7 @@ export function ShoppingListSidebar() {
                     className="px-4 py-3 rounded-full font-headline font-bold text-xs uppercase tracking-widest transition-colors cursor-pointer"
                     style={{ background: '#EDE5DA', color: '#6B6259' }}
                   >
-                    Temizle
+                    {t.clear}
                   </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.02 }}
@@ -180,7 +182,7 @@ export function ShoppingListSidebar() {
                     }}
                   >
                     <span className="material-symbols-outlined text-lg">share</span>
-                    WhatsApp Paylaş
+                    {t.shareWhatsApp}
                   </motion.button>
                 </div>
               </div>

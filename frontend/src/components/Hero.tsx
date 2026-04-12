@@ -1,5 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
+import { useLanguage } from '@/context/LanguageContext'
 
 interface HeroProps {
   onScrape: () => void
@@ -11,6 +12,8 @@ interface HeroProps {
 }
 
 export function Hero({ onScrape, isScraping, totalSavings, searchTerm, onSearchChange, productCount }: HeroProps) {
+  const { t } = useLanguage()
+
   return (
     <section className="relative py-8 md:py-16 mb-12 overflow-hidden">
       {/* Decorative Warm Blobs */}
@@ -36,10 +39,10 @@ export function Hero({ onScrape, isScraping, totalSavings, searchTerm, onSearchC
           style={{ background: '#E33D26', color: 'white', fontFamily: 'Space Grotesk' }}
         >
           <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-          Haftalık Fırsatlar
+          {t.weeklyDeals}
         </motion.span>
 
-        {/* CHIRPLEY-STYLE GIANT HEADING */}
+        {/* GIANT HEADING */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -51,11 +54,11 @@ export function Hero({ onScrape, isScraping, totalSavings, searchTerm, onSearchC
             letterSpacing: '-0.04em',
           }}
         >
-          HOLLANDA'NIN<br />
-          <span style={{ color: '#E33D26' }}>EN İYİ</span> FİYATLARI
+          {t.heroTitle1}<br />
+          <span style={{ color: '#E33D26' }}>{t.heroTitle2}</span>
         </motion.h1>
 
-        {/* REKKI-STYLE GIANT SEARCH BAR */}
+        {/* SEARCH BAR */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -70,7 +73,7 @@ export function Hero({ onScrape, isScraping, totalSavings, searchTerm, onSearchC
           </span>
           <input
             type="text"
-            placeholder="Ürün veya market ara..."
+            placeholder={t.searchPlaceholder}
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
             className="search-giant"
@@ -97,7 +100,7 @@ export function Hero({ onScrape, isScraping, totalSavings, searchTerm, onSearchC
             ) : (
               <span className="material-symbols-outlined">bolt</span>
             )}
-            {isScraping ? 'Taranıyor…' : 'Fırsatları Keşfet'}
+            {isScraping ? t.scanning : t.scanBtn}
           </motion.button>
 
           {/* Product Count Stat */}
@@ -105,7 +108,7 @@ export function Hero({ onScrape, isScraping, totalSavings, searchTerm, onSearchC
             <div className="stat-pill">
               <span className="material-symbols-outlined text-base" style={{ color: '#E33D26' }}>inventory_2</span>
               <span className="text-sm font-medium" style={{ color: '#1A1A1A' }}>{productCount}</span>
-              <span className="text-sm" style={{ color: '#8C8478' }}>aktif ürün</span>
+              <span className="text-sm" style={{ color: '#8C8478' }}>{t.activeProducts}</span>
             </div>
           )}
 
@@ -113,7 +116,7 @@ export function Hero({ onScrape, isScraping, totalSavings, searchTerm, onSearchC
           {totalSavings > 0 && (
             <div className="stat-pill">
               <span className="material-symbols-outlined text-base" style={{ color: '#1B9E4B' }}>trending_down</span>
-              <span className="text-sm" style={{ color: '#8C8478' }}>Tasarruf</span>
+              <span className="text-sm" style={{ color: '#8C8478' }}>{t.savings}</span>
               <span className="text-sm font-bold font-headline" style={{ color: '#1B9E4B' }}>€{totalSavings.toFixed(2)}</span>
             </div>
           )}

@@ -5,7 +5,9 @@ import { Hero } from '@/components/Hero'
 import { ProductCard } from '@/components/ProductCard'
 import { AddProductForm } from '@/components/AddProductForm'
 import { ShoppingListSidebar } from '@/components/ShoppingListSidebar'
+import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { Product, useShoppingList } from '@/context/ShoppingListContext'
+import { useLanguage } from '@/context/LanguageContext'
 
 // Market renkleri
 const MARKET_COLORS: Record<string, string> = {
@@ -24,12 +26,13 @@ function getMarketInitial(name: string): string {
 }
 
 export function App() {
+  const { t } = useLanguage()
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [isScraping, setIsScraping] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [showCampaignsOnly, setShowCampaignsOnly] = useState(false)
-  const [selectedMarket, setSelectedMarket] = useState('Tümü')
+  const [selectedMarket, setSelectedMarket] = useState('all')
   const [navScrolled, setNavScrolled] = useState(false)
   const [canInstall, setCanInstall] = useState(false)
   const deferredPromptRef = useRef<any>(null)
@@ -152,7 +155,7 @@ export function App() {
   const filteredProducts = useMemo(() => products.filter((p) => {
     const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) || p.market.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesCampaign = showCampaignsOnly ? p.isCampaign : true
-    const matchesMarket = selectedMarket === 'Tümü' ? true : p.market === selectedMarket
+    const matchesMarket = selectedMarket === 'all' ? true : p.market === selectedMarket
     return matchesSearch && matchesCampaign && matchesMarket
   }), [products, searchTerm, showCampaignsOnly, selectedMarket])
 
@@ -189,18 +192,18 @@ export function App() {
           </span>
           <div className="hidden md:flex gap-1 items-center">
             <a
-              onClick={() => { setSelectedMarket('Tümü'); setShowCampaignsOnly(false) }}
+              onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(false) }}
               className="px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-all hover:bg-black/5"
               style={{ color: '#1A1A1A' }}
             >
-              Fırsatlar
+              {t.scanBtn}
             </a>
             <a
-              onClick={() => { setSelectedMarket('Tümü'); setShowCampaignsOnly(true) }}
+              onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(true) }}
               className="px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-all hover:bg-black/5"
               style={{ color: '#6B6259' }}
             >
-              Kampanyalar
+              {t.campaignsOnly}
             </a>
           </div>
         </div>
@@ -249,6 +252,9 @@ export function App() {
             )}
           </AnimatePresence>
 
+          {/* Language Switcher */}
+          <LanguageSwitcher />
+
           {/* Scrape Button */}
           <motion.button
             whileTap={{ scale: 0.92 }}
@@ -262,7 +268,7 @@ export function App() {
             ) : (
               <span className="material-symbols-outlined text-base">refresh</span>
             )}
-            {isScraping ? 'Taranıyor…' : 'Tara'}
+            {isScraping ? t.scanning : t.scanBtn}
           </motion.button>
 
           {/* Cart */}
@@ -312,21 +318,21 @@ export function App() {
               {/* All */}
               <motion.button
                 whileTap={{ scale: 0.95 }}
-                onClick={() => { setSelectedMarket('Tümü'); setShowCampaignsOnly(false) }}
-                className={`market-pill ${selectedMarket === 'Tümü' && !showCampaignsOnly ? 'market-pill-active' : ''}`}
+                onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(false) }}
+                className={`market-pill ${selectedMarket === 'all' && !showCampaignsOnly ? 'market-pill-active' : ''}`}
               >
                 <span className="material-symbols-outlined text-base">bolt</span>
-                Tümü
+                {t.allMarkets}
               </motion.button>
 
               {/* Campaign */}
               <motion.button
                 whileTap={{ scale: 0.95 }}
-                onClick={() => { setSelectedMarket('Tümü'); setShowCampaignsOnly(true) }}
+                onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(true) }}
                 className={`market-pill ${showCampaignsOnly ? 'market-pill-active' : ''}`}
               >
                 <span className="material-symbols-outlined text-base">local_fire_department</span>
-                Kampanyalar
+                {t.campaignsOnly}
               </motion.button>
 
               {/* Separator */}
@@ -358,11 +364,11 @@ export function App() {
           <div className="flex items-baseline justify-between mb-8">
             <div>
               <h2 className="text-2xl md:text-3xl font-headline font-bold" style={{ color: '#1A1A1A' }}>
-                {selectedMarket === 'Tümü'
-                  ? (showCampaignsOnly ? 'Kampanya Fırsatları' : 'Popüler Fırsatlar')
-                  : `${selectedMarket} Fırsatları`}
+                {selectedMarket === 'all'
+                  ? (showCampaignsOnly ? t.campaignsOnly : t.scanBtn)
+                  : `${selectedMarket}`}
               </h2>
-              <p className="text-sm mt-1" style={{ color: '#8C8478' }}>{filteredProducts.length} ürün bulundu</p>
+              <p className="text-sm mt-1" style={{ color: '#8C8478' }}>{filteredProducts.length} {t.activeProducts}</p>
             </div>
             <div className="flex gap-2">
               <motion.button
@@ -373,7 +379,7 @@ export function App() {
                   background: showCampaignsOnly ? '#E33D26' : 'rgba(0,0,0,0.04)',
                   color: showCampaignsOnly ? 'white' : '#6B6259'
                 }}
-                title="Sadece Kampanyalar"
+                title={t.campaignsOnly}
               >
                 <span className="material-symbols-outlined">local_fire_department</span>
               </motion.button>
@@ -386,7 +392,7 @@ export function App() {
               <div className="w-12 h-12 rounded-full border-4 border-t-transparent animate-spin"
                 style={{ borderColor: '#E8DCCB', borderTopColor: '#E33D26' }} />
               <p className="text-sm font-medium" style={{ color: '#8C8478' }}>
-                {isScraping ? 'Süpermarket bültenleri taranıyor, lütfen bekleyin...' : 'Yükleniyor...'}
+                {isScraping ? t.scrapingMsg : t.loadingProducts}
               </p>
             </div>
           ) : filteredProducts.length === 0 ? (
@@ -397,9 +403,9 @@ export function App() {
               style={{ background: 'rgba(255,255,255,0.6)' }}
             >
               <span className="material-symbols-outlined text-6xl mb-4 block" style={{ color: '#C9C1B6' }}>search_off</span>
-              <p className="text-xl font-headline font-bold mb-2" style={{ color: '#1A1A1A' }}>Ürün bulunamadı</p>
+              <p className="text-xl font-headline font-bold mb-2" style={{ color: '#1A1A1A' }}>{t.noProducts}</p>
               <p className="max-w-md mx-auto text-sm" style={{ color: '#8C8478' }}>
-                Sağ alttaki <strong>+</strong> butonuyla manuel ürün ekleyebilir veya <strong>Tara</strong> butonu ile otomatik çekim yapabilirsiniz.
+                {t.noProductsDesc}
               </p>
             </motion.div>
           ) : (
