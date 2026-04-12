@@ -23,7 +23,21 @@ app.use(express.static(path.join(__dirname, 'public')))
 const isProduction = process.env.NODE_ENV === 'production'
 if (isProduction) {
   const frontendDist = path.join(__dirname, '..', 'frontend', 'dist')
-  app.use(express.static(frontendDist))
+  // Hashed assets (JS/CSS) uzun süre cache'lenebilir
+  app.use('/assets', express.static(path.join(frontendDist, 'assets'), {
+    maxAge: '1y',
+    immutable: true,
+  }))
+  // index.html asla cache'lenmemeli — her zaman taze gelsin
+  app.use(express.static(frontendDist, {
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith('index.html')) {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
+        res.setHeader('Pragma', 'no-cache')
+        res.setHeader('Expires', '0')
+      }
+    },
+  }))
 }
 
 // Hata yönetimi middleware'i
