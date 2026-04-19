@@ -63,19 +63,23 @@ async function scrapeJumbo() {
       const card = $(el)
       const img = card.find('img').first()
       const imgSrc = img.attr('src') || img.attr('data-src') || null
-      const priceMatch = card.text().match(/voor\s+(\d+[,.]\d+)/i)
+      const text = card.text()
       const titleEl = card.find('h3, [data-testid="jum-heading"] a, .title').first()
       const name = titleEl.text().trim() || card.find('a[href*="/aanbied"]').first().text().trim()
       if (!name || name.length < 3) return
 
-      const priceStr = priceMatch?.[1] || ''
-      const discountedPrice = parseFloat(priceStr.replace(',', '.')) || 0
-      if (!discountedPrice) return
+      // Fiyat: "voor X,XX" veya "€X,XX" veya herhangi bir fiyat
+      const priceMatch = text.match(/voor\s+(\d+[,.]\d+)/i) || text.match(/€\s*(\d+[,.]\d+)/)
+      const discountedPrice = priceMatch ? parseFloat(priceMatch[1].replace(',', '.')) : 0
+
+      // 1+1 gratis gibi kampanyalarda fiyat olmayabilir — yine de ekle
+      const promoMatch = text.match(/(1\+1|2\+1|\d+\+\d+)\s*gratis/i)
+      if (!discountedPrice && !promoMatch) return
 
       results.push({
-        name,
+        name: promoMatch && !discountedPrice ? `${promoMatch[0].toUpperCase()} — ${name}` : name,
         market: 'Jumbo',
-        originalPrice: parseFloat((discountedPrice * 1.35).toFixed(2)),
+        originalPrice: discountedPrice ? parseFloat((discountedPrice * 1.35).toFixed(2)) : 0,
         discountedPrice,
         imageUrl: imgSrc && !imgSrc.includes('logo') ? imgSrc : null,
         isCampaign: true,
