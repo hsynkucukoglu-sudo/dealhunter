@@ -282,7 +282,7 @@ async function scrapeAlbertHeijn() {
     if (!data?.bonusPromotions) return []
 
     const seen = new Set()
-    const results = []
+    const candidates = []
 
     for (const promo of data.bonusPromotions) {
       for (const product of (promo.products || [])) {
@@ -290,25 +290,60 @@ async function scrapeAlbertHeijn() {
         const originalPrice = product.price?.was?.amount
         if (!discountedPrice || !product.title || seen.has(product.id)) continue
         seen.add(product.id)
-
-        // Only include products with genuine price reduction
         const hasDiscount = originalPrice && discountedPrice < originalPrice
         if (!hasDiscount) continue
-
-        results.push({
-          name: product.title,
-          market: 'Albert Heijn',
-          originalPrice: originalPrice || parseFloat((discountedPrice * 1.35).toFixed(2)),
-          discountedPrice,
-          imageUrl: null,
-          isCampaign: true,
-          source: 'ah.nl/bonus',
-          expiresAt: EXPIRES_AT,
-        })
+        candidates.push({ id: product.id, webPath: product.webPath, name: product.title, discountedPrice, originalPrice })
       }
     }
 
-    console.log(`  ✅ Albert Heijn: ${results.length} ürün`)
+    // En yüksek indirim oranına göre sırala, ilk 200'ün görselini çek
+    candidates.sort((a, b) => (a.discountedPrice / a.originalPrice) - (b.discountedPrice / b.originalPrice))
+    const top = candidates.slice(0, 200)
+    const rest = candidates.slice(200)
+
+    // Görselleri 20'li batch'ler halinde çek
+    const imageMap = {}
+    const BATCH = 20
+    for (let i = 0; i < top.length; i += BATCH) {
+      const batch = top.slice(i, i + BATCH)
+      await Promise.all(batch.map(async p => {
+        try {
+          const r = await fetch(`https://www.ah.nl${p.webPath}`, {
+            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
+          })
+          const html = await r.text()
+          const jsonLd = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)
+          if (!jsonLd) return
+          const jd = JSON.parse(jsonLd[1])
+          if (jd.image) imageMap[p.id] = jd.image
+        } catch {}
+      }))
+    }
+
+    const results = [
+      ...top.map(p => ({
+        name: p.name,
+        market: 'Albert Heijn',
+        originalPrice: p.originalPrice,
+        discountedPrice: p.discountedPrice,
+        imageUrl: imageMap[p.id] || null,
+        isCampaign: true,
+        source: 'ah.nl/bonus',
+        expiresAt: EXPIRES_AT,
+      })),
+      ...rest.map(p => ({
+        name: p.name,
+        market: 'Albert Heijn',
+        originalPrice: p.originalPrice,
+        discountedPrice: p.discountedPrice,
+        imageUrl: null,
+        isCampaign: true,
+        source: 'ah.nl/bonus',
+        expiresAt: EXPIRES_AT,
+      })),
+    ]
+
+    console.log(`  ✅ Albert Heijn: ${results.length} ürün (${Object.keys(imageMap).length} görsel)`)
     return results
   } catch (e) {
     console.error('  ❌ Albert Heijn:', e.message)
