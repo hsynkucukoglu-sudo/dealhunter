@@ -246,19 +246,90 @@ async function scrapeLidl() {
   }
 }
 
+// ─── ALBERT HEIJN — GraphQL API ──────────────────────────────────────────────
+async function scrapeAlbertHeijn() {
+  console.log('🏪 [Albert Heijn] api.ah.nl/graphql...')
+  try {
+    const tokenRes = await fetch('https://api.ah.nl/mobile-auth/v1/auth/token/anonymous', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ clientId: 'appie' }),
+    })
+    const { access_token } = await tokenRes.json()
+    if (!access_token) return []
+
+    const gqlRes = await fetch('https://api.ah.nl/graphql', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${access_token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `{
+          bonusPromotions {
+            title
+            products {
+              id
+              title
+              webPath
+              price { now { amount } was { amount } }
+            }
+          }
+        }`,
+      }),
+    })
+    const { data } = await gqlRes.json()
+    if (!data?.bonusPromotions) return []
+
+    const seen = new Set()
+    const results = []
+
+    for (const promo of data.bonusPromotions) {
+      for (const product of (promo.products || [])) {
+        const discountedPrice = product.price?.now?.amount
+        const originalPrice = product.price?.was?.amount
+        if (!discountedPrice || !product.title || seen.has(product.id)) continue
+        seen.add(product.id)
+
+        // Only include products with genuine price reduction
+        const hasDiscount = originalPrice && discountedPrice < originalPrice
+        if (!hasDiscount) continue
+
+        results.push({
+          name: product.title,
+          market: 'Albert Heijn',
+          originalPrice: originalPrice || parseFloat((discountedPrice * 1.35).toFixed(2)),
+          discountedPrice,
+          imageUrl: null,
+          isCampaign: true,
+          source: 'ah.nl/bonus',
+          expiresAt: EXPIRES_AT,
+        })
+      }
+    }
+
+    console.log(`  ✅ Albert Heijn: ${results.length} ürün`)
+    return results
+  } catch (e) {
+    console.error('  ❌ Albert Heijn:', e.message)
+    return []
+  }
+}
+
 // ─── ANA FONKSİYON ────────────────────────────────────────────────────────────
 export async function scrapeFlyerProducts() {
   console.log('🔍 Fetch-only scraper başlatılıyor...')
 
-  const [dirk, jumbo, hoogvliet, plus, lidl] = await Promise.all([
+  const [dirk, jumbo, hoogvliet, plus, lidl, ah] = await Promise.all([
     scrapeDirk(),
     scrapeJumbo(),
     scrapeHoogvliet(),
     scrapePlus(),
     scrapeLidl(),
+    scrapeAlbertHeijn(),
   ])
 
-  let all = [...dirk, ...jumbo, ...hoogvliet, ...plus, ...lidl]
+  let all = [...dirk, ...jumbo, ...hoogvliet, ...plus, ...lidl, ...ah]
 
   // Duplicate temizliği
   const seen = new Set()
@@ -269,6 +340,6 @@ export async function scrapeFlyerProducts() {
     return true
   })
 
-  console.log(`\n✅ Toplam ${all.length} ürün (${dirk.length} Dirk, ${jumbo.length} Jumbo, ${hoogvliet.length} Hoogvliet, ${plus.length} Plus, ${lidl.length} Lidl)`)
+  console.log(`\n✅ Toplam ${all.length} ürün (${dirk.length} Dirk, ${jumbo.length} Jumbo, ${hoogvliet.length} Hoogvliet, ${plus.length} Plus, ${lidl.length} Lidl, ${ah.length} AH)`)
   return all
 }
