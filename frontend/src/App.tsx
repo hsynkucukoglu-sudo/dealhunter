@@ -327,143 +327,196 @@ export function App() {
           productCount={filteredProducts.length}
         />
 
-        {/* Category Tabs */}
-        <section className="mb-6">
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2">
-            {CATEGORIES.map(cat => (
-              <motion.button
-                key={cat.id}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setSelectedCategory(cat.id)}
-                className="flex-none px-4 py-2 rounded-full text-sm font-semibold transition-all whitespace-nowrap"
-                style={{
-                  background: selectedCategory === cat.id ? '#1A1A1A' : 'rgba(255,255,255,0.7)',
-                  color: selectedCategory === cat.id ? 'white' : '#6B6259',
-                  border: selectedCategory === cat.id ? 'none' : '1px solid rgba(201,193,182,0.5)',
-                }}
-              >
-                {cat.label}
-              </motion.button>
-            ))}
-          </div>
-        </section>
-
-        {/* Market Pills Carousel */}
-        {availableMarkets.length > 0 && (
-          <section className="mb-12">
-            <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-2">
-              {/* All */}
-              <motion.button
-                whileTap={{ scale: 0.95 }}
-                onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(false) }}
-                className={`market-pill ${selectedMarket === 'all' && !showCampaignsOnly ? 'market-pill-active' : ''}`}
-              >
-                <span className="material-symbols-outlined text-base">bolt</span>
-                {t.allMarkets}
-              </motion.button>
-
-              {/* Campaign */}
-              <motion.button
-                whileTap={{ scale: 0.95 }}
-                onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(true) }}
-                className={`market-pill ${showCampaignsOnly ? 'market-pill-active' : ''}`}
-              >
-                <span className="material-symbols-outlined text-base">local_fire_department</span>
-                {t.campaignsOnly}
-              </motion.button>
-
-              {/* Separator */}
-              <div className="w-px h-6 flex-none" style={{ background: '#C9C1B6' }} />
-
-              {/* Markets */}
-              {availableMarkets.map(market => (
-                <motion.button
-                  key={market}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => { setSelectedMarket(market); setShowCampaignsOnly(false) }}
-                  className={`market-pill ${selectedMarket === market && !showCampaignsOnly ? 'market-pill-active' : ''}`}
-                >
-                  <div
-                    className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[9px] font-bold flex-none"
-                    style={{ background: MARKET_COLORS[market] || '#6B6259' }}
-                  >
-                    {getMarketInitial(market)}
-                  </div>
-                  {market}
-                </motion.button>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Product Grid Section */}
-        <section>
-          <div className="flex items-baseline justify-between mb-8">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-headline font-bold" style={{ color: '#1A1A1A' }}>
-                {selectedMarket === 'all'
-                  ? (showCampaignsOnly ? t.campaignsOnly : t.scanBtn)
-                  : `${selectedMarket}`}
-              </h2>
-              <p className="text-sm mt-1" style={{ color: '#8C8478' }}>{filteredProducts.length} {t.activeProducts}</p>
-            </div>
-            <div className="flex gap-2">
+        {/* ── Category Page View ── */}
+        <AnimatePresence mode="wait">
+        {selectedCategory !== 'all' ? (
+          <motion.div
+            key={selectedCategory}
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -40 }}
+            transition={{ duration: 0.25 }}
+          >
+            {/* Category Header */}
+            <div className="flex items-center gap-4 mb-8">
               <motion.button
                 whileTap={{ scale: 0.9 }}
-                onClick={() => setShowCampaignsOnly(!showCampaignsOnly)}
-                className="p-2 rounded-full transition-all cursor-pointer"
-                style={{
-                  background: showCampaignsOnly ? '#E33D26' : 'rgba(0,0,0,0.04)',
-                  color: showCampaignsOnly ? 'white' : '#6B6259'
-                }}
-                title={t.campaignsOnly}
+                onClick={() => setSelectedCategory('all')}
+                className="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer transition-all"
+                style={{ background: 'rgba(255,255,255,0.8)', border: '1px solid rgba(201,193,182,0.5)' }}
               >
-                <span className="material-symbols-outlined">local_fire_department</span>
+                <span className="material-symbols-outlined text-lg" style={{ color: '#1A1A1A' }}>arrow_back</span>
               </motion.button>
+              <div>
+                <h2 className="text-2xl md:text-3xl font-headline font-bold" style={{ color: '#1A1A1A' }}>
+                  {CATEGORIES.find(c => c.id === selectedCategory)?.label}
+                </h2>
+                <p className="text-sm mt-0.5" style={{ color: '#8C8478' }}>{filteredProducts.length} {t.activeProducts}</p>
+              </div>
             </div>
-          </div>
 
-          {/* Grid */}
-          {loading || (isScraping && products.length === 0) ? (
-            <div className="flex flex-col justify-center items-center h-64 gap-4">
-              <div className="w-12 h-12 rounded-full border-4 border-t-transparent animate-spin"
-                style={{ borderColor: '#E8DCCB', borderTopColor: '#E33D26' }} />
-              <p className="text-sm font-medium" style={{ color: '#8C8478' }}>
-                {isScraping ? t.scrapingMsg : t.loadingProducts}
-              </p>
-            </div>
-          ) : filteredProducts.length === 0 ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="text-center py-20 rounded-3xl"
-              style={{ background: 'rgba(255,255,255,0.6)' }}
-            >
-              <span className="material-symbols-outlined text-6xl mb-4 block" style={{ color: '#C9C1B6' }}>search_off</span>
-              <p className="text-xl font-headline font-bold mb-2" style={{ color: '#1A1A1A' }}>{t.noProducts}</p>
-              <p className="max-w-md mx-auto text-sm" style={{ color: '#8C8478' }}>
-                {t.noProductsDesc}
-              </p>
-            </motion.div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
-            >
-              {filteredProducts.map((product, index) => (
-                <motion.div
-                  key={product.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.03 }}
+            {/* Market Pills */}
+            {availableMarkets.length > 0 && (
+              <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-2 mb-8">
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setSelectedMarket('all')}
+                  className={`market-pill ${selectedMarket === 'all' ? 'market-pill-active' : ''}`}
                 >
-                  <ProductCard product={product} />
+                  <span className="material-symbols-outlined text-base">bolt</span>
+                  {t.allMarkets}
+                </motion.button>
+                <div className="w-px h-6 flex-none" style={{ background: '#C9C1B6' }} />
+                {availableMarkets.map(market => (
+                  <motion.button
+                    key={market}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setSelectedMarket(market)}
+                    className={`market-pill ${selectedMarket === market ? 'market-pill-active' : ''}`}
+                  >
+                    <div className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[9px] font-bold flex-none"
+                      style={{ background: MARKET_COLORS[market] || '#6B6259' }}>
+                      {getMarketInitial(market)}
+                    </div>
+                    {market}
+                  </motion.button>
+                ))}
+              </div>
+            )}
+
+            {/* Product Grid */}
+            {loading ? (
+              <div className="flex justify-center items-center h-64">
+                <div className="w-12 h-12 rounded-full border-4 border-t-transparent animate-spin"
+                  style={{ borderColor: '#E8DCCB', borderTopColor: '#E33D26' }} />
+              </div>
+            ) : filteredProducts.length === 0 ? (
+              <div className="text-center py-20 rounded-3xl" style={{ background: 'rgba(255,255,255,0.6)' }}>
+                <span className="material-symbols-outlined text-6xl mb-4 block" style={{ color: '#C9C1B6' }}>search_off</span>
+                <p className="text-xl font-headline font-bold mb-2" style={{ color: '#1A1A1A' }}>{t.noProducts}</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                {filteredProducts.map((product, index) => (
+                  <motion.div key={product.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.03 }}>
+                    <ProductCard product={product} />
+                  </motion.div>
+                ))}
+              </div>
+            )}
+          </motion.div>
+        ) : (
+          <motion.div key="home" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
+
+            {/* Category Grid */}
+            <section className="mb-12">
+              <h2 className="text-xl font-headline font-bold mb-4" style={{ color: '#1A1A1A' }}>Categorieën</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                {CATEGORIES.filter(c => c.id !== 'all').map(cat => {
+                  const count = products.filter(p => (p as any).category === cat.id).length
+                  return (
+                    <motion.button
+                      key={cat.id}
+                      whileHover={{ y: -2 }}
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() => setSelectedCategory(cat.id)}
+                      className="flex flex-col items-start p-4 rounded-2xl cursor-pointer transition-all text-left"
+                      style={{ background: 'rgba(255,255,255,0.75)', border: '1px solid rgba(201,193,182,0.4)' }}
+                    >
+                      <span className="text-2xl mb-2">{cat.label.split(' ')[0]}</span>
+                      <span className="text-sm font-semibold leading-tight" style={{ color: '#1A1A1A' }}>
+                        {cat.label.split(' ').slice(1).join(' ')}
+                      </span>
+                      <span className="text-xs mt-1" style={{ color: '#8C8478' }}>{count} aanbiedingen</span>
+                    </motion.button>
+                  )
+                })}
+              </div>
+            </section>
+
+            {/* Market Pills Carousel */}
+            {availableMarkets.length > 0 && (
+              <section className="mb-12">
+                <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-2">
+                  <motion.button whileTap={{ scale: 0.95 }}
+                    onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(false) }}
+                    className={`market-pill ${selectedMarket === 'all' && !showCampaignsOnly ? 'market-pill-active' : ''}`}>
+                    <span className="material-symbols-outlined text-base">bolt</span>
+                    {t.allMarkets}
+                  </motion.button>
+                  <motion.button whileTap={{ scale: 0.95 }}
+                    onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(true) }}
+                    className={`market-pill ${showCampaignsOnly ? 'market-pill-active' : ''}`}>
+                    <span className="material-symbols-outlined text-base">local_fire_department</span>
+                    {t.campaignsOnly}
+                  </motion.button>
+                  <div className="w-px h-6 flex-none" style={{ background: '#C9C1B6' }} />
+                  {availableMarkets.map(market => (
+                    <motion.button key={market} whileTap={{ scale: 0.95 }}
+                      onClick={() => { setSelectedMarket(market); setShowCampaignsOnly(false) }}
+                      className={`market-pill ${selectedMarket === market && !showCampaignsOnly ? 'market-pill-active' : ''}`}>
+                      <div className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[9px] font-bold flex-none"
+                        style={{ background: MARKET_COLORS[market] || '#6B6259' }}>
+                        {getMarketInitial(market)}
+                      </div>
+                      {market}
+                    </motion.button>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Product Grid Section */}
+            <section>
+              <div className="flex items-baseline justify-between mb-8">
+                <div>
+                  <h2 className="text-2xl md:text-3xl font-headline font-bold" style={{ color: '#1A1A1A' }}>
+                    {selectedMarket === 'all'
+                      ? (showCampaignsOnly ? t.campaignsOnly : t.scanBtn)
+                      : selectedMarket}
+                  </h2>
+                  <p className="text-sm mt-1" style={{ color: '#8C8478' }}>{filteredProducts.length} {t.activeProducts}</p>
+                </div>
+                <motion.button whileTap={{ scale: 0.9 }}
+                  onClick={() => setShowCampaignsOnly(!showCampaignsOnly)}
+                  className="p-2 rounded-full transition-all cursor-pointer"
+                  style={{ background: showCampaignsOnly ? '#E33D26' : 'rgba(0,0,0,0.04)', color: showCampaignsOnly ? 'white' : '#6B6259' }}
+                  title={t.campaignsOnly}>
+                  <span className="material-symbols-outlined">local_fire_department</span>
+                </motion.button>
+              </div>
+
+              {loading || (isScraping && products.length === 0) ? (
+                <div className="flex flex-col justify-center items-center h-64 gap-4">
+                  <div className="w-12 h-12 rounded-full border-4 border-t-transparent animate-spin"
+                    style={{ borderColor: '#E8DCCB', borderTopColor: '#E33D26' }} />
+                  <p className="text-sm font-medium" style={{ color: '#8C8478' }}>
+                    {isScraping ? t.scrapingMsg : t.loadingProducts}
+                  </p>
+                </div>
+              ) : filteredProducts.length === 0 ? (
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+                  className="text-center py-20 rounded-3xl" style={{ background: 'rgba(255,255,255,0.6)' }}>
+                  <span className="material-symbols-outlined text-6xl mb-4 block" style={{ color: '#C9C1B6' }}>search_off</span>
+                  <p className="text-xl font-headline font-bold mb-2" style={{ color: '#1A1A1A' }}>{t.noProducts}</p>
+                  <p className="max-w-md mx-auto text-sm" style={{ color: '#8C8478' }}>{t.noProductsDesc}</p>
                 </motion.div>
-              ))}
-            </motion.div>
-          )}
-        </section>
+              ) : (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                  className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                  {filteredProducts.map((product, index) => (
+                    <motion.div key={product.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.03 }}>
+                      <ProductCard product={product} />
+                    </motion.div>
+                  ))}
+                </motion.div>
+              )}
+            </section>
+          </motion.div>
+        )}
+        </AnimatePresence>
       </main>
 
       {/* ============================== */}
