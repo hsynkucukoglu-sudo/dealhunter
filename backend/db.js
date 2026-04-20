@@ -37,7 +37,7 @@ export function initDatabase() {
 
 export function getProducts() {
   return new Promise((resolve, reject) => {
-    db.all('SELECT * FROM products', [], (err, rows) => {
+    db.all('SELECT * FROM products ORDER BY (imageUrl IS NOT NULL AND imageUrl != "") DESC, discount DESC', [], (err, rows) => {
       if (err) return reject(err)
       resolve(rows.map(r => ({ ...r, isCampaign: Boolean(r.isCampaign) })))
     })
