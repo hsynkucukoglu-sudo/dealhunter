@@ -33,6 +33,7 @@ export function App() {
   const [searchTerm, setSearchTerm] = useState('')
   const [showCampaignsOnly, setShowCampaignsOnly] = useState(false)
   const [selectedMarket, setSelectedMarket] = useState('all')
+  const [selectedCategory, setSelectedCategory] = useState('all')
   const [navScrolled, setNavScrolled] = useState(false)
   const [canInstall, setCanInstall] = useState(false)
   const deferredPromptRef = useRef<any>(null)
@@ -156,8 +157,23 @@ export function App() {
     const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) || p.market.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesCampaign = showCampaignsOnly ? p.isCampaign : true
     const matchesMarket = selectedMarket === 'all' ? true : p.market === selectedMarket
-    return matchesSearch && matchesCampaign && matchesMarket
-  }), [products, searchTerm, showCampaignsOnly, selectedMarket])
+    const matchesCategory = selectedCategory === 'all' ? true : (p as any).category === selectedCategory
+    return matchesSearch && matchesCampaign && matchesMarket && matchesCategory
+  }), [products, searchTerm, showCampaignsOnly, selectedMarket, selectedCategory])
+
+  const CATEGORIES = [
+    { id: 'all', label: '⚡ Alles' },
+    { id: 'groente-fruit', label: '🥦 Groente & Fruit' },
+    { id: 'zuivel', label: '🥛 Zuivel' },
+    { id: 'vlees-vis', label: '🥩 Vlees & Vis' },
+    { id: 'dranken', label: '🍺 Dranken' },
+    { id: 'bakkerij', label: '🥖 Bakkerij' },
+    { id: 'snacks', label: '🍪 Snacks' },
+    { id: 'maaltijden', label: '🍳 Maaltijden' },
+    { id: 'verzorging', label: '🧴 Verzorging' },
+    { id: 'huishouden', label: '🧹 Huishouden' },
+    { id: 'overig', label: '📦 Overig' },
+  ]
 
   const availableMarkets = useMemo(() =>
     Array.from(new Set(products.map(p => p.market))).sort()
@@ -310,6 +326,27 @@ export function App() {
           onSearchChange={setSearchTerm}
           productCount={filteredProducts.length}
         />
+
+        {/* Category Tabs */}
+        <section className="mb-6">
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2">
+            {CATEGORIES.map(cat => (
+              <motion.button
+                key={cat.id}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setSelectedCategory(cat.id)}
+                className="flex-none px-4 py-2 rounded-full text-sm font-semibold transition-all whitespace-nowrap"
+                style={{
+                  background: selectedCategory === cat.id ? '#1A1A1A' : 'rgba(255,255,255,0.7)',
+                  color: selectedCategory === cat.id ? 'white' : '#6B6259',
+                  border: selectedCategory === cat.id ? 'none' : '1px solid rgba(201,193,182,0.5)',
+                }}
+              >
+                {cat.label}
+              </motion.button>
+            ))}
+          </div>
+        </section>
 
         {/* Market Pills Carousel */}
         {availableMarkets.length > 0 && (

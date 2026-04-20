@@ -3,6 +3,7 @@ import cors from 'cors'
 import { initDatabase } from './db.js'
 import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, clearAllProducts } from './models.js'
 import { scrapeFlyerProducts } from './scraper/index.js'
+import { categorize } from './categorize.js'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -139,7 +140,7 @@ async function runScraperJob() {
     // Bulunan ürünleri veritabanına ekle
     const createdProducts = []
     for(const p of newProducts) {
-       const saved = await createProduct(p)
+       const saved = await createProduct({ ...p, category: categorize(p.name) })
        createdProducts.push(saved)
     }
 

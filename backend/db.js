@@ -24,7 +24,8 @@ export function initDatabase() {
           isCampaign BOOLEAN,
           source TEXT,
           expiresAt TEXT,
-          createdAt TEXT
+          createdAt TEXT,
+          category TEXT DEFAULT 'overig'
         )
       `, (err) => {
         if (err) return reject(err)
@@ -57,9 +58,9 @@ export function getProduct(id) {
 export function createProduct(product) {
   return new Promise((resolve, reject) => {
     db.run(
-      `INSERT INTO products (id, name, market, originalPrice, discountedPrice, discount, imageUrl, isCampaign, source, expiresAt, createdAt) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [product.id, product.name, product.market, product.originalPrice, product.discountedPrice, product.discount, product.imageUrl, product.isCampaign ? 1 : 0, product.source, product.expiresAt, product.createdAt],
+      `INSERT INTO products (id, name, market, originalPrice, discountedPrice, discount, imageUrl, isCampaign, source, expiresAt, createdAt, category)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [product.id, product.name, product.market, product.originalPrice, product.discountedPrice, product.discount, product.imageUrl, product.isCampaign ? 1 : 0, product.source, product.expiresAt, product.createdAt, product.category || 'overig'],
       function (err) {
         if (err) return reject(err)
         resolve(product)
