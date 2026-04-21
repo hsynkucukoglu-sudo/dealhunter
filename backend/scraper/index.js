@@ -315,18 +315,26 @@ async function scrapeAlbertHeijn() {
     // En yüksek indirim oranına göre sırala
     candidates.sort((a, b) => (a.discountedPrice / a.originalPrice) - (b.discountedPrice / b.originalPrice))
 
-    // Görselleri 20'li batch'ler halinde çek (ilk 100 ürün)
+    // Görselleri 5'li batch'ler halinde çek (ilk 80 ürün), batch arası 1s bekle
     const imageMap = {}
-    const withImage = candidates.slice(0, 100)
-    const BATCH = 20
+    const withImage = candidates.slice(0, 80)
+    const BATCH = 5
+    const AH_IMG_HEADERS = {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      'Accept-Language': 'nl-NL,nl;q=0.9',
+      'Accept-Encoding': 'gzip, deflate, br',
+      'Connection': 'keep-alive',
+    }
     for (let i = 0; i < withImage.length; i += BATCH) {
       const batch = withImage.slice(i, i + BATCH)
       await Promise.all(batch.map(async p => {
         try {
           const r = await fetch(`https://www.ah.nl/producten/product/wi${p.id}`, {
-            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
-            signal: AbortSignal.timeout(5000),
+            headers: AH_IMG_HEADERS,
+            signal: AbortSignal.timeout(8000),
           })
+          if (!r.ok) return
           const html = await r.text()
           const jsonLd = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)
           if (!jsonLd) return
@@ -334,6 +342,7 @@ async function scrapeAlbertHeijn() {
           if (jd.image) imageMap[p.id] = jd.image
         } catch {}
       }))
+      if (i + BATCH < withImage.length) await new Promise(r => setTimeout(r, 1000))
     }
 
     const results = candidates.map(p => ({
