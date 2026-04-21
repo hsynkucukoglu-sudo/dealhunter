@@ -1,6 +1,7 @@
 # ========================================
 # DEALHUNTER MARKET — Production Dockerfile
 # Fetch-only scraper: No Chromium needed
+# Build: 2026-04-21
 # ========================================
 
 # Stage 1: Build Frontend
