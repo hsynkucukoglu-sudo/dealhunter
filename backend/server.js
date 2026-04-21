@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import { initDatabase } from './db.js'
-import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, clearAllProducts } from './models.js'
+import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, clearAllProducts } from './models.js'
 import { scrapeFlyerProducts } from './scraper/index.js'
 import { categorize } from './categorize.js'
 import path from 'path'
@@ -132,6 +132,14 @@ app.put('/api/products/:id', asyncHandler(async (req, res) => {
   })
 
   res.json(product)
+}))
+
+// PATCH /api/products/:id/image - Görsel URL güncelle
+app.patch('/api/products/:id/image', asyncHandler(async (req, res) => {
+  const { imageUrl } = req.body
+  if (!imageUrl) return res.status(400).json({ error: 'imageUrl gerekli' })
+  await updateProductImage(req.params.id, imageUrl)
+  res.json({ ok: true })
 }))
 
 // DELETE /api/products/:id - Ürünü sil

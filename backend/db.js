@@ -91,6 +91,15 @@ export function deleteProduct(id) {
   })
 }
 
+export function updateProductImage(id, imageUrl) {
+  return new Promise((resolve, reject) => {
+    db.run('UPDATE products SET imageUrl = ? WHERE id = ?', [imageUrl, id], function (err) {
+      if (err) return reject(err)
+      resolve()
+    })
+  })
+}
+
 export function clearAllProducts() {
   return new Promise((resolve, reject) => {
     db.run('DELETE FROM products', [], function (err) {

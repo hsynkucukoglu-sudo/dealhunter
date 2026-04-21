@@ -41,6 +41,10 @@ export async function clearAllProducts() {
   await db.clearAllProducts()
 }
 
+export async function updateProductImage(id, imageUrl) {
+  return db.updateProductImage(id, imageUrl)
+}
+
 export async function updateProduct(id, data) {
   const originalPrice = parseFloat(data.originalPrice)
   const discountedPrice = parseFloat(data.discountedPrice)
