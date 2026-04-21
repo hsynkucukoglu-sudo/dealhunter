@@ -29,26 +29,44 @@ const asyncHandler = (fn) => (req, res, next) => {
 
 // ===== API Routes =====
 
-// GET /api/image-proxy?url=... - AH görsellerini proxy'le servis et
-app.get('/api/image-proxy', asyncHandler(async (req, res) => {
-  const { url } = req.query
-  if (!url || !url.startsWith('https://static.ah.nl/')) {
-    return res.status(400).json({ error: 'Geçersiz URL' })
-  }
-  const imgRes = await fetch(url, {
+// GET /api/ah-image/:id - AH ürün görselini ID ile çek
+app.get('/api/ah-image/:id', asyncHandler(async (req, res) => {
+  const { id } = req.params
+  if (!id || !/^\d+$/.test(id)) return res.status(400).send()
+
+  // Ürün sayfasından JSON-LD ile görsel URL'si bul
+  const pageRes = await fetch(`https://www.ah.nl/producten/product/wi${id}`, {
     headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+      'Accept': 'text/html,application/xhtml+xml',
+      'Accept-Language': 'nl-NL,nl;q=0.9',
       'Referer': 'https://www.ah.nl/',
-      'Accept': 'image/webp,image/apng,image/*,*/*;q=0.8',
     },
     signal: AbortSignal.timeout(8000),
   })
-  if (!imgRes.ok) return res.status(imgRes.status).send()
-  const contentType = imgRes.headers.get('content-type') || 'image/jpeg'
-  res.setHeader('Content-Type', contentType)
-  res.setHeader('Cache-Control', 'public, max-age=86400')
-  const buffer = await imgRes.arrayBuffer()
-  res.send(Buffer.from(buffer))
+  if (!pageRes.ok) return res.status(404).send()
+
+  const html = await pageRes.text()
+  const jsonLd = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)
+  if (!jsonLd) return res.status(404).send()
+
+  const jd = JSON.parse(jsonLd[1])
+  const imageUrl = jd.image
+  if (!imageUrl) return res.status(404).send()
+
+  // Görseli çek ve ilet
+  const imgRes = await fetch(imageUrl, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+      'Referer': 'https://www.ah.nl/',
+    },
+    signal: AbortSignal.timeout(8000),
+  })
+  if (!imgRes.ok) return res.status(404).send()
+
+  res.setHeader('Content-Type', imgRes.headers.get('content-type') || 'image/jpeg')
+  res.setHeader('Cache-Control', 'public, max-age=604800')
+  res.send(Buffer.from(await imgRes.arrayBuffer()))
 }))
 
 let scraperRunning = false

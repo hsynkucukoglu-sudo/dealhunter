@@ -350,7 +350,7 @@ async function scrapeAlbertHeijn() {
       market: 'Albert Heijn',
       originalPrice: p.originalPrice,
       discountedPrice: p.discountedPrice,
-      imageUrl: imageMap[p.id] || null,
+      imageUrl: `ah-product-id:${p.id}`,
       isCampaign: true,
       source: 'ah.nl/bonus',
       expiresAt: EXPIRES_AT,
