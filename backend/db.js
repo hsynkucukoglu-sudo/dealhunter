@@ -1,110 +1,71 @@
-import sqlite3 from 'sqlite3'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import pg from 'pg'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const DB_PATH = path.join(__dirname, 'data.db')
+const { Pool } = pg
 
-let db
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.DATABASE_URL?.includes('railway') ? { rejectUnauthorized: false } : false,
+})
 
-export function initDatabase() {
-  return new Promise((resolve, reject) => {
-    db = new sqlite3.Database(DB_PATH, (err) => {
-      if (err) return reject(err)
-      
-      db.run(`
-        CREATE TABLE IF NOT EXISTS products (
-          id TEXT PRIMARY KEY,
-          name TEXT,
-          market TEXT,
-          originalPrice REAL,
-          discountedPrice REAL,
-          discount INTEGER,
-          imageUrl TEXT,
-          isCampaign BOOLEAN,
-          source TEXT,
-          expiresAt TEXT,
-          createdAt TEXT,
-          category TEXT DEFAULT 'overig'
-        )
-      `, (err) => {
-        if (err) return reject(err)
-        console.log('✅ Veritabanı başlatıldı (SQLite aktif, ürünler kalıcı)')
-        resolve()
-      })
-    })
-  })
-}
-
-export function getProducts() {
-  return new Promise((resolve, reject) => {
-    db.all('SELECT * FROM products ORDER BY (imageUrl IS NOT NULL AND imageUrl != "") DESC, discount DESC', [], (err, rows) => {
-      if (err) return reject(err)
-      resolve(rows.map(r => ({ ...r, isCampaign: Boolean(r.isCampaign) })))
-    })
-  })
-}
-
-export function getProduct(id) {
-  return new Promise((resolve, reject) => {
-    db.get('SELECT * FROM products WHERE id = ?', [id], (err, row) => {
-      if (err) return reject(err)
-      if (!row) return resolve(null)
-      resolve({ ...row, isCampaign: Boolean(row.isCampaign) })
-    })
-  })
-}
-
-export function createProduct(product) {
-  return new Promise((resolve, reject) => {
-    db.run(
-      `INSERT INTO products (id, name, market, originalPrice, discountedPrice, discount, imageUrl, isCampaign, source, expiresAt, createdAt, category)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [product.id, product.name, product.market, product.originalPrice, product.discountedPrice, product.discount, product.imageUrl, product.isCampaign ? 1 : 0, product.source, product.expiresAt, product.createdAt, product.category || 'overig'],
-      function (err) {
-        if (err) return reject(err)
-        resolve(product)
-      }
+export async function initDatabase() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS products (
+      id TEXT PRIMARY KEY,
+      name TEXT,
+      market TEXT,
+      "originalPrice" REAL,
+      "discountedPrice" REAL,
+      discount INTEGER,
+      "imageUrl" TEXT,
+      "isCampaign" BOOLEAN,
+      source TEXT,
+      "expiresAt" TEXT,
+      "createdAt" TEXT,
+      category TEXT DEFAULT 'overig'
     )
-  })
+  `)
+  console.log('✅ PostgreSQL veritabanı başlatıldı')
 }
 
-export function updateProduct(id, product) {
-  return new Promise((resolve, reject) => {
-    db.run(
-      `UPDATE products SET name=?, market=?, originalPrice=?, discountedPrice=?, discount=?, imageUrl=?, isCampaign=?, source=?, expiresAt=? WHERE id=?`,
-      [product.name, product.market, product.originalPrice, product.discountedPrice, product.discount, product.imageUrl, product.isCampaign ? 1 : 0, product.source, product.expiresAt, id],
-      function (err) {
-        if (err) return reject(err)
-        getProduct(id).then(resolve).catch(reject)
-      }
-    )
-  })
+export async function getProducts() {
+  const { rows } = await pool.query(`
+    SELECT * FROM products
+    ORDER BY ("imageUrl" IS NOT NULL AND "imageUrl" != '') DESC, discount DESC
+  `)
+  return rows.map(r => ({ ...r, isCampaign: Boolean(r.isCampaign) }))
 }
 
-export function deleteProduct(id) {
-  return new Promise((resolve, reject) => {
-    db.run('DELETE FROM products WHERE id = ?', [id], function (err) {
-      if (err) return reject(err)
-      resolve()
-    })
-  })
+export async function getProduct(id) {
+  const { rows } = await pool.query('SELECT * FROM products WHERE id = $1', [id])
+  if (!rows[0]) return null
+  return { ...rows[0], isCampaign: Boolean(rows[0].isCampaign) }
 }
 
-export function updateProductImage(id, imageUrl) {
-  return new Promise((resolve, reject) => {
-    db.run('UPDATE products SET imageUrl = ? WHERE id = ?', [imageUrl, id], function (err) {
-      if (err) return reject(err)
-      resolve()
-    })
-  })
+export async function createProduct(product) {
+  await pool.query(
+    `INSERT INTO products (id, name, market, "originalPrice", "discountedPrice", discount, "imageUrl", "isCampaign", source, "expiresAt", "createdAt", category)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,
+    [product.id, product.name, product.market, product.originalPrice, product.discountedPrice, product.discount, product.imageUrl, product.isCampaign ? true : false, product.source, product.expiresAt, product.createdAt, product.category || 'overig']
+  )
+  return product
 }
 
-export function clearAllProducts() {
-  return new Promise((resolve, reject) => {
-    db.run('DELETE FROM products', [], function (err) {
-      if (err) return reject(err)
-      resolve()
-    })
-  })
+export async function updateProduct(id, product) {
+  await pool.query(
+    `UPDATE products SET name=$1, market=$2, "originalPrice"=$3, "discountedPrice"=$4, discount=$5, "imageUrl"=$6, "isCampaign"=$7, source=$8, "expiresAt"=$9 WHERE id=$10`,
+    [product.name, product.market, product.originalPrice, product.discountedPrice, product.discount, product.imageUrl, product.isCampaign ? true : false, product.source, product.expiresAt, id]
+  )
+  return getProduct(id)
+}
+
+export async function updateProductImage(id, imageUrl) {
+  await pool.query('UPDATE products SET "imageUrl" = $1 WHERE id = $2', [imageUrl, id])
+}
+
+export async function deleteProduct(id) {
+  await pool.query('DELETE FROM products WHERE id = $1', [id])
+}
+
+export async function clearAllProducts() {
+  await pool.query('DELETE FROM products')
 }
