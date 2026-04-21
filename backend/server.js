@@ -20,26 +20,7 @@ app.use(express.json())
 // Extracted screenshots
 app.use(express.static(path.join(__dirname, 'public')))
 
-// Production: Frontend build dosyalarını serve et
 const isProduction = process.env.NODE_ENV === 'production'
-if (isProduction) {
-  const frontendDist = path.join(__dirname, '..', 'frontend', 'dist')
-  // Hashed assets (JS/CSS) uzun süre cache'lenebilir
-  app.use('/assets', express.static(path.join(frontendDist, 'assets'), {
-    maxAge: '1y',
-    immutable: true,
-  }))
-  // index.html asla cache'lenmemeli — her zaman taze gelsin
-  app.use(express.static(frontendDist, {
-    setHeaders: (res, filePath) => {
-      if (filePath.endsWith('index.html')) {
-        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
-        res.setHeader('Pragma', 'no-cache')
-        res.setHeader('Expires', '0')
-      }
-    },
-  }))
-}
 
 // Hata yönetimi middleware'i
 const asyncHandler = (fn) => (req, res, next) => {
@@ -200,7 +181,23 @@ app.get('/health', (req, res) => {
 // ===== 404 Handler / SPA Fallback =====
 if (isProduction) {
   const frontendDist = path.join(__dirname, '..', 'frontend', 'dist')
+  // Hashed assets uzun süre cache'lenebilir
+  app.use('/assets', express.static(path.join(frontendDist, 'assets'), {
+    maxAge: '1y',
+    immutable: true,
+  }))
+  // Diğer statik dosyalar
+  app.use(express.static(frontendDist, {
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith('index.html')) {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
+      }
+    },
+    index: false,
+  }))
+  // SPA fallback — sadece /api olmayan route'lar için
   app.get('*', (req, res) => {
+    if (req.path.startsWith('/api/')) return res.status(404).json({ error: 'Not found' })
     res.sendFile(path.join(frontendDist, 'index.html'))
   })
 } else {
