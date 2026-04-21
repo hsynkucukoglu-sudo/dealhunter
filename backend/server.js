@@ -201,7 +201,7 @@ app.post('/api/scraper/run', asyncHandler(async (req, res) => {
 
 // ===== Health Check =====
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', message: '🚀 Backend çalışıyor' })
+  res.json({ status: 'ok', message: '🚀 Backend çalışıyor', version: '2026-04-21-v2' })
 })
 
 // ===== 404 Handler / SPA Fallback =====
