@@ -48,6 +48,28 @@ const asyncHandler = (fn) => (req, res, next) => {
 
 // ===== API Routes =====
 
+// GET /api/image-proxy?url=... - AH görsellerini proxy'le servis et
+app.get('/api/image-proxy', asyncHandler(async (req, res) => {
+  const { url } = req.query
+  if (!url || !url.startsWith('https://static.ah.nl/')) {
+    return res.status(400).json({ error: 'Geçersiz URL' })
+  }
+  const imgRes = await fetch(url, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+      'Referer': 'https://www.ah.nl/',
+      'Accept': 'image/webp,image/apng,image/*,*/*;q=0.8',
+    },
+    signal: AbortSignal.timeout(8000),
+  })
+  if (!imgRes.ok) return res.status(imgRes.status).send()
+  const contentType = imgRes.headers.get('content-type') || 'image/jpeg'
+  res.setHeader('Content-Type', contentType)
+  res.setHeader('Cache-Control', 'public, max-age=86400')
+  const buffer = await imgRes.arrayBuffer()
+  res.send(Buffer.from(buffer))
+}))
+
 let scraperRunning = false
 
 // GET /api/products - Tüm ürünleri getir

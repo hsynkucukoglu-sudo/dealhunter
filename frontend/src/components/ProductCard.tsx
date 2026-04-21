@@ -41,7 +41,11 @@ export function ProductCard({ product }: { product: Product }) {
       {/* Image */}
       <div className="aspect-square overflow-hidden relative" style={{ background: '#FAF6F0' }}>
         <img
-          src={product.imageUrl || '/icon-192x192.png'}
+          src={product.imageUrl
+            ? (product.imageUrl.startsWith('https://static.ah.nl/')
+                ? `/api/image-proxy?url=${encodeURIComponent(product.imageUrl)}`
+                : product.imageUrl)
+            : '/icon-192x192.png'}
           alt={product.name}
           loading="lazy"
           className="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-500"
