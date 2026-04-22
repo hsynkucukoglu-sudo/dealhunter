@@ -27,6 +27,7 @@ export async function createProduct(data) {
     source: data.source || 'Manuel Ekleme',
     expiresAt: data.expiresAt,
     createdAt: new Date().toISOString(),
+    category: data.category || 'overig',
   }
 
   await db.createProduct(product)
@@ -43,6 +44,10 @@ export async function clearAllProducts() {
 
 export async function updateProductImage(id, imageUrl) {
   return db.updateProductImage(id, imageUrl)
+}
+
+export async function updateProductCategory(id, category) {
+  return db.updateProductCategory(id, category)
 }
 
 export async function updateProduct(id, data) {

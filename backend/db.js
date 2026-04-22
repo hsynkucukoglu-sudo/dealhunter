@@ -62,6 +62,10 @@ export async function updateProductImage(id, imageUrl) {
   await pool.query('UPDATE products SET "imageUrl" = $1 WHERE id = $2', [imageUrl, id])
 }
 
+export async function updateProductCategory(id, category) {
+  await pool.query('UPDATE products SET category = $1 WHERE id = $2', [category, id])
+}
+
 export async function deleteProduct(id) {
   await pool.query('DELETE FROM products WHERE id = $1', [id])
 }
