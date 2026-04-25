@@ -26,14 +26,61 @@ export const CATEGORIES = [
   { id: 'overig', label: 'Overig', emoji: '📦' },
 ]
 
-export const MARKET_COLORS: Record<string, string> = {
-  'Albert Heijn': '#00A0E2',
-  'Dirk': '#C8102E',
-  'Jumbo': '#FFD700',
-  'Lidl': '#0050AA',
-  'Plus': '#00A651',
-  'Hoogvliet': '#E30613',
-}
+export const MARKETS = [
+  {
+    slug: 'albert-heijn',
+    name: 'Albert Heijn',
+    color: '#00A0E2',
+    description: 'Bekijk alle actuele Albert Heijn Bonus aanbiedingen. Vergelijk prijzen en bespaar op je boodschappen bij de grootste supermarkt van Nederland.',
+    keywords: 'albert heijn bonus, albert heijn aanbiedingen, AH bonus week, albert heijn folder',
+  },
+  {
+    slug: 'jumbo',
+    name: 'Jumbo',
+    color: '#FFD700',
+    description: 'Alle Jumbo aanbiedingen van deze week. Bekijk de Jumbo folder online en ontdek de beste deals op boodschappen.',
+    keywords: 'jumbo aanbiedingen, jumbo folder, jumbo deals, jumbo week aanbieding',
+  },
+  {
+    slug: 'lidl',
+    name: 'Lidl',
+    color: '#0050AA',
+    description: 'Bekijk de Lidl folder en alle actuele Lidl aanbiedingen. Goedkope boodschappen bij Lidl Nederland.',
+    keywords: 'lidl folder, lidl aanbiedingen, lidl deals, lidl nederland aanbieding',
+  },
+  {
+    slug: 'dirk',
+    name: 'Dirk',
+    color: '#C8102E',
+    description: 'Alle Dirk aanbiedingen en de actuele Dirk folder. Bespaar op boodschappen bij Dirk van den Broek.',
+    keywords: 'dirk aanbiedingen, dirk folder, dirk van den broek deals',
+  },
+  {
+    slug: 'aldi',
+    name: 'Aldi',
+    color: '#00205B',
+    description: 'Bekijk alle Aldi aanbiedingen van deze week. Goedkope boodschappen en aanbiedingen bij Aldi Nederland.',
+    keywords: 'aldi aanbiedingen, aldi folder, aldi deals, aldi nederland',
+  },
+  {
+    slug: 'plus',
+    name: 'Plus',
+    color: '#00A651',
+    description: 'Alle Plus supermarkt aanbiedingen van deze week. Bekijk de Plus folder en bespaar op je boodschappen.',
+    keywords: 'plus supermarkt aanbiedingen, plus folder, plus deals',
+  },
+  {
+    slug: 'hoogvliet',
+    name: 'Hoogvliet',
+    color: '#E30613',
+    description: 'Bekijk alle Hoogvliet aanbiedingen van deze week. Actuele folder en beste deals bij Hoogvliet supermarkt.',
+    keywords: 'hoogvliet aanbiedingen, hoogvliet folder, hoogvliet deals',
+  },
+]
+
+export const MARKET_COLORS: Record<string, string> = Object.fromEntries(
+  MARKETS.map(m => [m.name, m.color])
+)
 
 export function getMarketInitial(name: string): string {
   if (name === 'Albert Heijn') return 'AH'
