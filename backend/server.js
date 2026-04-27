@@ -314,6 +314,19 @@ if (isProduction) {
     "description": "Wekelijkse supermarkt aanbiedingen van " + markets,
     "potentialAction": { "@type": "SearchAction", "target": "https://dealhunter4u.nl/?q={search_term_string}", "query-input": "required name=search_term_string" }
   })}</script>
+  <script type="application/ld+json">${JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "DealHunter",
+    "url": "https://dealhunter4u.nl",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://dealhunter4u.nl/icon-512x512.png",
+      "width": 512,
+      "height": 512
+    },
+    "sameAs": ["https://dealhunter4u.nl"]
+  })}</script>
   <style>
     body { font-family: sans-serif; max-width: 1200px; margin: 0 auto; padding: 1rem; background: #F5EDE3; color: #1A1A1A; }
     h1 { color: #E33D26; }
