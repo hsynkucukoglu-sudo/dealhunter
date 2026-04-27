@@ -246,9 +246,9 @@ async function scrapeLidl() {
   }
 }
 
-// ─── ALBERT HEIJN — GraphQL bonusSegments ────────────────────────────────────
+// ─── ALBERT HEIJN — REST product search API (fiyat + görsel dahil) ───────────
 async function scrapeAlbertHeijn() {
-  console.log('🏪 [Albert Heijn] api.ah.nl/graphql bonusSegments...')
+  console.log('🏪 [Albert Heijn] api.ah.nl product search bonus...')
   try {
     const tokenRes = await fetch('https://api.ah.nl/mobile-auth/v1/auth/token/anonymous', {
       method: 'POST',
@@ -259,82 +259,56 @@ async function scrapeAlbertHeijn() {
     const { access_token } = await tokenRes.json()
     if (!access_token) { console.log('  [AH] token alınamadı'); return [] }
 
-    const gqlHeaders = {
-      'Authorization': `Bearer ${access_token}`,
-      'Content-Type': 'application/json',
+    const h = { 'Authorization': `Bearer ${access_token}`, 'x-application': 'AHWEBSHOP' }
+
+    // Tüm bonus ürünleri sayfalı çek (genellikle ~9 sayfa × 30)
+    const all = []
+    for (let page = 0; page < 20; page++) {
+      const r = await fetch(
+        `https://api.ah.nl/mobile-services/product/search/v2?query=bonus&page=${page}&size=30`,
+        { headers: h, signal: AbortSignal.timeout(10000) }
+      )
+      if (!r.ok) break
+      const json = await r.json()
+      const prods = json.products || []
+      if (!prods.length) break
+      all.push(...prods)
+      if (all.length >= (json.page?.totalElements ?? 0)) break
     }
 
-    const segRes = await fetch('https://api.ah.nl/graphql', {
-      method: 'POST',
-      headers: gqlHeaders,
-      body: JSON.stringify({
-        query: `{ bonusSegments { products { id title price { now { amount } was { amount } } } } }`,
-      }),
-      signal: AbortSignal.timeout(15000),
-    })
-    const segJson = await segRes.json()
-    if (!segJson.data?.bonusSegments) {
-      console.log('  [AH] bonusSegments boş:', segJson.errors?.[0]?.message)
-      return []
-    }
+    console.log(`  [AH] API'den toplam: ${all.length} ürün`)
 
     const seenIds = new Set()
     const candidates = []
-    for (const seg of segJson.data.bonusSegments) {
-      for (const p of (seg.products || [])) {
-        if (seenIds.has(p.id)) continue
-        seenIds.add(p.id)
-        const now = p.price?.now?.amount
-        const was = p.price?.was?.amount
-        if (!now || !was || now >= was || !p.title) continue
-        candidates.push({ id: p.id, name: p.title, discountedPrice: now, originalPrice: was })
-      }
+    for (const p of all) {
+      if (seenIds.has(p.webshopId)) continue
+      seenIds.add(p.webshopId)
+      const now = p.currentPrice
+      const was = p.priceBeforeBonus
+      if (!now || !was || now >= was || !p.title) continue
+      const imageUrl = p.images?.find(i => i.width === 400)?.url
+        ?? p.images?.[0]?.url
+        ?? null
+      candidates.push({ name: p.title, discountedPrice: now, originalPrice: was, imageUrl })
     }
+
     console.log(`  [AH] İndirimli aday: ${candidates.length}`)
     if (!candidates.length) return []
 
-    // En yüksek indirim oranına göre sırala, ilk 100'ü al
     candidates.sort((a, b) => (a.discountedPrice / a.originalPrice) - (b.discountedPrice / b.originalPrice))
     const top = candidates.slice(0, 100)
 
-    // Ürün sayfasından og:image URL'ini çek (10'lu batch, 300ms aralık)
-    const imageMap = {}
-    const AH_PAGE_HEADERS = {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-      'Accept-Language': 'nl-NL,nl;q=0.9',
-    }
-    const BATCH = 10
-    for (let i = 0; i < top.length; i += BATCH) {
-      await Promise.all(top.slice(i, i + BATCH).map(async p => {
-        try {
-          const r = await fetch(`https://www.ah.nl/producten/product/wi${p.id}`, {
-            headers: AH_PAGE_HEADERS, redirect: 'follow', signal: AbortSignal.timeout(10000),
-          })
-          if (!r.ok) return
-          const html = await r.text()
-          const og = html.match(/<meta[^>]+property="og:image"[^>]+content="([^"]+)"/)
-          if (og?.[1]) {
-            // 400x400 rendition iste
-            imageMap[p.id] = og[1].replace('200x200_JPG_Q85', '400x400_JPG_Q85').replace(/&amp;/g, '&')
-          }
-        } catch {}
-      }))
-      if (i + BATCH < top.length) await new Promise(r => setTimeout(r, 300))
-    }
-
-    const results = top.map(p => ({
+    console.log(`  ✅ Albert Heijn: ${top.length} ürün (${top.filter(p => p.imageUrl).length} görsel)`)
+    return top.map(p => ({
       name: p.name,
       market: 'Albert Heijn',
       originalPrice: p.originalPrice,
       discountedPrice: p.discountedPrice,
-      imageUrl: imageMap[p.id] || null,
+      imageUrl: p.imageUrl,
       isCampaign: true,
       source: 'ah.nl/bonus',
       expiresAt: EXPIRES_AT,
     }))
-
-    console.log(`  ✅ Albert Heijn: ${results.length} ürün (${Object.keys(imageMap).length} görsel)`)
-    return results
   } catch (e) {
     console.error('  ❌ Albert Heijn:', e.message)
     return []
