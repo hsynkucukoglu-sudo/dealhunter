@@ -289,8 +289,9 @@ async function scrapeAlbertHeijn() {
     const discountedIds = Object.keys(discountedMap).map(Number)
     if (!discountedIds.length) return []
 
-    // 2. Adım: isimleri ayrı sorguda çek (20'li batch)
+    // 2. Adım: isim + görsel ayrı sorguda çek (20'li batch)
     const titleMap = {}
+    const imageMap = {}
     const ID_BATCH = 20
     for (let i = 0; i < discountedIds.length; i += ID_BATCH) {
       const batch = discountedIds.slice(i, i + ID_BATCH)
@@ -299,11 +300,13 @@ async function scrapeAlbertHeijn() {
         const r = await fetch('https://api.ah.nl/graphql', {
           method: 'POST',
           headers: gqlHeaders,
-          body: JSON.stringify({ query: `{ products(productsInput: [${input}]) { id title } }` }),
+          body: JSON.stringify({ query: `{ products(productsInput: [${input}]) { id title images { url } } }` }),
         })
         const { data: pd } = await r.json()
         for (const p of (pd?.products || [])) {
           if (p.title) titleMap[p.id] = p.title
+          const img = p.images?.[0]?.url
+          if (img) imageMap[p.id] = img
         }
       } catch {}
     }
@@ -315,42 +318,12 @@ async function scrapeAlbertHeijn() {
     // En yüksek indirim oranına göre sırala
     candidates.sort((a, b) => (a.discountedPrice / a.originalPrice) - (b.discountedPrice / b.originalPrice))
 
-    // Görselleri 5'li batch'ler halinde çek (ilk 80 ürün), batch arası 1s bekle
-    const imageMap = {}
-    const withImage = candidates.slice(0, 80)
-    const BATCH = 5
-    const AH_IMG_HEADERS = {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-      'Accept-Language': 'nl-NL,nl;q=0.9',
-      'Accept-Encoding': 'gzip, deflate, br',
-      'Connection': 'keep-alive',
-    }
-    for (let i = 0; i < withImage.length; i += BATCH) {
-      const batch = withImage.slice(i, i + BATCH)
-      await Promise.all(batch.map(async p => {
-        try {
-          const r = await fetch(`https://www.ah.nl/producten/product/wi${p.id}`, {
-            headers: AH_IMG_HEADERS,
-            signal: AbortSignal.timeout(8000),
-          })
-          if (!r.ok) return
-          const html = await r.text()
-          const jsonLd = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)
-          if (!jsonLd) return
-          const jd = JSON.parse(jsonLd[1])
-          if (jd.image) imageMap[p.id] = jd.image
-        } catch {}
-      }))
-      if (i + BATCH < withImage.length) await new Promise(r => setTimeout(r, 1000))
-    }
-
     const results = candidates.map(p => ({
       name: p.name,
       market: 'Albert Heijn',
       originalPrice: p.originalPrice,
       discountedPrice: p.discountedPrice,
-      imageUrl: `ah-product-id:${p.id}`,
+      imageUrl: imageMap[p.id] || null,
       isCampaign: true,
       source: 'ah.nl/bonus',
       expiresAt: EXPIRES_AT,
