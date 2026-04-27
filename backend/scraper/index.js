@@ -297,19 +297,43 @@ async function scrapeAlbertHeijn() {
     candidates.sort((a, b) => (a.discountedPrice / a.originalPrice) - (b.discountedPrice / b.originalPrice))
     const top = candidates.slice(0, 100)
 
-    // Görsel: proxy endpoint üzerinden çekilecek (ah-product-id:{id})
+    // Ürün sayfasından og:image URL'ini çek (10'lu batch, 300ms aralık)
+    const imageMap = {}
+    const AH_PAGE_HEADERS = {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+      'Accept-Language': 'nl-NL,nl;q=0.9',
+    }
+    const BATCH = 10
+    for (let i = 0; i < top.length; i += BATCH) {
+      await Promise.all(top.slice(i, i + BATCH).map(async p => {
+        try {
+          const r = await fetch(`https://www.ah.nl/producten/product/wi${p.id}`, {
+            headers: AH_PAGE_HEADERS, redirect: 'follow', signal: AbortSignal.timeout(10000),
+          })
+          if (!r.ok) return
+          const html = await r.text()
+          const og = html.match(/<meta[^>]+property="og:image"[^>]+content="([^"]+)"/)
+          if (og?.[1]) {
+            // 400x400 rendition iste
+            imageMap[p.id] = og[1].replace('200x200_JPG_Q85', '400x400_JPG_Q85').replace(/&amp;/g, '&')
+          }
+        } catch {}
+      }))
+      if (i + BATCH < top.length) await new Promise(r => setTimeout(r, 300))
+    }
+
     const results = top.map(p => ({
       name: p.name,
       market: 'Albert Heijn',
       originalPrice: p.originalPrice,
       discountedPrice: p.discountedPrice,
-      imageUrl: `ah-product-id:${p.id}`,
+      imageUrl: imageMap[p.id] || null,
       isCampaign: true,
       source: 'ah.nl/bonus',
       expiresAt: EXPIRES_AT,
     }))
 
-    console.log(`  ✅ Albert Heijn: ${results.length} ürün`)
+    console.log(`  ✅ Albert Heijn: ${results.length} ürün (${Object.keys(imageMap).length} görsel)`)
     return results
   } catch (e) {
     console.error('  ❌ Albert Heijn:', e.message)
