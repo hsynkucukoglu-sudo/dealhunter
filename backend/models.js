@@ -11,9 +11,12 @@ export async function getProduct(id) {
 
 export async function createProduct(data) {
   const id = uuidv4()
-  const originalPrice = parseFloat(data.originalPrice)
-  const discountedPrice = parseFloat(data.discountedPrice)
-  const discount = Math.round(((originalPrice - discountedPrice) / originalPrice) * 100)
+  const originalPrice = parseFloat(data.originalPrice) || 0
+  const discountedPrice = parseFloat(data.discountedPrice) || 0
+  if (discountedPrice <= 0) throw new Error(`Geçersiz fiyat: ${data.name} disc=${data.discountedPrice}`)
+  const discount = originalPrice > 0
+    ? Math.round(((originalPrice - discountedPrice) / originalPrice) * 100)
+    : 0
 
   const product = {
     id,
