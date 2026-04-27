@@ -38,33 +38,51 @@ app.get('/api/ah-image/:id', asyncHandler(async (req, res) => {
   const { id } = req.params
   if (!id || !/^\d+$/.test(id)) return res.status(400).send()
 
-  // Ürün sayfasından JSON-LD ile görsel URL'si bul
+  const AH_HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'Accept-Language': 'nl-NL,nl;q=0.9',
+    'Referer': 'https://www.ah.nl/',
+  }
+
+  // 307 redirect'i takip et
   const pageRes = await fetch(`https://www.ah.nl/producten/product/wi${id}`, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-      'Accept': 'text/html,application/xhtml+xml',
-      'Accept-Language': 'nl-NL,nl;q=0.9',
-      'Referer': 'https://www.ah.nl/',
-    },
-    signal: AbortSignal.timeout(8000),
+    headers: AH_HEADERS,
+    redirect: 'follow',
+    signal: AbortSignal.timeout(10000),
   })
   if (!pageRes.ok) return res.status(404).send()
 
   const html = await pageRes.text()
-  const jsonLd = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)
-  if (!jsonLd) return res.status(404).send()
 
-  const jd = JSON.parse(jsonLd[1])
-  const imageUrl = jd.image
+  // Tüm JSON-LD bloklarını dene
+  const jsonLdBlocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+  let imageUrl = null
+  for (const match of jsonLdBlocks) {
+    try {
+      const jd = JSON.parse(match[1])
+      if (jd.image) { imageUrl = jd.image; break }
+      if (Array.isArray(jd['@graph'])) {
+        for (const node of jd['@graph']) {
+          if (node.image) { imageUrl = node.image; break }
+        }
+      }
+    } catch {}
+    if (imageUrl) break
+  }
+
+  // JSON-LD bulamazsa og:image'a bak
+  if (!imageUrl) {
+    const og = html.match(/<meta property="og:image" content="([^"]+)"/)
+    if (og) imageUrl = og[1]
+  }
+
   if (!imageUrl) return res.status(404).send()
 
   // Görseli çek ve ilet
   const imgRes = await fetch(imageUrl, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-      'Referer': 'https://www.ah.nl/',
-    },
-    signal: AbortSignal.timeout(8000),
+    headers: AH_HEADERS,
+    signal: AbortSignal.timeout(10000),
   })
   if (!imgRes.ok) return res.status(404).send()
 
