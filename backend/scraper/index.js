@@ -271,7 +271,9 @@ async function scrapeAlbertHeijn() {
         query: `{ bonusSegments { products { id title price { now { amount } was { amount } } } } }`,
       }),
     })
-    const { data: segData } = await segRes.json()
+    const segJson = await segRes.json()
+    const segData = segJson.data
+    console.log(`  [AH] bonusSegments yanıt: ${segData?.bonusSegments?.length ?? 'null'} segment, errors: ${JSON.stringify(segJson.errors?.[0]?.message)}`)
     if (!segData?.bonusSegments) return []
 
     const seenIds = new Set()
@@ -285,6 +287,7 @@ async function scrapeAlbertHeijn() {
         candidates.push({ id: p.id, name: p.title, discountedPrice: now, originalPrice: was })
       }
     }
+    console.log(`  [AH] Toplam indirimli aday: ${candidates.length}`)
     if (!candidates.length) return []
 
     // En yüksek indirim oranına göre sırala, ilk 80'i al
