@@ -246,7 +246,7 @@ async function scrapeLidl() {
   }
 }
 
-// ─── ALBERT HEIJN — GraphQL bonusSegments + sayfa görsel fetch ───────────────
+// ─── ALBERT HEIJN — GraphQL bonusSegments ────────────────────────────────────
 async function scrapeAlbertHeijn() {
   console.log('🏪 [Albert Heijn] api.ah.nl/graphql bonusSegments...')
   try {
@@ -254,84 +254,62 @@ async function scrapeAlbertHeijn() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ clientId: 'appie' }),
+      signal: AbortSignal.timeout(10000),
     })
     const { access_token } = await tokenRes.json()
-    if (!access_token) return []
+    if (!access_token) { console.log('  [AH] token alınamadı'); return [] }
 
     const gqlHeaders = {
       'Authorization': `Bearer ${access_token}`,
       'Content-Type': 'application/json',
     }
 
-    // bonusSegments'ten indirimli ürünleri çek
     const segRes = await fetch('https://api.ah.nl/graphql', {
       method: 'POST',
       headers: gqlHeaders,
       body: JSON.stringify({
         query: `{ bonusSegments { products { id title price { now { amount } was { amount } } } } }`,
       }),
+      signal: AbortSignal.timeout(15000),
     })
     const segJson = await segRes.json()
-    const segData = segJson.data
-    console.log(`  [AH] bonusSegments yanıt: ${segData?.bonusSegments?.length ?? 'null'} segment, errors: ${JSON.stringify(segJson.errors?.[0]?.message)}`)
-    if (!segData?.bonusSegments) return []
+    if (!segJson.data?.bonusSegments) {
+      console.log('  [AH] bonusSegments boş:', segJson.errors?.[0]?.message)
+      return []
+    }
 
     const seenIds = new Set()
     const candidates = []
-    for (const seg of segData.bonusSegments) {
+    for (const seg of segJson.data.bonusSegments) {
       for (const p of (seg.products || [])) {
+        if (seenIds.has(p.id)) continue
+        seenIds.add(p.id)
         const now = p.price?.now?.amount
         const was = p.price?.was?.amount
-        if (!now || !was || now >= was || !p.title || seenIds.has(p.id)) continue
-        seenIds.add(p.id)
+        if (!now || !was || now >= was || !p.title) continue
         candidates.push({ id: p.id, name: p.title, discountedPrice: now, originalPrice: was })
       }
     }
-    console.log(`  [AH] Toplam indirimli aday: ${candidates.length}`)
+    console.log(`  [AH] İndirimli aday: ${candidates.length}`)
     if (!candidates.length) return []
 
-    // En yüksek indirim oranına göre sırala, ilk 80'i al
+    // En yüksek indirim oranına göre sırala, ilk 100'ü al
     candidates.sort((a, b) => (a.discountedPrice / a.originalPrice) - (b.discountedPrice / b.originalPrice))
-    const top = candidates.slice(0, 80)
+    const top = candidates.slice(0, 100)
 
-    // Ürün sayfalarından görsel URL'si çek (5'li batch)
-    const imageMap = {}
-    const PAGE_HEADERS = {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-      'Accept-Language': 'nl-NL,nl;q=0.9',
-    }
-    const BATCH = 5
-    for (let i = 0; i < top.length; i += BATCH) {
-      const batch = top.slice(i, i + BATCH)
-      await Promise.all(batch.map(async p => {
-        try {
-          const r = await fetch(`https://www.ah.nl/producten/product/wi${p.id}`, {
-            headers: PAGE_HEADERS,
-            signal: AbortSignal.timeout(8000),
-          })
-          if (!r.ok) return
-          const html = await r.text()
-          const jsonLd = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)
-          if (!jsonLd) return
-          const jd = JSON.parse(jsonLd[1])
-          if (jd.image) imageMap[p.id] = jd.image
-        } catch {}
-      }))
-      if (i + BATCH < top.length) await new Promise(r => setTimeout(r, 500))
-    }
-
+    // Görsel: proxy endpoint üzerinden çekilecek (ah-product-id:{id})
     const results = top.map(p => ({
       name: p.name,
       market: 'Albert Heijn',
       originalPrice: p.originalPrice,
       discountedPrice: p.discountedPrice,
-      imageUrl: imageMap[p.id] || null,
+      imageUrl: `ah-product-id:${p.id}`,
       isCampaign: true,
       source: 'ah.nl/bonus',
       expiresAt: EXPIRES_AT,
     }))
 
-    console.log(`  ✅ Albert Heijn: ${results.length} ürün (${Object.keys(imageMap).length} görsel)`)
+    console.log(`  ✅ Albert Heijn: ${results.length} ürün`)
     return results
   } catch (e) {
     console.error('  ❌ Albert Heijn:', e.message)
