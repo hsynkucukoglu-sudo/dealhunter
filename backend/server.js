@@ -178,11 +178,18 @@ async function runScraperJob() {
   if (newProducts && newProducts.length > 0) {
     await clearAllProducts()
 
-    // Bulunan ürünleri veritabanına ekle
+    // Bulunan ürünleri veritabanına ekle (NaN fiyatlıları atla)
     const createdProducts = []
-    for(const p of newProducts) {
-       const saved = await createProduct({ ...p, category: categorize(p.name) })
-       createdProducts.push(saved)
+    for (const p of newProducts) {
+      const orig = parseFloat(p.originalPrice)
+      const disc = parseFloat(p.discountedPrice)
+      if (isNaN(orig) || isNaN(disc) || disc <= 0) continue
+      try {
+        const saved = await createProduct({ ...p, originalPrice: orig, discountedPrice: disc, category: categorize(p.name) })
+        createdProducts.push(saved)
+      } catch (e) {
+        console.error(`  ⚠️ Ürün kaydedilemedi (${p.name}):`, e.message)
+      }
     }
 
     console.log(`⏰ Görev Tamamlandı. ${createdProducts.length} yeni ürün eklendi.`)
