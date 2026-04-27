@@ -246,9 +246,9 @@ async function scrapeLidl() {
   }
 }
 
-// ─── ALBERT HEIJN — GraphQL API ──────────────────────────────────────────────
+// ─── ALBERT HEIJN — GraphQL bonusSegments + sayfa görsel fetch ───────────────
 async function scrapeAlbertHeijn() {
-  console.log('🏪 [Albert Heijn] api.ah.nl/graphql...')
+  console.log('🏪 [Albert Heijn] api.ah.nl/graphql bonusSegments...')
   try {
     const tokenRes = await fetch('https://api.ah.nl/mobile-auth/v1/auth/token/anonymous', {
       method: 'POST',
@@ -263,62 +263,61 @@ async function scrapeAlbertHeijn() {
       'Content-Type': 'application/json',
     }
 
-    // 1. Adım: bonus fiyatlarını çek (title burada null geliyor)
-    const promosRes = await fetch('https://api.ah.nl/graphql', {
+    // bonusSegments'ten indirimli ürünleri çek
+    const segRes = await fetch('https://api.ah.nl/graphql', {
       method: 'POST',
       headers: gqlHeaders,
       body: JSON.stringify({
-        query: `{ bonusPromotions { products { id price { now { amount } was { amount } } } } }`,
+        query: `{ bonusSegments { products { id title price { now { amount } was { amount } } } } }`,
       }),
     })
-    const { data: promoData } = await promosRes.json()
-    if (!promoData?.bonusPromotions) return []
+    const { data: segData } = await segRes.json()
+    if (!segData?.bonusSegments) return []
 
-    // İndirimli ürün ID'lerini ve fiyatlarını topla
     const seenIds = new Set()
-    const discountedMap = {}
-    for (const promo of promoData.bonusPromotions) {
-      for (const p of (promo.products || [])) {
+    const candidates = []
+    for (const seg of segData.bonusSegments) {
+      for (const p of (seg.products || [])) {
         const now = p.price?.now?.amount
         const was = p.price?.was?.amount
-        if (!now || !was || now >= was || seenIds.has(p.id)) continue
+        if (!now || !was || now >= was || !p.title || seenIds.has(p.id)) continue
         seenIds.add(p.id)
-        discountedMap[p.id] = { discountedPrice: now, originalPrice: was }
+        candidates.push({ id: p.id, name: p.title, discountedPrice: now, originalPrice: was })
       }
     }
-    const discountedIds = Object.keys(discountedMap).map(Number)
-    if (!discountedIds.length) return []
+    if (!candidates.length) return []
 
-    // 2. Adım: isim + görsel ayrı sorguda çek (20'li batch)
-    const titleMap = {}
+    // En yüksek indirim oranına göre sırala, ilk 80'i al
+    candidates.sort((a, b) => (a.discountedPrice / a.originalPrice) - (b.discountedPrice / b.originalPrice))
+    const top = candidates.slice(0, 80)
+
+    // Ürün sayfalarından görsel URL'si çek (5'li batch)
     const imageMap = {}
-    const ID_BATCH = 20
-    for (let i = 0; i < discountedIds.length; i += ID_BATCH) {
-      const batch = discountedIds.slice(i, i + ID_BATCH)
-      const input = batch.map(id => `{id: ${id}}`).join(', ')
-      try {
-        const r = await fetch('https://api.ah.nl/graphql', {
-          method: 'POST',
-          headers: gqlHeaders,
-          body: JSON.stringify({ query: `{ products(productsInput: [${input}]) { id title images { url } } }` }),
-        })
-        const { data: pd } = await r.json()
-        for (const p of (pd?.products || [])) {
-          if (p.title) titleMap[p.id] = p.title
-          const img = p.images?.[0]?.url
-          if (img) imageMap[p.id] = img
-        }
-      } catch {}
+    const PAGE_HEADERS = {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+      'Accept-Language': 'nl-NL,nl;q=0.9',
+    }
+    const BATCH = 5
+    for (let i = 0; i < top.length; i += BATCH) {
+      const batch = top.slice(i, i + BATCH)
+      await Promise.all(batch.map(async p => {
+        try {
+          const r = await fetch(`https://www.ah.nl/producten/product/wi${p.id}`, {
+            headers: PAGE_HEADERS,
+            signal: AbortSignal.timeout(8000),
+          })
+          if (!r.ok) return
+          const html = await r.text()
+          const jsonLd = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)
+          if (!jsonLd) return
+          const jd = JSON.parse(jsonLd[1])
+          if (jd.image) imageMap[p.id] = jd.image
+        } catch {}
+      }))
+      if (i + BATCH < top.length) await new Promise(r => setTimeout(r, 500))
     }
 
-    const candidates = discountedIds
-      .filter(id => titleMap[id])
-      .map(id => ({ id, name: titleMap[id], ...discountedMap[id] }))
-
-    // En yüksek indirim oranına göre sırala
-    candidates.sort((a, b) => (a.discountedPrice / a.originalPrice) - (b.discountedPrice / b.originalPrice))
-
-    const results = candidates.map(p => ({
+    const results = top.map(p => ({
       name: p.name,
       market: 'Albert Heijn',
       originalPrice: p.originalPrice,
