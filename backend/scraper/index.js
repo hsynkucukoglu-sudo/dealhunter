@@ -246,9 +246,89 @@ async function scrapeLidl() {
   }
 }
 
-// ─── ALBERT HEIJN — REST product search API (fiyat + görsel dahil) ───────────
+// Promosyon mekanizmasından efektif indirim yüzdesi ve fiyatları hesapla
+function calcAhPromo(p) {
+  const mech = (p.bonusMechanism || '').trim()
+  const label = p.discountLabels?.[0]
+  const unitPrice = p.priceBeforeBonus || p.currentPrice
+
+  if (!unitPrice || !p.title) return null
+
+  // Düz fiyat indirimi: currentPrice < priceBeforeBonus
+  if (p.currentPrice && p.priceBeforeBonus && p.currentPrice < p.priceBeforeBonus) {
+    return {
+      discountedPrice: p.currentPrice,
+      originalPrice: p.priceBeforeBonus,
+      promoLabel: mech || label?.defaultDescription || null,
+    }
+  }
+
+  // 1+1 gratis → %50 efektif indirim
+  if (/^1\s*\+\s*1\s*gratis$/i.test(mech) || label?.code === 'DISCOUNT_ONE_PLUS_ONE_FREE') {
+    return { discountedPrice: +(unitPrice * 0.5).toFixed(2), originalPrice: unitPrice, promoLabel: '1+1 gratis' }
+  }
+
+  // 2+1 gratis → %33 efektif indirim
+  if (/^2\s*\+\s*1\s*gratis$/i.test(mech)) {
+    return { discountedPrice: +(unitPrice * 0.667).toFixed(2), originalPrice: unitPrice, promoLabel: '2+1 gratis' }
+  }
+
+  // 2+2 gratis → %50 efektif indirim
+  if (/^2\s*\+\s*2\s*gratis$/i.test(mech)) {
+    return { discountedPrice: +(unitPrice * 0.5).toFixed(2), originalPrice: unitPrice, promoLabel: '2+2 gratis' }
+  }
+
+  // 2e halve prijs → %25 efektif indirim
+  if (/2e\s*halve\s*prijs/i.test(mech) || label?.code === 'DISCOUNT_SECOND_HALF_PRICE') {
+    return { discountedPrice: +(unitPrice * 0.75).toFixed(2), originalPrice: unitPrice, promoLabel: '2e halve prijs' }
+  }
+
+  // X voor Y.YY (bijv. "2 voor 5.00", "3 voor 5.99")
+  const xForY = mech.match(/^(\d+)\s+voor\s+([\d.,]+)/i)
+  if (xForY) {
+    const count = parseInt(xForY[1])
+    const bundlePrice = parseFloat(xForY[2].replace(',', '.'))
+    const effectiveUnit = +(bundlePrice / count).toFixed(2)
+    if (effectiveUnit < unitPrice) {
+      return { discountedPrice: effectiveUnit, originalPrice: unitPrice, promoLabel: mech }
+    }
+  }
+
+  // X voor Y.YY (DISCOUNT_X_FOR_Y label)
+  if (label?.code === 'DISCOUNT_X_FOR_Y' && label.count && label.price) {
+    const effectiveUnit = +(label.price / label.count).toFixed(2)
+    if (effectiveUnit < unitPrice) {
+      return { discountedPrice: effectiveUnit, originalPrice: unitPrice, promoLabel: label.defaultDescription }
+    }
+  }
+
+  // VOOR X.XX (vaste prijs promosyon)
+  const voorPrice = mech.match(/^(?:\d+\s+)?VOOR\s+([\d.,]+)/i)
+  if (voorPrice) {
+    const promo = parseFloat(voorPrice[1].replace(',', '.'))
+    if (promo < unitPrice) {
+      return { discountedPrice: promo, originalPrice: unitPrice, promoLabel: mech }
+    }
+  }
+
+  // % indirim
+  if (label?.code === 'DISCOUNT_PERCENTAGE' && label.percentage) {
+    const disc = +(unitPrice * (1 - label.percentage / 100)).toFixed(2)
+    return { discountedPrice: disc, originalPrice: unitPrice, promoLabel: label.defaultDescription }
+  }
+  const pctMatch = mech.match(/^(\d+)%\s*(korting|volume\s*voordeel)/i)
+  if (pctMatch) {
+    const pct = parseInt(pctMatch[1])
+    const disc = +(unitPrice * (1 - pct / 100)).toFixed(2)
+    return { discountedPrice: disc, originalPrice: unitPrice, promoLabel: mech }
+  }
+
+  return null
+}
+
+// ─── ALBERT HEIJN — Tüm promosyon tipleri (1+1, halve prijs, X voor Y, %) ───
 async function scrapeAlbertHeijn() {
-  console.log('🏪 [Albert Heijn] api.ah.nl product search bonus...')
+  console.log('🏪 [Albert Heijn] Tüm bonus katalogu taranıyor...')
   try {
     const tokenRes = await fetch('https://api.ah.nl/mobile-auth/v1/auth/token/anonymous', {
       method: 'POST',
@@ -261,44 +341,45 @@ async function scrapeAlbertHeijn() {
 
     const h = { 'Authorization': `Bearer ${access_token}`, 'x-application': 'AHWEBSHOP' }
 
-    // Tüm bonus ürünleri sayfalı çek (genellikle ~9 sayfa × 30)
-    const all = []
-    for (let page = 0; page < 20; page++) {
+    // webshopIds=1 ile tüm bonus kataloğunu çek (334 sayfa ≈ 10000 ürün)
+    // İlk 100 sayfada tarama yap (~3000 ürün) — zaten tekrarlar çok
+    const seenIds = new Set()
+    const candidates = []
+    for (let page = 0; page < 100; page++) {
       const r = await fetch(
-        `https://api.ah.nl/mobile-services/product/search/v2?query=bonus&page=${page}&size=30`,
+        `https://api.ah.nl/mobile-services/product/search/v2?webshopIds=1&page=${page}&size=30`,
         { headers: h, signal: AbortSignal.timeout(10000) }
       )
       if (!r.ok) break
       const json = await r.json()
       const prods = json.products || []
       if (!prods.length) break
-      all.push(...prods)
-      if (all.length >= (json.page?.totalElements ?? 0)) break
+
+      for (const p of prods) {
+        if (seenIds.has(p.webshopId) || !p.title) continue
+        seenIds.add(p.webshopId)
+
+        const promo = calcAhPromo(p)
+        if (!promo) continue
+
+        const imageUrl = p.images?.find(i => i.width === 400)?.url ?? p.images?.[0]?.url ?? null
+        candidates.push({ ...promo, name: p.title, imageUrl })
+      }
     }
 
-    console.log(`  [AH] API'den toplam: ${all.length} ürün`)
-
-    const seenIds = new Set()
-    const candidates = []
-    for (const p of all) {
-      if (seenIds.has(p.webshopId)) continue
-      seenIds.add(p.webshopId)
-      const now = p.currentPrice
-      const was = p.priceBeforeBonus
-      if (!now || !was || now >= was || !p.title) continue
-      const imageUrl = p.images?.find(i => i.width === 400)?.url
-        ?? p.images?.[0]?.url
-        ?? null
-      candidates.push({ name: p.title, discountedPrice: now, originalPrice: was, imageUrl })
-    }
-
-    console.log(`  [AH] İndirimli aday: ${candidates.length}`)
+    console.log(`  [AH] Taranan: ${seenIds.size} tekil ürün | Promosyonlu: ${candidates.length}`)
     if (!candidates.length) return []
 
+    // En yüksek indirim oranına göre sırala, ilk 150 al
     candidates.sort((a, b) => (a.discountedPrice / a.originalPrice) - (b.discountedPrice / b.originalPrice))
-    const top = candidates.slice(0, 100)
+    const top = candidates.slice(0, 150)
 
+    // Promosyon tipi dağılımı
+    const byLabel = {}
+    for (const c of top) byLabel[c.promoLabel || 'fiyat indirimi'] = (byLabel[c.promoLabel || 'fiyat indirimi'] || 0) + 1
+    console.log('  [AH] Promosyon dağılımı:', JSON.stringify(byLabel))
     console.log(`  ✅ Albert Heijn: ${top.length} ürün (${top.filter(p => p.imageUrl).length} görsel)`)
+
     return top.map(p => ({
       name: p.name,
       market: 'Albert Heijn',
@@ -306,7 +387,7 @@ async function scrapeAlbertHeijn() {
       discountedPrice: p.discountedPrice,
       imageUrl: p.imageUrl,
       isCampaign: true,
-      source: 'ah.nl/bonus',
+      source: p.promoLabel ? `ah.nl/bonus - ${p.promoLabel}` : 'ah.nl/bonus',
       expiresAt: EXPIRES_AT,
     }))
   } catch (e) {

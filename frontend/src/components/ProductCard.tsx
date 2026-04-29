@@ -20,10 +20,39 @@ export function ProductCard({ product }: { product: Product }) {
   const hasValidDiscount = product.originalPrice > product.discountedPrice && product.originalPrice > 0
   const discountPercent = hasValidDiscount ? (product.discount || Math.round(((product.originalPrice - product.discountedPrice) / product.originalPrice) * 100)) : 0
 
+  // 1+1, 2+1 gibi promosyon etiketi — source alanından çıkar
+  const promoLabel = (() => {
+    if (!product.source) return null
+    const match = product.source.match(/ah\.nl\/bonus\s*-\s*(.+)/)
+    if (!match) return null
+    const lbl = match[1].trim()
+    // Sadece özel mekanizmaları badge yap, sıradan yüzde indirimleri zaten badge'de
+    if (/gratis|halve\s*prijs|voor\s+\d|voor\s+\d|\d\s+voor|\d\s*\+\s*\d/i.test(lbl)) return lbl
+    return null
+  })()
+
   return (
     <div className="card-product group">
-      {/* Discount Badge */}
-      {hasValidDiscount && discountPercent > 0 && (
+      {/* Promo Badge: 1+1, 2+1, X voor Y gibi özel mekanizmalar */}
+      {promoLabel && (
+        <div className="absolute top-3 right-3 z-10">
+          <span style={{
+            background: '#00A0E2',
+            color: 'white',
+            fontSize: '10px',
+            fontWeight: 700,
+            padding: '3px 7px',
+            borderRadius: '8px',
+            boxShadow: '0 2px 8px rgba(0,160,226,0.35)',
+            letterSpacing: '0.02em',
+            textTransform: 'uppercase',
+          }}>
+            {promoLabel}
+          </span>
+        </div>
+      )}
+      {/* Discount Badge (yüzde) — promoLabel yoksa göster */}
+      {!promoLabel && hasValidDiscount && discountPercent > 0 && (
         <div className="absolute top-3 right-3 z-10">
           <span
             className="badge-deal"
