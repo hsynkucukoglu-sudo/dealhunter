@@ -1,0 +1,14 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="96" fill="#F5EDE3"/>
+  <circle cx="256" cy="230" r="170" fill="#8DB88D"/>
+  <rect x="190" y="170" width="130" height="100" rx="12" fill="#F5EDE3"/>
+  <path d="M168 150 L190 170" stroke="#F5EDE3" stroke-width="14" stroke-linecap="round"/>
+  <circle cx="210" cy="280" r="20" fill="#F5EDE3"/>
+  <circle cx="296" cy="280" r="20" fill="#F5EDE3"/>
+  <line x1="198" y1="196" x2="312" y2="196" stroke="#8DB88D" stroke-width="9" stroke-linecap="round"/>
+  <line x1="198" y1="218" x2="312" y2="218" stroke="#8DB88D" stroke-width="9" stroke-linecap="round"/>
+  <path d="M160 330 A100 100 0 0 0 352 330" stroke="#F5EDE3" stroke-width="14" stroke-linecap="round" fill="none"/>
+  <polyline points="352,300 352,336 388,318" fill="#F5EDE3" stroke="#F5EDE3" stroke-width="4" stroke-linejoin="round"/>
+  <polyline points="160,358 160,322 124,340" fill="#F5EDE3" stroke="#F5EDE3" stroke-width="4" stroke-linejoin="round"/>
+  <text x="256" y="460" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-size="64" fill="#8DB88D" letter-spacing="-2">DealHunter</text>
+</svg>

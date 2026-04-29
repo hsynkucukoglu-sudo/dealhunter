@@ -8,6 +8,7 @@ import { ShoppingListSidebar } from '@/components/ShoppingListSidebar'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { Product, useShoppingList } from '@/context/ShoppingListContext'
 import { useLanguage } from '@/context/LanguageContext'
+import { Logo } from '@/components/Logo'
 
 // Market renkleri
 const MARKET_COLORS: Record<string, string> = {
@@ -203,9 +204,7 @@ export function App() {
       >
         {/* Left: Brand + Nav */}
         <div className="flex items-center gap-6">
-          <span className="text-xl font-black tracking-tighter font-headline" style={{ color: '#E33D26' }}>
-            DEALHUNTER
-          </span>
+          <Logo size={32} />
           <div className="hidden md:flex gap-1 items-center">
             <a
               onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(false) }}
