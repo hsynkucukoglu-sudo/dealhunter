@@ -396,20 +396,164 @@ async function scrapeAlbertHeijn() {
   }
 }
 
+// ─── ALDI — JSON-LD + HTML fallback ──────────────────────────────────────────
+async function scrapeAldi() {
+  console.log('🏪 [Aldi] aldi.nl/aanbiedingen...')
+  try {
+    const res = await fetch('https://www.aldi.nl/aanbiedingen.html', { headers: HEADERS })
+    const html = await res.text()
+    const $ = cheerio.load(html)
+    const results = []
+    const seen = new Set()
+
+    // JSON-LD blokları dene
+    $('script[type="application/ld+json"]').each((_, el) => {
+      try {
+        const data = JSON.parse($(el).html())
+        const items = data['@graph'] || (data['@type'] === 'ItemList' ? data.itemListElement : null) || []
+        for (const item of items) {
+          const p = item.item || item
+          if (!p?.name || !p.offers?.price) continue
+          const discountedPrice = parseFloat(p.offers.price)
+          if (!discountedPrice || seen.has(p.name)) continue
+          seen.add(p.name)
+          const img = Array.isArray(p.image) ? p.image[0] : (p.image || null)
+          results.push({
+            name: p.name,
+            market: 'Aldi',
+            originalPrice: parseFloat((discountedPrice * 1.35).toFixed(2)),
+            discountedPrice,
+            imageUrl: typeof img === 'string' ? img : img?.url || null,
+            isCampaign: true,
+            source: 'aldi.nl/aanbiedingen',
+            expiresAt: EXPIRES_AT,
+          })
+        }
+      } catch {}
+    })
+
+    // JSON-LD yoksa HTML cheerio ile dene
+    if (!results.length) {
+      $('[class*="product"], [class*="offer"], [class*="item"]').each((_, el) => {
+        const card = $(el)
+        const name = card.find('h2, h3, [class*="title"], [class*="name"]').first().text().trim()
+        if (!name || name.length < 3 || seen.has(name)) return
+        const text = card.text()
+        const priceMatch = text.match(/€?\s*(\d+)[,.](\d{2})/)
+        if (!priceMatch) return
+        const discountedPrice = parseFloat(`${priceMatch[1]}.${priceMatch[2]}`)
+        if (!discountedPrice || discountedPrice > 200) return
+        seen.add(name)
+        const img = card.find('img').first()
+        const imgSrc = img.attr('src') || img.attr('data-src') || null
+        results.push({
+          name,
+          market: 'Aldi',
+          originalPrice: parseFloat((discountedPrice * 1.35).toFixed(2)),
+          discountedPrice,
+          imageUrl: imgSrc && !imgSrc.includes('logo') ? imgSrc : null,
+          isCampaign: true,
+          source: 'aldi.nl/aanbiedingen',
+          expiresAt: EXPIRES_AT,
+        })
+      })
+    }
+
+    console.log(`  ✅ Aldi: ${results.length} ürün`)
+    return results
+  } catch (e) {
+    console.error('  ❌ Aldi:', e.message)
+    return []
+  }
+}
+
+// ─── VOMAR — HTML cheerio ─────────────────────────────────────────────────────
+async function scrapeVomar() {
+  console.log('🏪 [Vomar] vomar.nl/aanbiedingen...')
+  try {
+    const res = await fetch('https://www.vomar.nl/aanbiedingen', { headers: HEADERS })
+    const html = await res.text()
+    const $ = cheerio.load(html)
+    const results = []
+    const seen = new Set()
+
+    // JSON-LD dene
+    $('script[type="application/ld+json"]').each((_, el) => {
+      try {
+        const data = JSON.parse($(el).html())
+        const items = data['@graph'] || (data['@type'] === 'ItemList' ? data.itemListElement : null) || []
+        for (const item of items) {
+          const p = item.item || item
+          if (!p?.name || !p.offers?.price) continue
+          const discountedPrice = parseFloat(p.offers.price)
+          if (!discountedPrice || seen.has(p.name)) continue
+          seen.add(p.name)
+          const img = Array.isArray(p.image) ? p.image[0] : (p.image || null)
+          results.push({
+            name: p.name,
+            market: 'Vomar',
+            originalPrice: parseFloat((discountedPrice * 1.35).toFixed(2)),
+            discountedPrice,
+            imageUrl: typeof img === 'string' ? img : img?.url || null,
+            isCampaign: true,
+            source: 'vomar.nl/aanbiedingen',
+            expiresAt: EXPIRES_AT,
+          })
+        }
+      } catch {}
+    })
+
+    // HTML fallback
+    if (!results.length) {
+      $('[class*="product"], [class*="offer"], [class*="deal"], article').each((_, el) => {
+        const card = $(el)
+        const name = card.find('h2, h3, h4, [class*="title"], [class*="name"]').first().text().trim()
+        if (!name || name.length < 3 || seen.has(name)) return
+        const text = card.text()
+        const priceMatch = text.match(/€?\s*(\d+)[,.](\d{2})/)
+        if (!priceMatch) return
+        const discountedPrice = parseFloat(`${priceMatch[1]}.${priceMatch[2]}`)
+        if (!discountedPrice || discountedPrice > 200) return
+        seen.add(name)
+        const img = card.find('img').first()
+        const imgSrc = img.attr('src') || img.attr('data-src') || null
+        results.push({
+          name,
+          market: 'Vomar',
+          originalPrice: parseFloat((discountedPrice * 1.35).toFixed(2)),
+          discountedPrice,
+          imageUrl: imgSrc && !imgSrc.includes('logo') ? imgSrc : null,
+          isCampaign: true,
+          source: 'vomar.nl/aanbiedingen',
+          expiresAt: EXPIRES_AT,
+        })
+      })
+    }
+
+    console.log(`  ✅ Vomar: ${results.length} ürün`)
+    return results
+  } catch (e) {
+    console.error('  ❌ Vomar:', e.message)
+    return []
+  }
+}
+
 // ─── ANA FONKSİYON ────────────────────────────────────────────────────────────
 export async function scrapeFlyerProducts() {
   console.log('🔍 Fetch-only scraper başlatılıyor...')
 
-  const [dirk, jumbo, hoogvliet, plus, lidl, ah] = await Promise.all([
+  const [dirk, jumbo, hoogvliet, plus, lidl, ah, aldi, vomar] = await Promise.all([
     scrapeDirk(),
     scrapeJumbo(),
     scrapeHoogvliet(),
     scrapePlus(),
     scrapeLidl(),
     scrapeAlbertHeijn(),
+    scrapeAldi(),
+    scrapeVomar(),
   ])
 
-  let all = [...dirk, ...jumbo, ...hoogvliet, ...plus, ...lidl, ...ah]
+  let all = [...dirk, ...jumbo, ...hoogvliet, ...plus, ...lidl, ...ah, ...aldi, ...vomar]
 
   // Duplicate temizliği
   const seen = new Set()
@@ -420,6 +564,6 @@ export async function scrapeFlyerProducts() {
     return true
   })
 
-  console.log(`\n✅ Toplam ${all.length} ürün (${dirk.length} Dirk, ${jumbo.length} Jumbo, ${hoogvliet.length} Hoogvliet, ${plus.length} Plus, ${lidl.length} Lidl, ${ah.length} AH)`)
+  console.log(`\n✅ Toplam ${all.length} ürün (${dirk.length} Dirk, ${jumbo.length} Jumbo, ${hoogvliet.length} Hoogvliet, ${plus.length} Plus, ${lidl.length} Lidl, ${ah.length} AH, ${aldi.length} Aldi, ${vomar.length} Vomar)`)
   return all
 }

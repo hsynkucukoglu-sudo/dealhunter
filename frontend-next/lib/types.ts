@@ -76,6 +76,13 @@ export const MARKETS = [
     description: 'Bekijk alle Hoogvliet aanbiedingen van deze week. Actuele folder en beste deals bij Hoogvliet supermarkt.',
     keywords: 'hoogvliet aanbiedingen, hoogvliet folder, hoogvliet deals',
   },
+  {
+    slug: 'vomar',
+    name: 'Vomar',
+    color: '#FF6600',
+    description: 'Bekijk alle Vomar aanbiedingen van deze week. Goedkope boodschappen en actuele deals bij Vomar supermarkt.',
+    keywords: 'vomar aanbiedingen, vomar folder, vomar deals, vomar supermarkt',
+  },
 ]
 
 export const MARKET_COLORS: Record<string, string> = Object.fromEntries(
