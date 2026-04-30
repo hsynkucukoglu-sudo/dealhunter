@@ -102,9 +102,8 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
         style={navScrolled ? {} : { border: 'none', boxShadow: 'none' }}
       >
         <div className="flex items-center gap-6">
-          <span className="text-xl font-black tracking-tighter font-headline" style={{ color: '#E33D26' }}>
-            DEALHUNTER
-          </span>
+          <img src="/logo.svg" alt="DealHunter" height={36} style={{ height: 36, width: 'auto' }} />
+
           <div className="hidden md:flex gap-1 items-center">
             <button
               onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setSelectedCategory('all') }}

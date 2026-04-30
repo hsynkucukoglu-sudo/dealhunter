@@ -36,8 +36,8 @@ export function MarketPage({ market, initialProducts }: { market: Market; initia
       {/* Navbar */}
       <nav className="fixed top-4 left-4 right-4 z-50 flex justify-between items-center px-4 md:px-6 h-14 rounded-full navbar-pill">
         <div className="flex items-center gap-4">
-          <Link href="/" className="text-xl font-black tracking-tighter font-headline" style={{ color: '#E33D26' }}>
-            DEALHUNTER
+          <Link href="/">
+            <img src="/logo.svg" alt="DealHunter" height={36} style={{ height: 36, width: 'auto' }} />
           </Link>
           <span className="hidden md:block text-sm" style={{ color: '#8C8478' }}>›</span>
           <span className="hidden md:block text-sm font-bold" style={{ color: '#1A1A1A' }}>{market.name}</span>
