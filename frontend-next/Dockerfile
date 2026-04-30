@@ -11,6 +11,7 @@ RUN npm run build
 FROM node:20-slim
 
 ENV NODE_ENV=production
+ENV HOSTNAME=0.0.0.0
 
 WORKDIR /app
 
@@ -20,4 +21,4 @@ COPY --from=builder /app/public ./public
 
 EXPOSE 3000
 
-CMD ["node", "server.js"]
+CMD node server.js
