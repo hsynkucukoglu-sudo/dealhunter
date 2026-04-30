@@ -1,4 +1,6 @@
-FROM node:20-slim AS builder
+FROM node:20-slim
+
+ENV NODE_ENV=production
 
 WORKDIR /app
 
@@ -8,17 +10,6 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-FROM node:20-slim
-
-ENV NODE_ENV=production
-ENV HOSTNAME=0.0.0.0
-
-WORKDIR /app
-
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/public ./public
-
 EXPOSE 3000
 
-CMD node server.js
+CMD ["sh", "-c", "npm start -- -p ${PORT:-3000}"]
