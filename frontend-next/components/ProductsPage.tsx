@@ -8,6 +8,7 @@ import { AddProductForm } from './AddProductForm'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { useShoppingList } from '@/context/ShoppingListContext'
 import { useLanguage } from '@/context/LanguageContext'
+import { DealHunterLogo } from './DealHunterLogo'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
@@ -102,7 +103,7 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
         style={navScrolled ? {} : { border: 'none', boxShadow: 'none' }}
       >
         <div className="flex items-center gap-6">
-          <img src="/logo.svg" alt="DealHunter" height={36} style={{ height: 36, width: 'auto' }} />
+          <DealHunterLogo height={36} />
 
           <div className="hidden md:flex gap-1 items-center">
             <button
