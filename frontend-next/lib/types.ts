@@ -13,6 +13,19 @@ export interface Product {
   category: string
 }
 
+export const CATEGORY_LABELS: Record<string, Record<string, string>> = {
+  'groente-fruit': { nl: 'Groente & Fruit', en: 'Fruit & Vegetables', tr: 'Meyve & Sebze' },
+  'zuivel':        { nl: 'Zuivel', en: 'Dairy', tr: 'Süt Ürünleri' },
+  'vlees-vis':     { nl: 'Vlees & Vis', en: 'Meat & Fish', tr: 'Et & Balık' },
+  'dranken':       { nl: 'Dranken', en: 'Beverages', tr: 'İçecekler' },
+  'bakkerij':      { nl: 'Bakkerij', en: 'Bakery', tr: 'Fırın' },
+  'snacks':        { nl: 'Snacks', en: 'Snacks', tr: 'Atıştırmalık' },
+  'maaltijden':    { nl: 'Maaltijden', en: 'Meals', tr: 'Yemekler' },
+  'verzorging':    { nl: 'Verzorging', en: 'Personal Care', tr: 'Kişisel Bakım' },
+  'huishouden':    { nl: 'Huishouden', en: 'Household', tr: 'Ev Ürünleri' },
+  'overig':        { nl: 'Overig', en: 'Other', tr: 'Diğer' },
+}
+
 export const CATEGORIES = [
   { id: 'groente-fruit', label: 'Groente & Fruit', emoji: '🥦' },
   { id: 'zuivel', label: 'Zuivel', emoji: '🥛' },

@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useMemo, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Product, CATEGORIES, MARKET_COLORS, getMarketInitial } from '@/lib/types'
+import { Product, CATEGORIES, CATEGORY_LABELS, MARKET_COLORS, getMarketInitial } from '@/lib/types'
 import { ProductCard } from './ProductCard'
 import { ShoppingListSidebar } from './ShoppingListSidebar'
 import { AddProductForm } from './AddProductForm'
@@ -310,7 +310,7 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
                 </motion.button>
                 <div>
                   <h2 className="text-2xl md:text-3xl font-headline font-bold" style={{ color: '#1A1A1A' }}>
-                    {(() => { const cat = CATEGORIES.find(c => c.id === selectedCategory); return cat ? `${cat.emoji} ${cat.label}` : '' })()}
+                    {(() => { const cat = CATEGORIES.find(c => c.id === selectedCategory); return cat ? `${cat.emoji} ${CATEGORY_LABELS[cat.id]?.[lang] ?? cat.label}` : '' })()}
                   </h2>
                   <p className="text-sm mt-0.5" style={{ color: '#8C8478' }}>{filteredProducts.length} {t.activeProducts}</p>
                 </div>
@@ -351,7 +351,7 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
 
               {/* Category Grid */}
               <section className="mb-12">
-                <h2 className="text-xl font-headline font-bold mb-4" style={{ color: '#1A1A1A' }}>Categorieën</h2>
+                <h2 className="text-xl font-headline font-bold mb-4" style={{ color: '#1A1A1A' }}>{lang === 'tr' ? 'Kategoriler' : lang === 'en' ? 'Categories' : 'Categorieën'}</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
                   {CATEGORIES.map(cat => {
                     const count = products.filter(p => p.category === cat.id).length
@@ -366,9 +366,9 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
                       >
                         <span className="text-2xl mb-2">{cat.emoji}</span>
                         <span className="text-sm font-semibold leading-tight" style={{ color: '#1A1A1A' }}>
-                          {cat.label}
+                          {CATEGORY_LABELS[cat.id]?.[lang] ?? cat.label}
                         </span>
-                        <span className="text-xs mt-1" style={{ color: '#8C8478' }}>{count} aanbiedingen</span>
+                        <span className="text-xs mt-1" style={{ color: '#8C8478' }}>{count} {lang === 'tr' ? 'ürün' : lang === 'en' ? 'deals' : 'aanbiedingen'}</span>
                       </motion.button>
                     )
                   })}
