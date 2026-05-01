@@ -482,6 +482,14 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
 
       <ShoppingListSidebar />
       <AddProductForm onAdded={refreshProducts} />
+
+      <footer style={{ textAlign: 'center', padding: '32px 24px', marginTop: 40, borderTop: '1px solid #F0E6DE', fontSize: 13, color: '#888' }}>
+        <div style={{ marginBottom: 12 }}>
+          <a href="/privacy" style={{ color: '#E33D26', textDecoration: 'none', marginRight: 24 }}>Privacybeleid</a>
+          <a href="/contact" style={{ color: '#E33D26', textDecoration: 'none' }}>Contact</a>
+        </div>
+        <div>© {new Date().getFullYear()} DealHunter4U — Alle supermarkt aanbiedingen op één plek</div>
+      </footer>
     </div>
   )
 }
