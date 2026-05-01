@@ -17,7 +17,7 @@ const CATEGORIES = [
     label: '🧹 Huishouden & Schoonmaak',
     keywords: [
       'wasmiddel', 'vaatwas', 'afwasmiddel', 'schoonmaakmiddel', 'bleek', 'ontvetter',
-      'toiletpapier', 'keukenpapier', 'vuilniszak', 'aluminiumfolie', 'magnetronfolie',
+      'toiletpapier', 'toiletblok', 'keukenpapier', 'vuilniszak', 'aluminiumfolie', 'magnetronfolie',
       'wasverzachter', 'vlekverwijderaar', 'sponzen', 'schuurspons', 'dweil',
       'ariel', 'bold', 'fairy', 'domestos', 'dettol', 'mr. proper', 'ajax',
       'finish', 'dreft', 'robijn', 'lenor', 'omo',
@@ -30,10 +30,11 @@ const CATEGORIES = [
       'bier', 'heineken', 'amstel', 'grolsch', 'hertog jan', 'jupiler',
       'wijn', 'rosé', 'champagne', 'prosecco', 'cava', 'whisky', 'rum', 'wodka', 'gin',
       'frisdrank', 'coca-cola', 'cola light', 'cola zero', 'fanta', 'sprite', 'pepsi', '7up', 'limonade',
-      'sap', 'jus d\'orange', 'smoothie', 'spa water', 'bruis',
+      'sap', 'jus d\'orange', 'smoothie', 'spa water', 'bruis', 'tonic', 'ginger ale', 'ginger beer',
+      'royal club', 'schweppes', 'fernandes', 'sourcy', 'bar le duc',
       'koffie', 'thee', 'cappuccino', 'espresso', 'nescafé', 'douwe egberts',
       'energy drink', 'red bull', 'monster energy', 'sportdrank', 'aquarius',
-      'ijsthee', 'ijskoffie', 'frappuccino', 'starbucks',
+      'ijsthee', 'ijskoffie', 'frappuccino', 'starbucks', 'vruchtenwijn', 'cider',
     ],
   },
   {
@@ -61,6 +62,19 @@ const CATEGORIES = [
       'zalm', 'tonijn', 'kabeljauw', 'garnalen', 'makreel', 'haring', 'tilapia',
       'vissticks', 'zeevruchten',
       'vegan burger', 'vegetarisch', 'veggie', 'tofu', 'tempeh', 'quorn',
+    ],
+  },
+  {
+    id: 'maaltijden',
+    label: '🍳 Maaltijden & Kant-en-klaar',
+    keywords: [
+      'pizza', 'lasagne', 'soep', 'saus', 'tomatensaus', 'pastasaus',
+      'curry', 'nasi', 'bami', 'wokschotel', 'stamppot', 'ovenschotel',
+      'wrap', 'tortilla', 'burrito', 'taco', 'sushi',
+      'hummus', 'tzatziki', 'guacamole', 'dip', 'spread',
+      'kant-en-klaar', 'diepvries', 'magnetronmaaltijd', 'ready meal',
+      'pasta', 'spaghetti', 'penne', 'rijst', 'noodles', 'couscous',
+      'unox', 'knorr', 'campbells', 'erwtensoep', 'tomatensoep', 'kippensoep',
     ],
   },
   {
@@ -100,18 +114,6 @@ const CATEGORIES = [
       'ijs', 'ijsje', 'magnum', 'cornetto', 'twix', 'm&m', 'snickers', 'kitkat',
       'haribo', 'mentos', 'tic tac', 'milka', 'toblerone',
       'koek', 'biscuit', 'crackers', 'wafels', 'muffin', 'cake',
-    ],
-  },
-  {
-    id: 'maaltijden',
-    label: '🍳 Maaltijden & Kant-en-klaar',
-    keywords: [
-      'pizza', 'lasagne', 'soep', 'saus', 'tomatensaus', 'pastasaus',
-      'curry', 'nasi', 'bami', 'wokschotel', 'stamppot', 'ovenschotel',
-      'wrap', 'tortilla', 'burrito', 'taco', 'sushi',
-      'hummus', 'tzatziki', 'guacamole', 'dip', 'spread',
-      'kant-en-klaar', 'diepvries', 'magnetronmaaltijd', 'ready meal',
-      'pasta', 'spaghetti', 'penne', 'rijst', 'noodles', 'couscous',
     ],
   },
 ]
