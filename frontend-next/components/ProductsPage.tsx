@@ -24,7 +24,7 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
   const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promise<{ outcome: string }> } | null>(null)
 
   const { itemCount, setIsCartOpen } = useShoppingList()
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
 
   useEffect(() => {
     const handleScroll = () => setNavScrolled(window.scrollY > 60)
