@@ -2,11 +2,12 @@
 import React, { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { Product, CATEGORIES, MARKET_COLORS, getMarketInitial } from '@/lib/types'
+import { Product, CATEGORIES, CATEGORY_LABELS, MARKET_COLORS, getMarketInitial } from '@/lib/types'
 import { ProductCard } from './ProductCard'
 import { ShoppingListSidebar } from './ShoppingListSidebar'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { useShoppingList } from '@/context/ShoppingListContext'
+import { useLanguage } from '@/context/LanguageContext'
 
 interface Category {
   id: string
@@ -19,7 +20,26 @@ export function CategoryPage({ category, initialProducts }: { category: Category
   const [selectedMarket, setSelectedMarket] = useState('all')
   const { itemCount, setIsCartOpen } = useShoppingList()
 
+  const { lang } = useLanguage()
   const markets = useMemo(() => Array.from(new Set(initialProducts.map(p => p.market))).sort(), [initialProducts])
+
+  const catLabel = CATEGORY_LABELS[category.id]?.[lang] ?? category.label
+
+  const ui = {
+    allMarkets: lang === 'tr' ? 'Tüm marketler' : lang === 'en' ? 'All markets' : 'Alle markten',
+    deals: lang === 'tr' ? 'fırsatlar' : lang === 'en' ? 'deals' : 'aanbiedingen',
+    savings: lang === 'tr' ? 'tasarruf' : lang === 'en' ? 'savings' : 'besparing',
+    found: lang === 'tr' ? 'fırsat bulundu' : lang === 'en' ? 'deals found' : 'aanbiedingen gevonden',
+    noDeals: lang === 'tr' ? 'Fırsat bulunamadı' : lang === 'en' ? 'No deals found' : 'Geen aanbiedingen gevonden',
+    otherCats: lang === 'tr' ? 'Diğer kategoriler' : lang === 'en' ? 'Other categories' : 'Andere categorieën',
+    searchPlaceholder: lang === 'tr' ? `${catLabel} içinde ara...` : lang === 'en' ? `Search in ${catLabel}...` : `Zoek in ${catLabel}...`,
+    dealsTitle: lang === 'tr' ? 'Fırsatları' : lang === 'en' ? 'Deals' : 'Aanbiedingen',
+    descText: lang === 'tr'
+      ? `Albert Heijn, Jumbo, Lidl, Dirk ve daha fazlasından tüm güncel ${catLabel.toLowerCase()} fırsatlarını görün. Fiyatları karşılaştırın ve ${catLabel.toLowerCase()} ürünlerinde tasarruf edin.`
+      : lang === 'en'
+      ? `View all current ${catLabel.toLowerCase()} deals from Albert Heijn, Jumbo, Lidl, Dirk and more. Compare prices and save on ${catLabel.toLowerCase()}.`
+      : `Bekijk alle actuele ${catLabel.toLowerCase()} aanbiedingen van Albert Heijn, Jumbo, Lidl, Dirk en meer. Vergelijk prijzen en bespaar op ${catLabel.toLowerCase()}.`,
+  }
 
   const filtered = useMemo(() => initialProducts.filter(p => {
     const matchSearch = p.name.toLowerCase().includes(search.toLowerCase())
@@ -41,7 +61,7 @@ export function CategoryPage({ category, initialProducts }: { category: Category
             DEALHUNTER
           </Link>
           <span className="hidden md:block text-sm" style={{ color: '#8C8478' }}>›</span>
-          <span className="hidden md:block text-sm font-bold" style={{ color: '#1A1A1A' }}>{category.emoji} {category.label}</span>
+          <span className="hidden md:block text-sm font-bold" style={{ color: '#1A1A1A' }}>{category.emoji} {catLabel}</span>
         </div>
         <div className="flex items-center gap-2">
           <LanguageSwitcher />
@@ -66,17 +86,16 @@ export function CategoryPage({ category, initialProducts }: { category: Category
         <nav className="flex items-center gap-2 text-sm mb-8" style={{ color: '#8C8478' }}>
           <Link href="/" className="hover:underline">DealHunter</Link>
           <span>›</span>
-          <span style={{ color: '#1A1A1A' }}>{category.label}</span>
+          <span style={{ color: '#1A1A1A' }}>{catLabel}</span>
         </nav>
 
         {/* Header */}
         <div className="mb-10">
           <h1 className="text-3xl md:text-5xl font-headline font-bold mb-3" style={{ color: '#1A1A1A' }}>
-            {category.emoji} {category.label} <span style={{ color: '#E33D26' }}>Aanbiedingen</span>
+            {category.emoji} {catLabel} <span style={{ color: '#E33D26' }}>{ui.dealsTitle}</span>
           </h1>
           <p className="text-base max-w-2xl" style={{ color: '#6B6259' }}>
-            Bekijk alle actuele {category.label.toLowerCase()} aanbiedingen van Albert Heijn, Jumbo, Lidl, Dirk en meer.
-            Vergelijk prijzen en bespaar op {category.label.toLowerCase()}.
+            {ui.descText}
           </p>
         </div>
 
@@ -87,7 +106,7 @@ export function CategoryPage({ category, initialProducts }: { category: Category
               onClick={() => setSelectedMarket('all')}
               className={`market-pill ${selectedMarket === 'all' ? 'market-pill-active' : ''}`}>
               <span className="material-symbols-outlined text-base">bolt</span>
-              Alle markten
+              {ui.allMarkets}
             </motion.button>
             <div className="w-px h-6 flex-none" style={{ background: '#C9C1B6' }} />
             {markets.map(m => (
@@ -110,7 +129,7 @@ export function CategoryPage({ category, initialProducts }: { category: Category
             <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-lg" style={{ color: '#8C8478' }}>search</span>
             <input
               type="text"
-              placeholder={`Zoek in ${category.label}...`}
+              placeholder={ui.searchPlaceholder}
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="w-full pl-11 pr-4 py-3 rounded-full text-sm focus:outline-none transition-all"
@@ -120,18 +139,18 @@ export function CategoryPage({ category, initialProducts }: { category: Category
           {totalSavings > 0 && (
             <div className="flex items-center gap-2 px-4 py-3 rounded-full" style={{ background: 'rgba(27,158,75,0.08)' }}>
               <span className="material-symbols-outlined text-sm" style={{ color: '#1B9E4B' }}>trending_down</span>
-              <span className="text-sm font-bold" style={{ color: '#1B9E4B' }}>€{totalSavings.toFixed(2)} besparing</span>
+              <span className="text-sm font-bold" style={{ color: '#1B9E4B' }}>€{totalSavings.toFixed(2)} {ui.savings}</span>
             </div>
           )}
         </div>
 
-        <p className="text-sm mb-6" style={{ color: '#8C8478' }}>{filtered.length} aanbiedingen gevonden</p>
+        <p className="text-sm mb-6" style={{ color: '#8C8478' }}>{filtered.length} {ui.found}</p>
 
         {/* Grid */}
         {filtered.length === 0 ? (
           <div className="text-center py-20 rounded-3xl" style={{ background: 'rgba(255,255,255,0.6)' }}>
             <span className="material-symbols-outlined text-6xl mb-4 block" style={{ color: '#C9C1B6' }}>search_off</span>
-            <p className="text-xl font-headline font-bold" style={{ color: '#1A1A1A' }}>Geen aanbiedingen gevonden</p>
+            <p className="text-xl font-headline font-bold" style={{ color: '#1A1A1A' }}>{ui.noDeals}</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
@@ -146,13 +165,13 @@ export function CategoryPage({ category, initialProducts }: { category: Category
 
         {/* Andere categorieën */}
         <section className="mt-20">
-          <h2 className="text-xl font-headline font-bold mb-4" style={{ color: '#1A1A1A' }}>Andere categorieën</h2>
+          <h2 className="text-xl font-headline font-bold mb-4" style={{ color: '#1A1A1A' }}>{ui.otherCats}</h2>
           <div className="flex flex-wrap gap-3">
             {CATEGORIES.filter(c => c.id !== category.id).map(c => (
               <Link key={c.id} href={`/categorie/${c.id}`}
                 className="px-5 py-2.5 rounded-full text-sm font-medium transition-all hover:bg-white"
                 style={{ background: 'rgba(255,255,255,0.6)', border: '1.5px solid #E0D8CE', color: '#1A1A1A' }}>
-                {c.emoji} {c.label}
+                {c.emoji} {CATEGORY_LABELS[c.id]?.[lang] ?? c.label}
               </Link>
             ))}
           </div>

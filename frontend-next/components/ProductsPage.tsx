@@ -9,6 +9,7 @@ import { LanguageSwitcher } from './LanguageSwitcher'
 import { useShoppingList } from '@/context/ShoppingListContext'
 import { useLanguage } from '@/context/LanguageContext'
 import { DealHunterLogo } from './DealHunterLogo'
+import { AdBanner } from './AdBanner'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
@@ -295,6 +296,9 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
           </div>
         </section>
 
+        {/* AD — Hero altı */}
+        <AdBanner slot="5913072775" format="horizontal" className="mb-10" />
+
         {/* CATEGORY VIEW / HOME VIEW */}
         <AnimatePresence mode="wait">
           {selectedCategory !== 'all' ? (
@@ -374,6 +378,9 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
                   })}
                 </div>
               </section>
+
+              {/* AD — Kategori altı */}
+              <AdBanner slot="5913072775" format="auto" className="mb-10" />
 
               {/* Market Pills */}
               {availableMarkets.length > 0 && (
@@ -494,6 +501,8 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
   )
 }
 
+const AD_INTERVAL = 12
+
 function ProductGrid({ products, t }: { products: Product[]; t: { noProducts: string; noProductsDesc: string } }) {
   if (products.length === 0) {
     return (
@@ -506,14 +515,26 @@ function ProductGrid({ products, t }: { products: Product[]; t: { noProducts: st
     )
   }
 
+  const rows: React.ReactNode[] = []
+  products.forEach((product, index) => {
+    rows.push(
+      <motion.div key={product.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: index * 0.03 }}>
+        <ProductCard product={product} />
+      </motion.div>
+    )
+    if ((index + 1) % AD_INTERVAL === 0 && index + 1 < products.length) {
+      rows.push(
+        <div key={`ad-${index}`} className="col-span-2 lg:col-span-3 xl:col-span-4">
+          <AdBanner slot="5913072775" format="auto" className="my-2" />
+        </div>
+      )
+    }
+  })
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-      {products.map((product, index) => (
-        <motion.div key={product.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: index * 0.03 }}>
-          <ProductCard product={product} />
-        </motion.div>
-      ))}
+      {rows}
     </motion.div>
   )
 }
