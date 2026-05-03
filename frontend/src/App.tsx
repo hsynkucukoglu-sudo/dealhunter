@@ -9,6 +9,7 @@ import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { Product, useShoppingList } from '@/context/ShoppingListContext'
 import { useLanguage } from '@/context/LanguageContext'
 import { Logo } from '@/components/Logo'
+import AdBanner from '@/components/AdBanner'
 
 // Market renkleri
 const MARKET_COLORS: Record<string, string> = {
@@ -326,6 +327,9 @@ export function App() {
           productCount={filteredProducts.length}
         />
 
+        {/* Ad Banner — Hero Altı */}
+        <AdBanner slot="2009794270" />
+
         {/* ── Category Page View ── */}
         <AnimatePresence mode="wait">
         {selectedCategory !== 'all' ? (
@@ -502,15 +506,31 @@ export function App() {
                   <p className="max-w-md mx-auto text-sm" style={{ color: '#8C8478' }}>{t.noProductsDesc}</p>
                 </motion.div>
               ) : (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                  className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                  {filteredProducts.map((product, index) => (
-                    <motion.div key={product.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, delay: index * 0.03 }}>
-                      <ProductCard product={product} />
-                    </motion.div>
-                  ))}
-                </motion.div>
+                <div>
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                    className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                    {filteredProducts.slice(0, 12).map((product, index) => (
+                      <motion.div key={product.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: index * 0.03 }}>
+                        <ProductCard product={product} />
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                  {filteredProducts.length > 12 && (
+                    <>
+                      <AdBanner slot="2009794270" style={{ margin: '24px 0' }} />
+                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                        className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                        {filteredProducts.slice(12).map((product, index) => (
+                          <motion.div key={product.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3, delay: index * 0.03 }}>
+                            <ProductCard product={product} />
+                          </motion.div>
+                        ))}
+                      </motion.div>
+                    </>
+                  )}
+                </div>
               )}
             </section>
           </motion.div>
