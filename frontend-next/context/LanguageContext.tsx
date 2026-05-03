@@ -48,6 +48,7 @@ export const translations = {
     adding: 'Toevoegen...',
     items: 'producten',
     item: 'product',
+    viewDeal: 'Bekijk aanbieding',
   },
   en: {
     weeklyDeals: 'Weekly Deals',
@@ -93,6 +94,7 @@ export const translations = {
     adding: 'Adding...',
     items: 'items',
     item: 'item',
+    viewDeal: 'View deal',
   },
   tr: {
     weeklyDeals: 'Haftalık Fırsatlar',
@@ -138,6 +140,7 @@ export const translations = {
     adding: 'Ekleniyor…',
     items: 'ürün',
     item: 'ürün',
+    viewDeal: 'Fırsatı gör',
   },
 }
 

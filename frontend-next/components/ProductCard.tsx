@@ -5,11 +5,13 @@ import { Product } from '@/lib/types'
 import { MARKET_COLORS } from '@/lib/types'
 import { useShoppingList } from '@/context/ShoppingListContext'
 import { useLanguage } from '@/context/LanguageContext'
+import { getAffiliateLink } from '@/lib/affiliate'
 
 export function ProductCard({ product }: { product: Product }) {
   const { addToCart } = useShoppingList()
   const { t } = useLanguage()
 
+  const affiliateLink = getAffiliateLink(product.market)
   const hasValidDiscount = product.originalPrice > product.discountedPrice && product.originalPrice > 0
   const discountPercent = hasValidDiscount
     ? (product.discount || Math.round(((product.originalPrice - product.discountedPrice) / product.originalPrice) * 100))
@@ -87,7 +89,7 @@ export function ProductCard({ product }: { product: Product }) {
         </p>
       </div>
 
-      <div className="px-4 pb-4">
+      <div className="px-4 pb-4 flex flex-col gap-2">
         <motion.button
           whileTap={{ scale: 0.97 }}
           onClick={() => addToCart(product)}
@@ -95,6 +97,23 @@ export function ProductCard({ product }: { product: Product }) {
         >
           {t.addToCart}
         </motion.button>
+        {affiliateLink && (
+          <a
+            href={affiliateLink.url}
+            target="_blank"
+            rel={affiliateLink.rel}
+            className="flex items-center justify-center gap-1.5 w-full py-2 px-3 rounded-lg text-xs font-semibold transition-colors duration-200"
+            style={{
+              color: MARKET_COLORS[product.market] || '#1A1A1A',
+              background: 'transparent',
+              border: `1.5px solid ${MARKET_COLORS[product.market] || '#C9C1B6'}`,
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {t.viewDeal}
+            <span className="material-symbols-outlined text-sm leading-none">open_in_new</span>
+          </a>
+        )}
       </div>
     </div>
   )
