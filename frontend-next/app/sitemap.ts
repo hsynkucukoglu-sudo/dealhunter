@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { MARKETS, CATEGORIES } from '@/lib/types'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = 'https://dealhunter4u.nl'
+  const base = 'https://www.dealhunter4u.nl'
   const now = new Date()
 
   const marketPages = MARKETS.map(m => ({
@@ -28,5 +28,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     ...marketPages,
     ...categoryPages,
+    { url: `${base}/privacy`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.3 },
+    { url: `${base}/contact`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.3 },
   ]
 }
