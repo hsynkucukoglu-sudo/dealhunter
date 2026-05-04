@@ -13,6 +13,12 @@ export function ProductCard({ product }: { product: Product }) {
 
   const affiliateLink = getAffiliateLink(product.market)
   const hasValidDiscount = product.originalPrice > product.discountedPrice && product.originalPrice > 0
+
+  const daysLeft = (() => {
+    if (!product.expiresAt) return null
+    const diff = Math.ceil((new Date(product.expiresAt).getTime() - Date.now()) / 86400000)
+    return diff >= 0 ? diff : null
+  })()
   const discountPercent = hasValidDiscount
     ? (product.discount || Math.round(((product.originalPrice - product.discountedPrice) / product.originalPrice) * 100))
     : 0
@@ -83,10 +89,20 @@ export function ProductCard({ product }: { product: Product }) {
           )}
         </div>
 
-        <p className="text-[11px] mt-1.5 flex items-center gap-1" style={{ color: '#9C9389' }}>
-          <span className="material-symbols-outlined text-sm">schedule</span>
-          {product.expiresAt} {t.validUntil}
-        </p>
+        <div className="flex items-center justify-between mt-1.5">
+          <p className="text-[11px] flex items-center gap-1" style={{ color: '#9C9389' }}>
+            <span className="material-symbols-outlined text-sm">schedule</span>
+            {product.expiresAt} {t.validUntil}
+          </p>
+          {daysLeft !== null && daysLeft <= 3 && (
+            <span
+              className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+              style={{ background: daysLeft === 0 ? '#E33D26' : '#FF8C00', color: 'white' }}
+            >
+              {daysLeft === 0 ? 'Vandaag!' : `${daysLeft}d`}
+            </span>
+          )}
+        </div>
       </div>
 
       <div className="px-4 pb-4 flex flex-col gap-2">

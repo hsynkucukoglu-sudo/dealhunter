@@ -92,6 +92,13 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
     filteredProducts.reduce((sum, p) => sum + (p.originalPrice > p.discountedPrice ? p.originalPrice - p.discountedPrice : 0), 0)
   , [filteredProducts])
 
+  const topDeals = useMemo(() =>
+    [...products]
+      .filter(p => p.originalPrice > p.discountedPrice && p.discount > 0)
+      .sort((a, b) => b.discount - a.discount)
+      .slice(0, 5)
+  , [products])
+
   return (
     <div className="min-h-screen" style={{ background: '#F5EDE3' }}>
 
@@ -295,6 +302,30 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
             </motion.div>
           </div>
         </section>
+
+        {/* TOP 5 DEALS */}
+        {topDeals.length > 0 && searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
+          <section className="mb-12">
+            <div className="flex items-center gap-2 mb-5">
+              <span className="material-symbols-outlined material-filled" style={{ color: '#E33D26' }}>local_fire_department</span>
+              <h2 className="text-xl font-headline font-bold" style={{ color: '#1A1A1A' }}>
+                {lang === 'tr' ? 'En İyi 5 Fırsat' : lang === 'en' ? 'Top 5 Deals' : 'Top 5 Beste Deals'}
+              </h2>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+              {topDeals.map((product, i) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: i * 0.06 }}
+                >
+                  <ProductCard product={product} />
+                </motion.div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* AD — Hero altı */}
         <AdBanner slot="5913072775" format="horizontal" className="mb-10" />
