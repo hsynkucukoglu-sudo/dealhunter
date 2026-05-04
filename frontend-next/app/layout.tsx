@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { ShoppingListProvider } from '@/context/ShoppingListContext'
 import { LanguageProvider } from '@/context/LanguageContext'
+import { CookieBanner } from '@/components/CookieBanner'
+import { AdSenseScript } from '@/components/AdSenseScript'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -37,16 +39,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4113343151276849"
-          crossOrigin="anonymous"
-        />
       </head>
       <body>
         <LanguageProvider>
           <ShoppingListProvider>
             {children}
+            <CookieBanner />
+            <AdSenseScript />
           </ShoppingListProvider>
         </LanguageProvider>
       </body>

@@ -49,6 +49,10 @@ export const translations = {
     items: 'producten',
     item: 'product',
     viewDeal: 'Bekijk aanbieding',
+    cookieTitle: 'Wij gebruiken cookies',
+    cookieDesc: 'We gebruiken cookies voor advertenties en analyses. Zie ons privacybeleid voor meer informatie.',
+    cookieAccept: 'Accepteren',
+    cookieDecline: 'Weigeren',
   },
   en: {
     weeklyDeals: 'Weekly Deals',
@@ -95,6 +99,10 @@ export const translations = {
     items: 'items',
     item: 'item',
     viewDeal: 'View deal',
+    cookieTitle: 'We use cookies',
+    cookieDesc: 'We use cookies for advertising and analytics. See our privacy policy for more information.',
+    cookieAccept: 'Accept',
+    cookieDecline: 'Decline',
   },
   tr: {
     weeklyDeals: 'Haftalık Fırsatlar',
@@ -141,6 +149,10 @@ export const translations = {
     items: 'ürün',
     item: 'ürün',
     viewDeal: 'Fırsatı gör',
+    cookieTitle: 'Çerez kullanıyoruz',
+    cookieDesc: 'Reklamlar ve analizler için çerez kullanıyoruz. Daha fazla bilgi için gizlilik politikamıza bakın.',
+    cookieAccept: 'Kabul Et',
+    cookieDecline: 'Reddet',
   },
 }
 
