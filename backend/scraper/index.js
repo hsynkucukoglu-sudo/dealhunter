@@ -396,11 +396,10 @@ async function scrapeAlbertHeijn() {
   }
 }
 
-// ─── ALDI — Next.js data API ──────────────────────────────────────────────────
+// ─── ALDI — Next.js data API (double-encoded JSON) ───────────────────────────
 async function scrapeAldi() {
   console.log('🏪 [Aldi] aldi.nl Next.js data API...')
   try {
-    // buildId her deploy'da değişir, önce HTML'den al
     const htmlRes = await fetch('https://www.aldi.nl/aanbiedingen.html', { headers: HEADERS })
     const html = await htmlRes.text()
     const buildIdMatch = html.match(/"buildId":"([^"]+)"/)
@@ -412,29 +411,53 @@ async function scrapeAldi() {
       { headers: HEADERS }
     )
     const raw = await dataRes.text()
-    const results = []
-    const seen = new Set()
+    const outer = JSON.parse(raw)
 
-    // Ürün bloklarını regex ile çıkar (escaped JSON içinde)
-    const productPattern = /"url":"(https:\/\/s7g10\.scene7\.com\/[^"]+)"[^}]*"name":"([^"]+)","currentPrice":\{"priceValue":([0-9.]+)/g
-    let match
-    while ((match = productPattern.exec(raw)) !== null) {
-      const [, imgUrl, name, priceStr] = match
-      if (!name || seen.has(name)) continue
-      seen.add(name)
-      const discountedPrice = parseFloat(priceStr)
-      if (!discountedPrice || discountedPrice > 500) continue
-      results.push({
-        name,
+    // Outer JSON içindeki tüm string değerleri yield et
+    function* extractStrings(obj) {
+      if (typeof obj === 'string') yield obj
+      else if (Array.isArray(obj)) { for (const v of obj) yield* extractStrings(v) }
+      else if (obj && typeof obj === 'object') { for (const v of Object.values(obj)) yield* extractStrings(v) }
+    }
+
+    // Inner objeyi gezerek name+currentPrice olan ürünleri topla
+    function walkForProducts(obj, results, seen) {
+      if (!obj || typeof obj !== 'object') return
+      if (obj.name && obj.currentPrice?.priceValue) {
+        if (!seen.has(obj.name)) {
+          seen.add(obj.name)
+          results.push(obj)
+        }
+      }
+      for (const v of (Array.isArray(obj) ? obj : Object.values(obj))) {
+        walkForProducts(v, results, seen)
+      }
+    }
+
+    const rawProducts = []
+    const seen = new Set()
+    for (const str of extractStrings(outer)) {
+      if (!str.includes('priceValue')) continue
+      try {
+        const inner = JSON.parse(str)
+        walkForProducts(inner, rawProducts, seen)
+      } catch {}
+    }
+
+    const results = rawProducts.map(p => {
+      const primary = p.assets?.find(a => a.type === 'primary')
+      const discountedPrice = p.currentPrice.priceValue
+      return {
+        name: p.name,
         market: 'Aldi',
         originalPrice: parseFloat((discountedPrice * 1.35).toFixed(2)),
         discountedPrice,
-        imageUrl: imgUrl || null,
+        imageUrl: primary?.url || null,
         isCampaign: true,
         source: 'aldi.nl/aanbiedingen',
         expiresAt: EXPIRES_AT,
-      })
-    }
+      }
+    })
 
     console.log(`  ✅ Aldi: ${results.length} ürün`)
     return results
