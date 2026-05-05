@@ -238,8 +238,48 @@ app.post('/api/scraper/run', asyncHandler(async (req, res) => {
 
 // ===== Health Check =====
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', message: '🚀 Backend çalışıyor', version: '2026-04-21-v2' })
+  res.json({ status: 'ok', message: '🚀 Backend çalışıyor', version: '2026-05-05-v3' })
 })
+
+// ===== Debug: Aldi scraper test =====
+app.get('/api/debug/aldi', asyncHandler(async (req, res) => {
+  const HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Accept-Language': 'nl-NL,nl;q=0.9',
+    'Accept': 'text/html,application/xhtml+xml',
+  }
+  try {
+    const htmlRes = await fetch('https://www.aldi.nl/aanbiedingen.html', { headers: HEADERS, signal: AbortSignal.timeout(10000) })
+    const html = await htmlRes.text()
+    const buildIdMatch = html.match(/"buildId":"([^"]+)"/)
+    if (!buildIdMatch) return res.json({ error: 'buildId bulunamadı', htmlLength: html.length, status: htmlRes.status })
+    const buildId = buildIdMatch[1]
+    const dataRes = await fetch(`https://www.aldi.nl/_next/data/${buildId}/aanbiedingen.json`, { headers: HEADERS, signal: AbortSignal.timeout(10000) })
+    const dataStatus = dataRes.status
+    const raw = await dataRes.text()
+    const outer = JSON.parse(raw)
+    function* extractStrings(obj) {
+      if (typeof obj === 'string') yield obj
+      else if (Array.isArray(obj)) { for (const v of obj) yield* extractStrings(v) }
+      else if (obj && typeof obj === 'object') { for (const v of Object.values(obj)) yield* extractStrings(v) }
+    }
+    function walkForProducts(obj, results, seen) {
+      if (!obj || typeof obj !== 'object') return
+      if (obj.name && obj.currentPrice?.priceValue) {
+        if (!seen.has(obj.name)) { seen.add(obj.name); results.push(obj.name) }
+      }
+      for (const v of (Array.isArray(obj) ? obj : Object.values(obj))) walkForProducts(v, results, seen)
+    }
+    const names = []; const seen = new Set()
+    for (const str of extractStrings(outer)) {
+      if (!str.includes('priceValue')) continue
+      try { const inner = JSON.parse(str); walkForProducts(inner, names, seen) } catch {}
+    }
+    res.json({ buildId, dataStatus, productCount: names.length, samples: names.slice(0, 5) })
+  } catch (e) {
+    res.json({ error: e.message })
+  }
+}))
 
 // ===== 404 Handler / SPA Fallback =====
 if (isProduction) {
