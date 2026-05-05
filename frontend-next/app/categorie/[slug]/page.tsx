@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getProducts } from '@/lib/api'
 import { CATEGORIES } from '@/lib/types'
+import { buildItemListSchema } from '@/lib/schema'
 import { CategoryPage } from '@/components/CategoryPage'
 
 interface Props {
@@ -46,30 +47,12 @@ export default async function CategoriePageRoute({ params }: Props) {
   const allProducts = await getProducts()
   const products = allProducts.filter(p => p.category === slug)
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    name: `${cat.label} Aanbiedingen`,
-    description: `Actuele ${cat.label} aanbiedingen van Nederlandse supermarkten`,
-    url: `https://dealhunter4u.nl/categorie/${slug}`,
-    numberOfItems: products.length,
-    itemListElement: products.slice(0, 50).map((p, i) => ({
-      '@type': 'ListItem',
-      position: i + 1,
-      item: {
-        '@type': 'Product',
-        name: p.name,
-        offers: {
-          '@type': 'Offer',
-          price: p.discountedPrice,
-          priceCurrency: 'EUR',
-          availability: 'https://schema.org/InStock',
-          priceValidUntil: p.expiresAt,
-          seller: { '@type': 'Organization', name: p.market },
-        },
-      },
-    })),
-  }
+  const jsonLd = buildItemListSchema(
+    `${cat.label} Aanbiedingen`,
+    `Actuele ${cat.label} aanbiedingen van Nederlandse supermarkten`,
+    `/categorie/${slug}`,
+    products,
+  )
 
   return (
     <>

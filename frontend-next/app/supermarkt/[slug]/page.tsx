@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getProducts } from '@/lib/api'
 import { MARKETS } from '@/lib/types'
+import { buildItemListSchema } from '@/lib/schema'
 import { MarketPage } from '@/components/MarketPage'
 
 interface Props {
@@ -43,30 +44,12 @@ export default async function SupermarktPage({ params }: Props) {
   const allProducts = await getProducts()
   const products = allProducts.filter(p => p.market === market.name)
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    name: `${market.name} Aanbiedingen`,
-    description: market.description,
-    url: `https://dealhunter4u.nl/supermarkt/${slug}`,
-    numberOfItems: products.length,
-    itemListElement: products.slice(0, 50).map((p, i) => ({
-      '@type': 'ListItem',
-      position: i + 1,
-      item: {
-        '@type': 'Product',
-        name: p.name,
-        offers: {
-          '@type': 'Offer',
-          price: p.discountedPrice,
-          priceCurrency: 'EUR',
-          availability: 'https://schema.org/InStock',
-          priceValidUntil: p.expiresAt,
-          seller: { '@type': 'Organization', name: market.name },
-        },
-      },
-    })),
-  }
+  const jsonLd = buildItemListSchema(
+    `${market.name} Aanbiedingen`,
+    market.description,
+    `/supermarkt/${slug}`,
+    products,
+  )
 
   return (
     <>

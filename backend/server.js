@@ -280,7 +280,7 @@ if (isProduction) {
         <article itemscope itemtype="https://schema.org/Product">
           <h2 itemprop="name">${escapeHtml(p.name)}</h2>
           <p itemprop="brand">${escapeHtml(p.market)}</p>
-          ${p.imageUrl && !p.imageUrl.startsWith('ah-product-id:') ? `<img itemprop="image" src="${escapeHtml(p.imageUrl)}" alt="${escapeHtml(p.name)}" loading="lazy"/>` : ''}
+          ${p.imageUrl ? `<img itemprop="image" src="${escapeHtml(p.imageUrl.startsWith('ah-product-id:') ? `/api/ah-image/${p.imageUrl.replace('ah-product-id:', '')}` : p.imageUrl)}" alt="${escapeHtml(p.name)}" loading="lazy"/>` : ''}
           <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
             <meta itemprop="priceCurrency" content="EUR"/>
             <span itemprop="price" content="${p.discountedPrice}">€${p.discountedPrice.toFixed(2)}</span>

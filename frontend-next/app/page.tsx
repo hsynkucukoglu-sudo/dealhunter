@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { getProducts } from '@/lib/api'
+import { buildHomePageSchema } from '@/lib/schema'
 import { ProductsPage } from '@/components/ProductsPage'
 
 export const metadata: Metadata = {
@@ -10,5 +11,18 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   const products = await getProducts()
-  return <ProductsPage initialProducts={products} />
+  const schemas = buildHomePageSchema(products)
+
+  return (
+    <>
+      {schemas.map((schema, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
+      <ProductsPage initialProducts={products} />
+    </>
+  )
 }

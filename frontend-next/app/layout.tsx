@@ -23,9 +23,15 @@ export const metadata: Metadata = {
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'DealHunter4U',
+  name: 'DealHunter',
   url: 'https://www.dealhunter4u.nl',
-  logo: 'https://www.dealhunter4u.nl/logo.svg',
+  logo: {
+    '@type': 'ImageObject',
+    url: 'https://www.dealhunter4u.nl/icon-512x512.png',
+    width: 512,
+    height: 512,
+  },
+  sameAs: ['https://www.dealhunter4u.nl'],
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
