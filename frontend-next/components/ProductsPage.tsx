@@ -10,6 +10,7 @@ import { useShoppingList } from '@/context/ShoppingListContext'
 import { useLanguage } from '@/context/LanguageContext'
 import { DealHunterLogo } from './DealHunterLogo'
 import { AdBanner } from './AdBanner'
+import { buildComparisonGroups } from '@/lib/similarity'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
@@ -98,6 +99,8 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
       .sort((a, b) => b.discount - a.discount)
       .slice(0, 5)
   , [products])
+
+  const comparisonGroups = useMemo(() => buildComparisonGroups(products), [products])
 
   return (
     <div className="min-h-screen" style={{ background: '#F5EDE3' }}>
@@ -321,6 +324,54 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
                   transition={{ duration: 0.3, delay: i * 0.06 }}
                 >
                   <ProductCard product={product} />
+                </motion.div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* PRIJSVERGELIJKING */}
+        {comparisonGroups.length > 0 && searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
+          <section className="mb-12">
+            <div className="flex items-center gap-2 mb-5">
+              <span className="material-symbols-outlined material-filled" style={{ color: '#1B9E4B' }}>compare_arrows</span>
+              <h2 className="text-xl font-headline font-bold" style={{ color: '#1A1A1A' }}>
+                {lang === 'tr' ? 'Fiyat Karşılaştırma' : lang === 'en' ? 'Price Comparison' : 'Prijsvergelijking'}
+              </h2>
+            </div>
+            <div className="flex flex-col gap-4">
+              {comparisonGroups.map((group, gi) => (
+                <motion.div
+                  key={gi}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: gi * 0.05 }}
+                  className="rounded-2xl overflow-hidden"
+                  style={{ background: 'rgba(255,255,255,0.75)', border: '1px solid rgba(201,193,182,0.4)' }}
+                >
+                  <div className="px-5 py-3 border-b" style={{ borderColor: 'rgba(201,193,182,0.3)' }}>
+                    <p className="font-headline font-bold text-sm" style={{ color: '#1A1A1A' }}>{group.name}</p>
+                  </div>
+                  <div className="divide-y" style={{ borderColor: 'rgba(201,193,182,0.2)' }}>
+                    {group.products
+                      .sort((a, b) => a.discountedPrice - b.discountedPrice)
+                      .map(p => (
+                        <div key={p.id} className="flex items-center justify-between px-5 py-3">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2.5 h-2.5 rounded-full flex-none" style={{ background: MARKET_COLORS[p.market] || '#8C8478' }} />
+                            <span className="text-sm font-medium" style={{ color: '#1A1A1A' }}>{p.market}</span>
+                            {p.id === group.cheapest.id && (
+                              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#1B9E4B', color: 'white' }}>
+                                {lang === 'tr' ? 'En ucuz' : lang === 'en' ? 'Cheapest' : 'Goedkoopst'}
+                              </span>
+                            )}
+                          </div>
+                          <span className="text-lg font-headline font-black" style={{ color: p.id === group.cheapest.id ? '#1B9E4B' : '#1A1A1A' }}>
+                            €{p.discountedPrice.toFixed(2)}
+                          </span>
+                        </div>
+                      ))}
+                  </div>
                 </motion.div>
               ))}
             </div>
