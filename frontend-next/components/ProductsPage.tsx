@@ -143,6 +143,14 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
     filteredProducts.reduce((sum, p) => sum + (p.originalPrice > p.discountedPrice ? p.originalPrice - p.discountedPrice : 0), 0)
   , [filteredProducts])
 
+  const expiringSoon = useMemo(() =>
+    products.filter(p => {
+      if (!p.expiresAt) return false
+      const diff = Math.ceil((new Date(p.expiresAt).getTime() - Date.now()) / 86400000)
+      return diff >= 0 && diff <= 2
+    }).slice(0, 8)
+  , [products])
+
   const topDeals = useMemo(() =>
     [...products]
       .filter(p => p.originalPrice > p.discountedPrice && p.discount > 0)
@@ -369,6 +377,45 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
             </motion.div>
           </div>
         </section>
+
+        {/* SON GEÇERLİLİK TARİHİ UYARISI */}
+        {expiringSoon.length > 0 && searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
+          <section className="mb-12">
+            <div className="flex items-center gap-2 mb-5">
+              <span className="material-symbols-outlined material-filled animate-pulse" style={{ color: '#E33D26' }}>alarm</span>
+              <h2 className="text-xl font-headline font-bold" style={{ color: '#1A1A1A' }}>
+                {lang === 'tr' ? 'Son Geçerlilik Tarihi' : lang === 'en' ? 'Expiring Soon' : 'Verloopt Binnenkort'}
+              </h2>
+              <span className="text-[11px] font-bold px-2.5 py-1 rounded-full" style={{ background: '#E33D26', color: 'white' }}>
+                {lang === 'tr' ? 'Son 2 gün!' : lang === 'en' ? 'Last 2 days!' : 'Laatste 2 dagen!'}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+              {expiringSoon.map((product, i) => {
+                const daysLeft = Math.ceil((new Date(product.expiresAt).getTime() - Date.now()) / 86400000)
+                const isToday = daysLeft === 0
+                return (
+                  <motion.div
+                    key={product.id}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: i * 0.06 }}
+                    style={{
+                      borderRadius: '24px',
+                      outline: `2px solid ${isToday ? '#E33D26' : '#FF8C00'}`,
+                      outlineOffset: '-2px',
+                      boxShadow: isToday
+                        ? '0 0 20px rgba(227,61,38,0.18)'
+                        : '0 0 14px rgba(255,140,0,0.14)',
+                    }}
+                  >
+                    <ProductCard product={product} />
+                  </motion.div>
+                )
+              })}
+            </div>
+          </section>
+        )}
 
         {/* TOP 5 DEALS */}
         {topDeals.length > 0 && searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
