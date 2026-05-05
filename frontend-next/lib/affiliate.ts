@@ -19,7 +19,7 @@ const AFFILIATE_MAP: Record<string, AffiliateEntry> = {
     rel: 'noopener noreferrer sponsored',
   },
   Lidl: {
-    url: 'https://www.lidl.nl/c/aanbiedingen/s10007177',
+    url: 'https://www.lidl.nl/aanbiedingen',
     rel: 'noopener noreferrer sponsored',
   },
   Dirk: {
