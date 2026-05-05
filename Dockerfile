@@ -1,19 +1,9 @@
 # ========================================
-# DEALHUNTER MARKET — Production Dockerfile
+# DEALHUNTER MARKET — Backend Dockerfile
 # Fetch-only scraper: No Chromium needed
-# Build: 2026-04-21
+# Build: 2026-05-05
 # ========================================
 
-# Stage 1: Build Frontend
-FROM node:20-slim AS frontend-builder
-
-WORKDIR /app/frontend
-COPY frontend/package*.json ./
-RUN npm ci
-COPY frontend/ ./
-RUN npm run build
-
-# Stage 2: Production Image
 FROM node:20-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -24,15 +14,10 @@ ENV NODE_ENV=production
 
 WORKDIR /app
 
-# Install backend dependencies
 COPY backend/package*.json ./backend/
 RUN cd backend && npm ci --omit=dev
 
-# Copy backend source
 COPY backend/ ./backend/
-
-# Copy frontend build from stage 1
-COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
 
 EXPOSE 3001
 
