@@ -12,6 +12,7 @@ import { DealHunterLogo } from './DealHunterLogo'
 import { AdBanner } from './AdBanner'
 import { buildComparisonGroups } from '@/lib/similarity'
 import { useFavorites } from '@/context/FavoritesContext'
+import { getRegionByPostalCode, RegionInfo } from '@/lib/regions'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
@@ -26,6 +27,9 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
   const [watchlistToast, setWatchlistToast] = useState<string | null>(null)
   const [canInstall, setCanInstall] = useState(false)
+  const [regionFilter, setRegionFilter] = useState<RegionInfo | null>(null)
+  const [showRegionInput, setShowRegionInput] = useState(false)
+  const [postalInputValue, setPostalInputValue] = useState('')
   const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promise<{ outcome: string }> } | null>(null)
 
   const { itemCount, setIsCartOpen } = useShoppingList()
@@ -37,6 +41,24 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  useEffect(() => {
+    const saved = localStorage.getItem('dh_postal_code')
+    if (saved) {
+      setRegionFilter(getRegionByPostalCode(saved))
+      setPostalInputValue(saved)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!showRegionInput) return
+    const close = (e: MouseEvent) => {
+      const target = e.target as Element
+      if (!target.closest('.region-popover')) setShowRegionInput(false)
+    }
+    document.addEventListener('mousedown', close)
+    return () => document.removeEventListener('mousedown', close)
+  }, [showRegionInput])
 
   useEffect(() => {
     if (!watchlist.length || !products.length) return
@@ -90,6 +112,19 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
     }
   }
 
+  const applyRegion = (code: string) => {
+    const region = getRegionByPostalCode(code)
+    setRegionFilter(region)
+    localStorage.setItem('dh_postal_code', code)
+    setShowRegionInput(false)
+  }
+
+  const clearRegion = () => {
+    setRegionFilter(null)
+    setPostalInputValue('')
+    localStorage.removeItem('dh_postal_code')
+  }
+
   const availableMarkets = useMemo(() =>
     Array.from(new Set(products.map(p => p.market))).sort()
   , [products])
@@ -100,8 +135,9 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
     const matchesMarket = selectedMarket === 'all' || p.market === selectedMarket
     const matchesCategory = selectedCategory === 'all' || p.category === selectedCategory
     const matchesFavorites = showFavoritesOnly ? favorites.some(f => f.id === p.id) : true
-    return matchesSearch && matchesCampaign && matchesMarket && matchesCategory && matchesFavorites
-  }), [products, searchTerm, showCampaignsOnly, selectedMarket, selectedCategory, showFavoritesOnly, favorites])
+    const matchesRegion = regionFilter ? regionFilter.markets.includes(p.market) : true
+    return matchesSearch && matchesCampaign && matchesMarket && matchesCategory && matchesFavorites && matchesRegion
+  }), [products, searchTerm, showCampaignsOnly, selectedMarket, selectedCategory, showFavoritesOnly, favorites, regionFilter])
 
   const potentialSavings = useMemo(() =>
     filteredProducts.reduce((sum, p) => sum + (p.originalPrice > p.discountedPrice ? p.originalPrice - p.discountedPrice : 0), 0)
@@ -440,6 +476,51 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
                     <span className="material-symbols-outlined text-base">bolt</span>
                     {t.allMarkets}
                   </motion.button>
+                  <div className="relative flex-none">
+                    <motion.button whileTap={{ scale: 0.95 }}
+                      onClick={() => setShowRegionInput(!showRegionInput)}
+                      className={`market-pill ${regionFilter ? 'market-pill-active' : ''}`}>
+                      <span className="material-symbols-outlined text-base">location_on</span>
+                      {regionFilter ? regionFilter.city : (lang === 'tr' ? 'Bölgem' : lang === 'en' ? 'My Region' : 'Mijn Regio')}
+                      {regionFilter && (
+                        <span
+                          onClick={(e) => { e.stopPropagation(); clearRegion() }}
+                          className="ml-1 leading-none font-bold text-base cursor-pointer hover:opacity-70"
+                        >×</span>
+                      )}
+                    </motion.button>
+                    {showRegionInput && (
+                      <div className="region-popover absolute top-full left-0 mt-2 z-50 rounded-2xl shadow-xl p-4 w-56"
+                        style={{ background: 'white', border: '1px solid rgba(201,193,182,0.5)' }}>
+                        <p className="text-xs font-bold mb-2.5" style={{ color: '#1A1A1A' }}>
+                          {lang === 'tr' ? 'Posta Kodun' : lang === 'en' ? 'Your postal code' : 'Jouw postcode'}
+                        </p>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            maxLength={7}
+                            placeholder="1234 AB"
+                            value={postalInputValue}
+                            onChange={(e) => setPostalInputValue(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && postalInputValue.replace(/\D/g,'').length >= 4 && applyRegion(postalInputValue)}
+                            className="flex-1 rounded-lg px-3 py-1.5 text-sm focus:outline-none"
+                            style={{ border: '1.5px solid #C9C1B6', color: '#1A1A1A' }}
+                            autoFocus
+                          />
+                          <button
+                            onClick={() => postalInputValue.replace(/\D/g,'').length >= 4 && applyRegion(postalInputValue)}
+                            className="px-3 py-1.5 rounded-lg text-sm font-bold text-white flex-none"
+                            style={{ background: '#E33D26' }}
+                          >
+                            OK
+                          </button>
+                        </div>
+                        <p className="text-[10px] mt-2" style={{ color: '#8C8478' }}>
+                          {lang === 'tr' ? 'Yalnızca bölgendeki marketler gösterilir' : lang === 'en' ? 'Only markets in your area' : 'Alleen markten in jouw regio'}
+                        </p>
+                      </div>
+                    )}
+                  </div>
                   <div className="w-px h-6 flex-none" style={{ background: '#C9C1B6' }} />
                   {availableMarkets.map(market => (
                     <motion.button
@@ -516,6 +597,51 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
                         {lang === 'tr' ? 'Favoriler' : lang === 'en' ? 'Favorites' : 'Favorieten'} ({favorites.length})
                       </motion.button>
                     )}
+                    <div className="region-popover relative flex-none">
+                      <motion.button whileTap={{ scale: 0.95 }}
+                        onClick={() => setShowRegionInput(!showRegionInput)}
+                        className={`market-pill ${regionFilter ? 'market-pill-active' : ''}`}>
+                        <span className="material-symbols-outlined text-base">location_on</span>
+                        {regionFilter ? regionFilter.city : (lang === 'tr' ? 'Bölgem' : lang === 'en' ? 'My Region' : 'Mijn Regio')}
+                        {regionFilter && (
+                          <span
+                            onClick={(e) => { e.stopPropagation(); clearRegion() }}
+                            className="ml-1 leading-none font-bold text-base cursor-pointer hover:opacity-70"
+                          >×</span>
+                        )}
+                      </motion.button>
+                      {showRegionInput && (
+                        <div className="region-popover absolute top-full left-0 mt-2 z-50 rounded-2xl shadow-xl p-4 w-56"
+                          style={{ background: 'white', border: '1px solid rgba(201,193,182,0.5)' }}>
+                          <p className="text-xs font-bold mb-2.5" style={{ color: '#1A1A1A' }}>
+                            {lang === 'tr' ? 'Posta Kodun' : lang === 'en' ? 'Your postal code' : 'Jouw postcode'}
+                          </p>
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              maxLength={7}
+                              placeholder="1234 AB"
+                              value={postalInputValue}
+                              onChange={(e) => setPostalInputValue(e.target.value)}
+                              onKeyDown={(e) => e.key === 'Enter' && postalInputValue.replace(/\D/g,'').length >= 4 && applyRegion(postalInputValue)}
+                              className="flex-1 rounded-lg px-3 py-1.5 text-sm focus:outline-none"
+                              style={{ border: '1.5px solid #C9C1B6', color: '#1A1A1A' }}
+                              autoFocus
+                            />
+                            <button
+                              onClick={() => postalInputValue.replace(/\D/g,'').length >= 4 && applyRegion(postalInputValue)}
+                              className="px-3 py-1.5 rounded-lg text-sm font-bold text-white flex-none"
+                              style={{ background: '#E33D26' }}
+                            >
+                              OK
+                            </button>
+                          </div>
+                          <p className="text-[10px] mt-2" style={{ color: '#8C8478' }}>
+                            {lang === 'tr' ? 'Yalnızca bölgendeki marketler gösterilir' : lang === 'en' ? 'Only markets in your area' : 'Alleen markten in jouw regio'}
+                          </p>
+                        </div>
+                      )}
+                    </div>
                     <div className="w-px h-6 flex-none" style={{ background: '#C9C1B6' }} />
                     {availableMarkets.map(market => (
                       <motion.button key={market} whileTap={{ scale: 0.95 }}
