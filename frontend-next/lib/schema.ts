@@ -12,13 +12,12 @@ export function resolveImageUrl(imageUrl: string | null): string | null {
   return imageUrl
 }
 
-function buildProductSchema(p: Product) {
-  const image = resolveImageUrl(p.imageUrl)
+function buildProductSchema(p: Product, image: string) {
   return {
     '@type': 'Product',
     name: p.name,
+    image,
     brand: { '@type': 'Brand', name: p.market },
-    ...(image ? { image } : {}),
     offers: {
       '@type': 'Offer',
       price: p.discountedPrice,
@@ -30,6 +29,14 @@ function buildProductSchema(p: Product) {
   }
 }
 
+// Only products with a resolvable image are included — prevents "image missing" errors in Search Console
+function withImages(products: Product[]) {
+  return products.flatMap(p => {
+    const image = resolveImageUrl(p.imageUrl)
+    return image ? [{ product: p, image }] : []
+  })
+}
+
 export function buildItemListSchema(
   name: string,
   description: string,
@@ -37,6 +44,7 @@ export function buildItemListSchema(
   products: Product[],
   limit = 50,
 ) {
+  const eligible = withImages(products).slice(0, limit)
   return {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
@@ -44,16 +52,17 @@ export function buildItemListSchema(
     description,
     url: `${SITE_URL}${url}`,
     numberOfItems: products.length,
-    itemListElement: products.slice(0, limit).map((p, i) => ({
+    itemListElement: eligible.map(({ product, image }, i) => ({
       '@type': 'ListItem',
       position: i + 1,
-      item: buildProductSchema(p),
+      item: buildProductSchema(product, image),
     })),
   }
 }
 
 export function buildHomePageSchema(products: Product[]) {
   const markets = [...new Set(products.map(p => p.market))].join(', ')
+  const eligible = withImages(products).slice(0, 50)
   return [
     {
       '@context': 'https://schema.org',
@@ -74,10 +83,10 @@ export function buildHomePageSchema(products: Product[]) {
       description: `Actuele aanbiedingen van ${markets}`,
       url: SITE_URL,
       numberOfItems: products.length,
-      itemListElement: products.slice(0, 50).map((p, i) => ({
+      itemListElement: eligible.map(({ product, image }, i) => ({
         '@type': 'ListItem',
         position: i + 1,
-        item: buildProductSchema(p),
+        item: buildProductSchema(product, image),
       })),
     },
   ]
