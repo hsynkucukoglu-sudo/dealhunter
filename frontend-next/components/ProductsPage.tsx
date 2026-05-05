@@ -11,6 +11,7 @@ import { useLanguage } from '@/context/LanguageContext'
 import { DealHunterLogo } from './DealHunterLogo'
 import { AdBanner } from './AdBanner'
 import { buildComparisonGroups } from '@/lib/similarity'
+import { useFavorites } from '@/context/FavoritesContext'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
@@ -22,17 +23,29 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
   const [selectedMarket, setSelectedMarket] = useState('all')
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [navScrolled, setNavScrolled] = useState(false)
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
+  const [watchlistToast, setWatchlistToast] = useState<string | null>(null)
   const [canInstall, setCanInstall] = useState(false)
   const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promise<{ outcome: string }> } | null>(null)
 
   const { itemCount, setIsCartOpen } = useShoppingList()
   const { t, lang } = useLanguage()
+  const { favorites, watchlist } = useFavorites()
 
   useEffect(() => {
     const handleScroll = () => setNavScrolled(window.scrollY > 60)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  useEffect(() => {
+    if (!watchlist.length || !products.length) return
+    const hits = watchlist.filter(w => products.some(p => p.id === w.id && p.discountedPrice <= w.discountedPrice))
+    if (hits.length > 0) {
+      setWatchlistToast(hits[0].name)
+      setTimeout(() => setWatchlistToast(null), 5000)
+    }
+  }, [watchlist, products])
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -86,8 +99,9 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
     const matchesCampaign = showCampaignsOnly ? p.isCampaign : true
     const matchesMarket = selectedMarket === 'all' || p.market === selectedMarket
     const matchesCategory = selectedCategory === 'all' || p.category === selectedCategory
-    return matchesSearch && matchesCampaign && matchesMarket && matchesCategory
-  }), [products, searchTerm, showCampaignsOnly, selectedMarket, selectedCategory])
+    const matchesFavorites = showFavoritesOnly ? favorites.some(f => f.id === p.id) : true
+    return matchesSearch && matchesCampaign && matchesMarket && matchesCategory && matchesFavorites
+  }), [products, searchTerm, showCampaignsOnly, selectedMarket, selectedCategory, showFavoritesOnly, favorites])
 
   const potentialSavings = useMemo(() =>
     filteredProducts.reduce((sum, p) => sum + (p.originalPrice > p.discountedPrice ? p.originalPrice - p.discountedPrice : 0), 0)
@@ -104,6 +118,20 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
 
   return (
     <div className="min-h-screen" style={{ background: '#F5EDE3' }}>
+      {/* WATCHLIST TOAST */}
+      <AnimatePresence>
+        {watchlistToast && (
+          <motion.div
+            initial={{ y: -60, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -60, opacity: 0 }}
+            className="fixed top-20 left-1/2 -translate-x-1/2 z-[300] px-5 py-3 rounded-full text-sm font-bold shadow-lg"
+            style={{ background: '#FF8C00', color: 'white', whiteSpace: 'nowrap' }}
+          >
+            🔔 {watchlistToast} — {lang === 'tr' ? 'hâlâ satışta!' : lang === 'en' ? 'still on sale!' : 'nog steeds in aanbieding!'}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* FLOATING PILL NAVBAR */}
       <motion.nav
@@ -480,6 +508,14 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
                       <span className="material-symbols-outlined text-base">local_fire_department</span>
                       {t.campaignsOnly}
                     </motion.button>
+                    {favorites.length > 0 && (
+                      <motion.button whileTap={{ scale: 0.95 }}
+                        onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
+                        className={`market-pill ${showFavoritesOnly ? 'market-pill-active' : ''}`}>
+                        <span className="material-symbols-outlined text-base" style={{ fontVariationSettings: showFavoritesOnly ? '"FILL" 1' : '"FILL" 0' }}>favorite</span>
+                        {lang === 'tr' ? 'Favoriler' : lang === 'en' ? 'Favorites' : 'Favorieten'} ({favorites.length})
+                      </motion.button>
+                    )}
                     <div className="w-px h-6 flex-none" style={{ background: '#C9C1B6' }} />
                     {availableMarkets.map(market => (
                       <motion.button key={market} whileTap={{ scale: 0.95 }}

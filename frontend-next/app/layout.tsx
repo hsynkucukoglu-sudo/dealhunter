@@ -3,6 +3,7 @@ import { ShoppingListProvider } from '@/context/ShoppingListContext'
 import { LanguageProvider } from '@/context/LanguageContext'
 import { CookieBanner } from '@/components/CookieBanner'
 import { AdSenseScript } from '@/components/AdSenseScript'
+import { FavoritesProvider } from '@/context/FavoritesContext'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -42,11 +43,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <LanguageProvider>
-          <ShoppingListProvider>
-            {children}
-            <CookieBanner />
-            <AdSenseScript />
-          </ShoppingListProvider>
+          <FavoritesProvider>
+            <ShoppingListProvider>
+              {children}
+              <CookieBanner />
+              <AdSenseScript />
+            </ShoppingListProvider>
+          </FavoritesProvider>
         </LanguageProvider>
       </body>
     </html>

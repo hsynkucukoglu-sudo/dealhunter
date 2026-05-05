@@ -6,12 +6,14 @@ import { MARKET_COLORS } from '@/lib/types'
 import { useShoppingList } from '@/context/ShoppingListContext'
 import { useLanguage } from '@/context/LanguageContext'
 import { getAffiliateLink } from '@/lib/affiliate'
+import { useFavorites } from '@/context/FavoritesContext'
 
 export function ProductCard({ product }: { product: Product }) {
   const { addToCart } = useShoppingList()
   const { t } = useLanguage()
 
   const affiliateLink = getAffiliateLink(product.market)
+  const { isFavorite, isWatching, toggleFavorite, toggleWatch } = useFavorites()
   const hasValidDiscount = product.originalPrice > product.discountedPrice && product.originalPrice > 0
 
   const daysLeft = (() => {
@@ -61,6 +63,28 @@ export function ProductCard({ product }: { product: Product }) {
         >
           <span className="material-symbols-outlined material-filled">shopping_basket</span>
         </button>
+        <div className="absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <button
+            onClick={(e) => { e.stopPropagation(); toggleFavorite(product) }}
+            className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
+            style={{ background: 'rgba(255,255,255,0.9)' }}
+            title="Favorilere ekle"
+          >
+            <span className="material-symbols-outlined text-base" style={{ color: isFavorite(product.id) ? '#E33D26' : '#8C8478', fontVariationSettings: isFavorite(product.id) ? '"FILL" 1' : '"FILL" 0' }}>
+              favorite
+            </span>
+          </button>
+          <button
+            onClick={(e) => { e.stopPropagation(); toggleWatch(product) }}
+            className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
+            style={{ background: 'rgba(255,255,255,0.9)' }}
+            title="Haber ver"
+          >
+            <span className="material-symbols-outlined text-base" style={{ color: isWatching(product.id) ? '#FF8C00' : '#8C8478', fontVariationSettings: isWatching(product.id) ? '"FILL" 1' : '"FILL" 0' }}>
+              notifications
+            </span>
+          </button>
+        </div>
       </div>
 
       <div className="p-4 flex-1 flex flex-col">
