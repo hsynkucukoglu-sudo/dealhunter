@@ -13,6 +13,7 @@ import { AdBanner } from './AdBanner'
 import { buildComparisonGroups } from '@/lib/similarity'
 import { useFavorites } from '@/context/FavoritesContext'
 import { PushNotificationButton } from './PushNotificationButton'
+import { detectCampaignType, CAMPAIGN_FILTERS, CampaignType } from '@/lib/campaignType'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
@@ -25,6 +26,7 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [navScrolled, setNavScrolled] = useState(false)
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
+  const [selectedCampaign, setSelectedCampaign] = useState<CampaignType | 'all'>('all')
   const [watchlistToast, setWatchlistToast] = useState<string | null>(null)
   const [canInstall, setCanInstall] = useState(false)
 const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promise<{ outcome: string }> } | null>(null)
@@ -101,8 +103,15 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
     const matchesMarket = selectedMarket === 'all' || p.market === selectedMarket
     const matchesCategory = selectedCategory === 'all' || p.category === selectedCategory
     const matchesFavorites = showFavoritesOnly ? favorites.some(f => f.id === p.id) : true
-    return matchesSearch && matchesCampaign && matchesMarket && matchesCategory && matchesFavorites
-  }), [products, searchTerm, showCampaignsOnly, selectedMarket, selectedCategory, showFavoritesOnly, favorites])
+    const matchesCampaignType = (() => {
+      if (selectedCampaign === 'all') return true
+      const discountPct = p.originalPrice > p.discountedPrice && p.originalPrice > 0
+        ? (p.discount || Math.round(((p.originalPrice - p.discountedPrice) / p.originalPrice) * 100))
+        : 0
+      return detectCampaignType(p.name, discountPct).type === selectedCampaign
+    })()
+    return matchesSearch && matchesCampaign && matchesMarket && matchesCategory && matchesFavorites && matchesCampaignType
+  }), [products, searchTerm, showCampaignsOnly, selectedMarket, selectedCategory, showFavoritesOnly, favorites, selectedCampaign])
 
   const potentialSavings = useMemo(() =>
     filteredProducts.reduce((sum, p) => sum + (p.originalPrice > p.discountedPrice ? p.originalPrice - p.discountedPrice : 0), 0)
@@ -155,14 +164,14 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
 
           <div className="hidden md:flex gap-1 items-center">
             <button
-              onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setSelectedCategory('all') }}
+              onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setSelectedCategory('all'); setSelectedCampaign('all') }}
               className="px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-all hover:bg-black/5"
               style={{ color: '#1A1A1A' }}
             >
               {t.scanBtn}
             </button>
             <button
-              onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(true); setSelectedCategory('all') }}
+              onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(true); setSelectedCategory('all'); setSelectedCampaign('all') }}
               className="px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-all hover:bg-black/5"
               style={{ color: '#6B6259' }}
             >
@@ -539,6 +548,23 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                 </div>
               </section>
 
+              {/* Campaign Type Filter Chips */}
+              <section className="mb-6 -mt-6">
+                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2">
+                  {CAMPAIGN_FILTERS.map(f => (
+                    <motion.button
+                      key={f.type}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setSelectedCampaign(f.type === selectedCampaign ? 'all' : f.type)}
+                      className={`market-pill flex-none ${selectedCampaign === f.type ? 'market-pill-active' : ''}`}
+                    >
+                      <span>{f.emoji}</span>
+                      {f.label}
+                    </motion.button>
+                  ))}
+                </div>
+              </section>
+
               {/* AD — Kategori altı */}
               <AdBanner slot="5913072775" format="auto" className="mb-10" />
 
@@ -547,13 +573,13 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                 <section className="mb-12">
                   <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-2">
                     <motion.button whileTap={{ scale: 0.95 }}
-                      onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(false) }}
+                      onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setSelectedCampaign('all') }}
                       className={`market-pill ${selectedMarket === 'all' && !showCampaignsOnly ? 'market-pill-active' : ''}`}>
                       <span className="material-symbols-outlined text-base">bolt</span>
                       {t.allMarkets}
                     </motion.button>
                     <motion.button whileTap={{ scale: 0.95 }}
-                      onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(true) }}
+                      onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(true); setSelectedCampaign('all') }}
                       className={`market-pill ${showCampaignsOnly ? 'market-pill-active' : ''}`}>
                       <span className="material-symbols-outlined text-base">local_fire_department</span>
                       {t.campaignsOnly}
@@ -587,7 +613,9 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                 <div className="flex items-baseline justify-between mb-8">
                   <div>
                     <h2 className="text-2xl md:text-3xl font-headline font-bold" style={{ color: '#1A1A1A' }}>
-                      {selectedMarket === 'all' ? (showCampaignsOnly ? t.campaignsOnly : t.scanBtn) : selectedMarket}
+                      {selectedCampaign !== 'all'
+                        ? (CAMPAIGN_FILTERS.find(f => f.type === selectedCampaign)?.label ?? t.scanBtn)
+                        : selectedMarket === 'all' ? (showCampaignsOnly ? t.campaignsOnly : t.scanBtn) : selectedMarket}
                     </h2>
                     <p className="text-sm mt-1" style={{ color: '#8C8478' }}>{filteredProducts.length} {t.activeProducts}</p>
                   </div>
@@ -617,7 +645,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         }}
       >
         <button
-          onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setSelectedCategory('all') }}
+          onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setSelectedCategory('all'); setSelectedCampaign('all') }}
           className="flex flex-col items-center justify-center p-2 cursor-pointer rounded-2xl"
           style={{ background: '#E33D26', color: 'white', marginTop: '-12px', boxShadow: '0 4px 16px rgba(227,61,38,0.3)' }}
         >

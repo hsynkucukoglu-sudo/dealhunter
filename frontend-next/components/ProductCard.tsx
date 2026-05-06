@@ -8,6 +8,7 @@ import { useLanguage } from '@/context/LanguageContext'
 import { getAffiliateLink } from '@/lib/affiliate'
 import { useFavorites } from '@/context/FavoritesContext'
 import { calcUnitPrice } from '@/lib/unitPrice'
+import { detectCampaignType } from '@/lib/campaignType'
 
 export function ProductCard({ product }: { product: Product }) {
   const { addToCart } = useShoppingList()
@@ -27,6 +28,7 @@ export function ProductCard({ product }: { product: Product }) {
     : 0
 
   const unitPrice = calcUnitPrice(product.name, product.discountedPrice)
+  const campaign = detectCampaignType(product.name, discountPercent)
 
   const imgSrc = product.imageUrl
     ? product.imageUrl.startsWith('ah-product-id:')
@@ -99,6 +101,14 @@ export function ProductCard({ product }: { product: Product }) {
           <p className="text-xs font-headline uppercase tracking-widest" style={{ color: '#8C8478' }}>
             {product.market}
           </p>
+          {campaign.type && (
+            <span
+              className="text-[9px] font-bold px-1.5 py-0.5 rounded-full ml-auto whitespace-nowrap"
+              style={{ background: campaign.bg, color: campaign.color }}
+            >
+              {campaign.label}
+            </span>
+          )}
         </div>
 
         <h4 className="text-base font-headline font-bold leading-tight mb-3 line-clamp-2" style={{ color: '#1A1A1A' }}>
