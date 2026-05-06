@@ -50,34 +50,87 @@ async function scrapeDirk() {
   }
 }
 
-// ─── JUMBO — SSR cheerio ─────────────────────────────────────────────────────
+// ─── JUMBO — JSON API + SSR cheerio fallback ─────────────────────────────────
 async function scrapeJumbo() {
-  console.log('🏪 [Jumbo] jumbo.com/aanbiedingen...')
+  console.log('🏪 [Jumbo] aanbiedingen API taranıyor...')
   try {
+    // Strateji 1: Jumbo promotions JSON API
+    const apiRes = await fetch(
+      'https://www.jumbo.com/api/2.0/promotion/?sorteer=relevantie&page=0&pageSize=100&view=grid',
+      { headers: { ...HEADERS, 'Accept': 'application/json' } }
+    )
+    if (apiRes.ok) {
+      const json = await apiRes.json()
+      const proms = json.promotionList?.promotions || json.promotions || []
+      if (proms.length > 0) {
+        const results = []
+        for (const p of proms) {
+          const name = p.name || p.title || p.promotionTitle
+          if (!name || name.length < 3) continue
+          const discountedPrice = parseFloat(
+            (p.price?.amount ?? p.currentPrice ?? p.promotionPrice ?? '').toString().replace(',', '.')
+          ) || 0
+          const promoText = p.promotionDescription || p.description || ''
+          const promoMatch = promoText.match(/(1\s*\+\s*1|2\s*\+\s*1|3\s+halen\s+2)/i)
+          if (!discountedPrice && !promoMatch) continue
+          const img = p.imageUrl || p.image || null
+          results.push({
+            name: promoMatch && !discountedPrice ? `${promoMatch[0].trim()} — ${name}` : name,
+            market: 'Jumbo',
+            originalPrice: discountedPrice ? parseFloat((discountedPrice * 1.35).toFixed(2)) : 0,
+            discountedPrice,
+            imageUrl: img && !img.includes('logo') ? img : null,
+            isCampaign: true,
+            source: 'jumbo.com/api - promotions',
+            expiresAt: EXPIRES_AT,
+          })
+        }
+        if (results.length > 0) {
+          console.log(`  ✅ Jumbo: ${results.length} ürün (API)`)
+          return results
+        }
+      }
+    }
+
+    // Strateji 2: HTML cheerio fallback — daha geniş selektörler
     const res = await fetch('https://www.jumbo.com/aanbiedingen/nu', { headers: HEADERS })
     const html = await res.text()
     const $ = cheerio.load(html)
     const results = []
+    const seen = new Set()
 
-    $('li.jum-card.card-promotion').each((_, el) => {
+    const selectors = [
+      'li.jum-card.card-promotion',
+      '[class*="promotion-card"]',
+      '[class*="offer-card"]',
+      '[data-testid*="promotion"]',
+      'article[class*="product"]',
+    ]
+    const cards = $(selectors.join(', '))
+
+    cards.each((_, el) => {
       const card = $(el)
       const img = card.find('img').first()
-      const imgSrc = img.attr('src') || img.attr('data-src') || null
-      const text = card.text()
-      const titleEl = card.find('h3, [data-testid="jum-heading"] a, .title').first()
-      const name = titleEl.text().trim() || card.find('a[href*="/aanbied"]').first().text().trim()
-      if (!name || name.length < 3) return
+      const imgSrc = img.attr('src') || img.attr('data-src') || img.attr('data-lazy-src') || null
+      const text = card.text().replace(/\s+/g, ' ').trim()
+      const titleEl = card.find('h3, h2, [data-testid="jum-heading"] a, [class*="title"], [class*="name"]').first()
+      const name = titleEl.text().trim() || card.find('a[href*="/product"]').first().text().trim()
+      if (!name || name.length < 3 || seen.has(name)) return
 
-      // Fiyat: "voor X,XX" veya "€X,XX" veya herhangi bir fiyat
-      const priceMatch = text.match(/voor\s+(\d+[,.]\d+)/i) || text.match(/€\s*(\d+[,.]\d+)/)
-      const discountedPrice = priceMatch ? parseFloat(priceMatch[1].replace(',', '.')) : 0
+      const priceMatch = text.match(/voor\s+(\d+[,.]\d+)/i) || text.match(/€\s*(\d+[,.]\d+)/) || text.match(/(\d+)[,.](\d{2})/)
+      let discountedPrice = 0
+      if (priceMatch) {
+        discountedPrice = priceMatch[2]
+          ? parseFloat(`${priceMatch[1]}.${priceMatch[2]}`)
+          : parseFloat(priceMatch[1].replace(',', '.'))
+      }
 
-      // 1+1 gratis gibi kampanyalarda fiyat olmayabilir — yine de ekle
-      const promoMatch = text.match(/(1\+1|2\+1|\d+\+\d+)\s*gratis/i)
+      const promoMatch = text.match(/(1\+1|2\+1|\d+\s*\+\s*\d+|3\s+halen\s+2)\s*gratis?/i)
       if (!discountedPrice && !promoMatch) return
+      seen.add(name)
 
       results.push({
-        name: promoMatch && !discountedPrice ? `${promoMatch[0].toUpperCase()} — ${name}` : name,
+        name: promoMatch && !discountedPrice ? `${promoMatch[0].trim()} — ${name}` : name,
         market: 'Jumbo',
         originalPrice: discountedPrice ? parseFloat((discountedPrice * 1.35).toFixed(2)) : 0,
         discountedPrice,
@@ -87,6 +140,48 @@ async function scrapeJumbo() {
         expiresAt: EXPIRES_AT,
       })
     })
+
+    // Strateji 3: Next.js data embed
+    if (!results.length) {
+      const buildId = html.match(/"buildId"\s*:\s*"([^"]+)"/)?.[1]
+      if (buildId) {
+        try {
+          const dataRes = await fetch(`https://www.jumbo.com/_next/data/${buildId}/aanbiedingen/nu.json`, { headers: HEADERS })
+          if (dataRes.ok) {
+            const outer = await dataRes.json()
+            function* extractStrings(obj) {
+              if (typeof obj === 'string') yield obj
+              else if (Array.isArray(obj)) { for (const v of obj) yield* extractStrings(v) }
+              else if (obj && typeof obj === 'object') { for (const v of Object.values(obj)) yield* extractStrings(v) }
+            }
+            for (const str of extractStrings(outer)) {
+              if (!str.includes('"name"') && !str.includes('"title"')) continue
+              try {
+                const inner = JSON.parse(str)
+                const proms = Array.isArray(inner) ? inner : (inner.promotions || inner.products || [])
+                for (const p of proms) {
+                  const name = p.name || p.title
+                  if (!name || seen.has(name)) continue
+                  const dp = parseFloat((p.price?.amount ?? p.currentPrice ?? 0).toString().replace(',', '.'))
+                  if (!dp) continue
+                  seen.add(name)
+                  results.push({
+                    name,
+                    market: 'Jumbo',
+                    originalPrice: parseFloat((dp * 1.35).toFixed(2)),
+                    discountedPrice: dp,
+                    imageUrl: p.imageUrl || p.image || null,
+                    isCampaign: true,
+                    source: 'jumbo.com/_next',
+                    expiresAt: EXPIRES_AT,
+                  })
+                }
+              } catch {}
+            }
+          }
+        } catch {}
+      }
+    }
 
     console.log(`  ✅ Jumbo: ${results.length} ürün`)
     return results
@@ -246,19 +341,30 @@ async function scrapeLidl() {
   }
 }
 
+// AH response'dan numeric fiyat çıkar (obje veya number olabilir)
+function ahPrice(val) {
+  if (!val) return null
+  if (typeof val === 'number') return val
+  if (typeof val === 'object') return val.amount ?? val.value ?? val.price ?? null
+  const n = parseFloat(String(val).replace(',', '.'))
+  return isNaN(n) ? null : n
+}
+
 // Promosyon mekanizmasından efektif indirim yüzdesi ve fiyatları hesapla
 function calcAhPromo(p) {
-  const mech = (p.bonusMechanism || '').trim()
-  const label = p.discountLabels?.[0]
-  const unitPrice = p.priceBeforeBonus || p.currentPrice
+  const mech = (p.bonusMechanism || p.bonus?.description || p.promotionLabel || '').trim()
+  const label = p.discountLabels?.[0] || p.promotions?.[0]
+  const currentP = ahPrice(p.currentPrice) ?? ahPrice(p.salesPrice) ?? ahPrice(p.price)
+  const beforeP = ahPrice(p.priceBeforeBonus) ?? ahPrice(p.previousPrice) ?? ahPrice(p.originalPrice)
 
-  if (!unitPrice || !p.title) return null
+  if (!currentP || !p.title) return null
+  const unitPrice = beforeP ?? currentP
 
   // Düz fiyat indirimi: currentPrice < priceBeforeBonus
-  if (p.currentPrice && p.priceBeforeBonus && p.currentPrice < p.priceBeforeBonus) {
+  if (currentP && beforeP && currentP < beforeP) {
     return {
-      discountedPrice: p.currentPrice,
-      originalPrice: p.priceBeforeBonus,
+      discountedPrice: currentP,
+      originalPrice: beforeP,
       promoLabel: mech || label?.defaultDescription || null,
     }
   }
@@ -328,7 +434,7 @@ function calcAhPromo(p) {
 
 // ─── ALBERT HEIJN — Tüm promosyon tipleri (1+1, halve prijs, X voor Y, %) ───
 async function scrapeAlbertHeijn() {
-  console.log('🏪 [Albert Heijn] Tüm bonus katalogu taranıyor...')
+  console.log('🏪 [Albert Heijn] bonus API taranıyor...')
   try {
     const tokenRes = await fetch('https://api.ah.nl/mobile-auth/v1/auth/token/anonymous', {
       method: 'POST',
@@ -336,48 +442,136 @@ async function scrapeAlbertHeijn() {
       body: JSON.stringify({ clientId: 'appie' }),
       signal: AbortSignal.timeout(10000),
     })
-    const { access_token } = await tokenRes.json()
-    if (!access_token) { console.log('  [AH] token alınamadı'); return [] }
+    const tokenData = await tokenRes.json()
+    const access_token = tokenData.access_token
+    if (!access_token) { console.log('  [AH] token alınamadı:', JSON.stringify(tokenData)); return [] }
 
-    const h = { 'Authorization': `Bearer ${access_token}`, 'x-application': 'AHWEBSHOP' }
+    const h = {
+      'Authorization': `Bearer ${access_token}`,
+      'x-application': 'AHWEBSHOP',
+      'Accept': 'application/json',
+    }
 
-    // webshopIds=1 ile tüm bonus kataloğunu çek (334 sayfa ≈ 10000 ürün)
-    // İlk 100 sayfada tarama yap (~3000 ürün) — zaten tekrarlar çok
     const seenIds = new Set()
     const candidates = []
-    for (let page = 0; page < 100; page++) {
+
+    // Strateji 1: sortOn=DISCOUNT — aktif indirimli ürünleri çek (webshopIds olmadan)
+    for (let page = 0; page < 50; page++) {
       const r = await fetch(
-        `https://api.ah.nl/mobile-services/product/search/v2?webshopIds=1&page=${page}&size=30`,
-        { headers: h, signal: AbortSignal.timeout(10000) }
+        `https://api.ah.nl/mobile-services/product/search/v2?sortOn=DISCOUNT&page=${page}&size=30`,
+        { headers: h, signal: AbortSignal.timeout(12000) }
       )
-      if (!r.ok) break
+      if (!r.ok) { console.log(`  [AH] S1 p${page} HTTP ${r.status}`); break }
       const json = await r.json()
       const prods = json.products || []
       if (!prods.length) break
 
+      // İlk sayfa diagnostiği
+      if (page === 0 && prods[0]) {
+        const s = prods[0]
+        console.log('  [AH] İlk ürün alanları:', Object.keys(s).join(', '))
+        console.log('  [AH] İlk ürün örneği:', JSON.stringify({
+          title: s.title, currentPrice: s.currentPrice, priceBeforeBonus: s.priceBeforeBonus,
+          bonusMechanism: s.bonusMechanism, discountLabels: s.discountLabels?.slice(0, 1),
+        }))
+      }
+
       for (const p of prods) {
         if (seenIds.has(p.webshopId) || !p.title) continue
         seenIds.add(p.webshopId)
-
         const promo = calcAhPromo(p)
         if (!promo) continue
-
         const imageUrl = p.images?.find(i => i.width === 400)?.url ?? p.images?.[0]?.url ?? null
         candidates.push({ ...promo, name: p.title, imageUrl })
       }
     }
 
-    console.log(`  [AH] Taranan: ${seenIds.size} tekil ürün | Promosyonlu: ${candidates.length}`)
-    if (!candidates.length) return []
+    console.log(`  [AH] S1 (sortOn=DISCOUNT): ${seenIds.size} tarandı, ${candidates.length} promosyon`)
 
-    // En yüksek indirim oranına göre sırala, ilk 150 al
+    // Strateji 2: webshopId olmadan bonus=true parametresiyle dene
+    if (candidates.length < 10) {
+      for (let page = 0; page < 30; page++) {
+        const r = await fetch(
+          `https://api.ah.nl/mobile-services/product/search/v2?bonus=true&page=${page}&size=30`,
+          { headers: h, signal: AbortSignal.timeout(12000) }
+        )
+        if (!r.ok) break
+        const json = await r.json()
+        const prods = json.products || []
+        if (!prods.length) break
+        for (const p of prods) {
+          if (seenIds.has(p.webshopId) || !p.title) continue
+          seenIds.add(p.webshopId)
+          const promo = calcAhPromo(p)
+          if (!promo) continue
+          const imageUrl = p.images?.find(i => i.width === 400)?.url ?? p.images?.[0]?.url ?? null
+          candidates.push({ ...promo, name: p.title, imageUrl })
+        }
+      }
+      console.log(`  [AH] S2 (bonus=true) sonrası toplam: ${candidates.length}`)
+    }
+
+    // Strateji 3: AH website HTML / Next.js data
+    if (candidates.length < 10) {
+      try {
+        const htmlRes = await fetch('https://www.ah.nl/aanbiedingen', { headers: HEADERS })
+        const html = await htmlRes.text()
+        const buildId = html.match(/"buildId"\s*:\s*"([^"]+)"/)?.[1]
+        if (buildId) {
+          const dataRes = await fetch(
+            `https://www.ah.nl/_next/data/${buildId}/aanbiedingen.json`,
+            { headers: HEADERS }
+          )
+          if (dataRes.ok) {
+            const raw = await dataRes.text()
+
+            function* extractStrings(obj) {
+              if (typeof obj === 'string') yield obj
+              else if (Array.isArray(obj)) { for (const v of obj) yield* extractStrings(v) }
+              else if (obj && typeof obj === 'object') { for (const v of Object.values(obj)) yield* extractStrings(v) }
+            }
+            function walkProducts(obj, out, seen) {
+              if (!obj || typeof obj !== 'object') return
+              if ((obj.title || obj.name) && (obj.currentPrice ?? obj.salesPrice)) {
+                const nm = obj.title || obj.name
+                if (!seen.has(nm)) { seen.add(nm); out.push(obj) }
+              }
+              for (const v of (Array.isArray(obj) ? obj : Object.values(obj))) walkProducts(v, out, seen)
+            }
+
+            const outer = JSON.parse(raw)
+            const seen3 = new Set()
+            for (const str of extractStrings(outer)) {
+              if (!str.includes('currentPrice') && !str.includes('salesPrice')) continue
+              try {
+                const inner = JSON.parse(str)
+                const prods = []
+                walkProducts(inner, prods, seen3)
+                for (const p of prods) {
+                  if (seenIds.has(p.webshopId || p.id)) continue
+                  seenIds.add(p.webshopId || p.id || p.title)
+                  const promo = calcAhPromo({ ...p, title: p.title || p.name })
+                  if (!promo) continue
+                  const img = p.images?.[0]?.url || p.image || null
+                  candidates.push({ ...promo, name: p.title || p.name, imageUrl: img })
+                }
+              } catch {}
+            }
+            console.log(`  [AH] S3 (Next.js data) sonrası toplam: ${candidates.length}`)
+          }
+        }
+      } catch (e3) {
+        console.log(`  [AH] S3 hata: ${e3.message}`)
+      }
+    }
+
+    if (!candidates.length) {
+      console.log('  [AH] 3 strateji de 0 ürün döndürdü')
+      return []
+    }
+
     candidates.sort((a, b) => (a.discountedPrice / a.originalPrice) - (b.discountedPrice / b.originalPrice))
     const top = candidates.slice(0, 150)
-
-    // Promosyon tipi dağılımı
-    const byLabel = {}
-    for (const c of top) byLabel[c.promoLabel || 'fiyat indirimi'] = (byLabel[c.promoLabel || 'fiyat indirimi'] || 0) + 1
-    console.log('  [AH] Promosyon dağılımı:', JSON.stringify(byLabel))
     console.log(`  ✅ Albert Heijn: ${top.length} ürün (${top.filter(p => p.imageUrl).length} görsel)`)
 
     return top.map(p => ({
