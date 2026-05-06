@@ -2,6 +2,8 @@ import express from 'express'
 import cors from 'cors'
 import { initDatabase } from './db.js'
 import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, updateProductCategory, clearAllProducts } from './models.js'
+import { saveSubscription, deleteSubscription } from './db.js'
+import { sendPushToAll } from './push.js'
 import { scrapeFlyerProducts } from './scraper/index.js'
 import { categorize } from './categorize.js'
 import path from 'path'
@@ -211,6 +213,17 @@ async function runScraperJob() {
     }
 
     console.log(`⏰ Görev Tamamlandı. ${createdProducts.length} yeni ürün eklendi.`)
+
+    // Push bildirimi gönder
+    if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
+      sendPushToAll({
+        title: '🛒 Nieuwe aanbiedingen beschikbaar!',
+        body: `${createdProducts.length} nieuwe deals van Albert Heijn, Jumbo, Lidl en meer.`,
+        url: 'https://www.dealhunter4u.nl',
+        icon: 'https://www.dealhunter4u.nl/icon-512x512.png',
+      }).catch(e => console.error('Push hatası:', e.message))
+    }
+
     return createdProducts
   } else {
     console.log('❌ Yeni ürün bulunamadı, tablo güncellenmedi.')
@@ -228,6 +241,29 @@ cron.schedule('0 8 * * 1', async () => {
   } catch (error) {
     console.error('⏰ Scraper Zamanlama Hatası:', error)
   }
+})
+
+// POST /api/push/subscribe - Push aboneliği kaydet
+app.post('/api/push/subscribe', asyncHandler(async (req, res) => {
+  const { endpoint, keys } = req.body
+  if (!endpoint || !keys?.p256dh || !keys?.auth) {
+    return res.status(400).json({ error: 'Geçersiz abonelik' })
+  }
+  await saveSubscription({ endpoint, keys })
+  res.status(201).json({ ok: true })
+}))
+
+// DELETE /api/push/unsubscribe - Push aboneliğini sil
+app.delete('/api/push/unsubscribe', asyncHandler(async (req, res) => {
+  const { endpoint } = req.body
+  if (!endpoint) return res.status(400).json({ error: 'endpoint gerekli' })
+  await deleteSubscription(endpoint)
+  res.json({ ok: true })
+}))
+
+// GET /api/push/vapid-public-key - Frontend'e public key ver
+app.get('/api/push/vapid-public-key', (req, res) => {
+  res.json({ publicKey: process.env.VAPID_PUBLIC_KEY })
 })
 
 // POST /api/scraper/run - Manuel olarak scraper çalıştırır (Arayüzden tetiklendiğinde)

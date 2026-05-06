@@ -24,7 +24,32 @@ export async function initDatabase() {
       category TEXT DEFAULT 'overig'
     )
   `)
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS push_subscriptions (
+      endpoint TEXT PRIMARY KEY,
+      keys JSONB NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `)
   console.log('✅ PostgreSQL veritabanı başlatıldı')
+}
+
+export async function saveSubscription(subscription) {
+  await pool.query(
+    `INSERT INTO push_subscriptions (endpoint, keys)
+     VALUES ($1, $2)
+     ON CONFLICT (endpoint) DO NOTHING`,
+    [subscription.endpoint, JSON.stringify(subscription.keys)]
+  )
+}
+
+export async function deleteSubscription(endpoint) {
+  await pool.query('DELETE FROM push_subscriptions WHERE endpoint = $1', [endpoint])
+}
+
+export async function getAllSubscriptions() {
+  const { rows } = await pool.query('SELECT endpoint, keys FROM push_subscriptions')
+  return rows.map(r => ({ endpoint: r.endpoint, keys: r.keys }))
 }
 
 export async function getProducts() {

@@ -12,6 +12,7 @@ import { DealHunterLogo } from './DealHunterLogo'
 import { AdBanner } from './AdBanner'
 import { buildComparisonGroups } from '@/lib/similarity'
 import { useFavorites } from '@/context/FavoritesContext'
+import { PushNotificationButton } from './PushNotificationButton'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
@@ -192,6 +193,8 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
               </motion.div>
             )}
           </AnimatePresence>
+
+          <PushNotificationButton />
 
           <AnimatePresence>
             {canInstall && (
