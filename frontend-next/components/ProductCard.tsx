@@ -7,6 +7,7 @@ import { useShoppingList } from '@/context/ShoppingListContext'
 import { useLanguage } from '@/context/LanguageContext'
 import { getAffiliateLink } from '@/lib/affiliate'
 import { useFavorites } from '@/context/FavoritesContext'
+import { calcUnitPrice } from '@/lib/unitPrice'
 
 export function ProductCard({ product }: { product: Product }) {
   const { addToCart } = useShoppingList()
@@ -24,6 +25,8 @@ export function ProductCard({ product }: { product: Product }) {
   const discountPercent = hasValidDiscount
     ? (product.discount || Math.round(((product.originalPrice - product.discountedPrice) / product.originalPrice) * 100))
     : 0
+
+  const unitPrice = calcUnitPrice(product.name, product.discountedPrice)
 
   const imgSrc = product.imageUrl
     ? product.imageUrl.startsWith('ah-product-id:')
@@ -102,13 +105,23 @@ export function ProductCard({ product }: { product: Product }) {
           {product.name}
         </h4>
 
-        <div className="flex items-baseline gap-2 mt-auto">
-          <span className="text-2xl font-headline font-black" style={{ color: '#E33D26' }}>
-            €{product.discountedPrice.toFixed(2)}
-          </span>
-          {hasValidDiscount && (
-            <span className="text-sm line-through" style={{ color: '#C9C1B6' }}>
-              €{product.originalPrice.toFixed(2)}
+        <div className="mt-auto">
+          <div className="flex items-baseline gap-2">
+            <span className="text-2xl font-headline font-black" style={{ color: '#E33D26' }}>
+              €{product.discountedPrice.toFixed(2)}
+            </span>
+            {hasValidDiscount && (
+              <span className="text-sm line-through" style={{ color: '#C9C1B6' }}>
+                €{product.originalPrice.toFixed(2)}
+              </span>
+            )}
+          </div>
+          {unitPrice && (
+            <span
+              className="inline-block text-[11px] font-medium px-1.5 py-0.5 rounded mt-0.5"
+              style={{ background: '#F0EBE5', color: '#6B6259' }}
+            >
+              {unitPrice.display}
             </span>
           )}
         </div>
