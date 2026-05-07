@@ -692,6 +692,9 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           <a href="/contact" style={{ color: '#E33D26', textDecoration: 'none' }}>Contact</a>
         </div>
         <div>© {new Date().getFullYear()} DealHunter4U — Alle supermarkt aanbiedingen op één plek</div>
+        <div style={{ marginTop: 8 }}>
+          <a href="/blog" style={{ color: '#8C8478', textDecoration: 'none', marginRight: 16 }}>Blog</a>
+        </div>
       </footer>
     </div>
   )

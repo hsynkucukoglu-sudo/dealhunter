@@ -252,4 +252,14 @@
   .store-card:hover {
     transform: translateY(-2px);
   }
+
+  /* Blog article body styles */
+  .blog-content p          { color: #3D3530; font-size: 16px; line-height: 1.75; margin-bottom: 18px; }
+  .blog-content p.lead     { font-size: 18px; color: #1A1A1A; font-weight: 500; }
+  .blog-content h2         { font-family: 'Playfair Display', Georgia, serif; font-size: 22px; font-weight: 900; color: #1A1A1A; margin: 32px 0 12px; }
+  .blog-content strong     { color: #1A1A1A; font-weight: 700; }
+  .blog-content a          { color: #E33D26; text-decoration: none; font-weight: 600; }
+  .blog-content a:hover    { text-decoration: underline; }
+  .blog-content ul         { padding-left: 20px; margin-bottom: 18px; }
+  .blog-content li         { color: #3D3530; font-size: 16px; line-height: 1.7; margin-bottom: 6px; }
 }
