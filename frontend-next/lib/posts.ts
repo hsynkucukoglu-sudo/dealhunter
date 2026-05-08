@@ -10,6 +10,39 @@ export interface BlogPost {
 
 export const POSTS: BlogPost[] = [
   {
+    slug: 'wie-is-dealhunter4u',
+    title: 'Wie is DealHunter4U? Ons verhaal en onze missie',
+    description: 'DealHunter4U vergelijkt elke dag de aanbiedingen van alle grote Nederlandse supermarkten. Ontdek waarom we dit bouwen en hoe het werkt.',
+    date: '2026-05-08',
+    readTime: 3,
+    category: 'Over ons',
+    content: `
+<p class="lead">Elke week geven Nederlanders miljoenen euro's te veel uit aan boodschappen — simpelweg omdat ze niet weten welke supermarkt op dat moment de beste prijs heeft. Dat wilden wij veranderen.</p>
+
+<h2>Hoe het begon</h2>
+<p>DealHunter4U is ontstaan uit een eenvoudige frustratie: de folders vergelijken kost tijd, apps werken per supermarkt afzonderlijk, en de beste deal vind je pas als je ze allemaal naast elkaar zet. We dachten: dit kan beter.</p>
+<p>We begonnen met het automatisch verzamelen van weekaanbiedingen van <strong>Albert Heijn, Jumbo, Lidl, Aldi en Dirk</strong>. Elke dag worden de prijzen opgehaald en vergeleken, zodat jij dat niet meer hoeft te doen.</p>
+
+<h2>Wat we doen</h2>
+<p>DealHunter4U haalt dagelijks de actuele aanbiedingen op van de grootste supermarkten in Nederland. We tonen:</p>
+<ul>
+  <li>Het <strong>kortingspercentage</strong> per product — zodat je in één oogopslag ziet hoe groot de aanbieding is</li>
+  <li>De <strong>eenheidsprijs</strong> (prijs per 100g of per liter) — zodat grote en kleine verpakkingen eerlijk te vergelijken zijn</li>
+  <li>Een <strong>prijsvergelijking</strong> voor populaire producten — wie is goedkoopst op dit moment?</li>
+  <li>De <strong>top 5 beste deals</strong> van de week — de absolute uitschieters qua korting</li>
+</ul>
+
+<h2>Gratis, altijd</h2>
+<p>DealHunter4U is en blijft gratis. We verdienen een kleine commissie als je via onze site naar een supermarkt doorklikt en een aankoop doet — zo houden we de service draaiende zonder kosten door te berekenen aan gebruikers.</p>
+
+<h2>Onze belofte</h2>
+<p>We laten je nooit voor de gek houden door nep-kortingen of misleidende vergelijkingen. Alle prijzen komen rechtstreeks van de supermarkten zelf. Als een "aanbieding" eigenlijk geen echte besparing is, laten we dat zien.</p>
+<p>Heb je vragen of suggesties? Stuur ons een bericht via de <a href="/contact">contactpagina</a>. We lezen alles.</p>
+
+<p><strong>Bespaar slim. Koop bewust. Dat is DealHunter4U.</strong></p>
+    `.trim(),
+  },
+  {
     slug: '10-tips-goedkoper-boodschappen-doen-2026',
     title: '10 tips om goedkoper boodschappen te doen in 2026',
     description: 'Bespaar elke week tientallen euro\'s op je boodschappen met deze bewezen tips. Van 1+1 gratis acties tot het slim combineren van supermarktaanbiedingen.',
