@@ -87,5 +87,5 @@ export function getPost(slug: string): BlogPost | undefined {
 }
 
 export function getAllPosts(): BlogPost[] {
-  return POSTS.sort((a, b) => b.date.localeCompare(a.date))
+  return [...POSTS].sort((a, b) => b.date.localeCompare(a.date))
 }
