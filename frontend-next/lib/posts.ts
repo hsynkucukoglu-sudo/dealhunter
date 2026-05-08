@@ -17,29 +17,27 @@ export const POSTS: BlogPost[] = [
     readTime: 3,
     category: 'Over ons',
     content: `
-<p class="lead">Elke week geven Nederlanders miljoenen euro's te veel uit aan boodschappen — simpelweg omdat ze niet weten welke supermarkt op dat moment de beste prijs heeft. Dat wilden wij veranderen.</p>
+<p class="lead">Besparen op je dagelijkse boodschappen was nog nooit zo eenvoudig. De verste groenten, de beste merken — maar dan voor de scherpste prijs. Dat is precies wat DealHunter4U voor je doet.</p>
 
-<h2>Hoe het begon</h2>
-<p>DealHunter4U is ontstaan uit een eenvoudige frustratie: de folders vergelijken kost tijd, apps werken per supermarkt afzonderlijk, en de beste deal vind je pas als je ze allemaal naast elkaar zet. We dachten: dit kan beter.</p>
-<p>We begonnen met het automatisch verzamelen van weekaanbiedingen van <strong>Albert Heijn, Jumbo, Lidl, Aldi en Dirk</strong>. Elke dag worden de prijzen opgehaald en vergeleken, zodat jij dat niet meer hoeft te doen.</p>
+<h2>De slimme keuze voor jouw boodschappen</h2>
+<p>We hebben alle supermarktaanbiedingen van Nederland verzameld op één overzichtelijk platform. Jij kiest wat je wilt eten, wij vinden de beste deal voor jouw budget. Geen folders meer doorzoeken, geen apps per supermarkt afzonderlijk — alles staat op één plek.</p>
 
-<h2>Wat we doen</h2>
-<p>DealHunter4U haalt dagelijks de actuele aanbiedingen op van de grootste supermarkten in Nederland. We tonen:</p>
+<h2>Waarom kiezen voor DealHunter4U?</h2>
 <ul>
-  <li>Het <strong>kortingspercentage</strong> per product — zodat je in één oogopslag ziet hoe groot de aanbieding is</li>
-  <li>De <strong>eenheidsprijs</strong> (prijs per 100g of per liter) — zodat grote en kleine verpakkingen eerlijk te vergelijken zijn</li>
-  <li>Een <strong>prijsvergelijking</strong> voor populaire producten — wie is goedkoopst op dit moment?</li>
-  <li>De <strong>top 5 beste deals</strong> van de week — de absolute uitschieters qua korting</li>
+  <li><strong>Vergelijk direct:</strong> alle kortingen van Albert Heijn, Jumbo, Lidl, Aldi en Dirk op één plek, naast elkaar.</li>
+  <li><strong>Behoud kwaliteit:</strong> je bespaart op de prijs, niet op de versheid of kwaliteit van je boodschappen.</li>
+  <li><strong>Bespaar tijd én geld:</strong> nooit meer folders bladeren — vind direct de beste prijs en ga gericht winkelen.</li>
 </ul>
 
-<h2>Gratis, altijd</h2>
-<p>DealHunter4U is en blijft gratis. We verdienen een kleine commissie als je via onze site naar een supermarkt doorklikt en een aankoop doet — zo houden we de service draaiende zonder kosten door te berekenen aan gebruikers.</p>
+<h2>Hoe het werkt</h2>
+<p>Elke dag halen we automatisch de actuele weekaanbiedingen op van de grote supermarkten. We berekenen het kortingspercentage, tonen de eenheidsprijs per 100g of liter, en vergelijken populaire producten direct met elkaar. Zo zie jij in één oogopslag waar je het goedkoopst uitkomt — zonder er moeite voor te hoeven doen.</p>
 
-<h2>Onze belofte</h2>
-<p>We laten je nooit voor de gek houden door nep-kortingen of misleidende vergelijkingen. Alle prijzen komen rechtstreeks van de supermarkten zelf. Als een "aanbieding" eigenlijk geen echte besparing is, laten we dat zien.</p>
-<p>Heb je vragen of suggesties? Stuur ons een bericht via de <a href="/contact">contactpagina</a>. We lezen alles.</p>
+<h2>Gratis, eerlijk en transparant</h2>
+<p>DealHunter4U is en blijft gratis. Alle prijzen komen rechtstreeks van de supermarkten zelf — we tonen geen nep-kortingen of misleidende vergelijkingen. We verdienen een kleine commissie als je via onze site doorklikt naar een supermarkt, zodat we de service draaiende kunnen houden zonder kosten door te berekenen.</p>
 
-<p><strong>Bespaar slim. Koop bewust. Dat is DealHunter4U.</strong></p>
+<p>Heb je vragen of ideeën? Laat het ons weten via de <a href="/contact">contactpagina</a>.</p>
+
+<p><strong>Ontdek het nu zelf op <a href="https://www.dealhunter4u.nl">DealHunter4U.nl</a></strong></p>
     `.trim(),
   },
   {
