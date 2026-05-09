@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: 'DealHunter — Beste Supermarkt Aanbiedingen Nederland',
   description: 'Vergelijk wekelijkse aanbiedingen van Albert Heijn, Jumbo, Lidl, Dirk en meer. Bespaar op boodschappen met de beste supermarktdeals.',
   keywords: 'supermarkt aanbiedingen, albert heijn bonus, jumbo deals, lidl folder, dirk aanbiedingen, besparen boodschappen',
+  other: { 'msvalidate.01': '10C38B79AA33FFA059F4EE4DC13FBC3C' },
   openGraph: {
     title: 'DealHunter — Beste Supermarkt Aanbiedingen',
     description: 'Vergelijk wekelijkse aanbiedingen van alle grote supermarkten.',
