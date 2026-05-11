@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<title>DealHunter4U — Instagram Post</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1080px;
+    height: 1080px;
+    overflow: hidden;
+    background: #F5EDE3;
+    font-family: 'Arial Black', Arial, sans-serif;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    width: 1080px;
+    height: 185px;
+    background: #1C1C1C;
+    position: relative;
+    overflow: hidden;
+    animation: headerIn 0.6s cubic-bezier(0.16,1,0.3,1) forwards;
+  }
+  @keyframes headerIn {
+    from { transform: translateY(-185px); opacity: 0; }
+    to   { transform: translateY(0);      opacity: 1; }
+  }
+
+  .header-stripe {
+    position: absolute;
+    top: 148px;
+    width: 1080px;
+    height: 37px;
+    background: #C41230;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 900;
+    color: white;
+    letter-spacing: 5px;
+    transform-origin: center;
+    animation: stripeIn 0.5s 0.4s both;
+  }
+  @keyframes stripeIn {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+
+  .logo-area {
+    position: absolute;
+    top: 18px;
+    left: 44px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    animation: logoIn 0.7s 0.2s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  @keyframes logoIn {
+    from { transform: translateX(-40px); opacity: 0; }
+    to   { transform: translateX(0);     opacity: 1; }
+  }
+
+  .logo-icon { width: 52px; height: 52px; }
+
+  .logo-text { display: flex; align-items: baseline; }
+  .logo-deal   { font-size: 52px; font-weight: bold; font-style: italic; color: white; font-family: Georgia, serif; letter-spacing: -1px; line-height: 1; }
+  .logo-hunter { font-size: 52px; font-weight: 900; color: white; letter-spacing: -1px; line-height: 1; }
+  .logo-4u     { margin-left: 10px; background: #C41230; color: white; font-size: 16px; font-weight: 900; padding: 4px 10px; border-radius: 6px; letter-spacing: 1px; align-self: center; }
+
+  .week-label {
+    position: absolute;
+    top: 48px; right: 44px;
+    color: rgba(255,255,255,0.5);
+    font-size: 13px; letter-spacing: 2px;
+    font-family: Arial, sans-serif;
+    animation: fadeIn 0.6s 0.6s both;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  /* ── DEAL LIST ── */
+  .deals {
+    padding: 18px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+  }
+
+  .deal-card {
+    width: 100%;
+    height: 112px;
+    background: white;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 0 #DDD0C4;
+    opacity: 0;
+    transform: translateX(80px);
+  }
+
+  .deal-card:nth-child(1) { animation: cardIn 0.55s 0.75s  cubic-bezier(0.16,1,0.3,1) forwards; }
+  .deal-card:nth-child(2) { animation: cardIn 0.55s 1.05s  cubic-bezier(0.16,1,0.3,1) forwards; }
+  .deal-card:nth-child(3) { animation: cardIn 0.55s 1.35s  cubic-bezier(0.16,1,0.3,1) forwards; }
+  .deal-card:nth-child(4) { animation: cardIn 0.55s 1.65s  cubic-bezier(0.16,1,0.3,1) forwards; }
+  .deal-card:nth-child(5) { animation: cardIn 0.55s 1.95s  cubic-bezier(0.16,1,0.3,1) forwards; }
+  @keyframes cardIn { to { opacity: 1; transform: translateX(0); } }
+
+  .card-accent {
+    width: 7px;
+    height: 100%;
+    border-radius: 18px 0 0 18px;
+    flex-shrink: 0;
+  }
+
+  .card-img-wrap {
+    width: 96px;
+    height: 96px;
+    margin: 0 10px 0 10px;
+    flex-shrink: 0;
+    background: #FAF6F0;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card-img-wrap img {
+    width: 96px;
+    height: 96px;
+    object-fit: contain;
+  }
+
+  .card-body { flex: 1; padding-right: 6px; }
+
+  .card-market {
+    font-size: 11px; font-weight: 900;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: #8C8478; font-family: Arial, sans-serif;
+    margin-bottom: 3px;
+  }
+  .card-name {
+    font-size: 18px; font-weight: 900;
+    color: #1A1A1A; font-family: Georgia, serif;
+    line-height: 1.2; margin-bottom: 5px;
+  }
+  .card-promo {
+    font-size: 11px; font-weight: 700;
+    padding: 2px 8px; border-radius: 20px;
+    display: inline-block;
+  }
+
+  .card-price-area {
+    display: flex; flex-direction: column;
+    align-items: flex-end; padding-right: 18px; gap: 2px;
+  }
+  .price-new { font-size: 34px; font-weight: 900; color: #E33D26; line-height: 1; }
+  .price-old { font-size: 15px; color: #C9C1B6; text-decoration: line-through; }
+
+  .badge-pct {
+    position: absolute; top: 10px; right: 10px;
+    background: #E33D26; color: white;
+    font-size: 13px; font-weight: 900;
+    padding: 3px 9px; border-radius: 20px;
+    font-family: Arial, sans-serif;
+    opacity: 0; transform: scale(0);
+  }
+  .deal-card:nth-child(1) .badge-pct { animation: badgePop 0.4s 1.25s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+  .deal-card:nth-child(2) .badge-pct { animation: badgePop 0.4s 1.55s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+  .deal-card:nth-child(3) .badge-pct { animation: badgePop 0.4s 1.85s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+  .deal-card:nth-child(4) .badge-pct { animation: badgePop 0.4s 2.15s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+  .deal-card:nth-child(5) .badge-pct { animation: badgePop 0.4s 2.45s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+  @keyframes badgePop { to { opacity: 1; transform: scale(1); } }
+
+  /* shimmer */
+  .shimmer {
+    position: absolute; top: 0; left: -100%;
+    width: 60%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    animation: shimmer 3s 3s ease-in-out infinite;
+  }
+  @keyframes shimmer { 0% { left: -60%; } 100% { left: 110%; } }
+
+  /* ── FOOTER ── */
+  .footer {
+    position: absolute; bottom: 0;
+    width: 1080px; height: 70px;
+    background: #1C1C1C;
+    display: flex; align-items: center;
+    justify-content: space-between; padding: 0 44px;
+    animation: footerIn 0.6s 2.6s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  @keyframes footerIn {
+    from { transform: translateY(70px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+  .footer-url { color: white; font-size: 22px; font-weight: 900; letter-spacing: 1px; font-family: Arial, sans-serif; }
+  .footer-url span { color: #E33D26; }
+  .footer-cta {
+    background: #E33D26; color: white; font-size: 15px; font-weight: 900;
+    padding: 10px 26px; border-radius: 30px; letter-spacing: 1px;
+    animation: pulse 1.4s 3.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(227,61,38,0.4); }
+    50%       { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(227,61,38,0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo-area">
+    <svg class="logo-icon" viewBox="0 0 160 155" fill="none">
+      <g fill="white" opacity="0.92">
+        <path d="M95 93C77 85 44 87 27 99 20 91 22 72 30 70 25 51 35 10 10 9 1 19 -5 -4 10 2 42 5 31 44 38 68 65 62 110 75 101 82 74 75 42 66 30 91 43 78 92 80 95 93Z"/>
+        <path d="M93 69C115 51 163 -1 36 25 129 20 117 28 93 69Z"/>
+        <path d="M89 89C91 89 93 89 94 90 98 93 97 99 93 104 89 108 83 110 79 107 75 104 76 98 80 93 83 90 86 89 89 89Z"/>
+        <path d="M39 89C41 89 43 89 44 90 47 93 47 99 43 104 39 108 32 110 29 107 25 104 25 98 30 93 32 90 36 89 39 89Z"/>
+      </g>
+    </svg>
+    <div class="logo-text">
+      <span class="logo-deal">Deal</span><span class="logo-hunter">Hunter</span>
+      <span class="logo-4u">4U</span>
+    </div>
+  </div>
+  <div class="week-label">WEEK 5–11 MEI 2026</div>
+  <div class="header-stripe">✦&nbsp;&nbsp;TOP 5 BESTE DEALS DEZE WEEK&nbsp;&nbsp;✦</div>
+</div>
+
+<!-- DEALS -->
+<div class="deals">
+
+  <!-- Deal 1 — Coca-Cola Zero 6-pack -->
+  <div class="deal-card">
+    <div class="card-accent" style="background:#00A0E2;"></div>
+    <div class="card-img-wrap">
+      <img src="https://static.ah.nl/dam/product/AHI_4354523130303039343739?revLabel=1&rendition=400x400_JPG_Q85&fileType=binary" alt="Coca-Cola Zero">
+    </div>
+    <div class="card-body">
+      <div class="card-market">Albert Heijn</div>
+      <div class="card-name">Coca-Cola Zero 6-pack</div>
+      <div class="card-promo" style="background:#E3F2FD;color:#1565C0;">2e Halve Prijs</div>
+    </div>
+    <div class="card-price-area">
+      <div class="price-new">€8.49</div>
+      <div class="price-old">€12.70</div>
+    </div>
+    <div class="badge-pct">-33%</div>
+    <div class="shimmer"></div>
+  </div>
+
+  <!-- Deal 2 — Kipdijfilet -->
+  <div class="deal-card">
+    <div class="card-accent" style="background:#FFB800;"></div>
+    <div class="card-img-wrap">
+      <img src="https://static.ah.nl/dam/product/AHI_4354523130303938303136?revLabel=1&rendition=400x400_JPG_Q85&fileType=binary" alt="Kipdijfilet">
+    </div>
+    <div class="card-body">
+      <div class="card-market">Albert Heijn</div>
+      <div class="card-name">Scharrel Kipdijfilet</div>
+      <div class="card-promo" style="background:#E8F5E9;color:#1B5E3B;">1+1 Gratis</div>
+    </div>
+    <div class="card-price-area">
+      <div class="price-new">€4.49</div>
+      <div class="price-old">€8.98</div>
+    </div>
+    <div class="badge-pct">-50%</div>
+    <div class="shimmer"></div>
+  </div>
+
+  <!-- Deal 3 — Old Amsterdam Kaas -->
+  <div class="deal-card">
+    <div class="card-accent" style="background:#E33D26;"></div>
+    <div class="card-img-wrap">
+      <img src="https://static.ah.nl/dam/product/AHI_384b3750316c466d52626d7241683250712d48473367?revLabel=1&rendition=400x400_JPG_Q85&fileType=binary" alt="Old Amsterdam Kaas">
+    </div>
+    <div class="card-body">
+      <div class="card-market">Albert Heijn</div>
+      <div class="card-name">Old Amsterdam 48+ plakken</div>
+      <div class="card-promo" style="background:#FFF3E0;color:#E65100;">Tijdelijk Lager</div>
+    </div>
+    <div class="card-price-area">
+      <div class="price-new">€2.29</div>
+      <div class="price-old">€3.74</div>
+    </div>
+    <div class="badge-pct">-39%</div>
+    <div class="shimmer"></div>
+  </div>
+
+  <!-- Deal 4 — Arla Biologisch Melk -->
+  <div class="deal-card">
+    <div class="card-accent" style="background:#4CAF50;"></div>
+    <div class="card-img-wrap">
+      <img src="https://static.ah.nl/dam/product/AHI_485546476a2d334e52507959627a38646a6b70705041?revLabel=1&rendition=400x400_JPG_Q85&fileType=binary" alt="Arla Melk">
+    </div>
+    <div class="card-body">
+      <div class="card-market">Albert Heijn</div>
+      <div class="card-name">Arla Bio Halfvolle Melk 4-pak</div>
+      <div class="card-promo" style="background:#FFEBEE;color:#B71C1C;">−40% Korting</div>
+    </div>
+    <div class="card-price-area">
+      <div class="price-new">€5.19</div>
+      <div class="price-old">€8.60</div>
+    </div>
+    <div class="badge-pct">-40%</div>
+    <div class="shimmer"></div>
+  </div>
+
+  <!-- Deal 5 — Aardbeien -->
+  <div class="deal-card">
+    <div class="card-accent" style="background:#E91E63;"></div>
+    <div class="card-img-wrap">
+      <img src="https://static.ah.nl/dam/product/AHI_4c486d4d51334962524b574575612d6b6e33334f7051?revLabel=1&rendition=400x400_JPG_Q85&fileType=binary" alt="Aardbeien">
+    </div>
+    <div class="card-body">
+      <div class="card-market">Albert Heijn</div>
+      <div class="card-name">Nederlandse Aardbeien 500g</div>
+      <div class="card-promo" style="background:#F3E5F5;color:#6A1B9A;">3 Halen 2 Betalen</div>
+    </div>
+    <div class="card-price-area">
+      <div class="price-new">€1.99</div>
+      <div class="price-old">€2.99</div>
+    </div>
+    <div class="badge-pct">-33%</div>
+    <div class="shimmer"></div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-url">www.<span>dealhunter4u</span>.nl</div>
+  <div class="footer-cta">BEKIJK ALLE DEALS →</div>
+</div>
+
+</body>
+</html>

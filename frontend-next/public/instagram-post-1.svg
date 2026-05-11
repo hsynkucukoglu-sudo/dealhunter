@@ -1,74 +1,146 @@
-<svg viewBox="0 0 1080 1080" width="1080" height="1080" xmlns="http://www.w3.org/2000/svg" font-family="Arial Black, Arial, sans-serif">
-  <!-- Arka plan -->
-  <rect width="1080" height="1080" fill="#1A1A1A"/>
+<svg viewBox="0 0 1080 1080" width="1080" height="1080" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" font-family="Georgia, 'Times New Roman', serif">
 
-  <!-- Üst kırmızı şerit -->
-  <rect width="1080" height="180" fill="#D00000"/>
+  <!-- Sıcak krem arka plan -->
+  <rect width="1080" height="1080" fill="#F5EDE3"/>
 
-  <!-- Logo sepet (küçük, sol üst) -->
-  <g transform="translate(48, 20) scale(0.85)" fill="white" opacity="0.9">
+  <!-- Üst koyu bar -->
+  <rect width="1080" height="185" fill="#1C1C1C"/>
+
+  <!-- Hafif desen: ince yatay çizgiler -->
+  <line x1="0" y1="62" x2="1080" y2="62" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  <line x1="0" y1="124" x2="1080" y2="124" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+
+  <!-- Sepet logosu -->
+  <g transform="translate(44, 24) scale(0.78)" fill="white" opacity="0.9">
     <path d="M 122.8125 119.945312 C 98.414062 109.4375 56.257812 112.335938 34.03125 126.828125 C 25.9375 116.804688 28.714844 92.644531 38.015625 89.867188 C 31.617188 65.347656 44.417969 12.921875 13.375 11.230469 C 0.933594 24.519531 -6.796875 -4.953125 13.015625 2.171875 C 53.957031 6.113281 39.683594 57.082031 49.25 87.332031 C 83.554688 79.839844 141.050781 96.269531 129.335938 105.449219 C 95.273438 96.269531 53.238281 85.277344 38.015625 116.683594 C 54.929688 99.773438 117.5 102.792969 122.8125 119.945312 Z"/>
     <path d="M 120.277344 88.78125 C 147.453125 65.953125 208.753906 -0.582031 46.714844 31.886719 C 165.933594 25.367188 150.351562 35.511719 120.277344 88.78125 Z"/>
     <path d="M 114.773438 113.746094 C 116.957031 113.777344 118.988281 114.394531 120.621094 115.664062 C 125.367188 119.34375 124.921875 127.097656 119.632812 132.96875 C 114.339844 138.839844 106.195312 140.621094 101.449219 136.9375 C 96.703125 133.253906 97.148438 125.496094 102.4375 119.625 C 105.910156 115.773438 110.613281 113.683594 114.773438 113.746094 Z"/>
     <path d="M 50.089844 113.746094 C 52.269531 113.777344 54.304688 114.394531 55.9375 115.664062 C 60.679688 119.34375 60.238281 127.097656 54.945312 132.96875 C 49.65625 138.839844 41.511719 140.621094 36.765625 136.9375 C 32.019531 133.253906 32.464844 125.496094 37.753906 119.625 C 41.226562 115.773438 45.925781 113.683594 50.089844 113.746094 Z"/>
   </g>
 
-  <!-- DealHunter4U başlık -->
-  <text x="210" y="90" font-size="64" font-weight="900" fill="white" letter-spacing="-1">Deal</text>
-  <text x="360" y="90" font-size="64" font-weight="900" fill="white" letter-spacing="-1">Hunter</text>
-  <rect x="618" y="42" width="72" height="34" rx="8" fill="white"/>
-  <text x="654" y="66" font-size="18" font-weight="900" fill="#D00000" text-anchor="middle">4U</text>
+  <!-- DealHunter başlık — serif + sans mix -->
+  <text x="196" y="86" font-size="66" font-weight="bold" fill="white" letter-spacing="-1" font-style="italic">Deal</text>
+  <text x="358" y="86" font-size="66" font-weight="bold" fill="white" letter-spacing="-1" font-family="Arial Black, Arial, sans-serif">Hunter</text>
+  <rect x="634" y="44" width="66" height="32" rx="6" fill="#C41230"/>
+  <text x="667" y="66" font-size="18" font-weight="900" fill="white" text-anchor="middle" font-family="Arial, sans-serif">4U</text>
 
-  <!-- Alt başlık -->
-  <text x="540" y="148" font-size="26" fill="rgba(255,255,255,0.8)" text-anchor="middle" letter-spacing="6">DEZE WEEK'S BESTE DEALS</text>
+  <!-- Hafta etiketi -->
+  <text x="1040" y="60" font-size="14" fill="rgba(255,255,255,0.5)" text-anchor="end" font-family="Arial, sans-serif" letter-spacing="2">WEEK 5–11 MEI 2026</text>
 
-  <!-- Ürün 1 -->
-  <rect x="48" y="210" width="984" height="140" rx="20" fill="#242424"/>
-  <rect x="48" y="210" width="8" height="140" rx="4" fill="#D00000"/>
-  <text x="80" y="268" font-size="22" font-weight="900" fill="#D00000">#1</text>
-  <text x="120" y="268" font-size="30" font-weight="900" fill="white">Hak Appelmoes 4-pack</text>
-  <text x="120" y="310" font-size="22" fill="#9C9389">Albert Heijn</text>
-  <text x="900" y="268" font-size="44" font-weight="900" fill="#4CAF50" text-anchor="middle">€4.58</text>
-  <text x="900" y="310" font-size="22" fill="#9C9389" text-anchor="middle" text-decoration="line-through">€9.16</text>
-  <rect x="970" y="222" width="56" height="32" rx="16" fill="#D00000"/>
-  <text x="998" y="243" font-size="16" font-weight="900" fill="white" text-anchor="middle">-50%</text>
+  <!-- Alt başlık şeridi -->
+  <rect x="0" y="148" width="1080" height="37" fill="#C41230"/>
+  <text x="540" y="172" font-size="16" fill="white" text-anchor="middle" font-family="Arial, sans-serif" letter-spacing="6" font-weight="bold">✦  TOP 5 BESTE DEALS DEZE WEEK  ✦</text>
 
-  <!-- Ürün 2 -->
-  <rect x="48" y="370" width="984" height="140" rx="20" fill="#242424"/>
-  <rect x="48" y="370" width="8" height="140" rx="4" fill="#D00000"/>
-  <text x="80" y="428" font-size="22" font-weight="900" fill="#D00000">#2</text>
-  <text x="120" y="428" font-size="30" font-weight="900" fill="white">Robijn Wasverzachter 4-pack</text>
-  <text x="120" y="470" font-size="22" fill="#9C9389">Albert Heijn</text>
-  <text x="900" y="428" font-size="44" font-weight="900" fill="#4CAF50" text-anchor="middle">€13.58</text>
-  <text x="900" y="470" font-size="22" fill="#9C9389" text-anchor="middle" text-decoration="line-through">€27.16</text>
-  <rect x="970" y="382" width="56" height="32" rx="16" fill="#D00000"/>
-  <text x="998" y="403" font-size="16" font-weight="900" fill="white" text-anchor="middle">-50%</text>
+  <!-- clip paths -->
+  <defs>
+    <clipPath id="c1"><rect x="62" y="204" width="96" height="96" rx="12"/></clipPath>
+    <clipPath id="c2"><rect x="62" y="336" width="96" height="96" rx="12"/></clipPath>
+    <clipPath id="c3"><rect x="62" y="468" width="96" height="96" rx="12"/></clipPath>
+    <clipPath id="c4"><rect x="62" y="600" width="96" height="96" rx="12"/></clipPath>
+    <clipPath id="c5"><rect x="62" y="732" width="96" height="96" rx="12"/></clipPath>
+  </defs>
 
-  <!-- Ürün 3 -->
-  <rect x="48" y="530" width="984" height="140" rx="20" fill="#242424"/>
-  <rect x="48" y="530" width="8" height="140" rx="4" fill="#D00000"/>
-  <text x="80" y="588" font-size="22" font-weight="900" fill="#D00000">#3</text>
-  <text x="120" y="588" font-size="30" font-weight="900" fill="white">Robijn Wasmiddel 4-pack</text>
-  <text x="120" y="630" font-size="22" fill="#9C9389">Albert Heijn</text>
-  <text x="900" y="588" font-size="44" font-weight="900" fill="#4CAF50" text-anchor="middle">€35.98</text>
-  <text x="900" y="630" font-size="22" fill="#9C9389" text-anchor="middle" text-decoration="line-through">€71.96</text>
-  <rect x="970" y="542" width="56" height="32" rx="16" fill="#D00000"/>
-  <text x="998" y="563" font-size="16" font-weight="900" fill="white" text-anchor="middle">-50%</text>
+  <!-- ═══ DEAL 1 — Albert Heijn ═══ -->
+  <!-- Gölge -->
+  <rect x="36" y="202" width="1008" height="106" rx="16" fill="#DDD0C4"/>
+  <!-- Kart -->
+  <rect x="32" y="196" width="1008" height="106" rx="16" fill="white"/>
+  <!-- Sol renk çizgisi -->
+  <rect x="32" y="196" width="6" height="106" rx="3" fill="#00A0E2"/>
+  <!-- Görsel -->
+  <rect x="62" y="204" width="96" height="96" rx="12" fill="#F0EBE5"/>
+  <image href="ig-tmp/p1.png" x="62" y="204" width="96" height="96" clip-path="url(#c1)" preserveAspectRatio="xMidYMid slice"/>
+  <!-- Ürün adı -->
+  <text x="176" y="237" font-size="25" font-weight="bold" fill="#1C1C1C" font-family="Arial Black, Arial, sans-serif">Lipton Ice Tea Green 1.5L 4-pak</text>
+  <text x="176" y="260" font-size="14" fill="#888" font-family="Arial, sans-serif">Albert Heijn  ·  geldig t/m 11 mei</text>
+  <!-- Fiyat -->
+  <text x="820" y="241" font-size="36" font-weight="900" fill="#1B5E3B" text-anchor="middle" font-family="Arial Black, Arial, sans-serif">€6,10</text>
+  <text x="820" y="268" font-size="16" fill="#B0A090" text-anchor="middle" text-decoration="line-through" font-family="Arial, sans-serif">normaal €12,20</text>
+  <!-- Döndürülmüş fiyat etiketi -->
+  <g transform="rotate(-7, 980, 230)">
+    <rect x="950" y="208" width="74" height="44" rx="8" fill="#C41230"/>
+    <text x="987" y="228" font-size="17" font-weight="900" fill="white" text-anchor="middle" font-family="Arial Black, sans-serif">-50%</text>
+    <text x="987" y="244" font-size="11" fill="rgba(255,255,255,0.85)" text-anchor="middle" font-family="Arial, sans-serif">KORTING</text>
+  </g>
 
-  <!-- Ürün 4 -->
-  <rect x="48" y="690" width="984" height="140" rx="20" fill="#242424"/>
-  <rect x="48" y="690" width="8" height="140" rx="4" fill="#D00000"/>
-  <text x="80" y="748" font-size="22" font-weight="900" fill="#D00000">#4</text>
-  <text x="120" y="748" font-size="30" font-weight="900" fill="white">Robijn Wasverzachter 8-pack</text>
-  <text x="120" y="790" font-size="22" fill="#9C9389">Albert Heijn</text>
-  <text x="900" y="748" font-size="44" font-weight="900" fill="#4CAF50" text-anchor="middle">€27.16</text>
-  <text x="900" y="790" font-size="22" fill="#9C9389" text-anchor="middle" text-decoration="line-through">€54.32</text>
-  <rect x="970" y="702" width="56" height="32" rx="16" fill="#D00000"/>
-  <text x="998" y="723" font-size="16" font-weight="900" fill="white" text-anchor="middle">-50%</text>
+  <!-- ═══ DEAL 2 — Jumbo ═══ -->
+  <rect x="36" y="334" width="1008" height="106" rx="16" fill="#DDD0C4"/>
+  <rect x="32" y="328" width="1008" height="106" rx="16" fill="white"/>
+  <rect x="32" y="328" width="6" height="106" rx="3" fill="#E8A800"/>
+  <rect x="62" y="336" width="96" height="96" rx="12" fill="#F0EBE5"/>
+  <image href="ig-tmp/p2.png" x="62" y="336" width="96" height="96" clip-path="url(#c2)" preserveAspectRatio="xMidYMid slice"/>
+  <text x="176" y="369" font-size="25" font-weight="bold" fill="#1C1C1C" font-family="Arial Black, Arial, sans-serif">Chio Heartbreakers / POM-BÄR</text>
+  <text x="176" y="392" font-size="14" fill="#888" font-family="Arial, sans-serif">Jumbo  ·  geldig t/m 11 mei</text>
+  <text x="820" y="373" font-size="36" font-weight="900" fill="#1B5E3B" text-anchor="middle" font-family="Arial Black, Arial, sans-serif">€3,00</text>
+  <text x="820" y="400" font-size="16" fill="#B0A090" text-anchor="middle" text-decoration="line-through" font-family="Arial, sans-serif">normaal €4,05</text>
+  <g transform="rotate(5, 980, 362)">
+    <rect x="950" y="340" width="74" height="44" rx="8" fill="#C41230"/>
+    <text x="987" y="360" font-size="17" font-weight="900" fill="white" text-anchor="middle" font-family="Arial Black, sans-serif">-26%</text>
+    <text x="987" y="376" font-size="11" fill="rgba(255,255,255,0.85)" text-anchor="middle" font-family="Arial, sans-serif">KORTING</text>
+  </g>
 
-  <!-- Alt footer -->
-  <rect x="0" y="880" width="1080" height="200" fill="#D00000"/>
-  <text x="540" y="950" font-size="36" font-weight="900" fill="white" text-anchor="middle">🛒 Alle aanbiedingen op één plek!</text>
-  <text x="540" y="1010" font-size="32" fill="rgba(255,255,255,0.9)" text-anchor="middle">www.dealhunter4u.nl</text>
-  <text x="540" y="1055" font-size="20" fill="rgba(255,255,255,0.6)" text-anchor="middle">#dealhunter4u #aanbiedingen #besparen #supermarkt #boodschappen</text>
+  <!-- ═══ DEAL 3 — Dirk ═══ -->
+  <rect x="36" y="466" width="1008" height="106" rx="16" fill="#DDD0C4"/>
+  <rect x="32" y="460" width="1008" height="106" rx="16" fill="white"/>
+  <rect x="32" y="460" width="6" height="106" rx="3" fill="#E8481A"/>
+  <rect x="62" y="468" width="96" height="96" rx="12" fill="#F0EBE5"/>
+  <image href="ig-tmp/p3.png" x="62" y="468" width="96" height="96" clip-path="url(#c3)" preserveAspectRatio="xMidYMid slice"/>
+  <text x="176" y="501" font-size="25" font-weight="bold" fill="#1C1C1C" font-family="Arial Black, Arial, sans-serif">Snoeptomaatjes 500g</text>
+  <text x="176" y="524" font-size="14" fill="#888" font-family="Arial, sans-serif">Dirk  ·  geldig t/m 11 mei</text>
+  <text x="820" y="505" font-size="36" font-weight="900" fill="#1B5E3B" text-anchor="middle" font-family="Arial Black, Arial, sans-serif">€1,99</text>
+  <text x="820" y="532" font-size="16" fill="#B0A090" text-anchor="middle" text-decoration="line-through" font-family="Arial, sans-serif">normaal €2,69</text>
+  <g transform="rotate(-5, 980, 494)">
+    <rect x="950" y="472" width="74" height="44" rx="8" fill="#C41230"/>
+    <text x="987" y="492" font-size="17" font-weight="900" fill="white" text-anchor="middle" font-family="Arial Black, sans-serif">-26%</text>
+    <text x="987" y="508" font-size="11" fill="rgba(255,255,255,0.85)" text-anchor="middle" font-family="Arial, sans-serif">KORTING</text>
+  </g>
+
+  <!-- ═══ DEAL 4 — Aldi ═══ -->
+  <rect x="36" y="598" width="1008" height="106" rx="16" fill="#DDD0C4"/>
+  <rect x="32" y="592" width="1008" height="106" rx="16" fill="white"/>
+  <rect x="32" y="592" width="6" height="106" rx="3" fill="#1E5CA8"/>
+  <rect x="62" y="600" width="96" height="96" rx="12" fill="#F0EBE5"/>
+  <image href="ig-tmp/p4.png" x="62" y="600" width="96" height="96" clip-path="url(#c4)" preserveAspectRatio="xMidYMid slice"/>
+  <text x="176" y="633" font-size="25" font-weight="bold" fill="#1C1C1C" font-family="Arial Black, Arial, sans-serif">Boer'n Yoghurt</text>
+  <text x="176" y="656" font-size="14" fill="#888" font-family="Arial, sans-serif">Aldi  ·  geldig t/m 11 mei</text>
+  <text x="820" y="637" font-size="36" font-weight="900" fill="#1B5E3B" text-anchor="middle" font-family="Arial Black, Arial, sans-serif">€1,49</text>
+  <text x="820" y="664" font-size="16" fill="#B0A090" text-anchor="middle" text-decoration="line-through" font-family="Arial, sans-serif">normaal €2,01</text>
+  <g transform="rotate(6, 980, 626)">
+    <rect x="950" y="604" width="74" height="44" rx="8" fill="#C41230"/>
+    <text x="987" y="624" font-size="17" font-weight="900" fill="white" text-anchor="middle" font-family="Arial Black, sans-serif">-26%</text>
+    <text x="987" y="640" font-size="11" fill="rgba(255,255,255,0.85)" text-anchor="middle" font-family="Arial, sans-serif">KORTING</text>
+  </g>
+
+  <!-- ═══ DEAL 5 — Hoogvliet ═══ -->
+  <rect x="36" y="730" width="1008" height="106" rx="16" fill="#DDD0C4"/>
+  <rect x="32" y="724" width="1008" height="106" rx="16" fill="white"/>
+  <rect x="32" y="724" width="6" height="106" rx="3" fill="#E30613"/>
+  <rect x="62" y="732" width="96" height="96" rx="12" fill="#F0EBE5"/>
+  <image href="ig-tmp/p5.png" x="62" y="732" width="96" height="96" clip-path="url(#c5)" preserveAspectRatio="xMidYMid slice"/>
+  <text x="176" y="765" font-size="25" font-weight="bold" fill="#1C1C1C" font-family="Arial Black, Arial, sans-serif">Kaasstukken 48+</text>
+  <text x="176" y="788" font-size="14" fill="#888" font-family="Arial, sans-serif">Hoogvliet  ·  geldig t/m 11 mei</text>
+  <text x="820" y="769" font-size="36" font-weight="900" fill="#1B5E3B" text-anchor="middle" font-family="Arial Black, Arial, sans-serif">€3,49</text>
+  <text x="820" y="796" font-size="16" fill="#B0A090" text-anchor="middle" text-decoration="line-through" font-family="Arial, sans-serif">normaal €4,71</text>
+  <g transform="rotate(-4, 980, 758)">
+    <rect x="950" y="736" width="74" height="44" rx="8" fill="#C41230"/>
+    <text x="987" y="756" font-size="17" font-weight="900" fill="white" text-anchor="middle" font-family="Arial Black, sans-serif">-26%</text>
+    <text x="987" y="772" font-size="11" fill="rgba(255,255,255,0.85)" text-anchor="middle" font-family="Arial, sans-serif">KORTING</text>
+  </g>
+
+  <!-- ───── Footer ───── -->
+  <rect x="0" y="858" width="1080" height="222" fill="#1C1C1C"/>
+
+  <!-- İnce kırmızı çizgi -->
+  <rect x="0" y="858" width="1080" height="4" fill="#C41230"/>
+
+  <!-- Footer içerik -->
+  <text x="540" y="920" font-size="15" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="Arial, sans-serif" letter-spacing="4">ALLE AANBIEDINGEN OP ÉÉN PLEK</text>
+  <text x="540" y="978" font-size="44" font-weight="bold" fill="white" text-anchor="middle" font-family="Georgia, serif" font-style="italic">dealhunter4u.nl</text>
+  <text x="540" y="1020" font-size="14" fill="rgba(255,255,255,0.35)" text-anchor="middle" font-family="Arial, sans-serif" letter-spacing="1">#dealhunter4u  ·  #aanbiedingen  ·  #besparen  ·  #supermarkt  ·  #boodschappen</text>
+
+  <!-- Footer sepet ikonu (küçük, sağ alt) -->
+  <g transform="translate(470, 1038) scale(0.28)" fill="rgba(255,255,255,0.15)">
+    <path d="M 122.8125 119.945312 C 98.414062 109.4375 56.257812 112.335938 34.03125 126.828125 C 25.9375 116.804688 28.714844 92.644531 38.015625 89.867188 C 31.617188 65.347656 44.417969 12.921875 13.375 11.230469 C 0.933594 24.519531 -6.796875 -4.953125 13.015625 2.171875 C 53.957031 6.113281 39.683594 57.082031 49.25 87.332031 C 83.554688 79.839844 141.050781 96.269531 129.335938 105.449219 C 95.273438 96.269531 53.238281 85.277344 38.015625 116.683594 C 54.929688 99.773438 117.5 102.792969 122.8125 119.945312 Z"/>
+  </g>
+
 </svg>

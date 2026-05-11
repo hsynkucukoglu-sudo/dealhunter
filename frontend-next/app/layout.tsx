@@ -4,6 +4,7 @@ import { LanguageProvider } from '@/context/LanguageContext'
 import { CookieBanner } from '@/components/CookieBanner'
 import { AdSenseScript } from '@/components/AdSenseScript'
 import { FavoritesProvider } from '@/context/FavoritesContext'
+import { SessionProvider } from 'next-auth/react'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -50,15 +51,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
       </head>
       <body>
-        <LanguageProvider>
-          <FavoritesProvider>
-            <ShoppingListProvider>
-              {children}
-              <CookieBanner />
-              <AdSenseScript />
-            </ShoppingListProvider>
-          </FavoritesProvider>
-        </LanguageProvider>
+        <SessionProvider>
+          <LanguageProvider>
+            <FavoritesProvider>
+              <ShoppingListProvider>
+                {children}
+                <CookieBanner />
+                <AdSenseScript />
+              </ShoppingListProvider>
+            </FavoritesProvider>
+          </LanguageProvider>
+        </SessionProvider>
       </body>
     </html>
   )
