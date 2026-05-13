@@ -2,8 +2,8 @@ import express from 'express'
 import cors from 'cors'
 import { initDatabase } from './db.js'
 import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, updateProductCategory, clearAllProducts } from './models.js'
-import { saveSubscription, deleteSubscription } from './db.js'
-import { sendPushToAll } from './push.js'
+import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts } from './db.js'
+import { sendPushToAll, sendPushToSubscriptions } from './push.js'
 import { scrapeFlyerProducts } from './scraper/index.js'
 import { categorize } from './categorize.js'
 import path from 'path'
@@ -214,14 +214,42 @@ async function runScraperJob() {
 
     console.log(`⏰ Görev Tamamlandı. ${createdProducts.length} yeni ürün eklendi.`)
 
-    // Push bildirimi gönder
+    // Push bildirimleri gönder
     if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
+      // 1. Hedefli push — favorisi eşleşen kullanıcılara
+      const targetedEndpoints = new Set()
+      try {
+        const targeted = await getSubscriptionsForFavoritedProducts()
+        if (targeted.length > 0) {
+          // Her subscription için eşleşen ürün sayısını bul
+          for (const sub of targeted) {
+            const matchCount = sub.favoriteKeys.length
+            const firstKey = sub.favoriteKeys[0].split('::')
+            const firstName = firstKey[0]
+            const body = matchCount === 1
+              ? `${firstName} is deze week in de aanbieding!`
+              : `${matchCount} van jouw favorieten zijn in de aanbieding!`
+            sendPushToSubscriptions([{ endpoint: sub.endpoint, keys: sub.keys }], {
+              title: '⭐ Jouw favoriete deal!',
+              body,
+              url: 'https://www.dealhunter4u.nl',
+              icon: 'https://www.dealhunter4u.nl/icon-512x512.png',
+            }).catch(e => console.error('Hedefli push hatası:', e.message))
+            targetedEndpoints.add(sub.endpoint)
+          }
+          console.log(`🎯 ${targeted.length} kullanıcıya hedefli bildirim gönderildi`)
+        }
+      } catch (e) {
+        console.error('Hedefli push sorgulama hatası:', e.message)
+      }
+
+      // 2. Genel push — hedefli bildirim almayanlara
       sendPushToAll({
         title: '🛒 Nieuwe aanbiedingen beschikbaar!',
         body: `${createdProducts.length} nieuwe deals van Albert Heijn, Jumbo, Lidl en meer.`,
         url: 'https://www.dealhunter4u.nl',
         icon: 'https://www.dealhunter4u.nl/icon-512x512.png',
-      }).catch(e => console.error('Push hatası:', e.message))
+      }, targetedEndpoints).catch(e => console.error('Genel push hatası:', e.message))
     }
 
     return createdProducts
@@ -245,11 +273,11 @@ cron.schedule('0 8 * * 1', async () => {
 
 // POST /api/push/subscribe - Push aboneliği kaydet
 app.post('/api/push/subscribe', asyncHandler(async (req, res) => {
-  const { endpoint, keys } = req.body
+  const { endpoint, keys, userId } = req.body
   if (!endpoint || !keys?.p256dh || !keys?.auth) {
     return res.status(400).json({ error: 'Geçersiz abonelik' })
   }
-  await saveSubscription({ endpoint, keys })
+  await saveSubscription({ endpoint, keys, userId: userId || null })
   res.status(201).json({ ok: true })
 }))
 
@@ -265,6 +293,34 @@ app.delete('/api/push/unsubscribe', asyncHandler(async (req, res) => {
 app.get('/api/push/vapid-public-key', (req, res) => {
   res.json({ publicKey: process.env.VAPID_PUBLIC_KEY })
 })
+
+// GET /api/favorites?user_id=... - Kullanıcı favorilerini getir
+app.get('/api/favorites', asyncHandler(async (req, res) => {
+  const userId = req.query.user_id
+  if (!userId) return res.status(400).json({ error: 'user_id gerekli' })
+  const favorites = await getUserFavorites(userId)
+  res.json(favorites)
+}))
+
+// POST /api/favorites - Favori ekle
+app.post('/api/favorites', asyncHandler(async (req, res) => {
+  const { user_id, product_name, product_market } = req.body
+  if (!user_id || !product_name || !product_market) {
+    return res.status(400).json({ error: 'user_id, product_name, product_market gerekli' })
+  }
+  await addUserFavorite(user_id, product_name, product_market)
+  res.status(201).json({ ok: true })
+}))
+
+// DELETE /api/favorites - Favori kaldır
+app.delete('/api/favorites', asyncHandler(async (req, res) => {
+  const { user_id, product_name, product_market } = req.body
+  if (!user_id || !product_name || !product_market) {
+    return res.status(400).json({ error: 'user_id, product_name, product_market gerekli' })
+  }
+  await removeUserFavorite(user_id, product_name, product_market)
+  res.json({ ok: true })
+}))
 
 // POST /api/scraper/run - Manuel olarak scraper çalıştırır (Arayüzden tetiklendiğinde)
 app.post('/api/scraper/run', asyncHandler(async (req, res) => {

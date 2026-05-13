@@ -28,7 +28,22 @@ export async function initDatabase() {
     CREATE TABLE IF NOT EXISTS push_subscriptions (
       endpoint TEXT PRIMARY KEY,
       keys JSONB NOT NULL,
+      user_id TEXT,
       created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `)
+  await pool.query(`
+    ALTER TABLE push_subscriptions
+    ADD COLUMN IF NOT EXISTS user_id TEXT
+  `)
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS user_favorites (
+      id SERIAL PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      product_name TEXT NOT NULL,
+      product_market TEXT NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT NOW(),
+      UNIQUE(user_id, product_name, product_market)
     )
   `)
   console.log('✅ PostgreSQL veritabanı başlatıldı')
@@ -36,10 +51,10 @@ export async function initDatabase() {
 
 export async function saveSubscription(subscription) {
   await pool.query(
-    `INSERT INTO push_subscriptions (endpoint, keys)
-     VALUES ($1, $2)
-     ON CONFLICT (endpoint) DO NOTHING`,
-    [subscription.endpoint, JSON.stringify(subscription.keys)]
+    `INSERT INTO push_subscriptions (endpoint, keys, user_id)
+     VALUES ($1, $2, $3)
+     ON CONFLICT (endpoint) DO UPDATE SET user_id = COALESCE(EXCLUDED.user_id, push_subscriptions.user_id)`,
+    [subscription.endpoint, JSON.stringify(subscription.keys), subscription.userId || null]
   )
 }
 
@@ -50,6 +65,51 @@ export async function deleteSubscription(endpoint) {
 export async function getAllSubscriptions() {
   const { rows } = await pool.query('SELECT endpoint, keys FROM push_subscriptions')
   return rows.map(r => ({ endpoint: r.endpoint, keys: r.keys }))
+}
+
+export async function getUserFavorites(userId) {
+  const { rows } = await pool.query(
+    'SELECT product_name, product_market FROM user_favorites WHERE user_id = $1 ORDER BY created_at DESC',
+    [userId]
+  )
+  return rows
+}
+
+export async function addUserFavorite(userId, productName, productMarket) {
+  await pool.query(
+    `INSERT INTO user_favorites (user_id, product_name, product_market)
+     VALUES ($1, $2, $3)
+     ON CONFLICT DO NOTHING`,
+    [userId, productName, productMarket]
+  )
+}
+
+export async function removeUserFavorite(userId, productName, productMarket) {
+  await pool.query(
+    'DELETE FROM user_favorites WHERE user_id = $1 AND product_name = $2 AND product_market = $3',
+    [userId, productName, productMarket]
+  )
+}
+
+export async function getSubscriptionsForFavoritedProducts() {
+  const { rows } = await pool.query(`
+    SELECT
+      ps.endpoint,
+      ps.keys,
+      ps.user_id,
+      array_agg(DISTINCT uf.product_name || '::' || uf.product_market) AS favorite_keys
+    FROM push_subscriptions ps
+    JOIN user_favorites uf ON ps.user_id = uf.user_id
+    JOIN products p ON lower(p.name) = lower(uf.product_name) AND p.market = uf.product_market
+    WHERE ps.user_id IS NOT NULL
+    GROUP BY ps.endpoint, ps.keys, ps.user_id
+  `)
+  return rows.map(r => ({
+    endpoint: r.endpoint,
+    keys: r.keys,
+    userId: r.user_id,
+    favoriteKeys: r.favorite_keys,
+  }))
 }
 
 export async function getProducts() {

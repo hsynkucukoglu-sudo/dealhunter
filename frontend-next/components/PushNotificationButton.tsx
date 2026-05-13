@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useSession } from 'next-auth/react'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
@@ -12,6 +13,9 @@ function urlBase64ToUint8Array(base64String: string) {
 }
 
 export function PushNotificationButton() {
+  const { data: session } = useSession()
+  const userId = (session?.user as { id?: string })?.id ?? null
+
   const [supported, setSupported] = useState(false)
   const [subscribed, setSubscribed] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -55,7 +59,7 @@ export function PushNotificationButton() {
         await fetch(`${API_BASE}/api/push/subscribe`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ endpoint: json.endpoint, keys: json.keys }),
+          body: JSON.stringify({ endpoint: json.endpoint, keys: json.keys, userId }),
         })
         setSubscribed(true)
       }
