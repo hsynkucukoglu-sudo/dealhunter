@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import { initDatabase } from './db.js'
 import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, updateProductCategory, clearAllProducts } from './models.js'
-import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts } from './db.js'
+import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, getMinPriceMap } from './db.js'
 import { sendPushToAll, sendPushToSubscriptions } from './push.js'
 import { scrapeFlyerProducts } from './scraper/index.js'
 import { categorize } from './categorize.js'
@@ -214,6 +214,9 @@ async function runScraperJob() {
 
     console.log(`⏰ Görev Tamamlandı. ${createdProducts.length} yeni ürün eklendi.`)
 
+    // Fiyat geçmişini kaydet
+    recordPriceHistory(createdProducts).catch(e => console.error('Fiyat geçmişi kayıt hatası:', e.message))
+
     // Push bildirimleri gönder
     if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
       // 1. Hedefli push — favorisi eşleşen kullanıcılara
@@ -320,6 +323,12 @@ app.delete('/api/favorites', asyncHandler(async (req, res) => {
   }
   await removeUserFavorite(user_id, product_name, product_market)
   res.json({ ok: true })
+}))
+
+// GET /api/price-history-min - Tüm ürünlerin tarihsel minimum fiyatları
+app.get('/api/price-history-min', asyncHandler(async (req, res) => {
+  const map = await getMinPriceMap()
+  res.json(map)
 }))
 
 // POST /api/scraper/run - Manuel olarak scraper çalıştırır (Arayüzden tetiklendiğinde)

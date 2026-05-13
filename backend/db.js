@@ -46,6 +46,17 @@ export async function initDatabase() {
       UNIQUE(user_id, product_name, product_market)
     )
   `)
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS price_history (
+      id SERIAL PRIMARY KEY,
+      product_name TEXT NOT NULL,
+      product_market TEXT NOT NULL,
+      discounted_price REAL NOT NULL,
+      original_price REAL NOT NULL,
+      recorded_week DATE NOT NULL DEFAULT CURRENT_DATE,
+      UNIQUE(product_name, product_market, recorded_week)
+    )
+  `)
   console.log('✅ PostgreSQL veritabanı başlatıldı')
 }
 
@@ -89,6 +100,48 @@ export async function removeUserFavorite(userId, productName, productMarket) {
     'DELETE FROM user_favorites WHERE user_id = $1 AND product_name = $2 AND product_market = $3',
     [userId, productName, productMarket]
   )
+}
+
+function currentWeekMonday() {
+  const d = new Date()
+  const day = d.getDay()
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1)
+  return new Date(d.getFullYear(), d.getMonth(), diff).toISOString().split('T')[0]
+}
+
+export async function recordPriceHistory(products) {
+  if (!products?.length) return
+  const week = currentWeekMonday()
+  await Promise.all(products.map(p =>
+    pool.query(
+      `INSERT INTO price_history (product_name, product_market, discounted_price, original_price, recorded_week)
+       VALUES ($1, $2, $3, $4, $5)
+       ON CONFLICT (product_name, product_market, recorded_week)
+       DO UPDATE SET discounted_price = LEAST(EXCLUDED.discounted_price, price_history.discounted_price),
+                     original_price = EXCLUDED.original_price`,
+      [p.name, p.market, p.discountedPrice, p.originalPrice, week]
+    ).catch(() => {})
+  ))
+}
+
+export async function getMinPriceMap() {
+  const { rows } = await pool.query(`
+    SELECT
+      product_name,
+      product_market,
+      MIN(discounted_price) AS min_price,
+      COUNT(DISTINCT recorded_week) AS weeks
+    FROM price_history
+    GROUP BY product_name, product_market
+  `)
+  const map = {}
+  for (const r of rows) {
+    map[`${r.product_name}::${r.product_market}`] = {
+      minPrice: parseFloat(r.min_price),
+      weeks: parseInt(r.weeks),
+    }
+  }
+  return map
 }
 
 export async function getSubscriptionsForFavoritedProducts() {

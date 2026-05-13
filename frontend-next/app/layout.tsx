@@ -4,6 +4,7 @@ import { LanguageProvider } from '@/context/LanguageContext'
 import { CookieBanner } from '@/components/CookieBanner'
 import { AdSenseScript } from '@/components/AdSenseScript'
 import { FavoritesProvider } from '@/context/FavoritesContext'
+import { PriceHistoryProvider } from '@/context/PriceHistoryContext'
 import { SessionProvider } from 'next-auth/react'
 import './globals.css'
 
@@ -59,6 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <SessionProvider>
           <LanguageProvider>
+            <PriceHistoryProvider>
             <FavoritesProvider>
               <ShoppingListProvider>
                 {children}
@@ -66,6 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <AdSenseScript />
               </ShoppingListProvider>
             </FavoritesProvider>
+            </PriceHistoryProvider>
           </LanguageProvider>
         </SessionProvider>
       </body>

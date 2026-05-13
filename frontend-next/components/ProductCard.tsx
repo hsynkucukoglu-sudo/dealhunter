@@ -9,6 +9,7 @@ import { getAffiliateLink } from '@/lib/affiliate'
 import { useFavorites } from '@/context/FavoritesContext'
 import { calcUnitPrice } from '@/lib/unitPrice'
 import { detectCampaignType } from '@/lib/campaignType'
+import { usePriceHistory } from '@/context/PriceHistoryContext'
 
 export function ProductCard({ product }: { product: Product }) {
   const { addToCart } = useShoppingList()
@@ -16,7 +17,9 @@ export function ProductCard({ product }: { product: Product }) {
 
   const affiliateLink = getAffiliateLink(product.market)
   const { isFavorite, isWatching, toggleFavorite, toggleWatch } = useFavorites()
+  const { isLowestPrice } = usePriceHistory()
   const hasValidDiscount = product.originalPrice > product.discountedPrice && product.originalPrice > 0
+  const lowestEver = isLowestPrice(product.name, product.market, product.discountedPrice)
 
   const daysLeft = (() => {
     if (!product.expiresAt) return null
@@ -39,7 +42,7 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <div className="card-product group">
       {hasValidDiscount && discountPercent > 0 && (
-        <div className="absolute top-3 right-3 z-10">
+        <div className="absolute top-3 right-3 z-10 flex flex-col items-end gap-1">
           <span
             className="badge-deal"
             style={{
@@ -50,6 +53,14 @@ export function ProductCard({ product }: { product: Product }) {
           >
             -{discountPercent}%
           </span>
+          {lowestEver && (
+            <span
+              className="text-[9px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap"
+              style={{ background: '#1B9E4B', color: 'white', boxShadow: '0 2px 6px rgba(27,158,75,0.3)' }}
+            >
+              🏆 Laagste prijs!
+            </span>
+          )}
         </div>
       )}
 
