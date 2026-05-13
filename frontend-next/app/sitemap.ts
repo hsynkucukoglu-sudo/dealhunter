@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next'
 import { MARKETS, CATEGORIES } from '@/lib/types'
+import { getAllPosts } from '@/lib/posts'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = 'https://www.dealhunter4u.nl'
@@ -19,6 +20,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }))
 
+  const blogPages = getAllPosts().map(post => ({
+    url: `${base}/blog/${post.slug}`,
+    lastModified: new Date(post.date),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }))
+
   return [
     {
       url: base,
@@ -26,6 +34,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'daily',
       priority: 1.0,
     },
+    { url: `${base}/blog`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.8 },
+    ...blogPages,
     ...marketPages,
     ...categoryPages,
     { url: `${base}/privacy`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.3 },
