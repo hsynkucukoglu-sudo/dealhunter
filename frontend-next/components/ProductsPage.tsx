@@ -11,6 +11,7 @@ import { useLanguage } from '@/context/LanguageContext'
 import { DealHunterLogo } from './DealHunterLogo'
 import { AdBanner } from './AdBanner'
 import { buildComparisonGroups } from '@/lib/similarity'
+import { parseProductMeta } from '@/lib/productMeta'
 import { useFavorites } from '@/context/FavoritesContext'
 import { PushNotificationButton } from './PushNotificationButton'
 import { AuthButton } from './AuthButton'
@@ -443,23 +444,44 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                   </div>
                   <div className="divide-y" style={{ borderColor: 'rgba(201,193,182,0.2)' }}>
                     {group.products
-                      .sort((a, b) => a.discountedPrice - b.discountedPrice)
-                      .map(p => (
-                        <div key={p.id} className="flex items-center justify-between px-5 py-3">
-                          <div className="flex items-center gap-2">
-                            <div className="w-2.5 h-2.5 rounded-full flex-none" style={{ background: MARKET_COLORS[p.market] || '#8C8478' }} />
-                            <span className="text-sm font-medium" style={{ color: '#1A1A1A' }}>{p.market}</span>
-                            {p.id === group.cheapest.id && (
-                              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#1B9E4B', color: 'white' }}>
-                                {lang === 'tr' ? 'En ucuz' : lang === 'en' ? 'Cheapest' : 'Goedkoopst'}
+                      .slice()
+                      .sort((a, b) => {
+                        const ma = parseProductMeta(a.name, a.discountedPrice)
+                        const mb = parseProductMeta(b.name, b.discountedPrice)
+                        const sa = (a.unitPrice ?? ma.unitPrice) ?? a.discountedPrice
+                        const sb = (b.unitPrice ?? mb.unitPrice) ?? b.discountedPrice
+                        return sa - sb
+                      })
+                      .map(p => {
+                        const meta = parseProductMeta(p.name, p.discountedPrice)
+                        const unitPriceDisplay = p.unitPrice != null && p.unitType
+                          ? `€${p.unitPrice.toFixed(2)} / ${p.unitType === 'ml' ? (p.unitSize != null && p.unitSize >= 1000 ? 'L' : '100ml') : p.unitType === 'g' ? (p.unitSize != null && p.unitSize >= 500 ? 'kg' : '100g') : 'stuk'}`
+                          : meta.unitPriceDisplay?.display ?? null
+                        const isCheapest = p.id === group.cheapest.id
+                        return (
+                          <div key={p.id} className="flex items-center justify-between px-5 py-3">
+                            <div className="flex items-center gap-2 flex-1 min-w-0">
+                              <div className="w-2.5 h-2.5 rounded-full flex-none" style={{ background: MARKET_COLORS[p.market] || '#8C8478' }} />
+                              <span className="text-sm font-medium truncate" style={{ color: '#1A1A1A' }}>{p.market}</span>
+                              {isCheapest && (
+                                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full flex-none" style={{ background: '#1B9E4B', color: 'white' }}>
+                                  {lang === 'tr' ? 'En ucuz' : lang === 'en' ? 'Cheapest' : 'Goedkoopst'}
+                                </span>
+                              )}
+                            </div>
+                            <div className="flex flex-col items-end gap-0.5 ml-3">
+                              <span className="text-lg font-headline font-black leading-none" style={{ color: isCheapest ? '#1B9E4B' : '#1A1A1A' }}>
+                                €{p.discountedPrice.toFixed(2)}
                               </span>
-                            )}
+                              {unitPriceDisplay && (
+                                <span className="text-[11px] font-medium" style={{ color: '#9C9389' }}>
+                                  {unitPriceDisplay}
+                                </span>
+                              )}
+                            </div>
                           </div>
-                          <span className="text-lg font-headline font-black" style={{ color: p.id === group.cheapest.id ? '#1B9E4B' : '#1A1A1A' }}>
-                            €{p.discountedPrice.toFixed(2)}
-                          </span>
-                        </div>
-                      ))}
+                        )
+                      })}
                   </div>
                 </motion.div>
               ))}

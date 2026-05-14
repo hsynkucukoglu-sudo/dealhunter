@@ -11,6 +11,11 @@ export interface Product {
   expiresAt: string
   createdAt: string
   category: string
+  brand?: string | null
+  unitSize?: number | null
+  unitType?: string | null
+  unitPrice?: number | null
+  fullSizeLabel?: string | null
 }
 
 export const CATEGORY_LABELS: Record<string, Record<string, string>> = {

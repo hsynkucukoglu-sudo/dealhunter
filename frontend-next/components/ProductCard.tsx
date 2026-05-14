@@ -7,7 +7,7 @@ import { useShoppingList } from '@/context/ShoppingListContext'
 import { useLanguage } from '@/context/LanguageContext'
 import { getAffiliateLink } from '@/lib/affiliate'
 import { useFavorites } from '@/context/FavoritesContext'
-import { calcUnitPrice } from '@/lib/unitPrice'
+import { calcUnitPrice } from '@/lib/productMeta'
 import { detectCampaignType } from '@/lib/campaignType'
 import { usePriceHistory } from '@/context/PriceHistoryContext'
 
