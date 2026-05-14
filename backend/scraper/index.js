@@ -732,6 +732,87 @@ async function scrapeVomar() {
   }
 }
 
+// ─── UNIT-PRICE META EXTRACTION ──────────────────────────────────────────────
+const SIZE_RE = /\b\d+[,.]\d+\b|\b\d+(g|gr|ml|cl|dl|l|kg|kilo|x|stuks?|stuk|pack|pak|pck)\b/gi
+
+function _parseNum(s) { return parseFloat(s.replace(',', '.')) }
+
+function _extractVolumeMl(name) {
+  const m = name.match(/(\d+[,.]\d+|\d+)\s*(cl|dl|ml|l|liter|litre)\b/i)
+  if (!m) return null
+  const a = _parseNum(m[1])
+  const u = m[2].toLowerCase()
+  const ml = u === 'ml' ? a : u === 'cl' ? a * 10 : u === 'dl' ? a * 100 : a * 1000
+  return { amount: ml, label: `${m[1]} ${m[2]}` }
+}
+
+function _extractWeightG(name) {
+  const m = name.match(/(\d+[,.]\d+|\d+)\s*(kg|kilo|kilogram|gram|g)\b/i)
+  if (!m) return null
+  const a = _parseNum(m[1])
+  const u = m[2].toLowerCase()
+  const g = (u === 'g' || u === 'gram') ? a : a * 1000
+  return { amount: g, label: `${m[1]} ${m[2]}` }
+}
+
+function _extractCount(name) {
+  for (const re of [/(\d+)\s*[-]?\s*(?:pack|pak|pck|stuks?|stuk|pieces?)\b/i, /\b(\d+)\s*x\s*(?:\d)/i]) {
+    const m = name.match(re)
+    if (m) { const n = parseInt(m[1]); if (n > 1 && n <= 200) return { count: n, label: m[0] } }
+  }
+  return null
+}
+
+const KNOWN_BRANDS = new Set([
+  'ariel','persil','bold','dash','dreft','fairy','glorix','dettol',
+  'coca','pepsi','fanta','sprite','heineken','amstel','grolsch',
+  'activia','danone','milka','kinder','ferrero','haribo',
+  'lays','pringles','duyvis','remia','calve','calvé',
+  'knorr','maggi','conimex','honig','unox','campina','friso',
+  'becel','flora','benecol','lurpak','president','philadelphia',
+  'bonduelle','iglo','mora','simba','sensodyne','colgate',
+  'oral','gillette','dove','nivea','head','pantene','axe','rexona',
+])
+
+function _extractBrand(name) {
+  const fw = name.split(/\s+/)[0]?.toLowerCase().replace(/[^a-z]/g, '')
+  if (fw && KNOWN_BRANDS.has(fw)) return name.split(/\s+/)[0]
+  const m = name.match(/^([A-Z][a-zA-Z]{2,})(?:\s|$)/)
+  return m ? m[1] : null
+}
+
+function enrichProductMeta(name, price) {
+  if (!price || price <= 0) return {}
+  const vol = _extractVolumeMl(name)
+  const weight = _extractWeightG(name)
+  const countInfo = _extractCount(name)
+
+  let unitSize = null, unitType = null, fullSizeLabel = null, unitPrice = null
+
+  if (vol) {
+    const totalMl = vol.amount * (countInfo?.count ?? 1)
+    if (totalMl > 0) {
+      unitSize = totalMl; unitType = 'ml'
+      fullSizeLabel = countInfo ? `${countInfo.label} ${vol.label}` : vol.label
+      unitPrice = totalMl >= 1000 ? price / (totalMl / 1000) : price / (totalMl / 100)
+      unitPrice = parseFloat(unitPrice.toFixed(4))
+    }
+  } else if (weight) {
+    const totalG = weight.amount * (countInfo?.count ?? 1)
+    if (totalG > 0) {
+      unitSize = totalG; unitType = 'g'
+      fullSizeLabel = countInfo ? `${countInfo.label} ${weight.label}` : weight.label
+      unitPrice = totalG >= 500 ? price / (totalG / 1000) : price / (totalG / 100)
+      unitPrice = parseFloat(unitPrice.toFixed(4))
+    }
+  } else if (countInfo) {
+    unitSize = countInfo.count; unitType = 'stuks'; fullSizeLabel = countInfo.label
+    unitPrice = parseFloat((price / countInfo.count).toFixed(4))
+  }
+
+  return { brand: _extractBrand(name), unitSize, unitType, unitPrice, fullSizeLabel }
+}
+
 // ─── ANA FONKSİYON ────────────────────────────────────────────────────────────
 export async function scrapeFlyerProducts() {
   console.log('🔍 Fetch-only scraper başlatılıyor...')
@@ -757,6 +838,9 @@ export async function scrapeFlyerProducts() {
     seen.add(key)
     return true
   })
+
+  // Unit-price meta ekle
+  all = all.map(p => ({ ...p, ...enrichProductMeta(p.name, p.discountedPrice) }))
 
   console.log(`\n✅ Toplam ${all.length} ürün (${dirk.length} Dirk, ${jumbo.length} Jumbo, ${hoogvliet.length} Hoogvliet, ${plus.length} Plus, ${lidl.length} Lidl, ${ah.length} AH, ${aldi.length} Aldi, ${vomar.length} Vomar)`)
   return all
