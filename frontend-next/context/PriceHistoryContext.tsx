@@ -9,8 +9,8 @@ interface PriceEntry {
 }
 
 interface PriceHistoryContextType {
-  isLowestPrice: (name: string, market: string, currentPrice: number) => boolean
-  getMinPrice: (name: string, market: string) => PriceEntry | null
+  isLowestPrice: (name: string, market: string, currentPrice: number, unitSize?: number | null, unitType?: string | null) => boolean
+  getMinPrice: (name: string, market: string, unitSize?: number | null, unitType?: string | null) => PriceEntry | null
 }
 
 const PriceHistoryContext = createContext<PriceHistoryContextType>({
@@ -28,11 +28,17 @@ export function PriceHistoryProvider({ children }: { children: React.ReactNode }
       .catch(() => {})
   }, [])
 
-  const getMinPrice = (name: string, market: string) =>
-    map[`${name}::${market}`] ?? null
+  const getMinPrice = (name: string, market: string, unitSize?: number | null, unitType?: string | null) => {
+    // Try unit-aware key first (new records); fall back to legacy name::market key
+    if (unitSize != null && unitType) {
+      const unitKey = `${name}::${market}::${unitSize}::${unitType}`
+      if (map[unitKey]) return map[unitKey]
+    }
+    return map[`${name}::${market}`] ?? null
+  }
 
-  const isLowestPrice = (name: string, market: string, currentPrice: number) => {
-    const entry = getMinPrice(name, market)
+  const isLowestPrice = (name: string, market: string, currentPrice: number, unitSize?: number | null, unitType?: string | null) => {
+    const entry = getMinPrice(name, market, unitSize, unitType)
     if (!entry || entry.weeks < 2) return false
     return currentPrice <= entry.minPrice
   }

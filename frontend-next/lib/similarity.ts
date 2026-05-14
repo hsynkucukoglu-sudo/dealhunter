@@ -34,7 +34,12 @@ export function buildComparisonGroups(products: Product[]): ComparisonGroup[] {
 
   // Pre-compute meta for all products
   const metaMap = new Map(
-    products.map(p => [p.id, p.unitType != null ? { unitType: p.unitType, unitPrice: p.unitPrice } : parseProductMeta(p.name, p.discountedPrice)])
+    products.map(p => [
+      p.id,
+      p.unitType != null
+        ? { unitType: p.unitType, unitPrice: p.unitPrice ?? null, unitSize: p.unitSize ?? null }
+        : parseProductMeta(p.name, p.discountedPrice),
+    ])
   )
 
   for (const product of products) {
@@ -51,9 +56,13 @@ export function buildComparisonGroups(products: Product[]): ComparisonGroup[] {
       const otherTokens = tokenize(p.name)
       const overlap = otherTokens.filter(t => tokens.has(t)).length
       if (overlap < 2) return false
-      // If both have a unit type, they must match (don't compare ml vs g)
       const pMeta = metaMap.get(p.id)!
+      // Unit types must match when both are known (don't compare ml vs g)
       if (seedUnitType && pMeta.unitType && seedUnitType !== pMeta.unitType) return false
+      // For countable products (stuks): require exact same count — 24 stuks ≠ 48 stuks
+      if (seedUnitType === 'stuks' && seedMeta.unitSize != null) {
+        if (pMeta.unitType !== 'stuks' || pMeta.unitSize !== seedMeta.unitSize) return false
+      }
       return true
     })
 

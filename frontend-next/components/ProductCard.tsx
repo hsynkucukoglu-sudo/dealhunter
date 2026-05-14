@@ -19,7 +19,7 @@ export function ProductCard({ product }: { product: Product }) {
   const { isFavorite, isWatching, toggleFavorite, toggleWatch } = useFavorites()
   const { isLowestPrice } = usePriceHistory()
   const hasValidDiscount = product.originalPrice > product.discountedPrice && product.originalPrice > 0
-  const lowestEver = isLowestPrice(product.name, product.market, product.discountedPrice)
+  const lowestEver = isLowestPrice(product.name, product.market, product.discountedPrice, product.unitSize, product.unitType)
 
   const daysLeft = (() => {
     if (!product.expiresAt) return null
