@@ -14,12 +14,28 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: `${post.title} | DealHunter4U`,
     description: post.description,
+    alternates: { canonical: `https://www.dealhunter4u.nl/blog/${post.slug}` },
     openGraph: {
       title: post.title,
       description: post.description,
-      url: `https://dealhunter4u.nl/blog/${post.slug}`,
+      url: `https://www.dealhunter4u.nl/blog/${post.slug}`,
       type: 'article',
       publishedTime: post.date,
+      authors: ['DealHunter4U'],
+      images: [
+        {
+          url: 'https://www.dealhunter4u.nl/icon-512x512.png',
+          width: 512,
+          height: 512,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary',
+      title: post.title,
+      description: post.description,
+      images: ['https://www.dealhunter4u.nl/icon-512x512.png'],
     },
   }
 }
@@ -34,14 +50,16 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     '@type': 'Article',
     headline: post.title,
     description: post.description,
+    image: 'https://www.dealhunter4u.nl/icon-512x512.png',
     datePublished: post.date,
-    author: { '@type': 'Organization', name: 'DealHunter4U' },
+    dateModified: post.date,
+    author: { '@type': 'Organization', name: 'DealHunter4U', url: 'https://www.dealhunter4u.nl' },
     publisher: {
       '@type': 'Organization',
       name: 'DealHunter4U',
       logo: { '@type': 'ImageObject', url: 'https://www.dealhunter4u.nl/icon-512x512.png' },
     },
-    mainEntityOfPage: { '@type': 'WebPage', '@id': `https://dealhunter4u.nl/blog/${post.slug}` },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `https://www.dealhunter4u.nl/blog/${post.slug}` },
   }
 
   return (
