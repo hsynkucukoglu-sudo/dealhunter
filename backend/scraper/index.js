@@ -33,7 +33,7 @@ async function scrapeDirk() {
       return {
         name: p.name,
         market: 'Dirk',
-        originalPrice: parseFloat((discountedPrice * 1.35).toFixed(2)),
+        originalPrice: discountedPrice,
         discountedPrice,
         imageUrl: imgSrc,
         isCampaign: true,
@@ -77,7 +77,7 @@ async function scrapeJumbo() {
           results.push({
             name: promoMatch && !discountedPrice ? `${promoMatch[0].trim()} — ${name}` : name,
             market: 'Jumbo',
-            originalPrice: discountedPrice ? parseFloat((discountedPrice * 1.35).toFixed(2)) : 0,
+            originalPrice: discountedPrice ? discountedPrice : 0,
             discountedPrice,
             imageUrl: img && !img.includes('logo') ? img : null,
             isCampaign: true,
@@ -132,7 +132,7 @@ async function scrapeJumbo() {
       results.push({
         name: promoMatch && !discountedPrice ? `${promoMatch[0].trim()} — ${name}` : name,
         market: 'Jumbo',
-        originalPrice: discountedPrice ? parseFloat((discountedPrice * 1.35).toFixed(2)) : 0,
+        originalPrice: discountedPrice ? discountedPrice : 0,
         discountedPrice,
         imageUrl: imgSrc && !imgSrc.includes('logo') ? imgSrc : null,
         isCampaign: true,
@@ -168,7 +168,7 @@ async function scrapeJumbo() {
                   results.push({
                     name,
                     market: 'Jumbo',
-                    originalPrice: parseFloat((dp * 1.35).toFixed(2)),
+                    originalPrice: dp,
                     discountedPrice: dp,
                     imageUrl: p.imageUrl || p.image || null,
                     isCampaign: true,
@@ -219,7 +219,7 @@ async function scrapeHoogvliet() {
         results.push({
           name: obj.name,
           market: 'Hoogvliet',
-          originalPrice: parseFloat((discountedPrice * 1.35).toFixed(2)),
+          originalPrice: discountedPrice,
           discountedPrice,
           imageUrl: imgMap[obj.id] || null,
           isCampaign: true,
@@ -261,7 +261,7 @@ async function scrapePlus() {
       if (!prices.length) return
 
       const discountedPrice = Math.min(...prices)
-      const originalPrice = prices.length > 1 ? Math.max(...prices) : parseFloat((discountedPrice * 1.35).toFixed(2))
+      const originalPrice = prices.length > 1 ? Math.max(...prices) : discountedPrice
       let name = ''
       const bijvMatch = text.match(/Bijv\.?\s+([^0-9€]{5,60})/i)
       if (bijvMatch) name = bijvMatch[1].trim()
@@ -321,7 +321,7 @@ async function scrapeLidl() {
           return {
             name: data.name,
             market: 'Lidl',
-            originalPrice: parseFloat((discountedPrice * 1.35).toFixed(2)),
+            originalPrice: discountedPrice,
             discountedPrice,
             imageUrl: img || null,
             isCampaign: true,
@@ -695,7 +695,7 @@ async function scrapeAldi() {
       return {
         name: p.name,
         market: 'Aldi',
-        originalPrice: parseFloat((discountedPrice * 1.35).toFixed(2)),
+        originalPrice: discountedPrice,
         discountedPrice,
         imageUrl: primary?.url || null,
         isCampaign: true,
@@ -737,7 +737,7 @@ async function scrapeVomar() {
           results.push({
             name: p.name,
             market: 'Vomar',
-            originalPrice: parseFloat((discountedPrice * 1.35).toFixed(2)),
+            originalPrice: discountedPrice,
             discountedPrice,
             imageUrl: typeof img === 'string' ? img : img?.url || null,
             isCampaign: true,
@@ -765,7 +765,7 @@ async function scrapeVomar() {
         results.push({
           name,
           market: 'Vomar',
-          originalPrice: parseFloat((discountedPrice * 1.35).toFixed(2)),
+          originalPrice: discountedPrice,
           discountedPrice,
           imageUrl: imgSrc && !imgSrc.includes('logo') ? imgSrc : null,
           isCampaign: true,

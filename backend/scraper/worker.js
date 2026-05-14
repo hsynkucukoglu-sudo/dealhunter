@@ -75,7 +75,7 @@ async function scrapeAH() {
       const prices = (p.priceMatches || []).map(s => parseFloat(s.replace(',', '.'))).filter(n => n > 0 && n < 500)
       if (!prices.length) continue
       const discountedPrice = Math.min(...prices)
-      const originalPrice = prices.length > 1 ? Math.max(...prices) : parseFloat((discountedPrice * 1.35).toFixed(2))
+      const originalPrice = prices.length > 1 ? Math.max(...prices) : discountedPrice
       const imageUrl = p.imgSrc.includes('/dam/product/') ? p.imgSrc.replace(/rendition=\d+x\d+/, 'rendition=300x300') : null
       results.push({ name: p.name, market: 'Albert Heijn', originalPrice, discountedPrice, imageUrl, isCampaign: true, source: 'ah.nl/bonus', expiresAt: EXPIRES_AT })
     }
@@ -113,7 +113,7 @@ async function scrapeJumbo() {
       const prices = priceMatches.map(s => parseFloat(s.replace(',', '.'))).filter(n => n > 0 && n < 500)
       if (!prices.length) continue
       const discountedPrice = Math.min(...prices)
-      const originalPrice = prices.length > 1 ? Math.max(...prices) : parseFloat((discountedPrice * 1.35).toFixed(2))
+      const originalPrice = prices.length > 1 ? Math.max(...prices) : discountedPrice
       results.push({ name: p.name, market: 'Jumbo', originalPrice, discountedPrice, imageUrl: p.img?.includes('logo') ? null : p.img || null, isCampaign: true, source: 'jumbo.com/aanbiedingen', expiresAt: EXPIRES_AT })
     }
   } catch (e) { process.stderr.write('Jumbo error: ' + e.message + '\n') }
@@ -148,7 +148,7 @@ async function scrapePlus() {
       const prices = priceMatches.map(s => parseFloat(s)).filter(n => n > 0 && n < 500)
       if (!prices.length) continue
       const discountedPrice = Math.min(...prices)
-      const originalPrice = prices.length > 1 ? Math.max(...prices) : parseFloat((discountedPrice * 1.35).toFixed(2))
+      const originalPrice = prices.length > 1 ? Math.max(...prices) : discountedPrice
       const parts = (p.text || '').split('|').map(s => s.trim()).filter(Boolean)
       let name = ''
       const bijvPart = parts.find(s => /^bijv\.?\s+/i.test(s))
@@ -193,7 +193,7 @@ async function scrapeLidl() {
       const discountedPrice = parseFloat((p.newPrice || '').replace(',', '.')) || 0
       if (!discountedPrice) continue
       const oldPriceNum = parseFloat((p.oldPrice || '').replace(',', '.')) || 0
-      const originalPrice = oldPriceNum > discountedPrice ? oldPriceNum : parseFloat((discountedPrice * 1.35).toFixed(2))
+      const originalPrice = oldPriceNum > discountedPrice ? oldPriceNum : discountedPrice
       results.push({ name: p.name, market: 'Lidl', originalPrice, discountedPrice, imageUrl: p.img && !p.img.includes('logo') ? p.img : null, isCampaign: true, source: 'lidl.nl/aanbiedingen', expiresAt: EXPIRES_AT })
     }
   } catch (e) { process.stderr.write('Lidl error: ' + e.message + '\n') }
