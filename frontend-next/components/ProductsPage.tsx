@@ -439,9 +439,27 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                   className="rounded-2xl overflow-hidden"
                   style={{ background: 'rgba(255,255,255,0.75)', border: '1px solid rgba(201,193,182,0.4)' }}
                 >
-                  <div className="px-5 py-3 border-b" style={{ borderColor: 'rgba(201,193,182,0.3)' }}>
-                    <p className="font-headline font-bold text-sm" style={{ color: '#1A1A1A' }}>{group.name}</p>
-                  </div>
+                  {(() => {
+                    // Pack size label — same for all products in the group
+                    const rep = group.products[0]
+                    const repMeta = parseProductMeta(rep.name, rep.discountedPrice)
+                    const packLabel = rep.fullSizeLabel
+                      ?? (rep.unitSize != null && rep.unitType ? `${rep.unitSize} ${rep.unitType}` : null)
+                      ?? repMeta.fullSizeLabel
+                    return (
+                      <div className="px-5 py-3 border-b flex items-center gap-2" style={{ borderColor: 'rgba(201,193,182,0.3)' }}>
+                        <p className="font-headline font-bold text-sm" style={{ color: '#1A1A1A' }}>{group.name}</p>
+                        {packLabel && (
+                          <span
+                            className="text-[10px] font-bold px-2 py-0.5 rounded-full flex-none"
+                            style={{ background: '#EAE4DE', color: '#6B6259' }}
+                          >
+                            {packLabel}
+                          </span>
+                        )}
+                      </div>
+                    )
+                  })()}
                   <div className="divide-y" style={{ borderColor: 'rgba(201,193,182,0.2)' }}>
                     {group.products
                       .slice()
@@ -462,7 +480,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                           <div key={p.id} className="flex items-center justify-between px-5 py-3">
                             <div className="flex items-center gap-2 flex-1 min-w-0">
                               <div className="w-2.5 h-2.5 rounded-full flex-none" style={{ background: MARKET_COLORS[p.market] || '#8C8478' }} />
-                              <span className="text-sm font-medium truncate" style={{ color: '#1A1A1A' }}>{p.market}</span>
+                              <span className="text-sm font-medium" style={{ color: '#1A1A1A' }}>{p.market}</span>
                               {isCheapest && (
                                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full flex-none" style={{ background: '#1B9E4B', color: 'white' }}>
                                   {lang === 'tr' ? 'En ucuz' : lang === 'en' ? 'Cheapest' : 'Goedkoopst'}

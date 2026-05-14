@@ -137,14 +137,24 @@ export function ProductCard({ product }: { product: Product }) {
               </span>
             )}
           </div>
-          {unitPrice && (
-            <span
-              className="inline-block text-[11px] font-medium px-1.5 py-0.5 rounded mt-0.5"
-              style={{ background: '#F0EBE5', color: '#6B6259' }}
-            >
-              {unitPrice.display}
-            </span>
-          )}
+          <div className="flex items-center gap-1.5 flex-wrap mt-0.5">
+            {(product.fullSizeLabel || (product.unitSize != null && product.unitType)) && (
+              <span
+                className="text-[11px] font-semibold px-1.5 py-0.5 rounded"
+                style={{ background: '#EAE4DE', color: '#6B6259' }}
+              >
+                {product.fullSizeLabel ?? `${product.unitSize} ${product.unitType}`}
+              </span>
+            )}
+            {unitPrice && (
+              <span
+                className="text-[11px] font-medium px-1.5 py-0.5 rounded"
+                style={{ background: '#F0EBE5', color: '#6B6259' }}
+              >
+                {unitPrice.display}
+              </span>
+            )}
+          </div>
         </div>
 
         <div className="flex items-center justify-between mt-1.5">
