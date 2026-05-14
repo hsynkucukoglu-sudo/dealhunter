@@ -10,7 +10,7 @@ const STOP_WORDS = new Set([
 ])
 
 // Size-like tokens: digits, units, pack patterns — strip before matching
-const SIZE_RE = /\b\d+[,.]\d+\b|\b\d+(g|gr|ml|cl|dl|l|kg|kilo|x|stuks?|stuk|pack|pak|pck)\b/gi
+const SIZE_RE = /\b\d+[,.]\d+\b|\b\d+[-\s]*(g|gr|ml|cl|dl|l|kg|kilo|x|stuks?|stuk|pack|pak|pck)\b/gi
 
 function tokenize(name: string): string[] {
   return name

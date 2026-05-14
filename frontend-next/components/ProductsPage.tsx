@@ -158,7 +158,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
     // Strip size/count tokens to get a base product name for dedup
     const baseName = (name: string) =>
       name
-        .replace(/\b\d+[,.]\d+\b|\b\d+\s*(g|gr|kg|kilo|ml|cl|dl|l|liter|stuks?|stuk|pack|pak|pck|x|wasbeurten?|tabs?)\b/gi, '')
+        .replace(/\b\d+[,.]\d+\b|\b\d+[-\s]*(g|gr|kg|kilo|ml|cl|dl|l|liter|stuks?|stuk|pack|pak|pck|x|wasbeurten?|tabs?)\b/gi, '')
         .replace(/\s{2,}/g, ' ')
         .trim()
         .toLowerCase()
