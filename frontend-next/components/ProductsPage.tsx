@@ -127,12 +127,45 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
     }).slice(0, 8)
   , [products])
 
-  const topDeals = useMemo(() =>
-    [...products]
-      .filter(p => p.originalPrice > p.discountedPrice && p.discount > 0)
-      .sort((a, b) => b.discount - a.discount)
+  const topDeals = useMemo(() => {
+    // Strip size/count tokens to get a base product name for dedup
+    const baseName = (name: string) =>
+      name
+        .replace(/\b\d+[,.]\d+\b|\b\d+\s*(g|gr|kg|kilo|ml|cl|dl|l|liter|stuks?|stuk|pack|pak|pck|x|wasbeurten?|tabs?)\b/gi, '')
+        .replace(/\s{2,}/g, ' ')
+        .trim()
+        .toLowerCase()
+
+    const discPct = (p: { originalPrice: number; discountedPrice: number; discount: number }) =>
+      p.discount || Math.round(((p.originalPrice - p.discountedPrice) / p.originalPrice) * 100)
+
+    // One best deal per base product name — highest discount%, tie-break: lowest unit price
+    const byBase = new Map<string, typeof products[number]>()
+    for (const p of products) {
+      if (!(p.originalPrice > p.discountedPrice) || !p.discount) continue
+      const key = baseName(p.name)
+      const existing = byBase.get(key)
+      if (!existing) {
+        byBase.set(key, p)
+      } else {
+        const pPct = discPct(p)
+        const ePct = discPct(existing)
+        if (pPct > ePct) {
+          byBase.set(key, p)
+        } else if (pPct === ePct) {
+          const pMeta = parseProductMeta(p.name, p.discountedPrice)
+          const eMeta = parseProductMeta(existing.name, existing.discountedPrice)
+          const pUnit = (p.unitPrice ?? pMeta.unitPrice) ?? p.discountedPrice
+          const eUnit = (existing.unitPrice ?? eMeta.unitPrice) ?? existing.discountedPrice
+          if (pUnit < eUnit) byBase.set(key, p)
+        }
+      }
+    }
+
+    return [...byBase.values()]
+      .sort((a, b) => discPct(b) - discPct(a))
       .slice(0, 5)
-  , [products])
+  }, [products])
 
   const comparisonGroups = useMemo(() => buildComparisonGroups(products), [products])
 
