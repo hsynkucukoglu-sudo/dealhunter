@@ -1,6 +1,7 @@
 'use client'
-import React, { useState, useMemo, useEffect, useRef } from 'react'
+import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Fuse from 'fuse.js'
 import { Product, CATEGORIES, CATEGORY_LABELS, MARKET_COLORS, getMarketInitial } from '@/lib/types'
 import { ProductCard } from './ProductCard'
 import { ShoppingListSidebar } from './ShoppingListSidebar'
@@ -23,6 +24,7 @@ export function ProductsPage({ initialProducts }: { initialProducts: Product[] }
   const [products, setProducts] = useState<Product[]>(initialProducts)
   const [isScraping, setIsScraping] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
+  const [debouncedSearch, setDebouncedSearch] = useState('')
   const [showCampaignsOnly, setShowCampaignsOnly] = useState(false)
   const [selectedMarket, setSelectedMarket] = useState('all')
   const [selectedCategory, setSelectedCategory] = useState('all')
@@ -63,6 +65,24 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
     return () => window.removeEventListener('beforeinstallprompt', handler)
   }, [])
 
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedSearch(searchTerm.trim()), 200)
+    return () => clearTimeout(t)
+  }, [searchTerm])
+
+  const fuse = useMemo(() => new Fuse(products, {
+    keys: [
+      { name: 'name', weight: 0.6 },
+      { name: 'brand', weight: 0.2 },
+      { name: 'market', weight: 0.1 },
+      { name: 'category', weight: 0.1 },
+    ],
+    threshold: 0.35,
+    includeScore: true,
+    ignoreLocation: true,
+    minMatchCharLength: 2,
+  }), [products])
+
   const handleInstallPWA = async () => {
     const prompt = deferredPromptRef.current
     if (!prompt) return
@@ -99,21 +119,27 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
     Array.from(new Set(products.map(p => p.market))).sort()
   , [products])
 
-  const filteredProducts = useMemo(() => products.filter((p) => {
-    const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) || p.market.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesCampaign = showCampaignsOnly ? p.isCampaign : true
-    const matchesMarket = selectedMarket === 'all' || p.market === selectedMarket
-    const matchesCategory = selectedCategory === 'all' || p.category === selectedCategory
-    const matchesFavorites = showFavoritesOnly ? favorites.some(f => f.id === p.id) : true
-    const matchesCampaignType = (() => {
-      if (selectedCampaign === 'all') return true
-      const discountPct = p.originalPrice > p.discountedPrice && p.originalPrice > 0
-        ? (p.discount || Math.round(((p.originalPrice - p.discountedPrice) / p.originalPrice) * 100))
-        : 0
-      return detectCampaignType(p.name, discountPct).type === selectedCampaign
-    })()
-    return matchesSearch && matchesCampaign && matchesMarket && matchesCategory && matchesFavorites && matchesCampaignType
-  }), [products, searchTerm, showCampaignsOnly, selectedMarket, selectedCategory, showFavoritesOnly, favorites, selectedCampaign])
+  const filteredProducts = useMemo(() => {
+    // Fuzzy-search candidate set (or full set when no query)
+    const searchPool = debouncedSearch
+      ? fuse.search(debouncedSearch).map(r => r.item)
+      : products
+
+    return searchPool.filter((p) => {
+      const matchesCampaign = showCampaignsOnly ? p.isCampaign : true
+      const matchesMarket = selectedMarket === 'all' || p.market === selectedMarket
+      const matchesCategory = selectedCategory === 'all' || p.category === selectedCategory
+      const matchesFavorites = showFavoritesOnly ? favorites.some(f => f.id === p.id) : true
+      const matchesCampaignType = (() => {
+        if (selectedCampaign === 'all') return true
+        const discountPct = p.originalPrice > p.discountedPrice && p.originalPrice > 0
+          ? (p.discount || Math.round(((p.originalPrice - p.discountedPrice) / p.originalPrice) * 100))
+          : 0
+        return detectCampaignType(p.name, discountPct).type === selectedCampaign
+      })()
+      return matchesCampaign && matchesMarket && matchesCategory && matchesFavorites && matchesCampaignType
+    })
+  }, [products, debouncedSearch, fuse, showCampaignsOnly, selectedMarket, selectedCategory, showFavoritesOnly, favorites, selectedCampaign])
 
   const potentialSavings = useMemo(() =>
     filteredProducts.reduce((sum, p) => sum + (p.originalPrice > p.discountedPrice ? p.originalPrice - p.discountedPrice : 0), 0)
@@ -350,6 +376,15 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="search-giant"
               />
+              {searchTerm && (
+                <button
+                  onClick={() => setSearchTerm('')}
+                  className="absolute right-5 top-1/2 -translate-y-1/2 flex items-center justify-center w-6 h-6 rounded-full transition-colors"
+                  style={{ background: 'rgba(139,132,120,0.15)' }}
+                >
+                  <span className="material-symbols-outlined text-base" style={{ color: '#8C8478' }}>close</span>
+                </button>
+              )}
             </motion.div>
 
             <motion.div
@@ -592,7 +627,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                 </div>
               )}
 
-              <ProductGrid products={filteredProducts} t={t} />
+              <ProductGrid products={filteredProducts} t={t} searchTerm={debouncedSearch} />
             </motion.div>
           ) : (
             <motion.div key="home" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
@@ -702,7 +737,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                   </motion.button>
                 </div>
 
-                <ProductGrid products={filteredProducts} t={t} />
+                <ProductGrid products={filteredProducts} t={t} searchTerm={debouncedSearch} />
               </section>
             </motion.div>
           )}
@@ -777,14 +812,29 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
 
 const AD_INTERVAL = 12
 
-function ProductGrid({ products, t }: { products: Product[]; t: { noProducts: string; noProductsDesc: string } }) {
+function ProductGrid({ products, t, searchTerm = '' }: { products: Product[]; t: { noProducts: string; noProductsDesc: string }; searchTerm?: string }) {
   if (products.length === 0) {
     return (
       <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
-        className="text-center py-20 rounded-3xl" style={{ background: 'rgba(255,255,255,0.6)' }}>
+        className="text-center py-20 rounded-3xl px-6" style={{ background: 'rgba(255,255,255,0.6)' }}>
         <span className="material-symbols-outlined text-6xl mb-4 block" style={{ color: '#C9C1B6' }}>search_off</span>
         <p className="text-xl font-headline font-bold mb-2" style={{ color: '#1A1A1A' }}>{t.noProducts}</p>
-        <p className="max-w-md mx-auto text-sm" style={{ color: '#8C8478' }}>{t.noProductsDesc}</p>
+        <p className="max-w-md mx-auto text-sm mb-6" style={{ color: '#8C8478' }}>{t.noProductsDesc}</p>
+        {searchTerm && (
+          <div className="inline-flex flex-col items-center gap-3">
+            <p className="text-sm font-medium" style={{ color: '#6B6259' }}>
+              <span style={{ color: '#E33D26' }}>"{searchTerm}"</span> şu an indirimde değil
+            </p>
+            <a
+              href="/api/auth/signin"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-all"
+              style={{ background: '#E33D26', color: 'white' }}
+            >
+              <span className="material-symbols-outlined text-base">notifications</span>
+              Fiyatı düşünce haber ver
+            </a>
+          </div>
+        )}
       </motion.div>
     )
   }
