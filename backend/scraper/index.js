@@ -432,6 +432,48 @@ function calcAhPromo(p) {
   return null
 }
 
+// ─── AH Unit-size parser — API fields take priority over regex ───────────────
+function parseAhUnitInfo(p, discountedPrice) {
+  // 1. price.unitSizeDescription: "750g", "40 wasbeurten", "1.5 l", "24 stuks"
+  const desc = (p.price?.unitSizeDescription || p.unitSizeDescription || '').trim()
+  if (desc) {
+    const m = desc.match(/^([\d,.]+)\s*(g|gram|kg|kilo|ml|cl|dl|l|liter|stuks?|stuk|wasbeurten?|tabs?|capsu?les?|pieces?|pak)\b/i)
+    if (m) {
+      const amount = parseFloat(m[1].replace(',', '.'))
+      const raw = m[2].toLowerCase()
+      let unitSize, unitType
+
+      if (/^(g|gram)$/.test(raw))       { unitSize = amount;        unitType = 'g'     }
+      else if (/^(kg|kilo)$/.test(raw)) { unitSize = amount * 1000; unitType = 'g'     }
+      else if (/^ml$/.test(raw))        { unitSize = amount;        unitType = 'ml'    }
+      else if (/^cl$/.test(raw))        { unitSize = amount * 10;   unitType = 'ml'    }
+      else if (/^dl$/.test(raw))        { unitSize = amount * 100;  unitType = 'ml'    }
+      else if (/^(l|liter)$/.test(raw)) { unitSize = amount * 1000; unitType = 'ml'    }
+      else                              { unitSize = amount;        unitType = 'stuks' }
+
+      let unitPrice = null
+      if (discountedPrice > 0 && unitSize > 0) {
+        if (unitType === 'g')  unitPrice = unitSize >= 500 ? discountedPrice / (unitSize / 1000) : discountedPrice / (unitSize / 100)
+        else if (unitType === 'ml') unitPrice = unitSize >= 1000 ? discountedPrice / (unitSize / 1000) : discountedPrice / (unitSize / 100)
+        else unitPrice = discountedPrice / unitSize
+        unitPrice = parseFloat(unitPrice.toFixed(4))
+      }
+
+      return { unitSize, unitType, fullSizeLabel: desc, unitPrice }
+    }
+  }
+
+  // 2. Numeric unitSize field alone → treat as count (stuks)
+  const rawCount = p.unitSize
+  if (rawCount && typeof rawCount === 'number' && rawCount > 0 && rawCount <= 500) {
+    const label = `${rawCount} stuks`
+    const unitPrice = discountedPrice > 0 ? parseFloat((discountedPrice / rawCount).toFixed(4)) : null
+    return { unitSize: rawCount, unitType: 'stuks', fullSizeLabel: label, unitPrice }
+  }
+
+  return {}
+}
+
 // ─── ALBERT HEIJN — Tüm promosyon tipleri (1+1, halve prijs, X voor Y, %) ───
 async function scrapeAlbertHeijn() {
   console.log('🏪 [Albert Heijn] bonus API taranıyor...')
@@ -473,6 +515,7 @@ async function scrapeAlbertHeijn() {
         console.log('  [AH] İlk ürün örneği:', JSON.stringify({
           title: s.title, currentPrice: s.currentPrice, priceBeforeBonus: s.priceBeforeBonus,
           bonusMechanism: s.bonusMechanism, discountLabels: s.discountLabels?.slice(0, 1),
+          unitSize: s.unitSize, price: s.price,
         }))
       }
 
@@ -482,7 +525,8 @@ async function scrapeAlbertHeijn() {
         const promo = calcAhPromo(p)
         if (!promo) continue
         const imageUrl = p.images?.find(i => i.width === 400)?.url ?? p.images?.[0]?.url ?? null
-        candidates.push({ ...promo, name: p.title, imageUrl })
+        const unitInfo = parseAhUnitInfo(p, promo.discountedPrice)
+        candidates.push({ ...promo, name: p.title, imageUrl, ...unitInfo })
       }
     }
 
@@ -505,7 +549,8 @@ async function scrapeAlbertHeijn() {
           const promo = calcAhPromo(p)
           if (!promo) continue
           const imageUrl = p.images?.find(i => i.width === 400)?.url ?? p.images?.[0]?.url ?? null
-          candidates.push({ ...promo, name: p.title, imageUrl })
+          const unitInfo = parseAhUnitInfo(p, promo.discountedPrice)
+          candidates.push({ ...promo, name: p.title, imageUrl, ...unitInfo })
         }
       }
       console.log(`  [AH] S2 (bonus=true) sonrası toplam: ${candidates.length}`)
@@ -553,7 +598,8 @@ async function scrapeAlbertHeijn() {
                   const promo = calcAhPromo({ ...p, title: p.title || p.name })
                   if (!promo) continue
                   const img = p.images?.[0]?.url || p.image || null
-                  candidates.push({ ...promo, name: p.title || p.name, imageUrl: img })
+                  const unitInfo = parseAhUnitInfo(p, promo.discountedPrice)
+                  candidates.push({ ...promo, name: p.title || p.name, imageUrl: img, ...unitInfo })
                 }
               } catch {}
             }
@@ -583,6 +629,11 @@ async function scrapeAlbertHeijn() {
       isCampaign: true,
       source: p.promoLabel ? `ah.nl/bonus - ${p.promoLabel}` : 'ah.nl/bonus',
       expiresAt: EXPIRES_AT,
+      // Unit info — from API fields (parseAhUnitInfo), never null if API provided them
+      unitSize: p.unitSize ?? null,
+      unitType: p.unitType ?? null,
+      unitPrice: p.unitPrice ?? null,
+      fullSizeLabel: p.fullSizeLabel ?? null,
     }))
   } catch (e) {
     console.error('  ❌ Albert Heijn:', e.message)
@@ -839,8 +890,14 @@ export async function scrapeFlyerProducts() {
     return true
   })
 
-  // Unit-price meta ekle
-  all = all.map(p => ({ ...p, ...enrichProductMeta(p.name, p.discountedPrice) }))
+  // Unit-price meta: use API-provided values when available, regex as fallback
+  all = all.map(p => {
+    if (p.unitSize != null && p.unitType) {
+      // AH API already gave us clean data — only fill brand if missing
+      return { ...p, brand: p.brand ?? _extractBrand(p.name) }
+    }
+    return { ...p, ...enrichProductMeta(p.name, p.discountedPrice) }
+  })
 
   console.log(`\n✅ Toplam ${all.length} ürün (${dirk.length} Dirk, ${jumbo.length} Jumbo, ${hoogvliet.length} Hoogvliet, ${plus.length} Plus, ${lidl.length} Lidl, ${ah.length} AH, ${aldi.length} Aldi, ${vomar.length} Vomar)`)
   return all
