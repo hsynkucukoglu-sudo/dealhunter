@@ -17,6 +17,7 @@ import { useFavorites } from '@/context/FavoritesContext'
 import { PushNotificationButton } from './PushNotificationButton'
 import { AuthButton } from './AuthButton'
 import { detectCampaignType, CAMPAIGN_FILTERS, CampaignType } from '@/lib/campaignType'
+import { StickyFilterBar } from './StickyFilterBar'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
@@ -322,6 +323,17 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           </motion.button>
         </div>
       </motion.nav>
+
+      <StickyFilterBar
+        show={navScrolled}
+        availableMarkets={availableMarkets}
+        selectedMarket={selectedMarket}
+        selectedCategory={selectedCategory}
+        lang={lang}
+        onMarket={(m) => { setSelectedMarket(m); setShowCampaignsOnly(false) }}
+        onCategory={setSelectedCategory}
+        onClearAll={() => { setSelectedMarket('all'); setSelectedCategory('all'); setShowCampaignsOnly(false); setSelectedCampaign('all') }}
+      />
 
       {/* MAIN CONTENT */}
       <main className="max-w-7xl mx-auto px-4 md:px-8 pt-24 pb-32">
