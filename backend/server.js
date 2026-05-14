@@ -345,7 +345,7 @@ app.post('/api/scraper/run', asyncHandler(async (req, res) => {
 
 // ===== Health Check =====
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', message: '🚀 Backend çalışıyor', version: '2026-05-05-v3' })
+  res.json({ status: 'ok', message: '🚀 Backend çalışıyor', version: '2026-05-14-v4' })
 })
 
 
