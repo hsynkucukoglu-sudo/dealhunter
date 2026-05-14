@@ -21,10 +21,24 @@ export function ProductCard({ product }: { product: Product }) {
   const hasValidDiscount = product.originalPrice > product.discountedPrice && product.originalPrice > 0
   const lowestEver = isLowestPrice(product.name, product.market, product.discountedPrice, product.unitSize, product.unitType)
 
-  const daysLeft = (() => {
+  const expiryStatus = (() => {
     if (!product.expiresAt) return null
-    const diff = Math.ceil((new Date(product.expiresAt).getTime() - Date.now()) / 86400000)
-    return diff >= 0 ? diff : null
+    const expiry = new Date(product.expiresAt)
+    expiry.setHours(0, 0, 0, 0)
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const diff = Math.ceil((expiry.getTime() - today.getTime()) / 86400000)
+    if (diff < 0) return { label: 'Aanbieding verlopen', color: '#C9C1B6', pulse: false, expired: true }
+    if (diff === 0) return { label: 'Vandaag verloopt!', color: '#E33D26', pulse: true, expired: false }
+    if (diff === 1) return { label: 'Morgen verloopt', color: '#FF8C00', pulse: true, expired: false }
+    if (diff <= 3) return { label: `Nog ${diff} dagen`, color: '#FF8C00', pulse: false, expired: false }
+    if (diff <= 7) return { label: `Nog ${diff} dagen`, color: '#1A1A1A', pulse: false, expired: false }
+    return {
+      label: `Geldig t/m ${expiry.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}`,
+      color: '#9C9389',
+      pulse: false,
+      expired: false,
+    }
   })()
   const discountPercent = hasValidDiscount
     ? (product.discount || Math.round(((product.originalPrice - product.discountedPrice) / product.originalPrice) * 100))
@@ -158,17 +172,19 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
 
         <div className="flex items-center justify-between mt-1.5">
-          <p className="text-[11px] flex items-center gap-1" style={{ color: '#9C9389' }}>
-            <span className="material-symbols-outlined text-sm">schedule</span>
-            {product.expiresAt} {t.validUntil}
-          </p>
-          {daysLeft !== null && daysLeft <= 3 && (
-            <span
-              className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-              style={{ background: daysLeft === 0 ? '#E33D26' : '#FF8C00', color: 'white' }}
+          {expiryStatus ? (
+            <p
+              className={`text-[11px] flex items-center gap-1 font-medium${expiryStatus.pulse ? ' animate-pulse' : ''}`}
+              style={{ color: expiryStatus.color }}
             >
-              {daysLeft === 0 ? 'Vandaag!' : `${daysLeft}d`}
-            </span>
+              <span className="material-symbols-outlined text-sm">schedule</span>
+              {expiryStatus.label}
+            </p>
+          ) : (
+            <p className="text-[11px] flex items-center gap-1" style={{ color: '#9C9389' }}>
+              <span className="material-symbols-outlined text-sm">schedule</span>
+              {t.validUntil}
+            </p>
           )}
         </div>
       </div>
