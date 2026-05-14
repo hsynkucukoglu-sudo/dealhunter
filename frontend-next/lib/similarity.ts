@@ -39,8 +39,19 @@ export function buildComparisonGroups(products: Product[]): ComparisonGroup[] {
 
     if (matches.length === 0) continue
 
-    const group = [product, ...matches]
-    group.forEach(p => used.add(p.id))
+    const rawGroup = [product, ...matches]
+    rawGroup.forEach(p => used.add(p.id))
+
+    // One product per market — keep the cheapest to avoid pack-size duplicates
+    const byMarket = new Map<string, Product>()
+    for (const p of rawGroup) {
+      const existing = byMarket.get(p.market)
+      if (!existing || p.discountedPrice < existing.discountedPrice) {
+        byMarket.set(p.market, p)
+      }
+    }
+    const group = Array.from(byMarket.values())
+    if (group.length < 2) continue
 
     const cheapest = group.reduce((a, b) => a.discountedPrice < b.discountedPrice ? a : b)
     const mostExpensive = group.reduce((a, b) => a.discountedPrice > b.discountedPrice ? a : b)
