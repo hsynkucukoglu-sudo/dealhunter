@@ -643,29 +643,23 @@ async function scrapeAlbertHeijn() {
 
 // ─── ALDI — Next.js data API (double-encoded JSON) ───────────────────────────
 async function scrapeAldi() {
-  console.log('🏪 [Aldi] aldi.nl Next.js data API...')
+  console.log('🏪 [Aldi] aldi.nl __NEXT_DATA__ embed...')
   try {
     const htmlRes = await fetch('https://www.aldi.nl/aanbiedingen.html', { headers: HEADERS })
     const html = await htmlRes.text()
-    const buildIdMatch = html.match(/"buildId":"([^"]+)"/)
-    if (!buildIdMatch) throw new Error('buildId bulunamadı')
-    const buildId = buildIdMatch[1]
 
-    const dataRes = await fetch(
-      `https://www.aldi.nl/_next/data/${buildId}/aanbiedingen.json`,
-      { headers: HEADERS }
-    )
-    const raw = await dataRes.text()
-    const outer = JSON.parse(raw)
+    // Extract __NEXT_DATA__ directly from the HTML (no second API call needed)
+    const nextDataMatch = html.match(/<script id="__NEXT_DATA__"[^>]*>(.+?)<\/script>/s)
+    if (!nextDataMatch) throw new Error('__NEXT_DATA__ bulunamadı')
+    const outer = JSON.parse(nextDataMatch[1])
 
-    // Outer JSON içindeki tüm string değerleri yield et
+    // Walk embedded string values for nested product JSON
     function* extractStrings(obj) {
       if (typeof obj === 'string') yield obj
       else if (Array.isArray(obj)) { for (const v of obj) yield* extractStrings(v) }
       else if (obj && typeof obj === 'object') { for (const v of Object.values(obj)) yield* extractStrings(v) }
     }
 
-    // Inner objeyi gezerek name+currentPrice olan ürünleri topla
     function walkForProducts(obj, results, seen) {
       if (!obj || typeof obj !== 'object') return
       if (obj.name && obj.currentPrice?.priceValue) {
@@ -679,8 +673,12 @@ async function scrapeAldi() {
       }
     }
 
+    // First try direct walk on outer JSON
     const rawProducts = []
     const seen = new Set()
+    walkForProducts(outer, rawProducts, seen)
+
+    // Then search string-embedded JSON blobs
     for (const str of extractStrings(outer)) {
       if (!str.includes('priceValue')) continue
       try {
@@ -691,16 +689,21 @@ async function scrapeAldi() {
 
     const results = rawProducts.map(p => {
       const primary = p.assets?.find(a => a.type === 'primary')
+      const promo = p.promotionPrices?.[0]
       const discountedPrice = p.currentPrice.priceValue
+      const originalPrice = promo?.strikePrice?.strikePriceValue ?? discountedPrice
+      const expiresAt = promo?.validUntilLocalDate ?? p.currentPrice?.validUntil
+        ? new Date((p.currentPrice.validUntil) * 1000).toISOString().split('T')[0]
+        : EXPIRES_AT
       return {
         name: p.name,
         market: 'Aldi',
-        originalPrice: discountedPrice,
+        originalPrice,
         discountedPrice,
         imageUrl: primary?.url || null,
         isCampaign: true,
         source: 'aldi.nl/aanbiedingen',
-        expiresAt: EXPIRES_AT,
+        expiresAt: promo?.validUntilLocalDate ?? expiresAt,
       }
     })
 
