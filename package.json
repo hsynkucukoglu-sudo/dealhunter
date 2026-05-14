@@ -11,6 +11,9 @@
     "start:win": "cd backend && set NODE_ENV=production && node server.js"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "concurrently": "^8.2.2",
+    "fluent-ffmpeg": "^2.1.3",
+    "puppeteer": "^24.43.0"
   }
 }
