@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import { initDatabase } from './db.js'
 import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, updateProductCategory, clearAllProducts } from './models.js'
-import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, getMinPriceMap } from './db.js'
+import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, getMinPriceMap, getComparisonGroups } from './db.js'
 import { sendPushToAll, sendPushToSubscriptions } from './push.js'
 import { scrapeFlyerProducts } from './scraper/index.js'
 import { categorize } from './categorize.js'
@@ -329,6 +329,12 @@ app.delete('/api/favorites', asyncHandler(async (req, res) => {
 app.get('/api/price-history-min', asyncHandler(async (req, res) => {
   const map = await getMinPriceMap()
   res.json(map)
+}))
+
+// GET /api/compare - SQL tabanlı fiyat karşılaştırma grupları (isim + boyut kombinasyonu)
+app.get('/api/compare', asyncHandler(async (req, res) => {
+  const rows = await getComparisonGroups()
+  res.json(rows)
 }))
 
 // POST /api/scraper/run - Manuel olarak scraper çalıştırır (Arayüzden tetiklendiğinde)

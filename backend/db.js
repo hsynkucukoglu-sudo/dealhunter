@@ -63,6 +63,8 @@ export async function initDatabase() {
       UNIQUE(product_name, product_market, recorded_week)
     )
   `)
+  await pool.query(`ALTER TABLE price_history ADD COLUMN IF NOT EXISTS unit_size REAL`)
+  await pool.query(`ALTER TABLE price_history ADD COLUMN IF NOT EXISTS unit_type TEXT`)
   console.log('✅ PostgreSQL veritabanı başlatıldı')
 }
 
@@ -120,12 +122,14 @@ export async function recordPriceHistory(products) {
   const week = currentWeekMonday()
   await Promise.all(products.map(p =>
     pool.query(
-      `INSERT INTO price_history (product_name, product_market, discounted_price, original_price, recorded_week)
-       VALUES ($1, $2, $3, $4, $5)
+      `INSERT INTO price_history (product_name, product_market, discounted_price, original_price, recorded_week, unit_size, unit_type)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
        ON CONFLICT (product_name, product_market, recorded_week)
        DO UPDATE SET discounted_price = LEAST(EXCLUDED.discounted_price, price_history.discounted_price),
-                     original_price = EXCLUDED.original_price`,
-      [p.name, p.market, p.discountedPrice, p.originalPrice, week]
+                     original_price = EXCLUDED.original_price,
+                     unit_size = COALESCE(EXCLUDED.unit_size, price_history.unit_size),
+                     unit_type = COALESCE(EXCLUDED.unit_type, price_history.unit_type)`,
+      [p.name, p.market, p.discountedPrice, p.originalPrice, week, p.unitSize ?? null, p.unitType ?? null]
     ).catch(() => {})
   ))
 }
@@ -135,14 +139,18 @@ export async function getMinPriceMap() {
     SELECT
       product_name,
       product_market,
+      unit_size,
+      unit_type,
       MIN(discounted_price) AS min_price,
       COUNT(DISTINCT recorded_week) AS weeks
     FROM price_history
-    GROUP BY product_name, product_market
+    GROUP BY product_name, product_market, unit_size, unit_type
   `)
   const map = {}
   for (const r of rows) {
-    map[`${r.product_name}::${r.product_market}`] = {
+    // Key includes unit dimensions so pack sizes don't share the same historical low
+    const sizeKey = r.unit_size != null ? `::${r.unit_size}::${r.unit_type}` : ''
+    map[`${r.product_name}::${r.product_market}${sizeKey}`] = {
       minPrice: parseFloat(r.min_price),
       weeks: parseInt(r.weeks),
     }
@@ -169,6 +177,59 @@ export async function getSubscriptionsForFavoritedProducts() {
     userId: r.user_id,
     favoriteKeys: r.favorite_keys,
   }))
+}
+
+// Fiyat karşılaştırma grupları: (name + unit_size + unit_type) kombinasyonuna göre
+// Her grupta birden fazla market olan ürünleri döner
+export async function getComparisonGroups() {
+  const { rows } = await pool.query(`
+    WITH best_per_market AS (
+      SELECT
+        name,
+        market,
+        "unitSize"  AS unit_size,
+        "unitType"  AS unit_type,
+        "unitPrice" AS unit_price,
+        "discountedPrice" AS price,
+        "fullSizeLabel" AS full_size_label,
+        ROW_NUMBER() OVER (
+          PARTITION BY market, "unitSize", "unitType",
+            regexp_replace(lower(name), '\\m\\d+[\\s]*(g|gr|ml|cl|dl|l|kg|kilo|stuks?|stuk|pack|pak|x)\\M', '', 'gi')
+          ORDER BY "discountedPrice" ASC
+        ) AS rn
+      FROM products
+      WHERE "unitSize" IS NOT NULL
+        AND "unitType" IS NOT NULL
+        AND "discountedPrice" > 0
+    ),
+    groups_with_multi_market AS (
+      SELECT
+        regexp_replace(lower(name), '\\m\\d+[\\s]*(g|gr|ml|cl|dl|l|kg|kilo|stuks?|stuk|pack|pak|x)\\M', '', 'gi') AS base_name,
+        unit_size,
+        unit_type
+      FROM best_per_market
+      WHERE rn = 1
+      GROUP BY base_name, unit_size, unit_type
+      HAVING COUNT(DISTINCT market) >= 2
+    )
+    SELECT
+      b.name,
+      b.market,
+      b.unit_size,
+      b.unit_type,
+      b.unit_price,
+      b.price,
+      b.full_size_label,
+      g.base_name
+    FROM best_per_market b
+    JOIN groups_with_multi_market g
+      ON g.base_name = regexp_replace(lower(b.name), '\\m\\d+[\\s]*(g|gr|ml|cl|dl|l|kg|kilo|stuks?|stuk|pack|pak|x)\\M', '', 'gi')
+      AND g.unit_size = b.unit_size
+      AND g.unit_type = b.unit_type
+    WHERE b.rn = 1
+    ORDER BY g.base_name, b.unit_size ASC, b.price ASC
+  `)
+  return rows
 }
 
 export async function getProducts() {
