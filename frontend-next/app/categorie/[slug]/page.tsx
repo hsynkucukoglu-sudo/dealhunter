@@ -28,13 +28,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title,
       description,
-      url: `https://dealhunter4u.nl/categorie/${slug}`,
+      url: `https://www.dealhunter4u.nl/categorie/${slug}`,
       siteName: 'DealHunter',
       locale: 'nl_NL',
       type: 'website',
     },
     alternates: {
-      canonical: `https://dealhunter4u.nl/categorie/${slug}`,
+      canonical: `https://www.dealhunter4u.nl/categorie/${slug}`,
     },
   }
 }

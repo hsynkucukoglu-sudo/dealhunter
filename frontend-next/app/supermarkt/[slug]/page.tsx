@@ -25,13 +25,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `${market.name} Aanbiedingen — DealHunter`,
       description: market.description,
-      url: `https://dealhunter4u.nl/supermarkt/${slug}`,
+      url: `https://www.dealhunter4u.nl/supermarkt/${slug}`,
       siteName: 'DealHunter',
       locale: 'nl_NL',
       type: 'website',
     },
     alternates: {
-      canonical: `https://dealhunter4u.nl/supermarkt/${slug}`,
+      canonical: `https://www.dealhunter4u.nl/supermarkt/${slug}`,
     },
   }
 }
