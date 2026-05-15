@@ -5,6 +5,7 @@ import { CookieBanner } from '@/components/CookieBanner'
 import { AdSenseScript } from '@/components/AdSenseScript'
 import { FavoritesProvider } from '@/context/FavoritesContext'
 import { PriceHistoryProvider } from '@/context/PriceHistoryContext'
+import { SiteFooter } from '@/components/SiteFooter'
 import { SessionProvider } from 'next-auth/react'
 import './globals.css'
 
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'DealHunter — Beste Supermarkt Aanbiedingen',
     description: 'Vergelijk wekelijkse aanbiedingen van alle grote supermarkten.',
-    url: 'https://dealhunter4u.nl',
+    url: 'https://www.dealhunter4u.nl',
     siteName: 'DealHunter',
     locale: 'nl_NL',
     type: 'website',
@@ -64,6 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <FavoritesProvider>
               <ShoppingListProvider>
                 {children}
+                <SiteFooter />
                 <CookieBanner />
                 <AdSenseScript />
               </ShoppingListProvider>
