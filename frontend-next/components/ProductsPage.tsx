@@ -166,11 +166,23 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
     const discPct = (p: { originalPrice: number; discountedPrice: number; discount: number }) =>
       p.discount || Math.round(((p.originalPrice - p.discountedPrice) / p.originalPrice) * 100)
 
+    // Find an existing group key with ≥75% token overlap (handles descriptor variants like "belegen")
+    const findGroupKey = (map: Map<string, typeof products[number]>, key: string): string => {
+      if (map.has(key)) return key
+      const tokens = key.split(' ').filter(w => w.length > 1)
+      for (const existing of map.keys()) {
+        const eTokens = existing.split(' ').filter(w => w.length > 1)
+        const overlap = tokens.filter(t => eTokens.includes(t)).length
+        if (overlap >= 2 && overlap / Math.max(tokens.length, eTokens.length) >= 0.75) return existing
+      }
+      return key
+    }
+
     // One best deal per base product name — highest discount%, tie-break: lowest unit price
     const byBase = new Map<string, typeof products[number]>()
     for (const p of products) {
       if (!(p.originalPrice > p.discountedPrice) || !p.discount) continue
-      const key = baseName(p.name)
+      const key = findGroupKey(byBase, baseName(p.name))
       const existing = byBase.get(key)
       if (!existing) {
         byBase.set(key, p)
