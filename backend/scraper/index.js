@@ -64,38 +64,83 @@ async function scrapeDirk() {
   }
 }
 
-// ─── JUMBO — JSON API + SSR cheerio fallback ─────────────────────────────────
+// ─── JUMBO — __NEXT_DATA__ + API + HTML fallback ────────────────────────────
 async function scrapeJumbo() {
-  console.log('🏪 [Jumbo] aanbiedingen API taranıyor...')
+  console.log('🏪 [Jumbo] aanbiedingen taranıyor...')
   try {
-    // Strateji 1: Jumbo promotions JSON API
-    const apiRes = await fetch(
-      'https://www.jumbo.com/api/2.0/promotion/?sorteer=relevantie&page=0&pageSize=100&view=grid',
-      { headers: { ...HEADERS, 'Accept': 'application/json' } }
-    )
-    if (apiRes.ok) {
-      const json = await apiRes.json()
-      const proms = json.promotionList?.promotions || json.promotions || []
-      if (proms.length > 0) {
-        const results = []
+    const res = await fetch('https://www.jumbo.com/aanbiedingen/nu', { headers: HEADERS })
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    const html = await res.text()
+    const $ = cheerio.load(html)
+    const results = []
+    const seen = new Set()
+
+    // Strateji 1: __NEXT_DATA__ embedded JSON (mevcutsa en güvenilir kaynak)
+    const nextDataRaw = $('script#__NEXT_DATA__').html()
+    if (nextDataRaw) {
+      try {
+        const nextData = JSON.parse(nextDataRaw)
+        function* walkPromos(obj, depth) {
+          if (!obj || depth > 15) return
+          if (Array.isArray(obj)) { for (const v of obj) yield* walkPromos(v, depth + 1) }
+          else if (typeof obj === 'object') {
+            if ((obj.name || obj.title) && (obj.price !== undefined || obj.imageUrl || obj.image)) yield obj
+            for (const v of Object.values(obj)) yield* walkPromos(v, depth + 1)
+          }
+        }
+        for (const p of walkPromos(nextData, 0)) {
+          const name = p.name || p.title || p.promotionTitle
+          if (!name || name.length < 3 || seen.has(name)) continue
+          const priceRaw = p.price?.amount ?? p.price?.current ?? p.currentPrice ?? p.promotionPrice ?? p.price ?? ''
+          const dp = parseFloat(String(priceRaw).replace(',', '.')) || 0
+          const promoText = p.promotionDescription || p.description || p.subtitle || ''
+          const hasPromo = /(1\s*\+\s*1|2\s*\+\s*1|3\s+halen\s+2)/i.test(promoText + ' ' + name)
+          if (!dp && !hasPromo) continue
+          seen.add(name)
+          results.push({
+            name,
+            market: 'Jumbo',
+            originalPrice: dp || 0,
+            discountedPrice: dp,
+            imageUrl: p.imageUrl || p.image || null,
+            isCampaign: true,
+            source: 'jumbo.com/__next_data__',
+            expiresAt: EXPIRES_AT,
+            campaignType: toCampaignType(promoText) || toCampaignType(name),
+          })
+        }
+        if (results.length > 0) {
+          console.log(`  ✅ Jumbo: ${results.length} ürün (__NEXT_DATA__)`)
+          return results
+        }
+      } catch {}
+    }
+
+    // Strateji 2: JSON API
+    try {
+      const apiRes = await fetch(
+        'https://www.jumbo.com/api/2.0/promotion/?sorteer=relevantie&page=0&pageSize=100&view=grid',
+        { headers: { ...HEADERS, 'Accept': 'application/json', 'Referer': 'https://www.jumbo.com/' } }
+      )
+      if (apiRes.ok) {
+        const json = await apiRes.json()
+        const proms = json.promotionList?.promotions || json.promotions || []
         for (const p of proms) {
           const name = p.name || p.title || p.promotionTitle
-          if (!name || name.length < 3) continue
-          const discountedPrice = parseFloat(
-            (p.price?.amount ?? p.currentPrice ?? p.promotionPrice ?? '').toString().replace(',', '.')
-          ) || 0
+          if (!name || name.length < 3 || seen.has(name)) continue
+          const dp = parseFloat((p.price?.amount ?? p.currentPrice ?? p.promotionPrice ?? '').toString().replace(',', '.')) || 0
           const promoText = p.promotionDescription || p.description || ''
-          const promoMatch = promoText.match(/(1\s*\+\s*1|2\s*\+\s*1|3\s+halen\s+2)/i)
-          if (!discountedPrice && !promoMatch) continue
-          const img = p.imageUrl || p.image || null
+          const hasPromo = /(1\s*\+\s*1|2\s*\+\s*1|3\s+halen\s+2)/i.test(promoText + ' ' + name)
+          if (!dp && !hasPromo) continue
+          seen.add(name)
           results.push({
-            name: promoMatch && !discountedPrice ? `${promoMatch[0].trim()} — ${name}` : name,
+            name,
             market: 'Jumbo',
-            originalPrice: discountedPrice ? discountedPrice : 0,
-            discountedPrice,
-            imageUrl: img && !img.includes('logo') ? img : null,
+            originalPrice: dp || 0,
+            discountedPrice: dp,
+            imageUrl: (p.imageUrl || p.image || null),
             isCampaign: true,
-            source: 'jumbo.com/api - promotions',
+            source: 'jumbo.com/api',
             expiresAt: EXPIRES_AT,
             campaignType: toCampaignType(promoText) || toCampaignType(name),
           })
@@ -105,99 +150,44 @@ async function scrapeJumbo() {
           return results
         }
       }
-    }
+    } catch {}
 
-    // Strateji 2: HTML cheerio fallback — daha geniş selektörler
-    const res = await fetch('https://www.jumbo.com/aanbiedingen/nu', { headers: HEADERS })
-    const html = await res.text()
-    const $ = cheerio.load(html)
-    const results = []
-    const seen = new Set()
-
+    // Strateji 3: HTML cheerio
     const selectors = [
       'li.jum-card.card-promotion',
       '[class*="promotion-card"]',
       '[class*="offer-card"]',
       '[data-testid*="promotion"]',
+      '[class*="product-card"]',
       'article[class*="product"]',
     ]
-    const cards = $(selectors.join(', '))
-
-    cards.each((_, el) => {
+    $(selectors.join(', ')).each((_, el) => {
       const card = $(el)
-      const img = card.find('img').first()
-      const imgSrc = img.attr('src') || img.attr('data-src') || img.attr('data-lazy-src') || null
       const text = card.text().replace(/\s+/g, ' ').trim()
-      const titleEl = card.find('h3, h2, [data-testid="jum-heading"] a, [class*="title"], [class*="name"]').first()
-      const name = titleEl.text().trim() || card.find('a[href*="/product"]').first().text().trim()
+      const name = card.find('h1,h2,h3,h4,[class*="title"],[class*="name"]').first().text().trim()
+        || card.find('a[href*="/product"],a[href*="/aanbiedingen"]').first().text().trim()
       if (!name || name.length < 3 || seen.has(name)) return
-
       const priceMatch = text.match(/voor\s+(\d+[,.]\d+)/i) || text.match(/€\s*(\d+[,.]\d+)/) || text.match(/(\d+)[,.](\d{2})/)
-      let discountedPrice = 0
+      let dp = 0
       if (priceMatch) {
-        discountedPrice = priceMatch[2]
-          ? parseFloat(`${priceMatch[1]}.${priceMatch[2]}`)
-          : parseFloat(priceMatch[1].replace(',', '.'))
+        dp = priceMatch[2] ? parseFloat(`${priceMatch[1]}.${priceMatch[2]}`) : parseFloat(priceMatch[1].replace(',', '.'))
       }
-
-      const promoMatch = text.match(/(1\+1|2\+1|\d+\s*\+\s*\d+|3\s+halen\s+2)\s*gratis?/i)
-      if (!discountedPrice && !promoMatch) return
+      const hasPromo = /(1\+1|2\+1|3\s+halen\s+2)\s*gratis?/i.test(text)
+      if (!dp && !hasPromo) return
       seen.add(name)
-
+      const img = card.find('img').first()
       results.push({
-        name: promoMatch && !discountedPrice ? `${promoMatch[0].trim()} — ${name}` : name,
+        name,
         market: 'Jumbo',
-        originalPrice: discountedPrice ? discountedPrice : 0,
-        discountedPrice,
-        imageUrl: imgSrc && !imgSrc.includes('logo') ? imgSrc : null,
+        originalPrice: dp || 0,
+        discountedPrice: dp,
+        imageUrl: (img.attr('src') || img.attr('data-src') || null),
         isCampaign: true,
-        source: 'jumbo.com/aanbiedingen',
+        source: 'jumbo.com/aanbiedingen (html)',
         expiresAt: EXPIRES_AT,
         campaignType: toCampaignType(text) || toCampaignType(name),
       })
     })
-
-    // Strateji 3: Next.js data embed
-    if (!results.length) {
-      const buildId = html.match(/"buildId"\s*:\s*"([^"]+)"/)?.[1]
-      if (buildId) {
-        try {
-          const dataRes = await fetch(`https://www.jumbo.com/_next/data/${buildId}/aanbiedingen/nu.json`, { headers: HEADERS })
-          if (dataRes.ok) {
-            const outer = await dataRes.json()
-            function* extractStrings(obj) {
-              if (typeof obj === 'string') yield obj
-              else if (Array.isArray(obj)) { for (const v of obj) yield* extractStrings(v) }
-              else if (obj && typeof obj === 'object') { for (const v of Object.values(obj)) yield* extractStrings(v) }
-            }
-            for (const str of extractStrings(outer)) {
-              if (!str.includes('"name"') && !str.includes('"title"')) continue
-              try {
-                const inner = JSON.parse(str)
-                const proms = Array.isArray(inner) ? inner : (inner.promotions || inner.products || [])
-                for (const p of proms) {
-                  const name = p.name || p.title
-                  if (!name || seen.has(name)) continue
-                  const dp = parseFloat((p.price?.amount ?? p.currentPrice ?? 0).toString().replace(',', '.'))
-                  if (!dp) continue
-                  seen.add(name)
-                  results.push({
-                    name,
-                    market: 'Jumbo',
-                    originalPrice: dp,
-                    discountedPrice: dp,
-                    imageUrl: p.imageUrl || p.image || null,
-                    isCampaign: true,
-                    source: 'jumbo.com/_next',
-                    expiresAt: EXPIRES_AT,
-                  })
-                }
-              } catch {}
-            }
-          }
-        } catch {}
-      }
-    }
 
     console.log(`  ✅ Jumbo: ${results.length} ürün`)
     return results
