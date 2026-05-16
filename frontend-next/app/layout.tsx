@@ -10,6 +10,7 @@ import { SessionProvider } from 'next-auth/react'
 import './globals.css'
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.dealhunter4u.nl'),
   title: 'DealHunter — Beste Supermarkt Aanbiedingen Nederland',
   description: 'Vergelijk wekelijkse aanbiedingen van Albert Heijn, Jumbo, Lidl, Dirk en meer. Bespaar op boodschappen met de beste supermarktdeals.',
   keywords: 'supermarkt aanbiedingen, albert heijn bonus, jumbo deals, lidl folder, dirk aanbiedingen, besparen boodschappen',
