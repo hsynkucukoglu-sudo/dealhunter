@@ -5,6 +5,19 @@
 import * as cheerio from 'cheerio'
 
 const EXPIRES_AT = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+
+// Promo label or text → normalized campaignType string
+function toCampaignType(text) {
+  if (!text) return null
+  const s = text.toLowerCase()
+  if (/1\s*\+\s*1|one.plus.one|bogo/.test(s)) return '1+1'
+  if (/2e\s*(halve|helft|50%)|tweede.*(halve|gratis)|2de\s*(halve|gratis)/.test(s)) return '2e-halve-prijs'
+  if (/3\s*(halen|voor)\s*2|3\s*halen.*2\s*betalen/.test(s)) return '3-halen-2-betalen'
+  if (/2\s*\+\s*1|3\s*voor\s*2/.test(s)) return '3-halen-2-betalen'
+  if (/combi(natie)?/.test(s)) return 'combinatie'
+  if (/tijdelijk(\s*lager)?/.test(s)) return 'tijdelijk'
+  return null
+}
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
 const HEADERS = {
   'User-Agent': UA,
@@ -39,6 +52,7 @@ async function scrapeDirk() {
         isCampaign: true,
         source: 'dirk.nl/aanbiedingen',
         expiresAt: EXPIRES_AT,
+        campaignType: toCampaignType(p.name),
       }
     }).filter(Boolean)
 
@@ -83,6 +97,7 @@ async function scrapeJumbo() {
             isCampaign: true,
             source: 'jumbo.com/api - promotions',
             expiresAt: EXPIRES_AT,
+            campaignType: toCampaignType(promoText) || toCampaignType(name),
           })
         }
         if (results.length > 0) {
@@ -138,6 +153,7 @@ async function scrapeJumbo() {
         isCampaign: true,
         source: 'jumbo.com/aanbiedingen',
         expiresAt: EXPIRES_AT,
+        campaignType: toCampaignType(promoText) || toCampaignType(name),
       })
     })
 
@@ -225,6 +241,7 @@ async function scrapeHoogvliet() {
           isCampaign: true,
           source: 'hoogvliet.com/aanbiedingen',
           expiresAt: EXPIRES_AT,
+          campaignType: toCampaignType(obj.name),
         })
       } catch {}
     }
@@ -327,6 +344,7 @@ async function scrapeLidl() {
             isCampaign: true,
             source: 'lidl.nl/aanbiedingen',
             expiresAt: EXPIRES_AT,
+            campaignType: toCampaignType(data.name),
           }
         } catch { return null }
       }))
@@ -629,6 +647,7 @@ async function scrapeAlbertHeijn() {
       isCampaign: true,
       source: p.promoLabel ? `ah.nl/bonus - ${p.promoLabel}` : 'ah.nl/bonus',
       expiresAt: EXPIRES_AT,
+      campaignType: toCampaignType(p.promoLabel),
       // Unit info — from API fields (parseAhUnitInfo), never null if API provided them
       unitSize: p.unitSize ?? null,
       unitType: p.unitType ?? null,
@@ -704,6 +723,7 @@ async function scrapeAldi() {
         isCampaign: true,
         source: 'aldi.nl/aanbiedingen',
         expiresAt: promo?.validUntilLocalDate ?? expiresAt,
+        campaignType: toCampaignType(p.name),
       }
     })
 

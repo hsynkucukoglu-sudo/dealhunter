@@ -45,7 +45,7 @@ export function ProductCard({ product }: { product: Product }) {
     : 0
 
   const unitPrice = calcUnitPrice(product.name, product.discountedPrice)
-  const campaign = detectCampaignType(product.name, discountPercent)
+  const campaign = detectCampaignType(product.name, discountPercent, product.campaignType)
 
   const imgSrc = product.imageUrl
     ? product.imageUrl.startsWith('ah-product-id:')

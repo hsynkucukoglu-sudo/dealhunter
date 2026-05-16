@@ -30,6 +30,7 @@ export async function initDatabase() {
   await pool.query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS "unitType" TEXT`)
   await pool.query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS "unitPrice" REAL`)
   await pool.query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS "fullSizeLabel" TEXT`)
+  await pool.query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS "campaignType" TEXT`)
   await pool.query(`
     CREATE TABLE IF NOT EXISTS push_subscriptions (
       endpoint TEXT PRIMARY KEY,
@@ -248,8 +249,8 @@ export async function getProduct(id) {
 
 export async function createProduct(product) {
   await pool.query(
-    `INSERT INTO products (id, name, market, "originalPrice", "discountedPrice", discount, "imageUrl", "isCampaign", source, "expiresAt", "createdAt", category, brand, "unitSize", "unitType", "unitPrice", "fullSizeLabel")
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)`,
+    `INSERT INTO products (id, name, market, "originalPrice", "discountedPrice", discount, "imageUrl", "isCampaign", source, "expiresAt", "createdAt", category, brand, "unitSize", "unitType", "unitPrice", "fullSizeLabel", "campaignType")
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)`,
     [
       product.id, product.name, product.market,
       product.originalPrice, product.discountedPrice, product.discount,
@@ -257,6 +258,7 @@ export async function createProduct(product) {
       product.source, product.expiresAt, product.createdAt, product.category || 'overig',
       product.brand ?? null, product.unitSize ?? null, product.unitType ?? null,
       product.unitPrice ?? null, product.fullSizeLabel ?? null,
+      product.campaignType ?? null,
     ]
   )
   return product
@@ -264,8 +266,8 @@ export async function createProduct(product) {
 
 export async function updateProduct(id, product) {
   await pool.query(
-    `UPDATE products SET name=$1, market=$2, "originalPrice"=$3, "discountedPrice"=$4, discount=$5, "imageUrl"=$6, "isCampaign"=$7, source=$8, "expiresAt"=$9 WHERE id=$10`,
-    [product.name, product.market, product.originalPrice, product.discountedPrice, product.discount, product.imageUrl, product.isCampaign ? true : false, product.source, product.expiresAt, id]
+    `UPDATE products SET name=$1, market=$2, "originalPrice"=$3, "discountedPrice"=$4, discount=$5, "imageUrl"=$6, "isCampaign"=$7, source=$8, "expiresAt"=$9, "campaignType"=$11 WHERE id=$10`,
+    [product.name, product.market, product.originalPrice, product.discountedPrice, product.discount, product.imageUrl, product.isCampaign ? true : false, product.source, product.expiresAt, id, product.campaignType ?? null]
   )
   return getProduct(id)
 }

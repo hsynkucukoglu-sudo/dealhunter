@@ -69,7 +69,14 @@ const CAMPAIGN_RULES: Array<{
 export function detectCampaignType(
   name: string,
   discountPercent: number,
+  storedType?: string | null,
 ): CampaignInfo {
+  // Use stored campaignType from DB if available
+  if (storedType) {
+    const rule = CAMPAIGN_RULES.find(r => r.type === storedType)
+    if (rule) return { type: rule.type, label: rule.label, color: rule.color, bg: rule.bg }
+  }
+
   for (const rule of CAMPAIGN_RULES) {
     if (rule.patterns.some(re => re.test(name))) {
       return { type: rule.type, label: rule.label, color: rule.color, bg: rule.bg }

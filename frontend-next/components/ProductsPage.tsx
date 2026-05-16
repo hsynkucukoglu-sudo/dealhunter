@@ -136,7 +136,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         const discountPct = p.originalPrice > p.discountedPrice && p.originalPrice > 0
           ? (p.discount || Math.round(((p.originalPrice - p.discountedPrice) / p.originalPrice) * 100))
           : 0
-        return detectCampaignType(p.name, discountPct).type === selectedCampaign
+        return detectCampaignType(p.name, discountPct, p.campaignType).type === selectedCampaign
       })()
       return matchesCampaign && matchesMarket && matchesCategory && matchesFavorites && matchesCampaignType
     })
