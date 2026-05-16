@@ -153,7 +153,7 @@ async function scrapeJumbo() {
         isCampaign: true,
         source: 'jumbo.com/aanbiedingen',
         expiresAt: EXPIRES_AT,
-        campaignType: toCampaignType(promoText) || toCampaignType(name),
+        campaignType: toCampaignType(text) || toCampaignType(name),
       })
     })
 
@@ -297,6 +297,7 @@ async function scrapePlus() {
         isCampaign: true,
         source: 'plus.nl/aanbiedingen',
         expiresAt: EXPIRES_AT,
+        campaignType: toCampaignType(text) || toCampaignType(name),
       })
     })
 
@@ -766,6 +767,7 @@ async function scrapeVomar() {
             isCampaign: true,
             source: 'vomar.nl/aanbiedingen',
             expiresAt: EXPIRES_AT,
+            campaignType: toCampaignType(p.name),
           })
         }
       } catch {}
@@ -794,6 +796,7 @@ async function scrapeVomar() {
           isCampaign: true,
           source: 'vomar.nl/aanbiedingen',
           expiresAt: EXPIRES_AT,
+          campaignType: toCampaignType(text) || toCampaignType(name),
         })
       })
     }

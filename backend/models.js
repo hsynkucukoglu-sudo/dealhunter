@@ -31,6 +31,7 @@ export async function createProduct(data) {
     expiresAt: data.expiresAt,
     createdAt: new Date().toISOString(),
     category: data.category || 'overig',
+    campaignType: data.campaignType ?? null,
   }
 
   await db.createProduct(product)
