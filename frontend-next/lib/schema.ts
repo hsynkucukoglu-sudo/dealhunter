@@ -23,7 +23,7 @@ function buildProductSchema(p: Product, image: string) {
       price: p.discountedPrice,
       priceCurrency: 'EUR',
       availability: 'https://schema.org/InStock',
-      priceValidUntil: p.expiresAt,
+      ...(p.expiresAt ? { priceValidUntil: p.expiresAt } : {}),
       seller: { '@type': 'Organization', name: p.market },
     },
   }
@@ -51,7 +51,7 @@ export function buildItemListSchema(
     name,
     description,
     url: `${SITE_URL}${url}`,
-    numberOfItems: products.length,
+    numberOfItems: eligible.length,
     itemListElement: eligible.map(({ product, image }, i) => ({
       '@type': 'ListItem',
       position: i + 1,
@@ -95,7 +95,7 @@ export function buildHomePageSchema(products: Product[]) {
       name: 'Beste Supermarkt Aanbiedingen',
       description: `Actuele aanbiedingen van ${markets}`,
       url: SITE_URL,
-      numberOfItems: products.length,
+      numberOfItems: eligible.length,
       itemListElement: eligible.map(({ product, image }, i) => ({
         '@type': 'ListItem',
         position: i + 1,
