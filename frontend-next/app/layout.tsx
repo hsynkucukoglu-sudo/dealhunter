@@ -7,6 +7,7 @@ import { AdSenseScript } from '@/components/AdSenseScript'
 import { FavoritesProvider } from '@/context/FavoritesContext'
 import { PriceHistoryProvider } from '@/context/PriceHistoryContext'
 import { SiteFooter } from '@/components/SiteFooter'
+import { InstallPrompt } from '@/components/InstallPrompt'
 import { SessionProvider } from 'next-auth/react'
 import './globals.css'
 
@@ -16,6 +17,12 @@ export const metadata: Metadata = {
   description: 'Vergelijk wekelijkse aanbiedingen van Albert Heijn, Jumbo, Lidl, Dirk en meer. Bespaar op boodschappen met de beste supermarktdeals.',
   keywords: 'supermarkt aanbiedingen, albert heijn bonus, jumbo deals, lidl folder, dirk aanbiedingen, besparen boodschappen',
   other: { 'msvalidate.01': '10C38B79AA33FFA059F4EE4DC13FBC3C' },
+  manifest: '/manifest.webmanifest',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'DealHunter',
+  },
   openGraph: {
     title: 'DealHunter — Beste Supermarkt Aanbiedingen',
     description: 'Vergelijk wekelijkse aanbiedingen van alle grote supermarkten.',
@@ -50,6 +57,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
+        <meta name="theme-color" content="#1A1A1A" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <link rel="apple-touch-icon" href="/icon-192x192.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
@@ -71,6 +81,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <SiteFooter />
                 <CookieBanner />
                 <AdSenseScript />
+                <InstallPrompt />
               </ShoppingListProvider>
             </FavoritesProvider>
             </PriceHistoryProvider>
