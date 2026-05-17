@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { GoogleAnalytics } from '@next/third-parties/google'
 import { ShoppingListProvider } from '@/context/ShoppingListContext'
 import { LanguageProvider } from '@/context/LanguageContext'
 import { CookieBanner } from '@/components/CookieBanner'
@@ -76,6 +77,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </LanguageProvider>
         </SessionProvider>
       </body>
+      {process.env.NEXT_PUBLIC_GA_ID && (
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+      )}
     </html>
   )
 }
