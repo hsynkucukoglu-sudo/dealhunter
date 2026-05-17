@@ -39,6 +39,19 @@ const organizationSchema = {
   sameAs: ['https://www.dealhunter4u.nl'],
 }
 
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'DealHunter4U',
+  url: 'https://www.dealhunter4u.nl',
+  description: 'Vergelijk wekelijkse aanbiedingen van alle grote supermarkten',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: 'https://www.dealhunter4u.nl/?q={search_term_string}',
+    'query-input': 'required name=search_term_string',
+  },
+}
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="nl">
@@ -47,6 +60,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

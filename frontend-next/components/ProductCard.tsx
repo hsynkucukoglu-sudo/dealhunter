@@ -53,7 +53,29 @@ export function ProductCard({ product }: { product: Product }) {
       : product.imageUrl
     : '/icon-192x192.png'
 
+  const schemaImage = imgSrc.startsWith('http') ? imgSrc : `https://www.dealhunter4u.nl${imgSrc}`
+  const productSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    image: schemaImage,
+    offers: {
+      '@type': 'Offer',
+      price: product.discountedPrice.toFixed(2),
+      priceCurrency: 'EUR',
+      availability: 'https://schema.org/InStock',
+      seller: { '@type': 'Organization', name: product.market },
+      ...(product.expiresAt ? { validThrough: product.expiresAt } : {}),
+      ...(affiliateLink ? { url: affiliateLink.url } : {}),
+    },
+  }
+
   return (
+    <>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+    />
     <div className="card-product group">
       {hasValidDiscount && discountPercent > 0 && (
         <div className="absolute top-3 right-3 z-10 flex flex-col items-end gap-1">
@@ -216,5 +238,6 @@ export function ProductCard({ product }: { product: Product }) {
         )}
       </div>
     </div>
+    </>
   )
 }
