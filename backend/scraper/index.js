@@ -31,30 +31,40 @@ async function scrapeDirk() {
   try {
     const res = await fetch('https://www.dirk.nl/aanbiedingen', { headers: HEADERS })
     const html = await res.text()
-    const jsonLdBlock = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)?.[1]
-    if (!jsonLdBlock) return []
 
-    const data = JSON.parse(jsonLdBlock)
-    const items = data['@graph']?.[0]?.itemListElement || []
+    const results = []
+    const seen = new Set()
 
-    const results = items.map(item => {
-      const p = item.item
-      if (!p?.name || !p.offers?.price) return null
-      const discountedPrice = parseFloat(p.offers.price)
-      if (!discountedPrice) return null
-      const imgSrc = Array.isArray(p.image) ? p.image[0] : (p.image || null)
-      return {
-        name: p.name,
-        market: 'Dirk',
-        originalPrice: discountedPrice,
-        discountedPrice,
-        imageUrl: imgSrc,
-        isCampaign: true,
-        source: 'dirk.nl/aanbiedingen',
-        expiresAt: EXPIRES_AT,
-        campaignType: toCampaignType(p.name),
-      }
-    }).filter(Boolean)
+    for (const [, block] of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+      try {
+        const data = JSON.parse(block)
+        const items = data['@graph']?.[0]?.itemListElement
+          || (data['@type'] === 'ItemList' ? data.itemListElement : null)
+          || []
+        for (const item of items) {
+          const p = item.item || item
+          if (!p?.name || !p.offers?.price) continue
+          if (seen.has(p.name)) continue
+          seen.add(p.name)
+          const discountedPrice = parseFloat(p.offers.price)
+          if (!discountedPrice) continue
+          const highPrice = parseFloat(p.offers.highPrice || p.offers.priceBeforeDiscount || 0)
+          const originalPrice = (highPrice && highPrice > discountedPrice) ? highPrice : discountedPrice
+          const imgSrc = Array.isArray(p.image) ? p.image[0] : (p.image || null)
+          results.push({
+            name: p.name,
+            market: 'Dirk',
+            originalPrice,
+            discountedPrice,
+            imageUrl: typeof imgSrc === 'string' ? imgSrc : imgSrc?.url || null,
+            isCampaign: true,
+            source: 'dirk.nl/aanbiedingen',
+            expiresAt: EXPIRES_AT,
+            campaignType: toCampaignType(p.name) || toCampaignType(p.offers?.description || ''),
+          })
+        }
+      } catch {}
+    }
 
     console.log(`  ✅ Dirk: ${results.length} ürün`)
     return results
@@ -197,6 +207,12 @@ async function scrapeJumbo() {
   }
 }
 
+function decodeHtmlEntities(str) {
+  return str
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(parseInt(code)))
+    .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+}
+
 // ─── HOOGVLIET — embedded JSON ───────────────────────────────────────────────
 async function scrapeHoogvliet() {
   console.log('🏪 [Hoogvliet] hoogvliet.com/aanbiedingen...')
@@ -211,19 +227,23 @@ async function scrapeHoogvliet() {
       if (!imgMap[id]) imgMap[id] = `https://www.hoogvliet.com${decoded}`
     }
 
-    const jsonBlocks = html.match(/\{[^{}]*"price"\s*:\s*"[\d.]+[^{}]*\}/g) || []
+    // Price field may be a range string "2.05 - 3.91" — take minimum value
+    const jsonBlocks = html.match(/\{[^{}]*"price"\s*:\s*"[^"]+[^{}]*\}/g) || []
     const seen = new Set()
     const results = []
 
     for (const block of jsonBlocks) {
       try {
         const obj = JSON.parse(block.replace(/&#47;/g, '/').replace(/&amp;/g, '&'))
-        if (!obj.name || !obj.price || seen.has(obj.name)) continue
-        seen.add(obj.name)
-        const discountedPrice = parseFloat(obj.price)
+        if (!obj.name || !obj.price) continue
+        const name = decodeHtmlEntities(obj.name)
+        if (seen.has(name)) continue
+        seen.add(name)
+        const priceStr = String(obj.price).split(/\s*-\s*/)[0].trim()
+        const discountedPrice = parseFloat(priceStr)
         if (!discountedPrice) continue
         results.push({
-          name: obj.name,
+          name,
           market: 'Hoogvliet',
           originalPrice: discountedPrice,
           discountedPrice,
@@ -231,7 +251,7 @@ async function scrapeHoogvliet() {
           isCampaign: true,
           source: 'hoogvliet.com/aanbiedingen',
           expiresAt: EXPIRES_AT,
-          campaignType: toCampaignType(obj.name),
+          campaignType: toCampaignType(name),
         })
       } catch {}
     }
