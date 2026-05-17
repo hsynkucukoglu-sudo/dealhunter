@@ -77,9 +77,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </LanguageProvider>
         </SessionProvider>
       </body>
-      {process.env.NEXT_PUBLIC_GA_ID && (
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
-      )}
+      <GoogleAnalytics gaId="G-Y253QH18ZH" />
     </html>
   )
 }
