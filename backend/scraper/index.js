@@ -363,79 +363,110 @@ function ahPrice(val) {
 function calcAhPromo(p) {
   const mech = (p.bonusMechanism || p.bonus?.description || p.promotionLabel || '').trim()
   const label = p.discountLabels?.[0] || p.promotions?.[0]
-  const currentP = ahPrice(p.currentPrice) ?? ahPrice(p.salesPrice) ?? ahPrice(p.price)
   const beforeP = ahPrice(p.priceBeforeBonus) ?? ahPrice(p.previousPrice) ?? ahPrice(p.originalPrice)
+  let currentP = ahPrice(p.currentPrice) ?? ahPrice(p.salesPrice) ?? ahPrice(p.price)
 
-  if (!currentP || !p.title) return null
-  const unitPrice = beforeP ?? currentP
+  if (!p.title) return null
 
-  // Düz fiyat indirimi: currentPrice < priceBeforeBonus
-  if (currentP && beforeP && currentP < beforeP) {
-    return {
-      discountedPrice: currentP,
-      originalPrice: beforeP,
-      promoLabel: mech || label?.defaultDescription || null,
+  // AH API: currentPrice artık null — discountLabels veya bonusMechanism'den türet
+  if (!currentP && (label || mech)) {
+    const code = label?.code || ''
+
+    // 1+1 gratis (eski ve yeni kod)
+    if (code === 'DISCOUNT_ONE_PLUS_ONE_FREE' || /^1\s*\+\s*1\s*gratis$/i.test(mech)) {
+      if (beforeP) return { discountedPrice: +(beforeP * 0.5).toFixed(2), originalPrice: beforeP, promoLabel: '1+1 gratis' }
+    }
+    // X+Y gratis (DISCOUNT_X_PLUS_Y_FREE): count=kac alınacak, freeCount=kaç bedava
+    if (code === 'DISCOUNT_X_PLUS_Y_FREE' && beforeP) {
+      const buyCount = label?.count ?? 1
+      const freeCount = label?.freeCount ?? 1
+      const eff = +(beforeP * buyCount / (buyCount + freeCount)).toFixed(2)
+      const promoLabel = freeCount === 1 && buyCount === 1 ? '1+1 gratis' : `${buyCount}+${freeCount} gratis`
+      return { discountedPrice: eff, originalPrice: beforeP, promoLabel }
+    }
+    if (code === 'DISCOUNT_SECOND_HALF_PRICE' || /2e\s*halve\s*prijs/i.test(mech)) {
+      if (beforeP) return { discountedPrice: +(beforeP * 0.75).toFixed(2), originalPrice: beforeP, promoLabel: '2e halve prijs' }
+    }
+    if (/^2\s*\+\s*1\s*gratis$/i.test(mech)) {
+      if (beforeP) return { discountedPrice: +(beforeP * 0.667).toFixed(2), originalPrice: beforeP, promoLabel: '2+1 gratis' }
+    }
+    if (/^2\s*\+\s*2\s*gratis$/i.test(mech)) {
+      if (beforeP) return { discountedPrice: +(beforeP * 0.5).toFixed(2), originalPrice: beforeP, promoLabel: '2+2 gratis' }
+    }
+    // Sabit fiyat promosyonu (DISCOUNT_FIXED_PRICE veya VOOR X.XX)
+    if (code === 'DISCOUNT_FIXED_PRICE' && label?.price && beforeP && label.price < beforeP) {
+      return { discountedPrice: label.price, originalPrice: beforeP, promoLabel: label.defaultDescription || mech }
+    }
+    const voorPrice = mech.match(/^(?:\d+\s+)?VOOR\s+([\d.,]+)/i)
+    if (voorPrice && beforeP) {
+      const promo = parseFloat(voorPrice[1].replace(',', '.'))
+      if (promo < beforeP) return { discountedPrice: promo, originalPrice: beforeP, promoLabel: mech }
+    }
+    // X voor Y.YY
+    if ((code === 'DISCOUNT_X_FOR_Y' || /^\d+\s+voor\s+/i.test(mech)) && label?.count && label?.price) {
+      const eff = +(label.price / label.count).toFixed(2)
+      if (beforeP && eff < beforeP) return { discountedPrice: eff, originalPrice: beforeP, promoLabel: label.defaultDescription || mech }
+    }
+    const xForY = mech.match(/^(\d+)\s+voor\s+([\d.,]+)/i)
+    if (xForY && beforeP) {
+      const eff = +(parseFloat(xForY[2].replace(',', '.')) / parseInt(xForY[1])).toFixed(2)
+      if (eff < beforeP) return { discountedPrice: eff, originalPrice: beforeP, promoLabel: mech }
+    }
+    if ((code === 'DISCOUNT_PERCENTAGE') && label?.percentage && beforeP) {
+      return { discountedPrice: +(beforeP * (1 - label.percentage / 100)).toFixed(2), originalPrice: beforeP, promoLabel: label.defaultDescription }
+    }
+    if ((code === 'DISCOUNT_PRECISE_PERCENTAGE') && label?.precisePercentage && beforeP) {
+      return { discountedPrice: +(beforeP * (1 - label.precisePercentage / 100)).toFixed(2), originalPrice: beforeP, promoLabel: label.defaultDescription }
+    }
+    const pctMatch = mech.match(/^(\d+)%\s*(korting|volume\s*voordeel)/i)
+    if (pctMatch && beforeP) {
+      return { discountedPrice: +(beforeP * (1 - parseInt(pctMatch[1]) / 100)).toFixed(2), originalPrice: beforeP, promoLabel: mech }
+    }
+    // label'da doğrudan fiyat varsa
+    if (label?.price && !label?.count && beforeP && label.price < beforeP) {
+      return { discountedPrice: label.price, originalPrice: beforeP, promoLabel: label.defaultDescription || mech }
     }
   }
 
-  // 1+1 gratis → %50 efektif indirim
+  // currentP mevcut — klasik kontroller
+  if (!currentP) return null
+  const unitPrice = beforeP ?? currentP
+
+  if (currentP && beforeP && currentP < beforeP) {
+    return { discountedPrice: currentP, originalPrice: beforeP, promoLabel: mech || label?.defaultDescription || null }
+  }
   if (/^1\s*\+\s*1\s*gratis$/i.test(mech) || label?.code === 'DISCOUNT_ONE_PLUS_ONE_FREE') {
     return { discountedPrice: +(unitPrice * 0.5).toFixed(2), originalPrice: unitPrice, promoLabel: '1+1 gratis' }
   }
-
-  // 2+1 gratis → %33 efektif indirim
   if (/^2\s*\+\s*1\s*gratis$/i.test(mech)) {
     return { discountedPrice: +(unitPrice * 0.667).toFixed(2), originalPrice: unitPrice, promoLabel: '2+1 gratis' }
   }
-
-  // 2+2 gratis → %50 efektif indirim
   if (/^2\s*\+\s*2\s*gratis$/i.test(mech)) {
     return { discountedPrice: +(unitPrice * 0.5).toFixed(2), originalPrice: unitPrice, promoLabel: '2+2 gratis' }
   }
-
-  // 2e halve prijs → %25 efektif indirim
   if (/2e\s*halve\s*prijs/i.test(mech) || label?.code === 'DISCOUNT_SECOND_HALF_PRICE') {
     return { discountedPrice: +(unitPrice * 0.75).toFixed(2), originalPrice: unitPrice, promoLabel: '2e halve prijs' }
   }
-
-  // X voor Y.YY (bijv. "2 voor 5.00", "3 voor 5.99")
-  const xForY = mech.match(/^(\d+)\s+voor\s+([\d.,]+)/i)
-  if (xForY) {
-    const count = parseInt(xForY[1])
-    const bundlePrice = parseFloat(xForY[2].replace(',', '.'))
-    const effectiveUnit = +(bundlePrice / count).toFixed(2)
-    if (effectiveUnit < unitPrice) {
-      return { discountedPrice: effectiveUnit, originalPrice: unitPrice, promoLabel: mech }
-    }
+  const xForY2 = mech.match(/^(\d+)\s+voor\s+([\d.,]+)/i)
+  if (xForY2) {
+    const eff = +(parseFloat(xForY2[2].replace(',', '.')) / parseInt(xForY2[1])).toFixed(2)
+    if (eff < unitPrice) return { discountedPrice: eff, originalPrice: unitPrice, promoLabel: mech }
   }
-
-  // X voor Y.YY (DISCOUNT_X_FOR_Y label)
   if (label?.code === 'DISCOUNT_X_FOR_Y' && label.count && label.price) {
-    const effectiveUnit = +(label.price / label.count).toFixed(2)
-    if (effectiveUnit < unitPrice) {
-      return { discountedPrice: effectiveUnit, originalPrice: unitPrice, promoLabel: label.defaultDescription }
-    }
+    const eff = +(label.price / label.count).toFixed(2)
+    if (eff < unitPrice) return { discountedPrice: eff, originalPrice: unitPrice, promoLabel: label.defaultDescription }
   }
-
-  // VOOR X.XX (vaste prijs promosyon)
-  const voorPrice = mech.match(/^(?:\d+\s+)?VOOR\s+([\d.,]+)/i)
-  if (voorPrice) {
-    const promo = parseFloat(voorPrice[1].replace(',', '.'))
-    if (promo < unitPrice) {
-      return { discountedPrice: promo, originalPrice: unitPrice, promoLabel: mech }
-    }
+  const voorPrice2 = mech.match(/^(?:\d+\s+)?VOOR\s+([\d.,]+)/i)
+  if (voorPrice2) {
+    const promo = parseFloat(voorPrice2[1].replace(',', '.'))
+    if (promo < unitPrice) return { discountedPrice: promo, originalPrice: unitPrice, promoLabel: mech }
   }
-
-  // % indirim
   if (label?.code === 'DISCOUNT_PERCENTAGE' && label.percentage) {
-    const disc = +(unitPrice * (1 - label.percentage / 100)).toFixed(2)
-    return { discountedPrice: disc, originalPrice: unitPrice, promoLabel: label.defaultDescription }
+    return { discountedPrice: +(unitPrice * (1 - label.percentage / 100)).toFixed(2), originalPrice: unitPrice, promoLabel: label.defaultDescription }
   }
-  const pctMatch = mech.match(/^(\d+)%\s*(korting|volume\s*voordeel)/i)
-  if (pctMatch) {
-    const pct = parseInt(pctMatch[1])
-    const disc = +(unitPrice * (1 - pct / 100)).toFixed(2)
-    return { discountedPrice: disc, originalPrice: unitPrice, promoLabel: mech }
+  const pctMatch2 = mech.match(/^(\d+)%\s*(korting|volume\s*voordeel)/i)
+  if (pctMatch2) {
+    return { discountedPrice: +(unitPrice * (1 - parseInt(pctMatch2[1]) / 100)).toFixed(2), originalPrice: unitPrice, promoLabel: mech }
   }
 
   return null
@@ -506,10 +537,10 @@ async function scrapeAlbertHeijn() {
     const seenIds = new Set()
     const candidates = []
 
-    // Strateji 1: sortOn=DISCOUNT — aktif indirimli ürünleri çek (webshopIds olmadan)
+    // Strateji 1: bonus=true — tüm bonus ürünleri çek (sortOn=DISCOUNT API'den kaldırıldı)
     for (let page = 0; page < 50; page++) {
       const r = await fetch(
-        `https://api.ah.nl/mobile-services/product/search/v2?sortOn=DISCOUNT&page=${page}&size=30`,
+        `https://api.ah.nl/mobile-services/product/search/v2?bonus=true&page=${page}&size=30`,
         { headers: h, signal: AbortSignal.timeout(12000) }
       )
       if (!r.ok) { console.log(`  [AH] S1 p${page} HTTP ${r.status}`); break }
@@ -537,33 +568,12 @@ async function scrapeAlbertHeijn() {
         const unitInfo = parseAhUnitInfo(p, promo.discountedPrice)
         candidates.push({ ...promo, name: p.title, imageUrl, ...unitInfo })
       }
+
+      // 150 ürün bulduktan sonra dur
+      if (candidates.length >= 150) break
     }
 
-    console.log(`  [AH] S1 (sortOn=DISCOUNT): ${seenIds.size} tarandı, ${candidates.length} promosyon`)
-
-    // Strateji 2: webshopId olmadan bonus=true parametresiyle dene
-    if (candidates.length < 10) {
-      for (let page = 0; page < 30; page++) {
-        const r = await fetch(
-          `https://api.ah.nl/mobile-services/product/search/v2?bonus=true&page=${page}&size=30`,
-          { headers: h, signal: AbortSignal.timeout(12000) }
-        )
-        if (!r.ok) break
-        const json = await r.json()
-        const prods = json.products || []
-        if (!prods.length) break
-        for (const p of prods) {
-          if (seenIds.has(p.webshopId) || !p.title) continue
-          seenIds.add(p.webshopId)
-          const promo = calcAhPromo(p)
-          if (!promo) continue
-          const imageUrl = p.images?.find(i => i.width === 400)?.url ?? p.images?.[0]?.url ?? null
-          const unitInfo = parseAhUnitInfo(p, promo.discountedPrice)
-          candidates.push({ ...promo, name: p.title, imageUrl, ...unitInfo })
-        }
-      }
-      console.log(`  [AH] S2 (bonus=true) sonrası toplam: ${candidates.length}`)
-    }
+    console.log(`  [AH] S1 (bonus=true): ${seenIds.size} tarandı, ${candidates.length} promosyon`)
 
     // Strateji 3: AH website HTML / Next.js data
     if (candidates.length < 10) {

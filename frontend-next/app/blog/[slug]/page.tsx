@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getPost, getAllPosts } from '@/lib/posts'
+import { buildBreadcrumbSchema } from '@/lib/schema'
 
 export async function generateStaticParams() {
   return getAllPosts().map(p => ({ slug: p.slug }))
@@ -45,6 +46,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const post = getPost(slug)
   if (!post) notFound()
 
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Blog', url: '/blog' },
+    { name: post.title, url: `/blog/${post.slug}` },
+  ])
+
   const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -64,6 +71,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   return (
     <div style={{ background: '#F5EDE3', minHeight: '100vh' }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
 
       {/* NAV */}
