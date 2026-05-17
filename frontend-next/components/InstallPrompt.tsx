@@ -31,27 +31,26 @@ export function InstallPrompt() {
 
   return (
     <div style={{
-      position: 'fixed', bottom: 80, left: '50%', transform: 'translateX(-50%)',
-      background: '#1A1A1A', color: 'white', borderRadius: 16,
-      padding: '14px 20px', display: 'flex', alignItems: 'center', gap: 12,
-      boxShadow: '0 8px 32px rgba(0,0,0,0.3)', zIndex: 9999,
-      maxWidth: 340, width: 'calc(100% - 32px)',
+      position: 'fixed', top: 0, left: 0, right: 0,
+      background: '#1A1A1A', color: 'white',
+      padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 10,
+      zIndex: 9999, borderBottom: '1px solid rgba(255,255,255,0.08)',
     }}>
-      <span style={{ fontSize: 24 }}>📲</span>
-      <div style={{ flex: 1 }}>
-        <p style={{ margin: 0, fontWeight: 700, fontSize: 14 }}>Voeg toe aan beginscherm</p>
-        <p style={{ margin: 0, fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>Altijd snel deals bekijken</p>
-      </div>
-      <div style={{ display: 'flex', gap: 8 }}>
+      <span style={{ fontSize: 18, flexShrink: 0 }}>📲</span>
+      <p style={{ margin: 0, fontSize: 13, flex: 1 }}>
+        <strong>Voeg DealHunter toe aan je beginscherm</strong>
+        <span style={{ color: 'rgba(255,255,255,0.55)', marginLeft: 8 }}>Altijd snel deals bekijken</span>
+      </p>
+      <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
         <button
           onClick={() => setVisible(false)}
-          style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.6)', borderRadius: 8, padding: '6px 10px', cursor: 'pointer', fontSize: 12 }}
+          style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.6)', borderRadius: 6, padding: '5px 10px', cursor: 'pointer', fontSize: 12 }}
         >
           Nee
         </button>
         <button
           onClick={handleInstall}
-          style={{ background: '#E33D26', border: 'none', color: 'white', borderRadius: 8, padding: '6px 14px', cursor: 'pointer', fontWeight: 700, fontSize: 12 }}
+          style={{ background: '#E33D26', border: 'none', color: 'white', borderRadius: 6, padding: '5px 14px', cursor: 'pointer', fontWeight: 700, fontSize: 12 }}
         >
           Installeer
         </button>
