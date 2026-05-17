@@ -651,72 +651,53 @@ async function scrapeAlbertHeijn() {
   }
 }
 
-// ─── ALDI — Next.js data API (double-encoded JSON) ───────────────────────────
+// ─── ALDI — /api/offer/nl/{week} JSON API ────────────────────────────────────
 async function scrapeAldi() {
-  console.log('🏪 [Aldi] aldi.nl __NEXT_DATA__ embed...')
+  console.log('🏪 [Aldi] aldi.nl offer API...')
   try {
-    const htmlRes = await fetch('https://www.aldi.nl/aanbiedingen.html', { headers: HEADERS })
-    const html = await htmlRes.text()
-
-    // Extract __NEXT_DATA__ directly from the HTML (no second API call needed)
-    const nextDataMatch = html.match(/<script id="__NEXT_DATA__"[^>]*>(.+?)<\/script>/s)
-    if (!nextDataMatch) throw new Error('__NEXT_DATA__ bulunamadı')
-    const outer = JSON.parse(nextDataMatch[1])
-
-    // Walk embedded string values for nested product JSON
-    function* extractStrings(obj) {
-      if (typeof obj === 'string') yield obj
-      else if (Array.isArray(obj)) { for (const v of obj) yield* extractStrings(v) }
-      else if (obj && typeof obj === 'object') { for (const v of Object.values(obj)) yield* extractStrings(v) }
+    // Aldi offers switch on Monday. Try 'current' first, fall back to 'next'
+    // because on Monday the new week is served as 'next' until midnight rollover
+    let data = null
+    for (const week of ['current', 'next']) {
+      const res = await fetch(`https://www.aldi.nl/api/offer/nl/${week}`, {
+        headers: { ...HEADERS, 'Accept': 'application/json', 'Referer': 'https://www.aldi.nl/aanbiedingen-deze-week.html' },
+      })
+      if (!res.ok) continue
+      const json = await res.json()
+      if (Object.keys(json.algoliaDataMap || {}).length > 0) { data = json; break }
     }
+    if (!data) throw new Error('Offer data boş döndü')
 
-    function walkForProducts(obj, results, seen) {
-      if (!obj || typeof obj !== 'object') return
-      if (obj.name && obj.currentPrice?.priceValue) {
-        if (!seen.has(obj.name)) {
-          seen.add(obj.name)
-          results.push(obj)
-        }
-      }
-      for (const v of (Array.isArray(obj) ? obj : Object.values(obj))) {
-        walkForProducts(v, results, seen)
-      }
-    }
-
-    // First try direct walk on outer JSON
-    const rawProducts = []
+    const algoliaMap = data.algoliaDataMap
     const seen = new Set()
-    walkForProducts(outer, rawProducts, seen)
+    const results = []
 
-    // Then search string-embedded JSON blobs
-    for (const str of extractStrings(outer)) {
-      if (!str.includes('priceValue')) continue
-      try {
-        const inner = JSON.parse(str)
-        walkForProducts(inner, rawProducts, seen)
-      } catch {}
-    }
+    for (const p of Object.values(algoliaMap)) {
+      if (!p.name || !p.currentPrice?.priceValue) continue
+      if (seen.has(p.name)) continue
+      seen.add(p.name)
 
-    const results = rawProducts.map(p => {
-      const primary = p.assets?.find(a => a.type === 'primary')
-      const promo = p.promotionPrices?.[0]
       const discountedPrice = p.currentPrice.priceValue
-      const originalPrice = promo?.strikePrice?.strikePriceValue ?? discountedPrice
-      const expiresAt = promo?.validUntilLocalDate ?? p.currentPrice?.validUntil
-        ? new Date((p.currentPrice.validUntil) * 1000).toISOString().split('T')[0]
+      // promotionPrices contains the regular/original price (before promo)
+      const promo = p.promotionPrices?.find(pr => pr.priceValue && pr.priceValue > discountedPrice)
+      const originalPrice = promo?.priceValue ?? discountedPrice
+      const primary = p.assets?.find(a => a.type === 'primary')
+      const expiresAt = p.currentPrice.validUntil
+        ? new Date(p.currentPrice.validUntil * 1000).toISOString().split('T')[0]
         : EXPIRES_AT
-      return {
+
+      results.push({
         name: p.name,
         market: 'Aldi',
         originalPrice,
         discountedPrice,
         imageUrl: primary?.url || null,
         isCampaign: true,
-        source: 'aldi.nl/aanbiedingen',
-        expiresAt: promo?.validUntilLocalDate ?? expiresAt,
-        campaignType: toCampaignType(p.name),
-      }
-    })
+        source: 'aldi.nl/api/offer',
+        expiresAt,
+        campaignType: toCampaignType(p.currentPrice?.priceTagLabels?.promoText1) || toCampaignType(p.name),
+      })
+    }
 
     console.log(`  ✅ Aldi: ${results.length} ürün`)
     return results
