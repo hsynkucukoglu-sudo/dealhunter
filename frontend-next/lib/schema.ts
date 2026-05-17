@@ -60,6 +60,19 @@ export function buildItemListSchema(
   }
 }
 
+export function buildBreadcrumbSchema(crumbs: { name: string; url: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: crumbs.map((crumb, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: crumb.name,
+      item: crumb.url.startsWith('http') ? crumb.url : `${SITE_URL}${crumb.url}`,
+    })),
+  }
+}
+
 export function buildHomePageSchema(products: Product[]) {
   const markets = [...new Set(products.map(p => p.market))].join(', ')
   const eligible = withImages(products).slice(0, 50)

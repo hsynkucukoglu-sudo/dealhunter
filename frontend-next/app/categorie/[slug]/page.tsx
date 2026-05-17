@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getProducts } from '@/lib/api'
 import { CATEGORIES } from '@/lib/types'
-import { buildItemListSchema } from '@/lib/schema'
+import { buildItemListSchema, buildBreadcrumbSchema } from '@/lib/schema'
 import { CategoryPage } from '@/components/CategoryPage'
 
 interface Props {
@@ -54,11 +54,21 @@ export default async function CategoriePageRoute({ params }: Props) {
     products,
   )
 
+  const breadcrumb = buildBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Categorieën', url: '/categorie' },
+    { name: `${cat.label} Aanbiedingen`, url: `/categorie/${slug}` },
+  ])
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
       />
       <CategoryPage category={cat} initialProducts={products} />
     </>

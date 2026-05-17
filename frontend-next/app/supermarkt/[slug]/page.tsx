@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getProducts } from '@/lib/api'
 import { MARKETS } from '@/lib/types'
-import { buildItemListSchema } from '@/lib/schema'
+import { buildItemListSchema, buildBreadcrumbSchema } from '@/lib/schema'
 import { MarketPage } from '@/components/MarketPage'
 
 interface Props {
@@ -51,11 +51,21 @@ export default async function SupermarktPage({ params }: Props) {
     products,
   )
 
+  const breadcrumb = buildBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Supermarkten', url: '/supermarkt' },
+    { name: `${market.name} Aanbiedingen`, url: `/supermarkt/${slug}` },
+  ])
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
       />
       <MarketPage market={market} initialProducts={products} />
     </>
