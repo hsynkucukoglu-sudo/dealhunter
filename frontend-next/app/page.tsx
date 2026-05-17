@@ -11,17 +11,15 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   const products = await getProducts()
-  const schemas = buildHomePageSchema(products)
+  const markets = [...new Set(products.map(p => p.market))].join(', ')
+  const schema = buildHomePageSchema(markets)
 
   return (
     <>
-      {schemas.map((schema, i) => (
-        <script
-          key={i}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      ))}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
       <ProductsPage initialProducts={products} />
     </>
   )
