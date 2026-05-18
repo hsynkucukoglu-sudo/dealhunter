@@ -296,10 +296,10 @@ async function scrapePlus() {
 
     console.log(`  📋 Plus: ${candidates.length} kandidaat aanbieding`)
 
-    // Strateji 2: Per item → product page fiyat çek (4'er paralel, max 25 item)
+    // Strateji 2: Per item → product page fiyat çek (2'er paralel, max 25 item)
     const results = []
     const seen = new Set()
-    const CONCURRENCY = 4
+    const CONCURRENCY = 2
     const limited = candidates.slice(0, 25)
 
     for (let i = 0; i < limited.length; i += CONCURRENCY) {
@@ -309,6 +309,11 @@ async function scrapePlus() {
         seen.add(item.name)
         let dp = 0
         let op = 0
+
+        // Promo label'dan fiyat parse et (fallback): "0.99 PER KILO", "2 VOOR 2.49"
+        const labelPriceMatch = item.promoLabel.match(/(\d+)[.,](\d+)/)
+        const labelPrice = labelPriceMatch ? parseFloat(`${labelPriceMatch[1]}.${labelPriceMatch[2]}`) : 0
+
         if (item.href) {
           try {
             const pRes = await fetch(`https://www.plus.nl${item.href}`, { headers: botHeaders })
@@ -328,7 +333,11 @@ async function scrapePlus() {
             }
           } catch {}
         }
+
+        // Fallback: label'dan gelen fiyatı kullan
+        if (!dp && labelPrice) dp = labelPrice
         if (!dp && !item.promoLabel) return
+
         results.push({
           name: item.name,
           market: 'Plus',
@@ -341,6 +350,8 @@ async function scrapePlus() {
           campaignType: toCampaignType(item.promoLabel) || toCampaignType(item.name),
         })
       }))
+      // Rate limit koruması
+      if (i + CONCURRENCY < limited.length) await new Promise(r => setTimeout(r, 400))
     }
 
     console.log(`  ✅ Plus: ${results.length} ürün`)
