@@ -50,8 +50,8 @@ export const MARKETS = [
     slug: 'albert-heijn',
     name: 'Albert Heijn',
     color: '#00A0E2',
-    description: 'Bekijk alle actuele Albert Heijn Bonus aanbiedingen. Vergelijk prijzen en bespaar op je boodschappen bij de grootste supermarkt van Nederland.',
-    keywords: 'albert heijn bonus, albert heijn aanbiedingen, AH bonus week, albert heijn folder',
+    description: 'Bekijk alle actuele AH aanbiedingen en Albert Heijn Bonus deals ✓ Dagelijks bijgewerkt ✓ Vergelijk prijzen en bespaar op je boodschappen bij de grootste supermarkt van Nederland.',
+    keywords: 'ah aanbiedingen, albert heijn aanbieding, albert heijn bonus, albert heijn aanbiedingen, AH acties, AH bonus week, albert heijn folder',
   },
   {
     slug: 'jumbo',
@@ -86,7 +86,7 @@ export const MARKETS = [
     name: 'Plus',
     color: '#00A651',
     description: 'Bekijk alle Plus supermarkt acties en aanbiedingen van deze week ✓ Dagelijks bijgewerkt ✓ Vergelijk Plus kortingen en bespaar op je boodschappen.',
-    keywords: 'plus supermarkt, plus supermarkt aanbiedingen, plus acties, plus aanbieding, plus folder, plus deals, plus supermarkt folder',
+    keywords: 'plus aanbiedingen, plus supermarkt, plus supermarkt aanbiedingen, plus acties, plus aanbieding, plus folder, plus deals, plus supermarkt folder',
   },
   {
     slug: 'hoogvliet',
