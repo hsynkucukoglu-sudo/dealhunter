@@ -80,7 +80,7 @@ export function MarketPage({ market, initialProducts }: { market: Market; initia
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-headline font-bold" style={{ color: '#1A1A1A' }}>
-                {market.name} Aanbiedingen
+                {market.name} Acties & Aanbiedingen
               </h1>
               <p className="text-sm mt-1" style={{ color: '#8C8478' }}>Deze week · {filtered.length} aanbiedingen</p>
             </div>

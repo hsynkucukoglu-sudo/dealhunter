@@ -264,52 +264,84 @@ async function scrapeHoogvliet() {
   }
 }
 
-// ─── PLUS — SSR cheerio ──────────────────────────────────────────────────────
+// ─── PLUS — Googlebot UA: listing + product page price fetch ─────────────────
 async function scrapePlus() {
   console.log('🏪 [Plus] plus.nl/aanbiedingen...')
   try {
-    const res = await fetch('https://www.plus.nl/aanbiedingen', { headers: HEADERS })
-    const html = await res.text()
-    const $ = cheerio.load(html)
-    const results = []
+    const botHeaders = {
+      ...HEADERS,
+      'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+      'Accept': 'text/html',
+      'Accept-Language': 'nl-NL',
+    }
 
-    // Plus SSR items (when available)
-    $('.plp-item-wrapper, [class*="product-item"], [class*="offer-item"]').each((_, el) => {
-      const item = $(el)
-      const img = item.find('img').first()
-      const imgSrc = img.attr('src') || img.attr('data-src') || null
-      const text = item.text().replace(/\s+/g, ' ').trim()
-      if (!text || text.length < 10) return
+    // Strateji 1: Listing page → item list
+    const listRes = await fetch('https://www.plus.nl/aanbiedingen', { headers: botHeaders })
+    if (!listRes.ok) throw new Error(`HTTP ${listRes.status}`)
+    const listHtml = await listRes.text()
+    const $list = cheerio.load(listHtml)
 
-      const reconstructed = text.replace(/(\d+)\. (\d+)/g, '$1.$2')
-      const priceMatches = reconstructed.match(/\b\d+\.\d+\b/g)
-      if (!priceMatches) return
-      const prices = priceMatches.map(s => parseFloat(s)).filter(n => n > 0 && n < 500)
-      if (!prices.length) return
-
-      const discountedPrice = Math.min(...prices)
-      const originalPrice = prices.length > 1 ? Math.max(...prices) : discountedPrice
-      let name = ''
-      const bijvMatch = text.match(/Bijv\.?\s+([^0-9€]{5,60})/i)
-      if (bijvMatch) name = bijvMatch[1].trim()
-      else {
-        const alleMatch = text.match(/Alle\s+([^0-9€]{5,60})/i)
-        name = alleMatch ? alleMatch[1].trim() : ''
-      }
-      if (!name || name.length < 4) return
-
-      results.push({
-        name,
-        market: 'Plus',
-        originalPrice,
-        discountedPrice,
-        imageUrl: imgSrc && !imgSrc.includes('logo') ? imgSrc : null,
-        isCampaign: true,
-        source: 'plus.nl/aanbiedingen',
-        expiresAt: EXPIRES_AT,
-        campaignType: toCampaignType(text) || toCampaignType(name),
-      })
+    const candidates = []
+    $list('[class*="plp-item-wrapper"]').each((_, el) => {
+      const $el = $list(el)
+      const name = $el.find('.plp-item-name span[data-expression]').text().trim()
+      if (!name || name.length < 3) return
+      const promoLabel = $el.find('.promo-offer-label span[data-expression]').text().replace(/\s+/g, ' ').trim()
+      // Skip delivery-only promos — not a product discount
+      if (/gratis bezorging/i.test(promoLabel) && !/(1\s*\+\s*1|2\s*\+\s*1|halve prijs|\d+%)/i.test(promoLabel)) return
+      const img = $el.find('img[data-image]').attr('src') || $el.find('img').first().attr('src') || null
+      const href = $el.closest('a').attr('href') || ''
+      candidates.push({ name, promoLabel, img, href })
     })
+
+    console.log(`  📋 Plus: ${candidates.length} kandidaat aanbieding`)
+
+    // Strateji 2: Per item → product page fiyat çek (4'er paralel, max 25 item)
+    const results = []
+    const seen = new Set()
+    const CONCURRENCY = 4
+    const limited = candidates.slice(0, 25)
+
+    for (let i = 0; i < limited.length; i += CONCURRENCY) {
+      const batch = limited.slice(i, i + CONCURRENCY)
+      await Promise.all(batch.map(async (item) => {
+        if (seen.has(item.name)) return
+        seen.add(item.name)
+        let dp = 0
+        let op = 0
+        if (item.href) {
+          try {
+            const pRes = await fetch(`https://www.plus.nl${item.href}`, { headers: botHeaders })
+            if (pRes.ok) {
+              const pHtml = await pRes.text()
+              const $p = cheerio.load(pHtml)
+              // Integer + decimal birleştir: "2." + "49" → 2.49
+              const intText = $p('.product-header-price-integer').filter((_, el) => {
+                const t = $p(el).text().trim()
+                return t && t !== '0.'
+              }).first().text().trim()
+              const decText = $p('.product-header-price-decimals').filter((_, el) => $p(el).text().trim()).first().text().trim()
+              if (intText && decText) dp = parseFloat(intText + decText) || 0
+              const prevText = $p('.product-header-price-previous').first().text().replace(/\s+/g, ' ').trim()
+              const prevMatch = prevText.match(/(\d+)[.,](\d+)/)
+              op = prevMatch ? parseFloat(`${prevMatch[1]}.${prevMatch[2]}`) : dp
+            }
+          } catch {}
+        }
+        if (!dp && !item.promoLabel) return
+        results.push({
+          name: item.name,
+          market: 'Plus',
+          originalPrice: op || dp,
+          discountedPrice: dp,
+          imageUrl: item.img && !item.img.includes('logo') ? item.img : null,
+          isCampaign: true,
+          source: 'plus.nl/aanbiedingen',
+          expiresAt: EXPIRES_AT,
+          campaignType: toCampaignType(item.promoLabel) || toCampaignType(item.name),
+        })
+      }))
+    }
 
     console.log(`  ✅ Plus: ${results.length} ürün`)
     return results

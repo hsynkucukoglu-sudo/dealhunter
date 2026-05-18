@@ -19,11 +19,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!market) return {}
 
   return {
-    title: `${market.name} Aanbiedingen Deze Week — DealHunter`,
+    title: `${market.name} Acties & Aanbiedingen Deze Week | DealHunter`,
     description: market.description,
     keywords: market.keywords,
     openGraph: {
-      title: `${market.name} Aanbiedingen — DealHunter`,
+      title: `${market.name} Acties & Aanbiedingen | DealHunter`,
       description: market.description,
       url: `https://www.dealhunter4u.nl/supermarkt/${slug}`,
       siteName: 'DealHunter',
