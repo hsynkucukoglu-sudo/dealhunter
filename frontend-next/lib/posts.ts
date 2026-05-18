@@ -10,6 +10,62 @@ export interface BlogPost {
 
 export const POSTS: BlogPost[] = [
   {
+    slug: 'snacks-in-de-aanbieding-aldi-lidl',
+    title: 'Kipdonuts bij Aldi, Dunkin Donuts bij Lidl: beste snacks in de aanbieding',
+    description: 'Kipdonuts bij Aldi en Dunkin Donuts-stijl gebak bij Lidl — dit zijn de populairste snack-aanbiedingen van Nederlandse supermarkten in 2026.',
+    date: '2026-05-18',
+    readTime: 5,
+    category: 'Aanbiedingen',
+    content: `
+<p class="lead">Kipdonuts bij Aldi, Dunkin Donuts-achtig gebak bij Lidl, en snackbars vol verrassingen — Nederlandse supermarkten concurreren steeds feller op snacks en tussendoortjes. In dit artikel zetten we de beste snack-aanbiedingen van Aldi en Lidl naast elkaar.</p>
+
+<h2>Kipdonuts bij Aldi: wanneer en hoe goedkoop?</h2>
+<p>De <strong>kipdonuts bij Aldi</strong> zijn een terugkerend favoriet. Aldi biedt kipsnacks en pluimvee-producten regelmatig aan als weekactie — met kortingen tot 30% op de reguliere prijs. Kipdonuts (gepofte kip in donutvorm, vaak van het merk Mora of Aldi eigen merk) verschijnen doorgaans in de koelverse snackhoek of als vriesproduct in de aanbiedingen.</p>
+<p>Wanneer zijn ze in de aanbieding? Aldi vernieuwt haar aanbiedingen elke <strong>maandag</strong>. Kipproducten zijn het vaakst in actie in de periodes voor feestdagen (Koningsdag, zomer-BBQ, Sinterklaas). Check elke maandagochtend de actuele <a href="/supermarkt/aldi">Aldi aanbiedingen op DealHunter4U</a>.</p>
+<ul>
+  <li><strong>Reguliere prijs kipdonuts:</strong> €2,49–€3,29 per zak</li>
+  <li><strong>Aanbiedingsprijs:</strong> vaak €1,79–€2,29 (20–30% korting)</li>
+  <li><strong>Tip:</strong> koop dubbel en vries in — kipdonuts bewaren 3 maanden in de vriezer</li>
+</ul>
+
+<h2>Dunkin Donuts bij Lidl: de gebak-aanbiedingen</h2>
+<p>Lidl heeft regelmatig <strong>Dunkin Donuts-stijl gebak</strong> in de aanbieding — gevulde donuts, muffins en ander Amerikaans-geïnspireerd bakkerijproduct. Dit zijn geen officiële Dunkin Donuts-producten, maar Lidl's eigen bakkerij maakt vergelijkbare producten die in kwaliteit en smaak dicht in de buurt komen.</p>
+<p>De Lidl bakkerij is één van de sterkste troeven van de keten. Verse croissants, donuts en afbakbrood zijn dagelijks beschikbaar en structureel goedkoper dan bij AH of Jumbo:</p>
+<ul>
+  <li><strong>Lidl donuts (4 stuks):</strong> €1,49–€1,99 regulier, soms €0,99 bij actie</li>
+  <li><strong>AH vergelijkbaar product:</strong> €2,29–€2,79</li>
+  <li><strong>Besparing:</strong> tot 50% goedkoper bij Lidl</li>
+</ul>
+<p>Bekijk de actuele <a href="/supermarkt/lidl">Lidl aanbiedingen</a> voor de nieuwste bakkerij-deals.</p>
+
+<h2>Aldi vs Lidl op snacks: wie wint?</h2>
+<p>Beide discount supermarkten zijn sterk op snacks en tussendoortjes, maar op verschillende vlakken:</p>
+<ul>
+  <li><strong>Aldi wint op:</strong> kipsnacks, vleesproducten, chips en noten — goedkoopste basisprijzen</li>
+  <li><strong>Lidl wint op:</strong> bakkerij (donuts, croissants, gebak), kaas-snacks en Europese delicatessen</li>
+  <li><strong>Gelijkspel:</strong> chocolade, koekjes en snoep — beide hebben uitstekende huismerk-alternatieven</li>
+</ul>
+
+<h2>Meer populaire snack-aanbiedingen bij Nederlandse supermarkten</h2>
+<p>Naast kipdonuts en bakkerij-producten zijn dit de meest gezochte snack-aanbiedingen:</p>
+<ul>
+  <li><strong>Toffifee bij Albert Heijn:</strong> regelmatig in de bonus, perfecte traktatie</li>
+  <li><strong>Boomstammetjes bij Aldi:</strong> seizoensgebonden (najaar/winter), populair cadeauproduct</li>
+  <li><strong>Chips (Lay's, Doritos):</strong> bij AH en Jumbo regelmatig 1+1 gratis</li>
+  <li><strong>Pepsi en frisdrank:</strong> bij Plus en Jumbo vaak in de weekactie</li>
+  <li><strong>Mora snacks (loempia's, bitterballen):</strong> maandelijks in aanbieding bij wisselende supermarkten</li>
+</ul>
+
+<h2>Hoe vind je de beste snack-deal van de week?</h2>
+<p>De snelste manier: <a href="/">DealHunter4U</a> vergelijkt dagelijks de snack-aanbiedingen van Aldi, Lidl, Albert Heijn, Jumbo, Dirk en Plus. Filter op categorie "Snacks" en zie in één oogopslag welke supermarkt de beste deal heeft.</p>
+<p>Wil je specifiek Aldi of Lidl snacks volgen?</p>
+<ul>
+  <li>→ <a href="/supermarkt/aldi">Alle actuele Aldi aanbiedingen</a> (update elke maandag)</li>
+  <li>→ <a href="/supermarkt/lidl">Alle actuele Lidl aanbiedingen</a> (update elke donderdag)</li>
+</ul>
+    `.trim(),
+  },
+  {
     slug: 'wie-is-dealhunter4u',
     title: 'Wie is DealHunter4U? Ons verhaal en onze missie',
     description: 'DealHunter4U vergelijkt elke dag de aanbiedingen van alle grote Nederlandse supermarkten. Ontdek waarom we dit bouwen en hoe het werkt.',
