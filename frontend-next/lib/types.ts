@@ -82,13 +82,6 @@ export const MARKETS = [
     keywords: 'aldi acties, aldi aanbiedingen, aldi actie, aldi korting, aldi deals, aldi folder, aldi nederland',
   },
   {
-    slug: 'plus',
-    name: 'Plus',
-    color: '#00A651',
-    description: 'Bekijk alle Plus supermarkt acties en aanbiedingen van deze week ✓ Dagelijks bijgewerkt ✓ Vergelijk Plus kortingen en bespaar op je boodschappen.',
-    keywords: 'plus aanbiedingen, plus supermarkt, plus supermarkt aanbiedingen, plus acties, plus aanbieding, plus folder, plus deals, plus supermarkt folder',
-  },
-  {
     slug: 'hoogvliet',
     name: 'Hoogvliet',
     color: '#E30613',

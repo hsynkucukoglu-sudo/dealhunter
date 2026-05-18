@@ -147,7 +147,7 @@ export function MarketPage({ market, initialProducts }: { market: Market; initia
         <section className="mt-20">
           <h2 className="text-xl font-headline font-bold mb-4" style={{ color: '#1A1A1A' }}>Andere supermarkten</h2>
           <div className="flex flex-wrap gap-3">
-            {['albert-heijn', 'jumbo', 'lidl', 'dirk', 'aldi', 'plus', 'hoogvliet']
+            {['albert-heijn', 'jumbo', 'lidl', 'dirk', 'aldi', 'hoogvliet']
               .filter(s => s !== market.slug)
               .map(slug => (
                 <Link key={slug} href={`/supermarkt/${slug}`}

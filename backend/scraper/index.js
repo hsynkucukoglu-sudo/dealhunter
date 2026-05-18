@@ -264,104 +264,6 @@ async function scrapeHoogvliet() {
   }
 }
 
-// ─── PLUS — Googlebot UA: listing + product page price fetch ─────────────────
-async function scrapePlus() {
-  console.log('🏪 [Plus] plus.nl/aanbiedingen...')
-  try {
-    const botHeaders = {
-      ...HEADERS,
-      'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
-      'Accept': 'text/html',
-      'Accept-Language': 'nl-NL',
-    }
-
-    // Strateji 1: Listing page → item list
-    const listRes = await fetch('https://www.plus.nl/aanbiedingen', { headers: botHeaders })
-    if (!listRes.ok) throw new Error(`HTTP ${listRes.status}`)
-    const listHtml = await listRes.text()
-    const $list = cheerio.load(listHtml)
-
-    const candidates = []
-    $list('[class*="plp-item-wrapper"]').each((_, el) => {
-      const $el = $list(el)
-      const name = $el.find('.plp-item-name span[data-expression]').text().trim()
-      if (!name || name.length < 3) return
-      const promoLabel = $el.find('.promo-offer-label span[data-expression]').text().replace(/\s+/g, ' ').trim()
-      // Skip delivery-only promos — not a product discount
-      if (/gratis bezorging/i.test(promoLabel) && !/(1\s*\+\s*1|2\s*\+\s*1|halve prijs|\d+%)/i.test(promoLabel)) return
-      const img = $el.find('img[data-image]').attr('src') || $el.find('img').first().attr('src') || null
-      const href = $el.closest('a').attr('href') || ''
-      candidates.push({ name, promoLabel, img, href })
-    })
-
-    console.log(`  📋 Plus: ${candidates.length} kandidaat aanbieding`)
-
-    // Strateji 2: Per item → product page fiyat çek (2'er paralel, max 25 item)
-    const results = []
-    const seen = new Set()
-    const CONCURRENCY = 2
-    const limited = candidates.slice(0, 25)
-
-    for (let i = 0; i < limited.length; i += CONCURRENCY) {
-      const batch = limited.slice(i, i + CONCURRENCY)
-      await Promise.all(batch.map(async (item) => {
-        if (seen.has(item.name)) return
-        seen.add(item.name)
-        let dp = 0
-        let op = 0
-
-        // Promo label'dan fiyat parse et (fallback): "0.99 PER KILO", "2 VOOR 2.49"
-        const labelPriceMatch = item.promoLabel.match(/(\d+)[.,](\d+)/)
-        const labelPrice = labelPriceMatch ? parseFloat(`${labelPriceMatch[1]}.${labelPriceMatch[2]}`) : 0
-
-        if (item.href) {
-          try {
-            const pRes = await fetch(`https://www.plus.nl${item.href}`, { headers: botHeaders })
-            if (pRes.ok) {
-              const pHtml = await pRes.text()
-              const $p = cheerio.load(pHtml)
-              // Integer + decimal birleştir: "2." + "49" → 2.49
-              const intText = $p('.product-header-price-integer').filter((_, el) => {
-                const t = $p(el).text().trim()
-                return t && t !== '0.'
-              }).first().text().trim()
-              const decText = $p('.product-header-price-decimals').filter((_, el) => $p(el).text().trim()).first().text().trim()
-              if (intText && decText) dp = parseFloat(intText + decText) || 0
-              const prevText = $p('.product-header-price-previous').first().text().replace(/\s+/g, ' ').trim()
-              const prevMatch = prevText.match(/(\d+)[.,](\d+)/)
-              op = prevMatch ? parseFloat(`${prevMatch[1]}.${prevMatch[2]}`) : dp
-            }
-          } catch {}
-        }
-
-        // Fallback: label'dan gelen fiyatı kullan
-        if (!dp && labelPrice) dp = labelPrice
-        if (!dp && !item.promoLabel) return
-
-        results.push({
-          name: item.name,
-          market: 'Plus',
-          originalPrice: op || dp,
-          discountedPrice: dp,
-          imageUrl: item.img && !item.img.includes('logo') ? item.img : null,
-          isCampaign: true,
-          source: 'plus.nl/aanbiedingen',
-          expiresAt: EXPIRES_AT,
-          campaignType: toCampaignType(item.promoLabel) || toCampaignType(item.name),
-        })
-      }))
-      // Rate limit koruması
-      if (i + CONCURRENCY < limited.length) await new Promise(r => setTimeout(r, 400))
-    }
-
-    console.log(`  ✅ Plus: ${results.length} ürün`)
-    return results
-  } catch (e) {
-    console.error('  ❌ Plus:', e.message)
-    return []
-  }
-}
-
 // ─── LIDL — ID'leri HTML'den çek, her ürünü JSON-LD ile fetch et ─────────────
 async function scrapeLidl() {
   console.log('🏪 [Lidl] lidl.nl/aanbiedingen...')
@@ -938,18 +840,17 @@ function enrichProductMeta(name, price) {
 export async function scrapeFlyerProducts() {
   console.log('🔍 Fetch-only scraper başlatılıyor...')
 
-  const [dirk, jumbo, hoogvliet, plus, lidl, ah, aldi, vomar] = await Promise.all([
+  const [dirk, jumbo, hoogvliet, lidl, ah, aldi, vomar] = await Promise.all([
     scrapeDirk(),
     scrapeJumbo(),
     scrapeHoogvliet(),
-    scrapePlus(),
     scrapeLidl(),
     scrapeAlbertHeijn(),
     scrapeAldi(),
     scrapeVomar(),
   ])
 
-  let all = [...dirk, ...jumbo, ...hoogvliet, ...plus, ...lidl, ...ah, ...aldi, ...vomar]
+  let all = [...dirk, ...jumbo, ...hoogvliet, ...lidl, ...ah, ...aldi, ...vomar]
 
   // Duplicate temizliği
   const seen = new Set()
@@ -969,6 +870,6 @@ export async function scrapeFlyerProducts() {
     return { ...p, ...enrichProductMeta(p.name, p.discountedPrice) }
   })
 
-  console.log(`\n✅ Toplam ${all.length} ürün (${dirk.length} Dirk, ${jumbo.length} Jumbo, ${hoogvliet.length} Hoogvliet, ${plus.length} Plus, ${lidl.length} Lidl, ${ah.length} AH, ${aldi.length} Aldi, ${vomar.length} Vomar)`)
+  console.log(`\n✅ Toplam ${all.length} ürün (${dirk.length} Dirk, ${jumbo.length} Jumbo, ${hoogvliet.length} Hoogvliet, ${lidl.length} Lidl, ${ah.length} AH, ${aldi.length} Aldi, ${vomar.length} Vomar)`)
   return all
 }
