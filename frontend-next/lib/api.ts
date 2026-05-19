@@ -5,7 +5,7 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-producti
 export async function getProducts(): Promise<Product[]> {
   try {
     const res = await fetch(`${API_BASE}/api/products`, {
-      next: { revalidate: 3600 }, // 1 saatte bir yenile
+      next: { revalidate: 900 }, // 15 dakikada bir yenile
     })
     if (!res.ok) return []
     return res.json()
