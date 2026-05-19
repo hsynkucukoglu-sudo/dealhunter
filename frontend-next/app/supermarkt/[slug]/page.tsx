@@ -18,12 +18,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const market = MARKETS.find(m => m.slug === slug)
   if (!market) return {}
 
+  const pageTitle = market.ctaTitle ?? `${market.name} Acties & Aanbiedingen Deze Week | DealHunter`
+
   return {
-    title: `${market.name} Acties & Aanbiedingen Deze Week | DealHunter`,
+    title: pageTitle,
     description: market.description,
     keywords: market.keywords,
     openGraph: {
-      title: `${market.name} Acties & Aanbiedingen | DealHunter`,
+      title: pageTitle,
       description: market.description,
       url: `https://www.dealhunter4u.nl/supermarkt/${slug}`,
       siteName: 'DealHunter',
