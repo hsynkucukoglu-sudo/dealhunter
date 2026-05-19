@@ -8,18 +8,22 @@ import { ShoppingListSidebar } from './ShoppingListSidebar'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { DealHunterLogo } from './DealHunterLogo'
 import { useShoppingList } from '@/context/ShoppingListContext'
+import { MarketFAQ } from './MarketFAQ'
+import { MARKET_FAQS, FAQ } from '@/lib/marketFaqs'
 
 interface Market {
   slug: string
   name: string
   color: string
   description: string
+  ctaTitle?: string
 }
 
 export function MarketPage({ market, initialProducts }: { market: Market; initialProducts: Product[] }) {
   const [search, setSearch] = useState('')
   const [campaignsOnly, setCampaignsOnly] = useState(false)
   const { itemCount, setIsCartOpen } = useShoppingList()
+  const faqs: FAQ[] = MARKET_FAQS[market.slug] ?? []
 
   const filtered = useMemo(() => initialProducts.filter(p => {
     const matchSearch = p.name.toLowerCase().includes(search.toLowerCase())
@@ -142,6 +146,9 @@ export function MarketPage({ market, initialProducts }: { market: Market; initia
             ))}
           </div>
         )}
+
+        {/* FAQ */}
+        <MarketFAQ faqs={faqs} marketName={market.name} />
 
         {/* Andere supermarkten */}
         <section className="mt-20">

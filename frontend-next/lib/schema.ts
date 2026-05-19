@@ -22,6 +22,21 @@ export function buildBreadcrumbSchema(crumbs: { name: string; url: string }[]) {
   }
 }
 
+export function buildFaqSchema(faqs: { question: string; answer: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(faq => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  }
+}
+
 export function buildHomePageSchema(markets: string) {
   return {
     '@context': 'https://schema.org',
