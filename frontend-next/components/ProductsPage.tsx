@@ -21,11 +21,11 @@ import { StickyFilterBar } from './StickyFilterBar'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
-export function ProductsPage({ initialProducts }: { initialProducts: Product[] }) {
+export function ProductsPage({ initialProducts, initialSearch = '' }: { initialProducts: Product[], initialSearch?: string }) {
   const [products, setProducts] = useState<Product[]>(initialProducts)
   const [isScraping, setIsScraping] = useState(false)
-  const [searchTerm, setSearchTerm] = useState('')
-  const [debouncedSearch, setDebouncedSearch] = useState('')
+  const [searchTerm, setSearchTerm] = useState(initialSearch)
+  const [debouncedSearch, setDebouncedSearch] = useState(initialSearch)
   const [showCampaignsOnly, setShowCampaignsOnly] = useState(false)
   const [selectedMarket, setSelectedMarket] = useState('all')
   const [selectedCategory, setSelectedCategory] = useState('all')

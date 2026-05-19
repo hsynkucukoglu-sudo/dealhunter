@@ -9,7 +9,8 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function Home() {
+export default async function Home({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+  const { q } = await searchParams
   const products = await getProducts()
   const markets = [...new Set(products.map(p => p.market))].join(', ')
   const schema = buildHomePageSchema(markets)
@@ -20,7 +21,7 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <ProductsPage initialProducts={products} />
+      <ProductsPage initialProducts={products} initialSearch={q ?? ''} />
     </>
   )
 }
