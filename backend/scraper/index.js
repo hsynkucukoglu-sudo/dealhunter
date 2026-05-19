@@ -103,6 +103,8 @@ async function scrapeJumbo() {
           if (!name || name.length < 3 || seen.has(name)) continue
           const priceRaw = p.price?.amount ?? p.price?.current ?? p.currentPrice ?? p.promotionPrice ?? p.price ?? ''
           const dp = parseFloat(String(priceRaw).replace(',', '.')) || 0
+          const wasRaw = p.price?.was ?? p.price?.original ?? p.regularPrice ?? p.previousPrice ?? p.normalPrice ?? null
+          const op = wasRaw ? (parseFloat(String(wasRaw).replace(',', '.')) || 0) : 0
           const promoText = p.promotionDescription || p.description || p.subtitle || ''
           const hasPromo = /(1\s*\+\s*1|2\s*\+\s*1|3\s+halen\s+2)/i.test(promoText + ' ' + name)
           if (!dp && !hasPromo) continue
@@ -110,7 +112,7 @@ async function scrapeJumbo() {
           results.push({
             name,
             market: 'Jumbo',
-            originalPrice: dp || 0,
+            originalPrice: (op > dp) ? op : dp,
             discountedPrice: dp,
             imageUrl: p.imageUrl || p.image || null,
             isCampaign: true,
@@ -139,6 +141,8 @@ async function scrapeJumbo() {
           const name = p.name || p.title || p.promotionTitle
           if (!name || name.length < 3 || seen.has(name)) continue
           const dp = parseFloat((p.price?.amount ?? p.currentPrice ?? p.promotionPrice ?? '').toString().replace(',', '.')) || 0
+          const wasRaw2 = p.price?.was ?? p.price?.original ?? p.previousPrice ?? p.regularPrice ?? null
+          const op2 = wasRaw2 ? (parseFloat(String(wasRaw2).replace(',', '.')) || 0) : 0
           const promoText = p.promotionDescription || p.description || ''
           const hasPromo = /(1\s*\+\s*1|2\s*\+\s*1|3\s+halen\s+2)/i.test(promoText + ' ' + name)
           if (!dp && !hasPromo) continue
@@ -146,7 +150,7 @@ async function scrapeJumbo() {
           results.push({
             name,
             market: 'Jumbo',
-            originalPrice: dp || 0,
+            originalPrice: (op2 > dp) ? op2 : dp,
             discountedPrice: dp,
             imageUrl: (p.imageUrl || p.image || null),
             isCampaign: true,
@@ -182,6 +186,8 @@ async function scrapeJumbo() {
       if (priceMatch) {
         dp = priceMatch[2] ? parseFloat(`${priceMatch[1]}.${priceMatch[2]}`) : parseFloat(priceMatch[1].replace(',', '.'))
       }
+      const wasMatch = text.match(/(?:was|van|normaal)\s*€?\s*(\d+[,.]\d+)/i)
+      const op3 = wasMatch ? parseFloat(wasMatch[1].replace(',', '.')) : 0
       const hasPromo = /(1\+1|2\+1|3\s+halen\s+2)\s*gratis?/i.test(text)
       if (!dp && !hasPromo) return
       seen.add(name)
@@ -189,7 +195,7 @@ async function scrapeJumbo() {
       results.push({
         name,
         market: 'Jumbo',
-        originalPrice: dp || 0,
+        originalPrice: (op3 > dp) ? op3 : dp,
         discountedPrice: dp,
         imageUrl: (img.attr('src') || img.attr('data-src') || null),
         isCampaign: true,
@@ -242,10 +248,12 @@ async function scrapeHoogvliet() {
         const priceStr = String(obj.price).split(/\s*-\s*/)[0].trim()
         const discountedPrice = parseFloat(priceStr)
         if (!discountedPrice) continue
+        const wasPrice = parseFloat(obj.oldPrice || obj.wasPrice || obj.compareAtPrice || obj.originalPrice || obj.regularPrice || 0)
+        const originalPrice = (wasPrice && wasPrice > discountedPrice) ? wasPrice : discountedPrice
         results.push({
           name,
           market: 'Hoogvliet',
-          originalPrice: discountedPrice,
+          originalPrice,
           discountedPrice,
           imageUrl: imgMap[obj.id] || null,
           isCampaign: true,
@@ -290,11 +298,13 @@ async function scrapeLidl() {
           const offer = Array.isArray(data.offers) ? data.offers[0] : data.offers
           const discountedPrice = parseFloat(offer?.price)
           if (!discountedPrice) return null
+          const lidlHighPrice = parseFloat(offer?.priceBeforeDiscount || offer?.highPrice || offer?.regularPrice || 0)
+          const lidlOriginalPrice = (lidlHighPrice && lidlHighPrice > discountedPrice) ? lidlHighPrice : discountedPrice
           const img = Array.isArray(data.image) ? data.image[0] : (data.image || null)
           return {
             name: data.name,
             market: 'Lidl',
-            originalPrice: discountedPrice,
+            originalPrice: lidlOriginalPrice,
             discountedPrice,
             imageUrl: img || null,
             isCampaign: true,
@@ -703,11 +713,13 @@ async function scrapeVomar() {
           const discountedPrice = parseFloat(p.offers.price)
           if (!discountedPrice || seen.has(p.name)) continue
           seen.add(p.name)
+          const vomarHighPrice = parseFloat(p.offers.highPrice || p.offers.priceBeforeDiscount || p.offers.regularPrice || 0)
+          const vomarOriginalPrice = (vomarHighPrice && vomarHighPrice > discountedPrice) ? vomarHighPrice : discountedPrice
           const img = Array.isArray(p.image) ? p.image[0] : (p.image || null)
           results.push({
             name: p.name,
             market: 'Vomar',
-            originalPrice: discountedPrice,
+            originalPrice: vomarOriginalPrice,
             discountedPrice,
             imageUrl: typeof img === 'string' ? img : img?.url || null,
             isCampaign: true,
@@ -726,17 +738,18 @@ async function scrapeVomar() {
         const name = card.find('h2, h3, h4, [class*="title"], [class*="name"]').first().text().trim()
         if (!name || name.length < 3 || seen.has(name)) return
         const text = card.text()
-        const priceMatch = text.match(/€?\s*(\d+)[,.](\d{2})/)
-        if (!priceMatch) return
-        const discountedPrice = parseFloat(`${priceMatch[1]}.${priceMatch[2]}`)
+        const allPriceMatches = [...text.matchAll(/€?\s*(\d+)[,.](\d{2})/g)].map(m => parseFloat(`${m[1]}.${m[2]}`))
+        const discountedPrice = allPriceMatches.length ? Math.min(...allPriceMatches) : 0
         if (!discountedPrice || discountedPrice > 200) return
+        const vomarWasPrice = allPriceMatches.length > 1 ? Math.max(...allPriceMatches) : 0
+        const vomarOriginal = (vomarWasPrice && vomarWasPrice > discountedPrice) ? vomarWasPrice : discountedPrice
         seen.add(name)
         const img = card.find('img').first()
         const imgSrc = img.attr('src') || img.attr('data-src') || null
         results.push({
           name,
           market: 'Vomar',
-          originalPrice: discountedPrice,
+          originalPrice: vomarOriginal,
           discountedPrice,
           imageUrl: imgSrc && !imgSrc.includes('logo') ? imgSrc : null,
           isCampaign: true,
