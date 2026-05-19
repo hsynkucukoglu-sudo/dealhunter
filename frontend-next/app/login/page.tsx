@@ -1,67 +1,125 @@
 import { signIn } from '@/auth'
+import { DealHunterLogo } from '@/components/DealHunterLogo'
+import Link from 'next/link'
 
-export default async function LoginPage() {
+const BENEFITS = [
+  {
+    icon: '🔔',
+    title: 'Prijsalerts',
+    desc: 'Ontvang een melding zodra jouw favoriete product in de aanbieding gaat.',
+  },
+  {
+    icon: '❤️',
+    title: 'Favorieten bewaren',
+    desc: 'Sla deals op en vergelijk prijzen van meerdere supermarkten.',
+  },
+  {
+    icon: '🛒',
+    title: 'Boodschappenlijst',
+    desc: 'Maak een persoonlijke lijst en bespaar elke week slim.',
+  },
+]
 
+export default function LoginPage() {
   return (
-    <main style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: '#f8f8f8',
-    }}>
-      <div style={{
-        background: '#fff',
-        borderRadius: '16px',
-        padding: '48px 40px',
-        boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
-        textAlign: 'center',
-        maxWidth: '400px',
-        width: '100%',
-      }}>
-        <div style={{ fontSize: '48px', marginBottom: '12px' }}>🛍️</div>
-        <h1 style={{ fontSize: '24px', fontWeight: 800, marginBottom: '8px' }}>Inloggen</h1>
-        <p style={{ color: '#666', marginBottom: '32px', fontSize: '15px' }}>
-          Log in om persoonlijke dealwaarschuwingen in te stellen.
-        </p>
+    <main
+      className="min-h-screen flex flex-col items-center justify-center px-4 py-12"
+      style={{ background: '#FAF6F0' }}
+    >
+      {/* Back to home */}
+      <Link
+        href="/"
+        className="flex items-center gap-1.5 mb-10 text-sm font-medium transition-opacity hover:opacity-70"
+        style={{ color: '#8C8478' }}
+      >
+        <span className="material-symbols-outlined text-base leading-none">arrow_back</span>
+        Terug naar deals
+      </Link>
 
-        <form action={async () => {
-          'use server'
-          await signIn('google', { redirectTo: '/' })
-        }}>
-          <button
-            type="submit"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '12px',
-              width: '100%',
-              padding: '14px 24px',
-              border: '1.5px solid #e0e0e0',
-              borderRadius: '12px',
-              background: '#fff',
-              fontSize: '15px',
-              fontWeight: 600,
-              cursor: 'pointer',
-              transition: 'box-shadow 0.2s',
+      <div
+        className="w-full max-w-sm rounded-3xl overflow-hidden"
+        style={{
+          background: 'white',
+          border: '1.5px solid #E0D8CE',
+          boxShadow: '0 8px 40px rgba(0,0,0,0.07)',
+        }}
+      >
+        {/* Header */}
+        <div
+          className="flex flex-col items-center pt-10 pb-8 px-8"
+          style={{ borderBottom: '1.5px solid #F0EBE5' }}
+        >
+          <Link href="/" className="mb-6">
+            <DealHunterLogo height={44} />
+          </Link>
+          <h1 className="text-xl font-headline font-black mb-1.5" style={{ color: '#1A1A1A' }}>
+            Inloggen op DealHunter
+          </h1>
+          <p className="text-sm text-center leading-relaxed" style={{ color: '#8C8478' }}>
+            Log in en mis nooit meer een aanbieding bij jouw supermarkt.
+          </p>
+        </div>
+
+        {/* Benefits */}
+        <div className="px-8 py-6 flex flex-col gap-4" style={{ borderBottom: '1.5px solid #F0EBE5' }}>
+          {BENEFITS.map((b) => (
+            <div key={b.title} className="flex items-start gap-3">
+              <span className="text-xl leading-none mt-0.5">{b.icon}</span>
+              <div>
+                <p className="text-sm font-semibold leading-tight" style={{ color: '#1A1A1A' }}>
+                  {b.title}
+                </p>
+                <p className="text-xs mt-0.5 leading-relaxed" style={{ color: '#8C8478' }}>
+                  {b.desc}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Sign-in form */}
+        <div className="px-8 pt-6 pb-8">
+          <form
+            action={async () => {
+              'use server'
+              await signIn('google', { redirectTo: '/' })
             }}
           >
-            <svg width="20" height="20" viewBox="0 0 48 48">
-              <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C12.955 4 4 12.955 4 24s8.955 20 20 20s20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
-              <path fill="#FF3D00" d="m6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C16.318 4 9.656 8.337 6.306 14.691z"/>
-              <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
-              <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002l6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/>
-            </svg>
-            Doorgaan met Google
-          </button>
-        </form>
+            <button
+              type="submit"
+              className="w-full flex items-center justify-center gap-3 py-3.5 px-6 rounded-2xl font-semibold text-sm transition-all duration-200 hover:shadow-md active:scale-95"
+              style={{
+                background: 'white',
+                border: '1.5px solid #E0D8CE',
+                color: '#1A1A1A',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+              }}
+            >
+              {/* Google logo */}
+              <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
+                <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C12.955 4 4 12.955 4 24s8.955 20 20 20s20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
+                <path fill="#FF3D00" d="m6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C16.318 4 9.656 8.337 6.306 14.691z"/>
+                <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
+                <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002l6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/>
+              </svg>
+              Doorgaan met Google
+            </button>
+          </form>
 
-        <p style={{ marginTop: '24px', fontSize: '12px', color: '#999' }}>
-          Door in te loggen ga je akkoord met ons{' '}
-          <a href="/privacy" style={{ color: '#C41230' }}>privacybeleid</a>.
-        </p>
+          <p className="mt-5 text-xs text-center leading-relaxed" style={{ color: '#B8AFA6' }}>
+            Door in te loggen ga je akkoord met ons{' '}
+            <Link href="/privacy" className="underline underline-offset-2 hover:opacity-70" style={{ color: '#8C8478' }}>
+              privacybeleid
+            </Link>
+            .
+          </p>
+        </div>
       </div>
+
+      {/* Footer note */}
+      <p className="mt-8 text-xs text-center" style={{ color: '#C9C1B6' }}>
+        Gratis · Geen wachtwoord nodig · Altijd uitloggen via je profiel
+      </p>
     </main>
   )
 }
