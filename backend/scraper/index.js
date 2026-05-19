@@ -663,9 +663,8 @@ async function scrapeAldi() {
       seen.add(p.name)
 
       const discountedPrice = p.currentPrice.priceValue
-      // promotionPrices contains the regular/original price (before promo)
-      const promo = p.promotionPrices?.find(pr => pr.priceValue && pr.priceValue > discountedPrice)
-      const originalPrice = promo?.priceValue ?? discountedPrice
+      const strikePrice = p.currentPrice.strikePrice?.strikePriceValue ?? null
+      const originalPrice = (strikePrice && strikePrice > discountedPrice) ? strikePrice : discountedPrice
       const primary = p.assets?.find(a => a.type === 'primary')
       const expiresAt = p.currentPrice.validUntil
         ? new Date(p.currentPrice.validUntil * 1000).toISOString().split('T')[0]
