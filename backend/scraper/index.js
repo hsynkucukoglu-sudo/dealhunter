@@ -74,136 +74,169 @@ async function scrapeDirk() {
   }
 }
 
-// ─── JUMBO — __NEXT_DATA__ + API + HTML fallback ────────────────────────────
-async function scrapeJumbo() {
-  console.log('🏪 [Jumbo] aanbiedingen taranıyor...')
-  try {
-    const res = await fetch('https://www.jumbo.com/aanbiedingen/nu', { headers: HEADERS })
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    const html = await res.text()
-    const $ = cheerio.load(html)
-    const results = []
-    const seen = new Set()
+// ─── JUMBO — GraphQL (promotions + images) + Intershop REST (prices) ─────────
+const JUMBO_REST_HEADERS = {
+  'Accept': 'application/json, text/plain, */*',
+  'User-Agent': UA,
+  'Accept-Language': 'nl-NL,nl;q=0.9',
+  'X-Requested-With': 'XMLHttpRequest',
+}
+const JUMBO_GQL_URL = 'https://www.jumbo.com/api/graphql'
+const JUMBO_GQL_HEADERS = {
+  'Content-Type': 'application/json',
+  'User-Agent': UA,
+  'apollographql-client-name': 'web',
+  'apollographql-client-version': '1.0.0',
+}
 
-    // Strateji 1: __NEXT_DATA__ embedded JSON (mevcutsa en güvenilir kaynak)
-    const nextDataRaw = $('script#__NEXT_DATA__').html()
-    if (nextDataRaw) {
-      try {
-        const nextData = JSON.parse(nextDataRaw)
-        function* walkPromos(obj, depth) {
-          if (!obj || depth > 15) return
-          if (Array.isArray(obj)) { for (const v of obj) yield* walkPromos(v, depth + 1) }
-          else if (typeof obj === 'object') {
-            if ((obj.name || obj.title) && (obj.price !== undefined || obj.imageUrl || obj.image)) yield obj
-            for (const v of Object.values(obj)) yield* walkPromos(v, depth + 1)
-          }
-        }
-        for (const p of walkPromos(nextData, 0)) {
-          const name = p.name || p.title || p.promotionTitle
-          if (!name || name.length < 3 || seen.has(name)) continue
-          const priceRaw = p.price?.amount ?? p.price?.current ?? p.currentPrice ?? p.promotionPrice ?? p.price ?? ''
-          const dp = parseFloat(String(priceRaw).replace(',', '.')) || 0
-          const wasRaw = p.price?.was ?? p.price?.original ?? p.regularPrice ?? p.previousPrice ?? p.normalPrice ?? null
-          const op = wasRaw ? (parseFloat(String(wasRaw).replace(',', '.')) || 0) : 0
-          const promoText = p.promotionDescription || p.description || p.subtitle || ''
-          const hasPromo = /(1\s*\+\s*1|2\s*\+\s*1|3\s+halen\s+2)/i.test(promoText + ' ' + name)
-          if (!dp && !hasPromo) continue
-          seen.add(name)
-          results.push({
-            name,
-            market: 'Jumbo',
-            originalPrice: (op > dp) ? op : dp,
-            discountedPrice: dp,
-            imageUrl: p.imageUrl || p.image || null,
-            isCampaign: true,
-            source: 'jumbo.com/__next_data__',
-            expiresAt: EXPIRES_AT,
-            campaignType: toCampaignType(promoText) || toCampaignType(name),
-          })
-        }
-        if (results.length > 0) {
-          console.log(`  ✅ Jumbo: ${results.length} ürün (__NEXT_DATA__)`)
-          return results
-        }
-      } catch {}
+// Parse deal price from Jumbo promotion description text
+function parseJumboPromoPrice(desc, title) {
+  const text = `${desc} ${title}`.trim()
+
+  // "3 voor 6,00" / "2 voor 1,50" / "2 v 4,00 euro"
+  const xVoor = text.match(/(\d+)\s+v(?:oor)?\s+[€]?\s*(\d+[,.]\d+)/i)
+  if (xVoor) {
+    const count = parseInt(xVoor[1])
+    const total = parseFloat(xVoor[2].replace(',', '.'))
+    return { type: 'explicit', discountedPrice: parseFloat((total / count).toFixed(2)), promoLabel: `${count} voor €${total.toFixed(2)}` }
+  }
+
+  // "voor 1,00" / "stuk voor 1,00" / "Heineken voor 19,99"
+  const voor = desc.match(/voor\s+[€]?\s*(\d+[,.]\d+)/i)
+  if (voor) {
+    const price = parseFloat(voor[1].replace(',', '.'))
+    return { type: 'explicit', discountedPrice: price, promoLabel: `voor €${price.toFixed(2)}` }
+  }
+
+  // "50% korting" / "30% korting"
+  const pct = desc.match(/(\d+)%\s*korting/i)
+  if (pct) {
+    return { type: 'relative', multiplier: 1 - parseInt(pct[1]) / 100, promoLabel: `${pct[1]}% korting` }
+  }
+
+  // "2e halve prijs" (second at half price → effective 75%)
+  if (/2e\s+halve\s+prijs/i.test(text)) {
+    return { type: 'relative', multiplier: 0.75, promoLabel: '2e halve prijs' }
+  }
+
+  // "2+1 gratis", "1+1 gratis", "5+1 gratis"
+  const bogo = desc.match(/(\d+)\+(\d+)\s+gratis/i)
+  if (bogo) {
+    const buy = parseInt(bogo[1]), free = parseInt(bogo[2])
+    return { type: 'relative', multiplier: buy / (buy + free), promoLabel: `${buy}+${free} gratis` }
+  }
+
+  return { type: 'none' }
+}
+
+async function scrapeJumbo() {
+  console.log('🏪 [Jumbo] GraphQL + Intershop REST API...')
+  try {
+    // Step 1: All promotions + product images via GraphQL (single call)
+    const gqlRes = await fetch(JUMBO_GQL_URL, {
+      method: 'POST',
+      headers: JUMBO_GQL_HEADERS,
+      body: JSON.stringify({ query: '{ promotions { id title subtitle products { id title sku image } } }' }),
+      signal: AbortSignal.timeout(15000),
+    })
+    if (!gqlRes.ok) throw new Error(`GraphQL HTTP ${gqlRes.status}`)
+    const gqlData = await gqlRes.json()
+    const promotions = gqlData.data?.promotions || []
+    if (!promotions.length) throw new Error('GraphQL returned 0 promotions')
+
+    // Filter out internal/gift promotions
+    const realPromos = promotions.filter(p =>
+      !/repricing|DO NOT DELETE|gratis.*bij\s+aankoop|ontvang een|GRATIS\s+[A-Z]/i.test(p.title)
+    )
+
+    // Step 2: Fetch promotion details (description with price text) in batches
+    const BATCH = 10
+    const detailMap = {}
+    for (let i = 0; i < realPromos.length; i += BATCH) {
+      await Promise.all(realPromos.slice(i, i + BATCH).map(async p => {
+        try {
+          const r = await fetch(
+            `https://www.jumbo.com/INTERSHOP/rest/WFS/Jumbo-Grocery-Site/-/promotions/${p.id}`,
+            { headers: JUMBO_REST_HEADERS, signal: AbortSignal.timeout(8000) }
+          )
+          if (r.ok) detailMap[p.id] = await r.json()
+        } catch {}
+      }))
     }
 
-    // Strateji 2: JSON API
-    try {
-      const apiRes = await fetch(
-        'https://www.jumbo.com/api/2.0/promotion/?sorteer=relevantie&page=0&pageSize=100&view=grid',
-        { headers: { ...HEADERS, 'Accept': 'application/json', 'Referer': 'https://www.jumbo.com/' } }
-      )
-      if (apiRes.ok) {
-        const json = await apiRes.json()
-        const proms = json.promotionList?.promotions || json.promotions || []
-        for (const p of proms) {
-          const name = p.name || p.title || p.promotionTitle
-          if (!name || name.length < 3 || seen.has(name)) continue
-          const dp = parseFloat((p.price?.amount ?? p.currentPrice ?? p.promotionPrice ?? '').toString().replace(',', '.')) || 0
-          const wasRaw2 = p.price?.was ?? p.price?.original ?? p.previousPrice ?? p.regularPrice ?? null
-          const op2 = wasRaw2 ? (parseFloat(String(wasRaw2).replace(',', '.')) || 0) : 0
-          const promoText = p.promotionDescription || p.description || ''
-          const hasPromo = /(1\s*\+\s*1|2\s*\+\s*1|3\s+halen\s+2)/i.test(promoText + ' ' + name)
-          if (!dp && !hasPromo) continue
-          seen.add(name)
-          results.push({
-            name,
-            market: 'Jumbo',
-            originalPrice: (op2 > dp) ? op2 : dp,
-            discountedPrice: dp,
-            imageUrl: (p.imageUrl || p.image || null),
-            isCampaign: true,
-            source: 'jumbo.com/api',
-            expiresAt: EXPIRES_AT,
-            campaignType: toCampaignType(promoText) || toCampaignType(name),
-          })
-        }
-        if (results.length > 0) {
-          console.log(`  ✅ Jumbo: ${results.length} ürün (API)`)
-          return results
-        }
-      }
-    } catch {}
+    // Step 3: Build deal list, identify which need product prices
+    const deals = []
+    const seen = new Set()
 
-    // Strateji 3: HTML cheerio
-    const selectors = [
-      'li.jum-card.card-promotion',
-      '[class*="promotion-card"]',
-      '[class*="offer-card"]',
-      '[data-testid*="promotion"]',
-      '[class*="product-card"]',
-      'article[class*="product"]',
-    ]
-    $(selectors.join(', ')).each((_, el) => {
-      const card = $(el)
-      const text = card.text().replace(/\s+/g, ' ').trim()
-      const name = card.find('h1,h2,h3,h4,[class*="title"],[class*="name"]').first().text().trim()
-        || card.find('a[href*="/product"],a[href*="/aanbiedingen"]').first().text().trim()
-      if (!name || name.length < 3 || seen.has(name)) return
-      const priceMatch = text.match(/voor\s+(\d+[,.]\d+)/i) || text.match(/€\s*(\d+[,.]\d+)/) || text.match(/(\d+)[,.](\d{2})/)
-      let dp = 0
-      if (priceMatch) {
-        dp = priceMatch[2] ? parseFloat(`${priceMatch[1]}.${priceMatch[2]}`) : parseFloat(priceMatch[1].replace(',', '.'))
-      }
-      const wasMatch = text.match(/(?:was|van|normaal)\s*€?\s*(\d+[,.]\d+)/i)
-      const op3 = wasMatch ? parseFloat(wasMatch[1].replace(',', '.')) : 0
-      const hasPromo = /(1\+1|2\+1|3\s+halen\s+2)\s*gratis?/i.test(text)
-      if (!dp && !hasPromo) return
+    for (const promo of realPromos) {
+      const detail = detailMap[promo.id]
+      if (!detail) continue
+      const name = promo.title || detail.name || ''
+      if (!name || name.length < 3 || seen.has(name)) continue
+
+      const parsed = parseJumboPromoPrice(detail.description || '', name)
+      if (parsed.type === 'none') continue
+
       seen.add(name)
-      const img = card.find('img').first()
-      results.push({
+      const product = promo.products?.[0]
+      deals.push({
         name,
-        market: 'Jumbo',
-        originalPrice: (op3 > dp) ? op3 : dp,
-        discountedPrice: dp,
-        imageUrl: (img.attr('src') || img.attr('data-src') || null),
-        isCampaign: true,
-        source: 'jumbo.com/aanbiedingen (html)',
-        expiresAt: EXPIRES_AT,
-        campaignType: toCampaignType(text) || toCampaignType(name),
+        imageUrl: product?.image || null,
+        sku: product?.sku || null,
+        parsed,
+        promoLabel: parsed.promoLabel,
+        campaignType: toCampaignType(parsed.promoLabel),
       })
-    })
+    }
+
+    // Step 4: Fetch regular prices (needed for originalPrice + relative deals)
+    const skuDeals = deals.filter(d => d.sku)
+    const PRICE_BATCH = 5
+    for (let i = 0; i < skuDeals.length; i += PRICE_BATCH) {
+      if (i > 0) await new Promise(r => setTimeout(r, 600))
+      await Promise.all(skuDeals.slice(i, i + PRICE_BATCH).map(async deal => {
+        try {
+          const r = await fetch(
+            `https://www.jumbo.com/INTERSHOP/rest/WFS/Jumbo-Grocery-Site/-/products/${deal.sku}`,
+            { headers: JUMBO_REST_HEADERS, signal: AbortSignal.timeout(8000) }
+          )
+          if (!r.ok) return
+          const prod = await r.json()
+          deal.regularPrice = prod.salePrice?.value || null
+        } catch {}
+      }))
+    }
+
+    // Step 5: Compute final prices
+    const results = []
+    for (const deal of deals) {
+      let discountedPrice, originalPrice
+
+      if (deal.parsed.type === 'explicit') {
+        discountedPrice = deal.parsed.discountedPrice
+        originalPrice = (deal.regularPrice && deal.regularPrice > discountedPrice)
+          ? deal.regularPrice
+          : discountedPrice
+      } else {
+        // relative: need regular price
+        if (!deal.regularPrice) continue
+        originalPrice = deal.regularPrice
+        discountedPrice = parseFloat((originalPrice * deal.parsed.multiplier).toFixed(2))
+        if (discountedPrice <= 0) continue
+      }
+
+      results.push({
+        name: deal.name,
+        market: 'Jumbo',
+        originalPrice,
+        discountedPrice,
+        imageUrl: deal.imageUrl,
+        isCampaign: true,
+        source: `jumbo.com - ${deal.promoLabel}`,
+        expiresAt: EXPIRES_AT,
+        campaignType: deal.campaignType,
+      })
+    }
 
     console.log(`  ✅ Jumbo: ${results.length} ürün`)
     return results
