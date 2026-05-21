@@ -502,8 +502,9 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                 <motion.div
                   key={product.id}
                   initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: i * 0.06 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '0px 0px -40px 0px' }}
+                  transition={{ duration: 0.3, delay: i * 0.05 }}
                 >
                   <ProductCard product={product} />
                 </motion.div>
@@ -866,8 +867,11 @@ function ProductGrid({ products, t, searchTerm = '' }: { products: Product[]; t:
   const rows: React.ReactNode[] = []
   products.forEach((product, index) => {
     rows.push(
-      <motion.div key={product.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: index * 0.03 }}>
+      <motion.div key={product.id}
+        initial={{ opacity: 0, y: index < 8 ? 20 : 0 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '0px 0px -40px 0px' }}
+        transition={{ duration: 0.3, delay: index < 8 ? index * 0.04 : 0 }}>
         <ProductCard product={product} />
       </motion.div>
     )

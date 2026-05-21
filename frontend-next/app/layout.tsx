@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { ShoppingListProvider } from '@/context/ShoppingListContext'
 import { LanguageProvider } from '@/context/LanguageContext'
@@ -63,13 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
-        <script
-          type="text/javascript"
-          dangerouslySetInnerHTML={{
-            __html: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","wq9ux76fx9");`,
-          }}
-        />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=swap" rel="stylesheet" />
       </head>
       <body>
         <SessionProvider>
@@ -89,6 +84,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </SessionProvider>
       </body>
       <GoogleAnalytics gaId="G-Y253QH18ZH" />
+      <Script
+        id="clarity"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","wq9ux76fx9");`,
+        }}
+      />
     </html>
   )
 }

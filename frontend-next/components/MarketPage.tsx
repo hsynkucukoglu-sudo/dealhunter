@@ -144,8 +144,11 @@ export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
         ) : (
           <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {filtered.map((product, i) => (
-              <motion.div key={product.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: i * 0.03 }}>
+              <motion.div key={product.id}
+                initial={{ opacity: 0, y: i < 8 ? 20 : 0 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '0px 0px -40px 0px' }}
+                transition={{ duration: 0.3, delay: i < 8 ? i * 0.04 : 0 }}>
                 <ProductCard product={product} />
               </motion.div>
             ))}
