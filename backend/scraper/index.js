@@ -696,6 +696,7 @@ async function scrapeAldi() {
     const seen = new Set()
     const results = []
 
+    let aldiDiagDone = false
     for (const p of Object.values(algoliaMap)) {
       if (!p.name || !p.currentPrice?.priceValue) continue
       if (seen.has(p.name)) continue
@@ -703,7 +704,29 @@ async function scrapeAldi() {
 
       const discountedPrice = p.currentPrice.priceValue
       const strikePrice = p.currentPrice.strikePrice?.strikePriceValue ?? null
-      const originalPrice = (strikePrice && strikePrice > discountedPrice) ? strikePrice : discountedPrice
+
+      // Diagnostic: log first 3 products to see priceTagLabels structure
+      if (!aldiDiagDone && results.length < 3) {
+        console.log(`  [Aldi] sample: ${p.name} | strike=${strikePrice} | labels=`, JSON.stringify(p.currentPrice?.priceTagLabels))
+        if (results.length === 2) aldiDiagDone = true
+      }
+
+      // Try to derive originalPrice from priceTagLabels if no strikePrice
+      let originalPrice = (strikePrice && strikePrice > discountedPrice) ? strikePrice : discountedPrice
+      if (!strikePrice) {
+        const promoText = [
+          p.currentPrice?.priceTagLabels?.promoText1,
+          p.currentPrice?.priceTagLabels?.promoText2,
+          p.currentPrice?.priceTagLabels?.label,
+        ].filter(Boolean).join(' ')
+        const pctMatch = promoText.match(/(\d+)\s*%/i)
+        if (pctMatch) {
+          const pct = parseInt(pctMatch[1])
+          if (pct > 0 && pct < 90) {
+            originalPrice = parseFloat((discountedPrice / (1 - pct / 100)).toFixed(2))
+          }
+        }
+      }
       const primary = p.assets?.find(a => a.type === 'primary')
       const expiresAt = p.currentPrice.validUntil
         ? new Date(p.currentPrice.validUntil * 1000).toISOString().split('T')[0]
