@@ -651,7 +651,10 @@ async function scrapeAlbertHeijn() {
 
     candidates.sort((a, b) => (a.discountedPrice / a.originalPrice) - (b.discountedPrice / b.originalPrice))
     const top = candidates.slice(0, 150)
+    const ahWithDiscount = top.filter(p => p.originalPrice > p.discountedPrice)
+    const ahTotalSaving = ahWithDiscount.reduce((s, p) => s + (p.originalPrice - p.discountedPrice), 0)
     console.log(`  ✅ Albert Heijn: ${top.length} ürün (${top.filter(p => p.imageUrl).length} görsel)`)
+    console.log(`  [AH] 💰 ${ahWithDiscount.length}/${top.length} met korting, totaal €${ahTotalSaving.toFixed(2)} besparing`)
 
     return top.map(p => ({
       name: p.name,
@@ -696,8 +699,16 @@ async function scrapeAldi() {
     const seen = new Set()
     const results = []
 
+    // Log ALL fields of first product to discover hidden price data
+    const allProds = Object.values(algoliaMap)
+    if (allProds[0]) {
+      console.log('  [Aldi] tüm alanlar:', Object.keys(allProds[0]).join(', '))
+      console.log('  [Aldi] currentPrice alanları:', Object.keys(allProds[0].currentPrice || {}).join(', '))
+      console.log('  [Aldi] ilk ürün tam:', JSON.stringify(allProds[0], null, 0).slice(0, 800))
+    }
+
     let aldiDiagDone = false
-    for (const p of Object.values(algoliaMap)) {
+    for (const p of allProds) {
       if (!p.name || !p.currentPrice?.priceValue) continue
       if (seen.has(p.name)) continue
       seen.add(p.name)
