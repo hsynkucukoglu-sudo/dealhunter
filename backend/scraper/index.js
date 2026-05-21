@@ -150,9 +150,10 @@ async function scrapeJumbo() {
     )
 
     // Step 2: Fetch promotion details (description with price text) in batches
-    const BATCH = 10
+    const BATCH = 5
     const detailMap = {}
     for (let i = 0; i < realPromos.length; i += BATCH) {
+      if (i > 0) await new Promise(r => setTimeout(r, 300))
       await Promise.all(realPromos.slice(i, i + BATCH).map(async p => {
         try {
           const r = await fetch(
@@ -163,6 +164,7 @@ async function scrapeJumbo() {
         } catch {}
       }))
     }
+    console.log(`  [Jumbo] ${Object.keys(detailMap).length}/${realPromos.length} promo details fetched`)
 
     // Step 3: Build deal list, identify which need product prices
     const deals = []
@@ -188,6 +190,10 @@ async function scrapeJumbo() {
         campaignType: toCampaignType(parsed.promoLabel),
       })
     }
+
+    const explicitDeals = deals.filter(d => d.parsed.type === 'explicit')
+    const relativeDeals = deals.filter(d => d.parsed.type === 'relative')
+    console.log(`  [Jumbo] deals: ${deals.length} total (${explicitDeals.length} explicit, ${relativeDeals.length} relative)`)
 
     // Step 4: Fetch regular prices (needed for originalPrice + relative deals)
     const skuDeals = deals.filter(d => d.sku)
