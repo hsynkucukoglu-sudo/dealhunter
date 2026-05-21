@@ -1,6 +1,6 @@
-import { signIn } from '@/auth'
 import { DealHunterLogo } from '@/components/DealHunterLogo'
 import Link from 'next/link'
+import { googleSignIn } from './actions'
 
 const BENEFITS = [
   {
@@ -79,12 +79,7 @@ export default function LoginPage() {
 
         {/* Sign-in form */}
         <div className="px-8 pt-6 pb-8">
-          <form
-            action={async () => {
-              'use server'
-              await signIn('google', { redirectTo: '/' })
-            }}
-          >
+          <form action={googleSignIn}>
             <button
               type="submit"
               className="w-full flex items-center justify-center gap-3 py-3.5 px-6 rounded-2xl font-semibold text-sm transition-all duration-200 hover:shadow-md active:scale-95"
