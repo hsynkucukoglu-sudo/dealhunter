@@ -945,5 +945,15 @@ export async function scrapeFlyerProducts() {
   })
 
   console.log(`\n✅ Toplam ${all.length} ürün (${dirk.length} Dirk, ${jumbo.length} Jumbo, ${hoogvliet.length} Hoogvliet, ${lidl.length} Lidl, ${ah.length} AH, ${aldi.length} Aldi, ${vomar.length} Vomar)`)
+
+  // Besparing diagnostics
+  const markets = ['Albert Heijn', 'Aldi', 'Jumbo', 'Lidl', 'Dirk', 'Hoogvliet']
+  for (const m of markets) {
+    const mAll = all.filter(p => p.market === m)
+    const mDiscount = mAll.filter(p => p.originalPrice > p.discountedPrice)
+    const totalSaving = mDiscount.reduce((s, p) => s + (p.originalPrice - p.discountedPrice), 0)
+    console.log(`  💰 ${m}: ${mDiscount.length}/${mAll.length} met korting, totaal €${totalSaving.toFixed(2)} besparing`)
+  }
+
   return all
 }
