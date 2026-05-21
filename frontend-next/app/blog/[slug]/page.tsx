@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getPost, getAllPosts } from '@/lib/posts'
 import { buildBreadcrumbSchema } from '@/lib/schema'
+import { MARKETS } from '@/lib/types'
 
 export async function generateStaticParams() {
   return getAllPosts().map(p => ({ slug: p.slug }))
@@ -113,20 +114,44 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
 
-        {/* CTA */}
-        <div style={{ marginTop: 32, padding: '28px 32px', background: '#1A1A1A', borderRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
-          <div>
-            <p style={{ color: 'white', fontWeight: 900, fontSize: 17, marginBottom: 4 }}>Klaar om te besparen?</p>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14 }}>Bekijk de actuele aanbiedingen van alle supermarkten.</p>
+        {/* Market CTAs */}
+        {(post.relatedMarkets?.length ?? 0) > 0 ? (
+          <div style={{ marginTop: 32 }}>
+            <p style={{ fontWeight: 700, fontSize: 15, color: '#1A1A1A', marginBottom: 12 }}>
+              Bekijk actuele aanbiedingen bij:
+            </p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+              {post.relatedMarkets!.map(slug => {
+                const market = MARKETS.find(m => m.slug === slug)
+                if (!market) return null
+                return (
+                  <Link key={slug} href={`/supermarkt/${slug}`} style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 8,
+                    padding: '10px 18px', borderRadius: 30, textDecoration: 'none',
+                    fontWeight: 700, fontSize: 14, background: '#1A1A1A', color: 'white',
+                    borderLeft: `4px solid ${market.color}`,
+                  }}>
+                    {market.name} aanbiedingen →
+                  </Link>
+                )
+              })}
+            </div>
           </div>
-          <Link href="/" style={{
-            background: '#E33D26', color: 'white',
-            padding: '12px 24px', borderRadius: 30, textDecoration: 'none',
-            fontWeight: 900, fontSize: 14, letterSpacing: 1, whiteSpace: 'nowrap',
-          }}>
-            Bekijk alle deals →
-          </Link>
-        </div>
+        ) : (
+          <div style={{ marginTop: 32, padding: '28px 32px', background: '#1A1A1A', borderRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
+            <div>
+              <p style={{ color: 'white', fontWeight: 900, fontSize: 17, marginBottom: 4 }}>Klaar om te besparen?</p>
+              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14 }}>Bekijk de actuele aanbiedingen van alle supermarkten.</p>
+            </div>
+            <Link href="/" style={{
+              background: '#E33D26', color: 'white',
+              padding: '12px 24px', borderRadius: 30, textDecoration: 'none',
+              fontWeight: 900, fontSize: 14, letterSpacing: 1, whiteSpace: 'nowrap',
+            }}>
+              Bekijk alle deals →
+            </Link>
+          </div>
+        )}
 
         {/* Back */}
         <div style={{ marginTop: 24 }}>

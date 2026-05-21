@@ -10,6 +10,7 @@ import { DealHunterLogo } from './DealHunterLogo'
 import { useShoppingList } from '@/context/ShoppingListContext'
 import { MarketFAQ } from './MarketFAQ'
 import { MARKET_FAQS, FAQ } from '@/lib/marketFaqs'
+import { BlogPost } from '@/lib/posts'
 
 interface Market {
   slug: string
@@ -19,7 +20,11 @@ interface Market {
   ctaTitle?: string
 }
 
-export function MarketPage({ market, initialProducts }: { market: Market; initialProducts: Product[] }) {
+export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
+  market: Market
+  initialProducts: Product[]
+  relatedPosts?: BlogPost[]
+}) {
   const [search, setSearch] = useState('')
   const [campaignsOnly, setCampaignsOnly] = useState(false)
   const { itemCount, setIsCartOpen } = useShoppingList()
@@ -149,6 +154,41 @@ export function MarketPage({ market, initialProducts }: { market: Market; initia
 
         {/* FAQ */}
         <MarketFAQ faqs={faqs} marketName={market.name} />
+
+        {/* Related blog posts */}
+        {relatedPosts.length > 0 && (
+          <section className="mt-16">
+            <h2 className="text-xl font-headline font-bold mb-5" style={{ color: '#1A1A1A' }}>
+              Lees ook op ons blog
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {relatedPosts.slice(0, 3).map(post => (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="block rounded-2xl p-5 transition-all hover:shadow-md"
+                  style={{ background: 'white', border: '1.5px solid #E0D8CE', textDecoration: 'none' }}
+                >
+                  <span
+                    className="inline-block text-[10px] font-bold px-2.5 py-1 rounded-full mb-3"
+                    style={{ background: '#E33D26', color: 'white', letterSpacing: 1, textTransform: 'uppercase' }}
+                  >
+                    {post.category}
+                  </span>
+                  <p className="font-bold text-sm leading-snug mb-2" style={{ color: '#1A1A1A' }}>
+                    {post.title}
+                  </p>
+                  <p className="text-xs leading-relaxed" style={{ color: '#8C8478' }}>
+                    {post.description.slice(0, 90)}…
+                  </p>
+                  <span className="inline-block mt-3 text-xs font-semibold" style={{ color: '#E33D26' }}>
+                    Lees meer →
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Andere supermarkten */}
         <section className="mt-20">

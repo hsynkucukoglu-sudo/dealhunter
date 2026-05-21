@@ -6,11 +6,13 @@ export interface BlogPost {
   readTime: number
   category: string
   content: string
+  relatedMarkets?: string[]
 }
 
 export const POSTS: BlogPost[] = [
   {
     slug: 'snacks-in-de-aanbieding-aldi-lidl',
+    relatedMarkets: ['aldi', 'lidl'],
     title: 'Kipdonuts bij Aldi, Dunkin Donuts bij Lidl: beste snacks in de aanbieding',
     description: 'Kipdonuts bij Aldi en Dunkin Donuts-stijl gebak bij Lidl — dit zijn de populairste snack-aanbiedingen van Nederlandse supermarkten in 2026.',
     date: '2026-05-18',
@@ -67,6 +69,7 @@ export const POSTS: BlogPost[] = [
   },
   {
     slug: 'wie-is-dealhunter4u',
+    relatedMarkets: [],
     title: 'Wie is DealHunter4U? Ons verhaal en onze missie',
     description: 'DealHunter4U vergelijkt elke dag de aanbiedingen van alle grote Nederlandse supermarkten. Ontdek waarom we dit bouwen en hoe het werkt.',
     date: '2026-05-08',
@@ -98,6 +101,7 @@ export const POSTS: BlogPost[] = [
   },
   {
     slug: '10-tips-goedkoper-boodschappen-doen-2026',
+    relatedMarkets: ['albert-heijn', 'jumbo', 'aldi', 'lidl'],
     title: '10 tips om goedkoper boodschappen te doen in 2026',
     description: 'Bespaar elke week tientallen euro\'s op je boodschappen met deze bewezen tips. Van 1+1 gratis acties tot het slim combineren van supermarktaanbiedingen.',
     date: '2026-05-07',
@@ -144,6 +148,7 @@ export const POSTS: BlogPost[] = [
   },
   {
     slug: 'albert-heijn-vs-jumbo-vs-lidl-wie-is-goedkoper',
+    relatedMarkets: ['albert-heijn', 'jumbo', 'lidl'],
     title: 'Wie is goedkoper: AH of Jumbo? Vergelijking 2026',
     description: 'Jumbo is gemiddeld 2–5% goedkoper op basisprijzen, maar AH wint op bonusaanbiedingen. Bekijk de volledige prijsvergelijking van Albert Heijn vs Jumbo vs Lidl.',
     date: '2026-05-05',
@@ -241,6 +246,7 @@ export const POSTS: BlogPost[] = [
   },
   {
     slug: 'aldi-aanbiedingen-gids',
+    relatedMarkets: ['aldi'],
     title: 'Aldi aanbiedingen: complete gids voor de beste deals',
     description: 'Alles wat je moet weten over Aldi aanbiedingen in Nederland. Wanneer zijn de beste deals, hoe werkt het bonussysteem en wat zijn de populairste Aldi producten in de aanbieding?',
     date: '2026-05-14',
@@ -295,6 +301,7 @@ export const POSTS: BlogPost[] = [
   },
   {
     slug: 'albert-heijn-bonus-week-gids',
+    relatedMarkets: ['albert-heijn'],
     title: 'Albert Heijn Bonus Week: zo haal je het meeste eruit',
     description: 'Alles over de Albert Heijn Bonus Week aanbiedingen. Wanneer beginnen ze, hoe werkt de AH Bonus app, en welke producten zijn het vaakst in de aanbieding?',
     date: '2026-05-12',
@@ -351,6 +358,7 @@ export const POSTS: BlogPost[] = [
   },
   {
     slug: 'jumbo-aanbiedingen-gids',
+    relatedMarkets: ['jumbo'],
     title: 'Jumbo aanbiedingen: alles over de Jumbo Bonus en beste deals',
     description: 'Ontdek hoe je maximaal profiteert van Jumbo aanbiedingen. Van de Jumbo Bonus Card tot de beste producten in de aanbieding — alles op een rij.',
     date: '2026-05-10',
@@ -407,6 +415,7 @@ export const POSTS: BlogPost[] = [
   },
   {
     slug: 'lidl-aanbiedingen-gids',
+    relatedMarkets: ['lidl'],
     title: 'Lidl aanbiedingen: de complete gids voor slimme Lidl-shoppers',
     description: 'Alles over Lidl aanbiedingen in Nederland. Wanneer beginnen de deals, welke producten zijn het vaakst in de aanbieding en hoe bespaar je het meest bij Lidl?',
     date: '2026-05-09',
@@ -467,6 +476,7 @@ export const POSTS: BlogPost[] = [
   },
   {
     slug: 'vlees-aanbieding-supermarkt-gids',
+    relatedMarkets: ['albert-heijn', 'jumbo', 'aldi', 'lidl', 'dirk'],
     title: 'Vlees in de aanbieding: wanneer en waar is vlees het goedkoopst?',
     description: 'Ontdek wanneer vlees het goedkoopst is in de supermarkt. Vergelijk kipfilet, gehakt en biefstuk aanbiedingen bij Aldi, Lidl, Albert Heijn en Jumbo.',
     date: '2026-05-16',
@@ -522,6 +532,7 @@ export const POSTS: BlogPost[] = [
   },
   {
     slug: 'boodschappen-50-euro-per-week',
+    relatedMarkets: ['albert-heijn', 'jumbo', 'aldi', 'lidl', 'dirk', 'hoogvliet'],
     title: 'Boodschappen doen voor €50 per week: het complete plan',
     description: 'Leer hoe je als gezin of stel voor slechts €50 per week boodschappen doet zonder in te leveren op voeding of smaak. Met weekmenu en boodschappenlijst.',
     date: '2026-05-15',
@@ -583,6 +594,7 @@ export const POSTS: BlogPost[] = [
   },
   {
     slug: 'beste-dag-boodschappen-doen',
+    relatedMarkets: ['albert-heijn', 'jumbo', 'aldi', 'lidl'],
     title: 'Welke dag moet je boodschappen doen voor de laagste prijs?',
     description: 'De dag waarop je boodschappen doet maakt een groot verschil voor je portemonnee. Ontdek wanneer elke supermarkt nieuwe aanbiedingen start en wanneer je de meeste keuze hebt.',
     date: '2026-05-17',
@@ -634,6 +646,7 @@ export const POSTS: BlogPost[] = [
   },
   {
     slug: 'supermarkt-thuisbezorging-vergelijken',
+    relatedMarkets: ['albert-heijn', 'jumbo'],
     title: 'Supermarkt thuisbezorging vergelijken: AH, Jumbo, Picnic en meer',
     description: 'Vergelijk de thuisbezorgdiensten van Albert Heijn, Jumbo en Picnic. Kosten, minimale bestelling, bezorgtijden en wanneer thuisbezorging echt loont.',
     date: '2026-05-13',
@@ -705,4 +718,8 @@ export function getPost(slug: string): BlogPost | undefined {
 
 export function getAllPosts(): BlogPost[] {
   return [...POSTS].sort((a, b) => b.date.localeCompare(a.date))
+}
+
+export function getPostsByMarket(marketSlug: string): BlogPost[] {
+  return POSTS.filter(p => p.relatedMarkets?.includes(marketSlug))
 }

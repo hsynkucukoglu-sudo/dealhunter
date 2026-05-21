@@ -5,6 +5,7 @@ import { MARKETS } from '@/lib/types'
 import { buildBreadcrumbSchema, buildFaqSchema } from '@/lib/schema'
 import { MarketPage } from '@/components/MarketPage'
 import { MARKET_FAQS } from '@/lib/marketFaqs'
+import { getPostsByMarket } from '@/lib/posts'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -46,6 +47,7 @@ export default async function SupermarktPage({ params }: Props) {
 
   const allProducts = await getProducts()
   const products = allProducts.filter(p => p.market === market.name)
+  const relatedPosts = getPostsByMarket(slug)
 
   const breadcrumb = buildBreadcrumbSchema([
     { name: 'Home', url: '/' },
@@ -67,7 +69,7 @@ export default async function SupermarktPage({ params }: Props) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       )}
-      <MarketPage market={market} initialProducts={products} />
+      <MarketPage market={market} initialProducts={products} relatedPosts={relatedPosts} />
     </>
   )
 }
