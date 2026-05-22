@@ -25,48 +25,88 @@ const HEADERS = {
   'Accept': 'text/html,application/xhtml+xml',
 }
 
-// ─── DIRK — JSON-LD ──────────────────────────────────────────────────────────
+// ─── DIRK — JSON-LD + product page normalPrice/offerPrice ────────────────────
+function parseDirkDevaluePrice(html) {
+  const m = html.match(/"normalPrice":(\d+),"offerPrice":(\d+)/)
+  if (!m) return null
+  const ni = parseInt(m[1]), oi = parseInt(m[2])
+  if (ni === oi) return null  // same price, no savings
+
+  // Values appear immediately after the closing } of the product info object
+  const priceMatch = html.match(/"normalPrice":\d+,"offerPrice":\d+[^}]*\},([\d.]+),([\d.]+)/)
+  if (!priceMatch) return null
+  const normalPrice = parseFloat(priceMatch[1])
+  const offerPrice = parseFloat(priceMatch[2])
+  return (normalPrice > 0 && offerPrice > 0 && normalPrice > offerPrice)
+    ? { normalPrice, offerPrice }
+    : null
+}
+
 async function scrapeDirk() {
   console.log('🏪 [Dirk] dirk.nl/aanbiedingen...')
   try {
     const res = await fetch('https://www.dirk.nl/aanbiedingen', { headers: HEADERS })
     const html = await res.text()
 
-    const results = []
+    // Phase 1: collect items + URLs from JSON-LD
+    const items = []
     const seen = new Set()
-
     for (const [, block] of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
       try {
         const data = JSON.parse(block)
-        const items = data['@graph']?.[0]?.itemListElement
+        const list = data['@graph']?.[0]?.itemListElement
           || (data['@type'] === 'ItemList' ? data.itemListElement : null)
           || []
-        for (const item of items) {
+        for (const item of list) {
           const p = item.item || item
           if (!p?.name || !p.offers?.price) continue
           if (seen.has(p.name)) continue
           seen.add(p.name)
           const discountedPrice = parseFloat(p.offers.price)
           if (!discountedPrice) continue
-          const highPrice = parseFloat(p.offers.highPrice || p.offers.priceBeforeDiscount || 0)
-          const originalPrice = (highPrice && highPrice > discountedPrice) ? highPrice : discountedPrice
           const imgSrc = Array.isArray(p.image) ? p.image[0] : (p.image || null)
-          results.push({
+          items.push({
             name: p.name,
-            market: 'Dirk',
-            originalPrice,
             discountedPrice,
             imageUrl: typeof imgSrc === 'string' ? imgSrc : imgSrc?.url || null,
-            isCampaign: true,
-            source: 'dirk.nl/aanbiedingen',
-            expiresAt: EXPIRES_AT,
+            url: p.url ? (p.url.startsWith('http') ? p.url : `https://www.dirk.nl${p.url}`) : null,
             campaignType: toCampaignType(p.name) || toCampaignType(p.offers?.description || ''),
           })
         }
       } catch {}
     }
 
-    console.log(`  ✅ Dirk: ${results.length} ürün`)
+    // Phase 2: batch-fetch product pages to get normalPrice vs offerPrice
+    const BATCH = 6
+    for (let i = 0; i < items.length; i += BATCH) {
+      await Promise.all(items.slice(i, i + BATCH).map(async item => {
+        if (!item.url) return
+        try {
+          const r = await fetch(item.url, { headers: HEADERS, signal: AbortSignal.timeout(8000) })
+          if (!r.ok) return
+          const pHtml = await r.text()
+          const prices = parseDirkDevaluePrice(pHtml)
+          if (prices) item.normalPrice = prices.normalPrice
+        } catch {}
+      }))
+    }
+
+    const results = items.map(item => ({
+      name: item.name,
+      market: 'Dirk',
+      originalPrice: item.normalPrice && item.normalPrice > item.discountedPrice
+        ? item.normalPrice
+        : item.discountedPrice,
+      discountedPrice: item.discountedPrice,
+      imageUrl: item.imageUrl,
+      isCampaign: true,
+      source: 'dirk.nl/aanbiedingen',
+      expiresAt: EXPIRES_AT,
+      campaignType: item.campaignType,
+    }))
+
+    const withSavings = results.filter(r => r.originalPrice > r.discountedPrice)
+    console.log(`  ✅ Dirk: ${results.length} ürün (${withSavings.length} met besparing)`)
     return results
   } catch (e) {
     console.error('  ❌ Dirk:', e.message)
@@ -195,22 +235,26 @@ async function scrapeJumbo() {
     const relativeDeals = deals.filter(d => d.parsed.type === 'relative')
     console.log(`  [Jumbo] deals: ${deals.length} total (${explicitDeals.length} explicit, ${relativeDeals.length} relative)`)
 
-    // Step 4: Fetch regular prices (needed for originalPrice + relative deals)
+    // Step 4: Fetch regular prices via GraphQL batch aliases (20 per request)
     const skuDeals = deals.filter(d => d.sku)
-    const PRICE_BATCH = 5
-    for (let i = 0; i < skuDeals.length; i += PRICE_BATCH) {
-      if (i > 0) await new Promise(r => setTimeout(r, 600))
-      await Promise.all(skuDeals.slice(i, i + PRICE_BATCH).map(async deal => {
-        try {
-          const r = await fetch(
-            `https://www.jumbo.com/INTERSHOP/rest/WFS/Jumbo-Grocery-Site/-/products/${deal.sku}`,
-            { headers: JUMBO_REST_HEADERS, signal: AbortSignal.timeout(8000) }
-          )
-          if (!r.ok) return
-          const prod = await r.json()
-          deal.regularPrice = prod.salePrice?.value || null
-        } catch {}
-      }))
+    const GQL_BATCH = 20
+    for (let i = 0; i < skuDeals.length; i += GQL_BATCH) {
+      const batch = skuDeals.slice(i, i + GQL_BATCH)
+      const aliases = batch.map((d, j) => `p${j}: product(sku: "${d.sku}") { price { price } }`).join(' ')
+      try {
+        const r = await fetch(JUMBO_GQL_URL, {
+          method: 'POST',
+          headers: JUMBO_GQL_HEADERS,
+          body: JSON.stringify({ query: `{ ${aliases} }` }),
+          signal: AbortSignal.timeout(12000),
+        })
+        if (!r.ok) continue
+        const data = await r.json()
+        batch.forEach((d, j) => {
+          const cents = data.data?.[`p${j}`]?.price?.price
+          if (cents && cents > 0) d.regularPrice = cents / 100
+        })
+      } catch {}
     }
 
     // Step 5: Compute final prices
@@ -238,7 +282,7 @@ async function scrapeJumbo() {
         discountedPrice,
         imageUrl: deal.imageUrl,
         isCampaign: true,
-        source: `jumbo.com - ${deal.promoLabel}`,
+        source: `jumbo.com - ${deal.promoLabel.replace(/[€]/g, 'EUR')}`,
         expiresAt: EXPIRES_AT,
         campaignType: deal.campaignType,
       })
@@ -311,52 +355,60 @@ async function scrapeHoogvliet() {
   }
 }
 
-// ─── LIDL — ID'leri HTML'den çek, her ürünü JSON-LD ile fetch et ─────────────
+// ─── LIDL — data-grid-data attributes from aanbiedingen page ─────────────────
 async function scrapeLidl() {
   console.log('🏪 [Lidl] lidl.nl/aanbiedingen...')
   try {
-    // Offers sayfasından ürün ID'lerini topla
-    const res = await fetch('https://www.lidl.nl/aanbiedingen', { headers: HEADERS })
+    const res = await fetch('https://www.lidl.nl/aanbiedingen', {
+      headers: { ...HEADERS, 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' },
+    })
     const html = await res.text()
-    const ids = [...new Set(html.match(/p10\d{6}/g) || [])]
-    if (!ids.length) return []
 
-    // Her ürünü JSON-LD ile çek (5'li batch, max 40 ürün)
     const results = []
-    const BATCH = 5
-    for (let i = 0; i < Math.min(ids.length, 40); i += BATCH) {
-      const batch = ids.slice(i, i + BATCH)
-      const batchResults = await Promise.all(batch.map(async id => {
-        try {
-          const pRes = await fetch(`https://www.lidl.nl/p/${id}`, { headers: HEADERS })
-          const pHtml = await pRes.text()
-          const jsonLd = pHtml.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)?.[1]
-          if (!jsonLd) return null
-          const data = JSON.parse(jsonLd)
-          if (data['@type'] !== 'Product') return null
-          const offer = Array.isArray(data.offers) ? data.offers[0] : data.offers
-          const discountedPrice = parseFloat(offer?.price)
-          if (!discountedPrice) return null
-          const lidlHighPrice = parseFloat(offer?.priceBeforeDiscount || offer?.highPrice || offer?.regularPrice || 0)
-          const lidlOriginalPrice = (lidlHighPrice && lidlHighPrice > discountedPrice) ? lidlHighPrice : discountedPrice
-          const img = Array.isArray(data.image) ? data.image[0] : (data.image || null)
-          return {
-            name: data.name,
-            market: 'Lidl',
-            originalPrice: lidlOriginalPrice,
-            discountedPrice,
-            imageUrl: img || null,
-            isCampaign: true,
-            source: 'lidl.nl/aanbiedingen',
-            expiresAt: EXPIRES_AT,
-            campaignType: toCampaignType(data.name),
-          }
-        } catch { return null }
-      }))
-      results.push(...batchResults.filter(Boolean))
+    const seen = new Set()
+
+    for (const [, encoded] of html.matchAll(/data-grid-data="([^"]{50,})"/g)) {
+      try {
+        const obj = JSON.parse(encoded.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&'))
+        const name = obj.fullTitle || obj.title
+        if (!name || seen.has(name)) continue
+        if (!obj.havingPrice && obj.havingPrice !== undefined) continue
+
+        const priceObj = obj.price
+        if (!priceObj) continue
+        const discountedPrice = parseFloat(priceObj.price)
+        if (!discountedPrice || isNaN(discountedPrice)) continue
+
+        seen.add(name)
+
+        const oldPrice = parseFloat(priceObj.oldPrice || 0)
+        const originalPrice = (oldPrice && oldPrice > discountedPrice) ? oldPrice : discountedPrice
+
+        const imgObj = obj.image_V1 || obj.image
+        const imageUrl = typeof imgObj === 'string' ? imgObj
+          : imgObj?.image || (Array.isArray(obj.imageList) ? obj.imageList[0]?.image : null) || null
+
+        const endTs = obj.storeEndDate
+        const expiresAt = endTs
+          ? new Date(endTs * 1000).toISOString().split('T')[0]
+          : EXPIRES_AT
+
+        results.push({
+          name,
+          market: 'Lidl',
+          originalPrice,
+          discountedPrice,
+          imageUrl,
+          isCampaign: true,
+          source: 'lidl.nl/aanbiedingen',
+          expiresAt,
+          campaignType: toCampaignType(name),
+        })
+      } catch {}
     }
 
-    console.log(`  ✅ Lidl: ${results.length} ürün`)
+    const withSavings = results.filter(r => r.originalPrice > r.discountedPrice)
+    console.log(`  ✅ Lidl: ${results.length} ürün (${withSavings.length} met besparing)`)
     return results
   } catch (e) {
     console.error('  ❌ Lidl:', e.message)
