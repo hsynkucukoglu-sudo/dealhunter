@@ -527,7 +527,8 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                 <motion.div
                   key={gi}
                   initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '0px 0px -40px 0px' }}
                   transition={{ duration: 0.3, delay: gi * 0.05 }}
                   className="rounded-2xl overflow-hidden"
                   style={{ background: 'rgba(255,255,255,0.75)', border: '1px solid rgba(201,193,182,0.4)' }}
