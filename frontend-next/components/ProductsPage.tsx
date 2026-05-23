@@ -658,6 +658,46 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           ) : (
             <motion.div key="home" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
 
+              {/* Market Pills */}
+              {availableMarkets.length > 0 && (
+                <section className="mb-8">
+                  <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-2">
+                    <motion.button whileTap={{ scale: 0.95 }}
+                      onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setSelectedCampaign('all') }}
+                      className={`market-pill ${selectedMarket === 'all' && !showCampaignsOnly ? 'market-pill-active' : ''}`}>
+                      <span className="material-symbols-outlined text-base">bolt</span>
+                      {t.allMarkets}
+                    </motion.button>
+                    <motion.button whileTap={{ scale: 0.95 }}
+                      onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(true); setSelectedCampaign('all') }}
+                      className={`market-pill ${showCampaignsOnly ? 'market-pill-active' : ''}`}>
+                      <span className="material-symbols-outlined text-base">local_fire_department</span>
+                      {t.campaignsOnly}
+                    </motion.button>
+                    {favorites.length > 0 && (
+                      <motion.button whileTap={{ scale: 0.95 }}
+                        onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
+                        className={`market-pill ${showFavoritesOnly ? 'market-pill-active' : ''}`}>
+                        <span className="material-symbols-outlined text-base" style={{ fontVariationSettings: showFavoritesOnly ? '"FILL" 1' : '"FILL" 0' }}>favorite</span>
+                        {lang === 'tr' ? 'Favoriler' : lang === 'en' ? 'Favorites' : 'Favorieten'} ({favorites.length})
+                      </motion.button>
+                    )}
+                    <div className="w-px h-6 flex-none" style={{ background: '#C9C1B6' }} />
+                    {availableMarkets.map(market => (
+                      <motion.button key={market} whileTap={{ scale: 0.95 }}
+                        onClick={() => { setSelectedMarket(market); setShowCampaignsOnly(false) }}
+                        className={`market-pill ${selectedMarket === market && !showCampaignsOnly ? 'market-pill-active' : ''}`}>
+                        <div className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[9px] font-bold flex-none"
+                          style={{ background: MARKET_COLORS[market] || '#6B6259' }}>
+                          {getMarketInitial(market)}
+                        </div>
+                        {market}
+                      </motion.button>
+                    ))}
+                  </div>
+                </section>
+              )}
+
               {/* Category Grid */}
               <section className="mb-12">
                 <h2 className="text-xl font-headline font-bold mb-4" style={{ color: '#1A1A1A' }}>{lang === 'tr' ? 'Kategoriler' : lang === 'en' ? 'Categories' : 'Categorieën'}</h2>
@@ -703,46 +743,6 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
 
               {/* AD — Kategori altı */}
               <AdBanner slot="5913072775" format="auto" className="mb-10" />
-
-              {/* Market Pills */}
-              {availableMarkets.length > 0 && (
-                <section className="mb-12">
-                  <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-2">
-                    <motion.button whileTap={{ scale: 0.95 }}
-                      onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setSelectedCampaign('all') }}
-                      className={`market-pill ${selectedMarket === 'all' && !showCampaignsOnly ? 'market-pill-active' : ''}`}>
-                      <span className="material-symbols-outlined text-base">bolt</span>
-                      {t.allMarkets}
-                    </motion.button>
-                    <motion.button whileTap={{ scale: 0.95 }}
-                      onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(true); setSelectedCampaign('all') }}
-                      className={`market-pill ${showCampaignsOnly ? 'market-pill-active' : ''}`}>
-                      <span className="material-symbols-outlined text-base">local_fire_department</span>
-                      {t.campaignsOnly}
-                    </motion.button>
-                    {favorites.length > 0 && (
-                      <motion.button whileTap={{ scale: 0.95 }}
-                        onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
-                        className={`market-pill ${showFavoritesOnly ? 'market-pill-active' : ''}`}>
-                        <span className="material-symbols-outlined text-base" style={{ fontVariationSettings: showFavoritesOnly ? '"FILL" 1' : '"FILL" 0' }}>favorite</span>
-                        {lang === 'tr' ? 'Favoriler' : lang === 'en' ? 'Favorites' : 'Favorieten'} ({favorites.length})
-                      </motion.button>
-                    )}
-                    <div className="w-px h-6 flex-none" style={{ background: '#C9C1B6' }} />
-                    {availableMarkets.map(market => (
-                      <motion.button key={market} whileTap={{ scale: 0.95 }}
-                        onClick={() => { setSelectedMarket(market); setShowCampaignsOnly(false) }}
-                        className={`market-pill ${selectedMarket === market && !showCampaignsOnly ? 'market-pill-active' : ''}`}>
-                        <div className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[9px] font-bold flex-none"
-                          style={{ background: MARKET_COLORS[market] || '#6B6259' }}>
-                          {getMarketInitial(market)}
-                        </div>
-                        {market}
-                      </motion.button>
-                    ))}
-                  </div>
-                </section>
-              )}
 
               {/* Product Grid */}
               <section>
