@@ -402,7 +402,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         )}
 
         {/* CAMPAIGN FILTER BAR — hero'nun üstünde */}
-        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-8">
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-4">
           {CAMPAIGN_FILTERS.map(f => (
             <motion.button
               key={f.type}
@@ -415,6 +415,40 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             </motion.button>
           ))}
         </div>
+
+        {/* PRIJSVERGELIJKING BAR — hero'nun üstünde, yatay scroll */}
+        {comparisonGroups.length > 0 && (
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-8">
+            <div className="flex items-center gap-1 mr-1 flex-none">
+              <span className="material-symbols-outlined text-sm" style={{ color: '#1B9E4B' }}>compare_arrows</span>
+              <span className="text-[11px] font-bold uppercase tracking-wide flex-none" style={{ color: '#8C8478' }}>
+                {lang === 'tr' ? 'Karşılaştır' : lang === 'en' ? 'Compare' : 'Vergelijk'}
+              </span>
+            </div>
+            <div className="w-px h-5 flex-none" style={{ background: '#C9C1B6' }} />
+            {comparisonGroups.map((group, gi) => {
+              const cheapest = group.cheapest
+              const mostExpensive = group.products.reduce((a, b) => a.discountedPrice > b.discountedPrice ? a : b)
+              const saving = mostExpensive.discountedPrice - cheapest.discountedPrice
+              return (
+                <div
+                  key={gi}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl flex-none cursor-default"
+                  style={{ background: 'rgba(255,255,255,0.75)', border: '1px solid rgba(201,193,182,0.4)' }}
+                >
+                  <div className="w-2 h-2 rounded-full flex-none" style={{ background: MARKET_COLORS[cheapest.market] || '#1B9E4B' }} />
+                  <span className="text-xs font-semibold max-w-[120px] truncate" style={{ color: '#1A1A1A' }}>{group.name}</span>
+                  <span className="text-xs font-black" style={{ color: '#1B9E4B' }}>€{cheapest.discountedPrice.toFixed(2)}</span>
+                  {saving > 0.01 && (
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full flex-none" style={{ background: '#E8F5EC', color: '#1B9E4B' }}>
+                      -{saving.toFixed(2)}
+                    </span>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        )}
 
         {/* HERO */}
         <section className="relative py-8 md:py-16 mb-12 overflow-hidden">
@@ -686,66 +720,6 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             </motion.div>
           )}
         </AnimatePresence>
-          </div>
-
-          {/* Sağ: Prijsvergelijking sidebar */}
-          {comparisonGroups.length > 0 && searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
-            <aside className="hidden lg:flex flex-col gap-3 w-64 flex-none sticky top-24">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="material-symbols-outlined text-base" style={{ color: '#1B9E4B' }}>compare_arrows</span>
-                <h2 className="text-sm font-headline font-bold" style={{ color: '#1A1A1A' }}>
-                  {lang === 'tr' ? 'Fiyat Karşılaştırma' : lang === 'en' ? 'Price Comparison' : 'Prijsvergelijking'}
-                </h2>
-              </div>
-              {comparisonGroups.map((group, gi) => {
-                const rep = group.products[0]
-                const repMeta = parseProductMeta(rep.name, rep.discountedPrice)
-                const packLabel = rep.fullSizeLabel
-                  ?? (rep.unitSize != null && rep.unitType ? `${rep.unitSize} ${rep.unitType}` : null)
-                  ?? repMeta.fullSizeLabel
-                return (
-                  <div key={gi} className="rounded-xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.8)', border: '1px solid rgba(201,193,182,0.4)' }}>
-                    <div className="px-3 py-2 border-b flex items-center gap-1.5" style={{ borderColor: 'rgba(201,193,182,0.3)' }}>
-                      <p className="font-headline font-bold text-xs truncate" style={{ color: '#1A1A1A' }}>{group.name}</p>
-                      {packLabel && (
-                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full flex-none" style={{ background: '#EAE4DE', color: '#6B6259' }}>
-                          {packLabel}
-                        </span>
-                      )}
-                    </div>
-                    <div className="divide-y" style={{ borderColor: 'rgba(201,193,182,0.2)' }}>
-                      {group.products
-                        .slice()
-                        .sort((a, b) => {
-                          const ma = parseProductMeta(a.name, a.discountedPrice)
-                          const mb = parseProductMeta(b.name, b.discountedPrice)
-                          return ((a.unitPrice ?? ma.unitPrice) ?? a.discountedPrice) - ((b.unitPrice ?? mb.unitPrice) ?? b.discountedPrice)
-                        })
-                        .map(p => {
-                          const isCheapest = p.id === group.cheapest.id
-                          return (
-                            <div key={p.id} className="flex items-center justify-between px-3 py-1.5">
-                              <div className="flex items-center gap-1.5 flex-1 min-w-0">
-                                <div className="w-2 h-2 rounded-full flex-none" style={{ background: MARKET_COLORS[p.market] || '#8C8478' }} />
-                                <span className="text-xs truncate" style={{ color: '#1A1A1A' }}>{p.market}</span>
-                                {isCheapest && (
-                                  <span className="text-[8px] font-bold px-1.5 py-0.5 rounded-full flex-none" style={{ background: '#1B9E4B', color: 'white' }}>✓</span>
-                                )}
-                              </div>
-                              <span className="text-sm font-headline font-black ml-2" style={{ color: isCheapest ? '#1B9E4B' : '#1A1A1A' }}>
-                                €{p.discountedPrice.toFixed(2)}
-                              </span>
-                            </div>
-                          )
-                        })}
-                    </div>
-                  </div>
-                )
-              })}
-            </aside>
-          )}
-
-        </div>
       </main>
 
       {/* BOTTOM MOBILE NAV */}
