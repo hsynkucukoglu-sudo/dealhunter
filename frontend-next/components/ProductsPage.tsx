@@ -587,97 +587,14 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           </section>
         )}
 
-        {/* PRIJSVERGELIJKING */}
-        {comparisonGroups.length > 0 && searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
-          <section className="mb-12">
-            <div className="flex items-center gap-2 mb-5">
-              <span className="material-symbols-outlined material-filled" style={{ color: '#1B9E4B' }}>compare_arrows</span>
-              <h2 className="text-xl font-headline font-bold" style={{ color: '#1A1A1A' }}>
-                {lang === 'tr' ? 'Fiyat Karşılaştırma' : lang === 'en' ? 'Price Comparison' : 'Prijsvergelijking'}
-              </h2>
-            </div>
-            <div className="flex flex-col gap-4">
-              {comparisonGroups.map((group, gi) => (
-                <motion.div
-                  key={gi}
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '0px 0px -40px 0px' }}
-                  transition={{ duration: 0.3, delay: gi * 0.05 }}
-                  className="rounded-2xl overflow-hidden"
-                  style={{ background: 'rgba(255,255,255,0.75)', border: '1px solid rgba(201,193,182,0.4)' }}
-                >
-                  {(() => {
-                    // Pack size label — same for all products in the group
-                    const rep = group.products[0]
-                    const repMeta = parseProductMeta(rep.name, rep.discountedPrice)
-                    const packLabel = rep.fullSizeLabel
-                      ?? (rep.unitSize != null && rep.unitType ? `${rep.unitSize} ${rep.unitType}` : null)
-                      ?? repMeta.fullSizeLabel
-                    return (
-                      <div className="px-5 py-3 border-b flex items-center gap-2" style={{ borderColor: 'rgba(201,193,182,0.3)' }}>
-                        <p className="font-headline font-bold text-sm" style={{ color: '#1A1A1A' }}>{group.name}</p>
-                        {packLabel && (
-                          <span
-                            className="text-[10px] font-bold px-2 py-0.5 rounded-full flex-none"
-                            style={{ background: '#EAE4DE', color: '#6B6259' }}
-                          >
-                            {packLabel}
-                          </span>
-                        )}
-                      </div>
-                    )
-                  })()}
-                  <div className="divide-y" style={{ borderColor: 'rgba(201,193,182,0.2)' }}>
-                    {group.products
-                      .slice()
-                      .sort((a, b) => {
-                        const ma = parseProductMeta(a.name, a.discountedPrice)
-                        const mb = parseProductMeta(b.name, b.discountedPrice)
-                        const sa = (a.unitPrice ?? ma.unitPrice) ?? a.discountedPrice
-                        const sb = (b.unitPrice ?? mb.unitPrice) ?? b.discountedPrice
-                        return sa - sb
-                      })
-                      .map(p => {
-                        const meta = parseProductMeta(p.name, p.discountedPrice)
-                        const unitPriceDisplay = p.unitPrice != null && p.unitType
-                          ? `€${p.unitPrice.toFixed(2)} / ${p.unitType === 'ml' ? (p.unitSize != null && p.unitSize >= 1000 ? 'L' : '100ml') : p.unitType === 'g' ? (p.unitSize != null && p.unitSize >= 500 ? 'kg' : '100g') : 'stuk'}`
-                          : meta.unitPriceDisplay?.display ?? null
-                        const isCheapest = p.id === group.cheapest.id
-                        return (
-                          <div key={p.id} className="flex items-center justify-between px-5 py-3">
-                            <div className="flex items-center gap-2 flex-1 min-w-0">
-                              <div className="w-2.5 h-2.5 rounded-full flex-none" style={{ background: MARKET_COLORS[p.market] || '#8C8478' }} />
-                              <span className="text-sm font-medium" style={{ color: '#1A1A1A' }}>{p.market}</span>
-                              {isCheapest && (
-                                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full flex-none" style={{ background: '#1B9E4B', color: 'white' }}>
-                                  {lang === 'tr' ? 'En ucuz' : lang === 'en' ? 'Cheapest' : 'Goedkoopst'}
-                                </span>
-                              )}
-                            </div>
-                            <div className="flex flex-col items-end gap-0.5 ml-3">
-                              <span className="text-lg font-headline font-black leading-none" style={{ color: isCheapest ? '#1B9E4B' : '#1A1A1A' }}>
-                                €{p.discountedPrice.toFixed(2)}
-                              </span>
-                              {unitPriceDisplay && (
-                                <span className="text-[11px] font-medium" style={{ color: '#9C9389' }}>
-                                  {unitPriceDisplay}
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        )
-                      })}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </section>
-        )}
-
         {/* AD — Hero altı */}
         <AdBanner slot="5913072775" format="horizontal" className="mb-10" />
 
+        {/* ANA LAYOUT: sol içerik + sağ Prijsvergelijking sidebar */}
+        <div className="flex gap-8 items-start">
+
+          {/* Sol: kategori / home view */}
+          <div className="flex-1 min-w-0">
         {/* CATEGORY VIEW / HOME VIEW */}
         <AnimatePresence mode="wait">
           {selectedCategory !== 'all' ? (
@@ -777,6 +694,66 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             </motion.div>
           )}
         </AnimatePresence>
+          </div>
+
+          {/* Sağ: Prijsvergelijking sidebar */}
+          {comparisonGroups.length > 0 && searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
+            <aside className="hidden lg:flex flex-col gap-3 w-64 flex-none sticky top-24">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="material-symbols-outlined text-base" style={{ color: '#1B9E4B' }}>compare_arrows</span>
+                <h2 className="text-sm font-headline font-bold" style={{ color: '#1A1A1A' }}>
+                  {lang === 'tr' ? 'Fiyat Karşılaştırma' : lang === 'en' ? 'Price Comparison' : 'Prijsvergelijking'}
+                </h2>
+              </div>
+              {comparisonGroups.map((group, gi) => {
+                const rep = group.products[0]
+                const repMeta = parseProductMeta(rep.name, rep.discountedPrice)
+                const packLabel = rep.fullSizeLabel
+                  ?? (rep.unitSize != null && rep.unitType ? `${rep.unitSize} ${rep.unitType}` : null)
+                  ?? repMeta.fullSizeLabel
+                return (
+                  <div key={gi} className="rounded-xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.8)', border: '1px solid rgba(201,193,182,0.4)' }}>
+                    <div className="px-3 py-2 border-b flex items-center gap-1.5" style={{ borderColor: 'rgba(201,193,182,0.3)' }}>
+                      <p className="font-headline font-bold text-xs truncate" style={{ color: '#1A1A1A' }}>{group.name}</p>
+                      {packLabel && (
+                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full flex-none" style={{ background: '#EAE4DE', color: '#6B6259' }}>
+                          {packLabel}
+                        </span>
+                      )}
+                    </div>
+                    <div className="divide-y" style={{ borderColor: 'rgba(201,193,182,0.2)' }}>
+                      {group.products
+                        .slice()
+                        .sort((a, b) => {
+                          const ma = parseProductMeta(a.name, a.discountedPrice)
+                          const mb = parseProductMeta(b.name, b.discountedPrice)
+                          return ((a.unitPrice ?? ma.unitPrice) ?? a.discountedPrice) - ((b.unitPrice ?? mb.unitPrice) ?? b.discountedPrice)
+                        })
+                        .map(p => {
+                          const isCheapest = p.id === group.cheapest.id
+                          return (
+                            <div key={p.id} className="flex items-center justify-between px-3 py-1.5">
+                              <div className="flex items-center gap-1.5 flex-1 min-w-0">
+                                <div className="w-2 h-2 rounded-full flex-none" style={{ background: MARKET_COLORS[p.market] || '#8C8478' }} />
+                                <span className="text-xs truncate" style={{ color: '#1A1A1A' }}>{p.market}</span>
+                                {isCheapest && (
+                                  <span className="text-[8px] font-bold px-1.5 py-0.5 rounded-full flex-none" style={{ background: '#1B9E4B', color: 'white' }}>✓</span>
+                                )}
+                              </div>
+                              <span className="text-sm font-headline font-black ml-2" style={{ color: isCheapest ? '#1B9E4B' : '#1A1A1A' }}>
+                                €{p.discountedPrice.toFixed(2)}
+                              </span>
+                            </div>
+                          )
+                        })}
+                    </div>
+                  </div>
+                )
+              })}
+            </aside>
+          )}
+
+        </div>
       </main>
 
       {/* BOTTOM MOBILE NAV */}
