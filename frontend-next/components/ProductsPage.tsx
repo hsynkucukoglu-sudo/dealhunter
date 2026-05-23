@@ -740,7 +740,9 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           style={{ background: '#E33D26', color: 'white', marginTop: '-12px', boxShadow: '0 4px 16px rgba(227,61,38,0.3)' }}
         >
           <span className="material-symbols-outlined">bolt</span>
-          <span className="font-headline text-[10px] font-bold uppercase">Fırsatlar</span>
+          <span className="font-headline text-[10px] font-bold uppercase">
+            {lang === 'tr' ? 'Fırsatlar' : lang === 'en' ? 'Deals' : 'Aanbied.'}
+          </span>
         </button>
         <button
           onClick={() => setIsCartOpen(true)}
@@ -748,7 +750,9 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           style={{ color: '#6B6259' }}
         >
           <span className="material-symbols-outlined">shopping_bag</span>
-          <span className="font-headline text-[10px] font-bold uppercase">Sepetim</span>
+          <span className="font-headline text-[10px] font-bold uppercase">
+            {lang === 'tr' ? 'Sepetim' : lang === 'en' ? 'Cart' : 'Mandje'}
+          </span>
           {itemCount > 0 && (
             <span className="absolute top-0 right-0 text-[9px] font-bold px-1 rounded-full" style={{ background: '#E33D26', color: 'white' }}>
               {itemCount}
@@ -761,7 +765,9 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           style={{ color: '#6B6259' }}
         >
           <span className="material-symbols-outlined">refresh</span>
-          <span className="font-headline text-[10px] font-bold uppercase">Tara</span>
+          <span className="font-headline text-[10px] font-bold uppercase">
+            {lang === 'tr' ? 'Tara' : lang === 'en' ? 'Scan' : 'Scannen'}
+          </span>
         </button>
         <button
           onClick={() => setShowCampaignsOnly(!showCampaignsOnly)}
@@ -769,7 +775,9 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           style={{ color: showCampaignsOnly ? '#E33D26' : '#6B6259' }}
         >
           <span className="material-symbols-outlined">local_fire_department</span>
-          <span className="font-headline text-[10px] font-bold uppercase">Kampanya</span>
+          <span className="font-headline text-[10px] font-bold uppercase">
+            {lang === 'tr' ? 'Kampanya' : lang === 'en' ? 'Deals' : 'Actie'}
+          </span>
         </button>
       </nav>
 
