@@ -720,6 +720,8 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             </motion.div>
           )}
         </AnimatePresence>
+          </div>
+        </div>
       </main>
 
       {/* BOTTOM MOBILE NAV */}
