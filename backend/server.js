@@ -338,10 +338,14 @@ app.get('/api/compare', asyncHandler(async (req, res) => {
 }))
 
 // POST /api/scraper/run - Manuel olarak scraper çalıştırır (Arayüzden tetiklendiğinde)
-app.post('/api/scraper/run', asyncHandler(async (req, res) => {
-  const createdProducts = await runScraperJob()
-  res.json({ success: true, count: createdProducts.length, message: `${createdProducts.length} yeni bülten ürünü çekildi.` })
-}))
+app.post('/api/scraper/run', (req, res) => {
+  if (scraperRunning) {
+    return res.json({ success: true, running: true, message: 'Scraper zaten çalışıyor.' })
+  }
+  // Hemen 202 döndür, scraper arka planda çalışsın
+  res.json({ success: true, running: true, message: 'Scraper başlatıldı.' })
+  runScraperJob().catch(e => console.error('Manuel scraper hatası:', e.message))
+})
 
 // ===== Health Check =====
 app.get('/health', (req, res) => {

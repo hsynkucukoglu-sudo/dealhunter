@@ -106,12 +106,24 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
   const handleFetchFlyers = async () => {
     setIsScraping(true)
     try {
-      const res = await fetch(`${API_BASE}/api/scraper/run`, { method: 'POST' })
-      const result = await res.json()
-      if (result.success) await refreshProducts()
+      await fetch(`${API_BASE}/api/scraper/run`, { method: 'POST' })
+      // Scraper arka planda çalışıyor — bitmesini bekle
+      const poll = async () => {
+        try {
+          const s = await fetch(`${API_BASE}/api/status`)
+          const { scraperRunning: running } = await s.json()
+          if (running) {
+            setTimeout(poll, 4000)
+          } else {
+            await refreshProducts()
+            setIsScraping(false)
+          }
+        } catch {
+          setIsScraping(false)
+        }
+      }
+      setTimeout(poll, 4000)
     } catch {
-      alert('Bültenleri çekerken bir sorun oluştu.')
-    } finally {
       setIsScraping(false)
     }
   }
