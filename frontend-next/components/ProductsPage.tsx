@@ -401,6 +401,21 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           </div>
         )}
 
+        {/* CAMPAIGN FILTER BAR — hero'nun üstünde */}
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-8">
+          {CAMPAIGN_FILTERS.map(f => (
+            <motion.button
+              key={f.type}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setSelectedCampaign(f.type === selectedCampaign ? 'all' : f.type)}
+              className={`market-pill flex-none ${selectedCampaign === f.type ? 'market-pill-active' : ''}`}
+            >
+              <span>{f.emoji}</span>
+              {f.label}
+            </motion.button>
+          ))}
+        </div>
+
         {/* HERO */}
         <section className="relative py-8 md:py-16 mb-12 overflow-hidden">
           <motion.div
@@ -726,21 +741,6 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                   ))}
                 </div>
               )}
-
-              {/* Campaign Type Filter Chips */}
-              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-6">
-                {CAMPAIGN_FILTERS.map(f => (
-                  <motion.button
-                    key={f.type}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setSelectedCampaign(f.type === selectedCampaign ? 'all' : f.type)}
-                    className={`market-pill flex-none ${selectedCampaign === f.type ? 'market-pill-active' : ''}`}
-                  >
-                    <span>{f.emoji}</span>
-                    {f.label}
-                  </motion.button>
-                ))}
-              </div>
 
               {/* AD */}
               <AdBanner slot="5913072775" format="auto" className="mb-10" />
