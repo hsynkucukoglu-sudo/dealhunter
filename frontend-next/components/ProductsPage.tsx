@@ -362,67 +362,59 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
       {/* MAIN CONTENT */}
       <main className="max-w-7xl mx-auto px-4 md:px-8 pt-24 pb-32">
 
-        {/* MARKET BAR + CAMPAIGN CHIPS — hero'nun üstünde */}
+        {/* MARKET BAR — hero'nun üstünde */}
         {availableMarkets.length > 0 && (
-          <div className="flex items-center gap-3 mb-8">
-            {/* Sol: market pills */}
-            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 flex-1 min-w-0">
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-4">
+            <motion.button whileTap={{ scale: 0.95 }}
+              onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setSelectedCampaign('all'); setSelectedCategory('all') }}
+              className={`market-pill flex-none ${selectedMarket === 'all' && !showCampaignsOnly ? 'market-pill-active' : ''}`}>
+              <span className="material-symbols-outlined text-base">bolt</span>
+              {t.allMarkets}
+            </motion.button>
+            <motion.button whileTap={{ scale: 0.95 }}
+              onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(true); setSelectedCampaign('all'); setSelectedCategory('all') }}
+              className={`market-pill flex-none ${showCampaignsOnly ? 'market-pill-active' : ''}`}>
+              <span className="material-symbols-outlined text-base">local_fire_department</span>
+              {t.campaignsOnly}
+            </motion.button>
+            {favorites.length > 0 && (
               <motion.button whileTap={{ scale: 0.95 }}
-                onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setSelectedCampaign('all'); setSelectedCategory('all') }}
-                className={`market-pill flex-none ${selectedMarket === 'all' && !showCampaignsOnly ? 'market-pill-active' : ''}`}>
-                <span className="material-symbols-outlined text-base">bolt</span>
-                {t.allMarkets}
+                onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
+                className={`market-pill flex-none ${showFavoritesOnly ? 'market-pill-active' : ''}`}>
+                <span className="material-symbols-outlined text-base"
+                  style={{ fontVariationSettings: showFavoritesOnly ? '"FILL" 1' : '"FILL" 0' }}>favorite</span>
+                {lang === 'tr' ? 'Favoriler' : lang === 'en' ? 'Favorites' : 'Favorieten'}
               </motion.button>
-              <motion.button whileTap={{ scale: 0.95 }}
-                onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(true); setSelectedCampaign('all'); setSelectedCategory('all') }}
-                className={`market-pill flex-none ${showCampaignsOnly ? 'market-pill-active' : ''}`}>
-                <span className="material-symbols-outlined text-base">local_fire_department</span>
-                {t.campaignsOnly}
+            )}
+            <div className="w-px h-6 flex-none" style={{ background: '#C9C1B6' }} />
+            {availableMarkets.map(market => (
+              <motion.button key={market} whileTap={{ scale: 0.95 }}
+                onClick={() => { setSelectedMarket(market); setShowCampaignsOnly(false); setSelectedCategory('all') }}
+                className={`market-pill flex-none ${selectedMarket === market && !showCampaignsOnly ? 'market-pill-active' : ''}`}>
+                <div className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[9px] font-bold flex-none"
+                  style={{ background: MARKET_COLORS[market] || '#6B6259' }}>
+                  {getMarketInitial(market)}
+                </div>
+                {market}
               </motion.button>
-              {favorites.length > 0 && (
-                <motion.button whileTap={{ scale: 0.95 }}
-                  onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
-                  className={`market-pill flex-none ${showFavoritesOnly ? 'market-pill-active' : ''}`}>
-                  <span className="material-symbols-outlined text-base"
-                    style={{ fontVariationSettings: showFavoritesOnly ? '"FILL" 1' : '"FILL" 0' }}>favorite</span>
-                  {lang === 'tr' ? 'Favoriler' : lang === 'en' ? 'Favorites' : 'Favorieten'}
-                </motion.button>
-              )}
-              <div className="w-px h-6 flex-none" style={{ background: '#C9C1B6' }} />
-              {availableMarkets.map(market => (
-                <motion.button key={market} whileTap={{ scale: 0.95 }}
-                  onClick={() => { setSelectedMarket(market); setShowCampaignsOnly(false); setSelectedCategory('all') }}
-                  className={`market-pill flex-none ${selectedMarket === market && !showCampaignsOnly ? 'market-pill-active' : ''}`}>
-                  <div className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[9px] font-bold flex-none"
-                    style={{ background: MARKET_COLORS[market] || '#6B6259' }}>
-                    {getMarketInitial(market)}
-                  </div>
-                  {market}
-                </motion.button>
-              ))}
-            </div>
-
-            {/* Sağ: kampanya chips — küçük, sadece masaüstü */}
-            <div className="hidden md:flex items-center gap-1.5 flex-none flex-wrap justify-end">
-              {CAMPAIGN_FILTERS.map(f => (
-                <motion.button
-                  key={f.type}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setSelectedCampaign(f.type === selectedCampaign ? 'all' : f.type)}
-                  className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium cursor-pointer transition-all flex-none"
-                  style={{
-                    background: selectedCampaign === f.type ? '#1A1A1A' : 'rgba(255,255,255,0.7)',
-                    color: selectedCampaign === f.type ? 'white' : '#6B6259',
-                    border: '1px solid rgba(201,193,182,0.5)',
-                  }}
-                >
-                  <span className="text-xs">{f.emoji}</span>
-                  {f.label}
-                </motion.button>
-              ))}
-            </div>
+            ))}
           </div>
         )}
+
+        {/* CAMPAIGN FILTER BAR — hero'nun üstünde */}
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-8">
+          {CAMPAIGN_FILTERS.map(f => (
+            <motion.button
+              key={f.type}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setSelectedCampaign(f.type === selectedCampaign ? 'all' : f.type)}
+              className={`market-pill flex-none ${selectedCampaign === f.type ? 'market-pill-active' : ''}`}
+            >
+              <span>{f.emoji}</span>
+              {f.label}
+            </motion.button>
+          ))}
+        </div>
 
         {/* HERO */}
         <section className="relative py-8 md:py-16 mb-12 overflow-hidden">
