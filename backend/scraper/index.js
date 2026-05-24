@@ -3,6 +3,7 @@
  * Render free tier (512MB) ile uyumlu.
  */
 import * as cheerio from 'cheerio'
+import { createContext, runInContext } from 'node:vm'
 
 const EXPIRES_AT = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
 
@@ -816,72 +817,122 @@ async function scrapeAldi() {
   }
 }
 
-// ─── VOMAR — HTML cheerio ─────────────────────────────────────────────────────
-async function scrapeVomar() {
-  console.log('🏪 [Vomar] vomar.nl/aanbiedingen...')
+// ─── VOMAR — Nuxt SSR __NUXT__ extraction ────────────────────────────────────
+const VOMAR_CDN = 'https://d3vricquk1sjgf.cloudfront.net/articles/'
+
+const VOMAR_CATEGORIES = [
+  // vers (21)
+  'vers/aardappelen', 'vers/banket', 'vers/brood', 'vers/fruit', 'vers/grill',
+  'vers/groente', 'vers/kaas', 'vers/kip-kalkoen', 'vers/ontbijt', 'vers/vegetarisch',
+  'vers/vers-gebak', 'vers/verse-crackers-beschuit', 'vers/verse-kruiden',
+  'vers/verse-maaltijden-maaltijdsalades', 'vers/verse-noten', 'vers/verse-sappen',
+  'vers/verse-tapas', 'vers/verse-vis', 'vers/vlees', 'vers/vleeswaren-salades',
+  'vers/zuivel-boter-eieren',
+  // diepvries (11)
+  'diepvries/diepvries-brood-bladerdeeg', 'diepvries/diepvries-fruit',
+  'diepvries/diepvries-gebak', 'diepvries/diepvries-groente', 'diepvries/diepvries-pizza-s',
+  'diepvries/diepvries-snacks', 'diepvries/diepvries-vis-schaaldieren',
+  'diepvries/diepvries-vlees', 'diepvries/diepvriesaardappelen',
+  'diepvries/diepvriesmaaltijden', 'diepvries/ijs',
+  // voorraadkast (10)
+  'voorraadkast/bakproducten', 'voorraadkast/bewuste-voeding', 'voorraadkast/broodbeleg',
+  'voorraadkast/chips-koek-snacks-nootjes', 'voorraadkast/chocolade-snoep',
+  'voorraadkast/ontbijt', 'voorraadkast/pasta-rijst-wereldmarkt',
+  'voorraadkast/soepen-conserven-sauzen-smaakmakers', 'voorraadkast/tussendoortjes',
+  'voorraadkast/zoetstoffen',
+  // frisdrank-sappen-koffie-thee (4)
+  'frisdrank-sappen-koffie-thee/frisdrank', 'frisdrank-sappen-koffie-thee/houdbare-zuivel',
+  'frisdrank-sappen-koffie-thee/koffie-cacao-en-thee',
+  'frisdrank-sappen-koffie-thee/vruchtensap-siropen',
+  // huishouden (12)
+  'huishouden/babyverzorging', 'huishouden/batterijen-lampen', 'huishouden/keukenpapier',
+  'huishouden/koken-wonen', 'huishouden/lucht-toiletverfrissers', 'huishouden/luiers',
+  'huishouden/schoonmaakmiddelen', 'huishouden/toiletpapier',
+  'huishouden/toiletreinigers-blokjes', 'huishouden/vuilnis-stofzuigerzakken',
+  'huishouden/wasmiddelen-wasverzachter', 'huishouden/zakdoekjes-tissues',
+  // drogisterij (9)
+  'drogisterij/bad-douche-zeep', 'drogisterij/dameshygiene', 'drogisterij/deodorant',
+  'drogisterij/ehbo', 'drogisterij/haarverzorging', 'drogisterij/huidverzorging',
+  'drogisterij/mondverzorging', 'drogisterij/voorbehoedsmiddelen',
+  'drogisterij/geneesmiddelen',
+  // bier-wijn-sterke-drank (3)
+  'bier-wijn-sterke-drank/bier', 'bier-wijn-sterke-drank/sterke-dranken',
+  'bier-wijn-sterke-drank/wijnen-port-sherry-s',
+  // huisdieren (3)
+  'huisdieren/diepvries-dierenvoeding', 'huisdieren/dierbenodigdheden',
+  'huisdieren/dierenvoeding',
+  // koken-tafelen-non-food (10)
+  'koken-tafelen-non-food/aardewerk-porselein-of-glas',
+  'koken-tafelen-non-food/feestartikelen', 'koken-tafelen-non-food/haardhout-barbecue',
+  'koken-tafelen-non-food/kaarsen', 'koken-tafelen-non-food/kantoorartikelen',
+  'koken-tafelen-non-food/kleding-schoenen', 'koken-tafelen-non-food/koken-wonen',
+  'koken-tafelen-non-food/speelgoed', 'koken-tafelen-non-food/textiel',
+  'koken-tafelen-non-food/tuin',
+  // baby-kind (1)
+  'baby-kind/baby-en-kindervoeding',
+]
+
+async function _fetchVomarCategory(category) {
   try {
-    const res = await fetch('https://www.vomar.nl/aanbiedingen', { headers: HEADERS })
+    const res = await fetch(`https://www.vomar.nl/producten/${category}`, {
+      headers: HEADERS,
+      signal: AbortSignal.timeout(15000),
+    })
+    if (!res.ok) return []
     const html = await res.text()
-    const $ = cheerio.load(html)
+
+    const idx = html.indexOf('window.__NUXT__=')
+    if (idx === -1) return []
+    const end = html.indexOf('</script>', idx)
+    if (end === -1) return []
+
+    const ctx = createContext({ window: {}, undefined: undefined })
+    runInContext(`window.__NUXT__=${html.slice(idx + 16, end).replace(/;$/, '')}`, ctx)
+
+    const products = ctx.window.__NUXT__?.data?.[0]?.mainGroupProducts ?? []
+    const deals = products.filter(p =>
+      p.discountDeal || (p.price != null && p.priceDefaultAmount != null && p.price < p.priceDefaultAmount)
+    )
+
+    return deals.map(p => {
+      const discountedPrice = parseFloat(p.price) || 0
+      const originalPrice = Math.max(parseFloat(p.priceDefaultAmount) || discountedPrice, discountedPrice)
+      const imgFile = p.images?.[0]?.imageUrl || null
+      return {
+        name: (p.description || '').trim(),
+        market: 'Vomar',
+        originalPrice,
+        discountedPrice,
+        imageUrl: imgFile ? `${VOMAR_CDN}${imgFile}?width=400&height=400&mode=crop` : null,
+        isCampaign: true,
+        source: `vomar.nl/producten/${category}`,
+        expiresAt: EXPIRES_AT,
+        campaignType: toCampaignType(p.description),
+        brand: p.brand || null,
+      }
+    })
+  } catch {
+    return []
+  }
+}
+
+async function scrapeVomar() {
+  console.log(`🏪 [Vomar] ${VOMAR_CATEGORIES.length} categorie-pagina's scannen...`)
+  try {
     const results = []
     const seen = new Set()
+    const BATCH = 8
 
-    // JSON-LD dene
-    $('script[type="application/ld+json"]').each((_, el) => {
-      try {
-        const data = JSON.parse($(el).html())
-        const items = data['@graph'] || (data['@type'] === 'ItemList' ? data.itemListElement : null) || []
-        for (const item of items) {
-          const p = item.item || item
-          if (!p?.name || !p.offers?.price) continue
-          const discountedPrice = parseFloat(p.offers.price)
-          if (!discountedPrice || seen.has(p.name)) continue
-          seen.add(p.name)
-          const vomarHighPrice = parseFloat(p.offers.highPrice || p.offers.priceBeforeDiscount || p.offers.regularPrice || 0)
-          const vomarOriginalPrice = (vomarHighPrice && vomarHighPrice > discountedPrice) ? vomarHighPrice : discountedPrice
-          const img = Array.isArray(p.image) ? p.image[0] : (p.image || null)
-          results.push({
-            name: p.name,
-            market: 'Vomar',
-            originalPrice: vomarOriginalPrice,
-            discountedPrice,
-            imageUrl: typeof img === 'string' ? img : img?.url || null,
-            isCampaign: true,
-            source: 'vomar.nl/aanbiedingen',
-            expiresAt: EXPIRES_AT,
-            campaignType: toCampaignType(p.name),
-          })
+    for (let i = 0; i < VOMAR_CATEGORIES.length; i += BATCH) {
+      const batch = VOMAR_CATEGORIES.slice(i, i + BATCH)
+      const pages = await Promise.all(batch.map(_fetchVomarCategory))
+      for (const products of pages) {
+        for (const p of products) {
+          if (!p.name || seen.has(p.name.toLowerCase())) continue
+          seen.add(p.name.toLowerCase())
+          results.push(p)
         }
-      } catch {}
-    })
-
-    // HTML fallback
-    if (!results.length) {
-      $('[class*="product"], [class*="offer"], [class*="deal"], article').each((_, el) => {
-        const card = $(el)
-        const name = card.find('h2, h3, h4, [class*="title"], [class*="name"]').first().text().trim()
-        if (!name || name.length < 3 || seen.has(name)) return
-        const text = card.text()
-        const allPriceMatches = [...text.matchAll(/€?\s*(\d+)[,.](\d{2})/g)].map(m => parseFloat(`${m[1]}.${m[2]}`))
-        const discountedPrice = allPriceMatches.length ? Math.min(...allPriceMatches) : 0
-        if (!discountedPrice || discountedPrice > 200) return
-        const vomarWasPrice = allPriceMatches.length > 1 ? Math.max(...allPriceMatches) : 0
-        const vomarOriginal = (vomarWasPrice && vomarWasPrice > discountedPrice) ? vomarWasPrice : discountedPrice
-        seen.add(name)
-        const img = card.find('img').first()
-        const imgSrc = img.attr('src') || img.attr('data-src') || null
-        results.push({
-          name,
-          market: 'Vomar',
-          originalPrice: vomarOriginal,
-          discountedPrice,
-          imageUrl: imgSrc && !imgSrc.includes('logo') ? imgSrc : null,
-          isCampaign: true,
-          source: 'vomar.nl/aanbiedingen',
-          expiresAt: EXPIRES_AT,
-          campaignType: toCampaignType(text) || toCampaignType(name),
-        })
-      })
+      }
     }
 
     console.log(`  ✅ Vomar: ${results.length} ürün`)
@@ -1010,7 +1061,7 @@ export async function scrapeFlyerProducts() {
   console.log(`\n✅ Toplam ${all.length} ürün (${dirk.length} Dirk, ${jumbo.length} Jumbo, ${hoogvliet.length} Hoogvliet, ${lidl.length} Lidl, ${ah.length} AH, ${aldi.length} Aldi, ${vomar.length} Vomar)`)
 
   // Besparing diagnostics
-  const markets = ['Albert Heijn', 'Aldi', 'Jumbo', 'Lidl', 'Dirk', 'Hoogvliet']
+  const markets = ['Albert Heijn', 'Aldi', 'Jumbo', 'Lidl', 'Dirk', 'Hoogvliet', 'Vomar']
   for (const m of markets) {
     const mAll = all.filter(p => p.market === m)
     const mDiscount = mAll.filter(p => p.originalPrice > p.discountedPrice)
