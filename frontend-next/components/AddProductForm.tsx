@@ -2,9 +2,10 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useLanguage } from '@/context/LanguageContext'
+import { MARKETS as MARKET_LIST } from '@/lib/types'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
-const MARKETS = ['Albert Heijn', 'Jumbo', 'Aldi', 'Lidl', 'Dirk', 'Plus', 'Hoogvliet']
+const MARKETS = MARKET_LIST.map(m => m.name)
 
 interface AddProductFormProps {
   onAdded: () => void

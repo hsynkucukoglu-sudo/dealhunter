@@ -10,11 +10,13 @@ export function getISOWeek(date: Date): number {
   return Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7)
 }
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
+
 export function resolveImageUrl(imageUrl: string | null): string | null {
   if (!imageUrl) return null
   if (imageUrl.startsWith('ah-product-id:')) {
     const id = imageUrl.replace('ah-product-id:', '')
-    return `https://dealhunter-production-d900.up.railway.app/api/ah-image/${id}`
+    return `${API_BASE}/api/ah-image/${id}`
   }
   return imageUrl
 }

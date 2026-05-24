@@ -8,7 +8,7 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-producti
 interface FavoritesContextType {
   favorites: Product[]
   watchlist: Product[]
-  isFavorite: (id: string) => boolean
+  isFavorite: (product: Product) => boolean
   isWatching: (id: string) => boolean
   toggleFavorite: (product: Product) => void
   toggleWatch: (product: Product) => void
@@ -119,7 +119,10 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
   return (
     <FavoritesContext.Provider value={{
       favorites, watchlist,
-      isFavorite: (id) => favorites.some(p => p.id === id),
+      isFavorite: (product) => favorites.some(p =>
+        p.id === product.id ||
+        (p.name === product.name && p.market === product.market)
+      ),
       isWatching: (id) => watchlist.some(p => p.id === id),
       toggleFavorite, toggleWatch,
     }}>

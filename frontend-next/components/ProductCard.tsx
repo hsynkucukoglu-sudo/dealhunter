@@ -100,7 +100,7 @@ export function ProductCard({ product }: { product: Product }) {
             style={{ background: 'rgba(255,255,255,0.9)' }}
             title="Favorilere ekle"
           >
-            <span className="material-symbols-outlined text-base" style={{ color: isFavorite(product.id) ? '#E33D26' : '#8C8478', fontVariationSettings: isFavorite(product.id) ? '"FILL" 1' : '"FILL" 0' }}>
+            <span className="material-symbols-outlined text-base" style={{ color: isFavorite(product) ? '#E33D26' : '#8C8478', fontVariationSettings: isFavorite(product) ? '"FILL" 1' : '"FILL" 0' }}>
               favorite
             </span>
           </button>

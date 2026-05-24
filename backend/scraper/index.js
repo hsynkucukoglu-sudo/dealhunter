@@ -5,7 +5,7 @@
 import * as cheerio from 'cheerio'
 import { createContext, runInContext } from 'node:vm'
 
-const EXPIRES_AT = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+let EXPIRES_AT = ''
 
 // Promo label or text → normalized campaignType string
 function toCampaignType(text) {
@@ -1045,6 +1045,7 @@ function enrichProductMeta(name, price) {
 
 // ─── ANA FONKSİYON ────────────────────────────────────────────────────────────
 export async function scrapeFlyerProducts() {
+  EXPIRES_AT = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
   console.log('🔍 Fetch-only scraper başlatılıyor...')
 
   const [dirk, jumbo, hoogvliet, lidl, ah, aldi, vomar] = await Promise.all([

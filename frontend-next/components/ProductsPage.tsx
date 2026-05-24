@@ -142,7 +142,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
       const matchesCampaign = showCampaignsOnly ? p.isCampaign : true
       const matchesMarket = selectedMarket === 'all' || p.market === selectedMarket
       const matchesCategory = selectedCategory === 'all' || p.category === selectedCategory
-      const matchesFavorites = showFavoritesOnly ? favorites.some(f => f.id === p.id) : true
+      const matchesFavorites = showFavoritesOnly ? favorites.some(f => f.id === p.id || (f.name === p.name && f.market === p.market)) : true
       const matchesCampaignType = (() => {
         if (selectedCampaign === 'all') return true
         const discountPct = p.originalPrice > p.discountedPrice && p.originalPrice > 0
