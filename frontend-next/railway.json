@@ -8,5 +8,8 @@
     "startCommand": "npm run start",
     "healthcheckPath": "/api/health",
     "restartPolicyType": "ON_FAILURE"
+  },
+  "variables": {
+    "NEXT_PUBLIC_ADMIN_TOKEN": "${{dealhunter.ADMIN_TOKEN}}"
   }
 }
