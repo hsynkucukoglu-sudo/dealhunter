@@ -120,6 +120,7 @@ const JUMBO_REST_HEADERS = {
   'Accept': 'application/json, text/plain, */*',
   'User-Agent': UA,
   'Accept-Language': 'nl-NL,nl;q=0.9',
+  'Referer': 'https://www.jumbo.com/aanbiedingen',
   'X-Requested-With': 'XMLHttpRequest',
 }
 const JUMBO_GQL_URL = 'https://www.jumbo.com/api/graphql'
@@ -134,8 +135,8 @@ const JUMBO_GQL_HEADERS = {
 function parseJumboPromoPrice(desc, title) {
   const text = `${desc} ${title}`.trim()
 
-  // "3 voor 6,00" / "2 voor 1,50" / "2 v 4,00 euro"
-  const xVoor = text.match(/(\d+)\s+v(?:oor)?\s+[€]?\s*(\d+[,.]\d+)/i)
+  // "3 voor 6,00" / "2 stuks voor 4,00" / "2 v 4,00 euro"
+  const xVoor = text.match(/(\d+)\s+(?:stuks?\s+)?v(?:oor)?\s+[€]?\s*(\d+[,.]\d+)/i)
   if (xVoor) {
     const count = parseInt(xVoor[1])
     const total = parseFloat(xVoor[2].replace(',', '.'))
@@ -191,15 +192,15 @@ async function scrapeJumbo() {
     )
 
     // Step 2: Fetch promotion details (description with price text) in batches
-    const BATCH = 5
+    const BATCH = 3
     const detailMap = {}
     for (let i = 0; i < realPromos.length; i += BATCH) {
-      if (i > 0) await new Promise(r => setTimeout(r, 300))
+      if (i > 0) await new Promise(r => setTimeout(r, 600))
       await Promise.all(realPromos.slice(i, i + BATCH).map(async p => {
         try {
           const r = await fetch(
             `https://www.jumbo.com/INTERSHOP/rest/WFS/Jumbo-Grocery-Site/-/promotions/${p.id}`,
-            { headers: JUMBO_REST_HEADERS, signal: AbortSignal.timeout(8000) }
+            { headers: JUMBO_REST_HEADERS, signal: AbortSignal.timeout(10000) }
           )
           if (r.ok) detailMap[p.id] = await r.json()
         } catch {}
