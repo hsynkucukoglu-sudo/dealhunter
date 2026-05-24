@@ -776,14 +776,15 @@ async function scrapeAldi() {
         if (results.length === 2) aldiDiagDone = true
       }
 
-      // Try to derive originalPrice from priceTagLabels if no strikePrice
+      const promoText = [
+        p.currentPrice?.priceTagLabels?.promoText1,
+        p.currentPrice?.priceTagLabels?.promoText2,
+        p.currentPrice?.priceTagLabels?.label,
+      ].filter(Boolean).join(' ')
+
+      // Try to derive originalPrice from strikePrice or percentage label
       let originalPrice = (strikePrice && strikePrice > discountedPrice) ? strikePrice : discountedPrice
-      if (!strikePrice) {
-        const promoText = [
-          p.currentPrice?.priceTagLabels?.promoText1,
-          p.currentPrice?.priceTagLabels?.promoText2,
-          p.currentPrice?.priceTagLabels?.label,
-        ].filter(Boolean).join(' ')
+      if (!strikePrice && promoText) {
         const pctMatch = promoText.match(/(\d+)\s*%/i)
         if (pctMatch) {
           const pct = parseInt(pctMatch[1])
@@ -792,6 +793,12 @@ async function scrapeAldi() {
           }
         }
       }
+
+      // Only include products that are genuine promotions:
+      // either has a real discount price OR has promo labels in the API
+      const isGenuinePromo = originalPrice > discountedPrice || promoText.length > 0
+      if (!isGenuinePromo) continue
+
       const primary = p.assets?.find(a => a.type === 'primary')
       const expiresAt = p.currentPrice.validUntil
         ? new Date(p.currentPrice.validUntil * 1000).toISOString().split('T')[0]
@@ -810,9 +817,8 @@ async function scrapeAldi() {
       })
     }
 
-    const withSavings = results.filter(r => r.originalPrice > r.discountedPrice)
-    console.log(`  ✅ Aldi: ${withSavings.length} ürün (${results.length - withSavings.length} OP=OP filtered)`)
-    return withSavings
+    console.log(`  ✅ Aldi: ${results.length} ürün`)
+    return results
   } catch (e) {
     console.error('  ❌ Aldi:', e.message)
     return []
