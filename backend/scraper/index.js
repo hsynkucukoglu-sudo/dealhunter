@@ -902,6 +902,13 @@ async function _fetchVomarCategory(category) {
       p.discountDeal || (p.price != null && p.priceDefaultAmount != null && p.price < p.priceDefaultAmount)
     )
 
+    // Diagnostic: log first discountDeal product to see all available fields
+    const firstDeal = deals.find(p => p.discountDeal)
+    if (firstDeal && category === 'vers/fruit') {
+      console.log(`  [Vomar] discountDeal sample fields: ${Object.keys(firstDeal).join(', ')}`)
+      console.log(`  [Vomar] discountDeal sample:`, JSON.stringify(firstDeal, null, 0).slice(0, 600))
+    }
+
     return deals.map(p => {
       const discountedPrice = parseFloat(p.price) || 0
       const originalPrice = Math.max(parseFloat(p.priceDefaultAmount) || discountedPrice, discountedPrice)
