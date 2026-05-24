@@ -1,4 +1,14 @@
+import type { Product } from './types'
+
 const SITE_URL = 'https://www.dealhunter4u.nl'
+
+export function getISOWeek(date: Date): number {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
+  const dayNum = d.getUTCDay() || 7
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum)
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
+  return Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7)
+}
 
 export function resolveImageUrl(imageUrl: string | null): string | null {
   if (!imageUrl) return null
@@ -33,6 +43,66 @@ export function buildFaqSchema(faqs: { question: string; answer: string }[]) {
         '@type': 'Answer',
         text: faq.answer,
       },
+    })),
+  }
+}
+
+function buildSingleProductSchema(p: Product, marketSlug: string) {
+  const resolvedImage = resolveImageUrl(p.imageUrl)
+  const hasDiscount = p.originalPrice > p.discountedPrice
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: p.name,
+    description: `${p.name} aanbieding bij ${p.market} – nu voor €${p.discountedPrice.toFixed(2)}`,
+    ...(resolvedImage ? { image: resolvedImage } : {}),
+    ...(p.brand ? { brand: { '@type': 'Brand', name: p.brand } } : {}),
+    offers: {
+      '@type': 'Offer',
+      url: `${SITE_URL}/supermarkt/${marketSlug}`,
+      priceCurrency: 'EUR',
+      price: p.discountedPrice.toFixed(2),
+      priceValidUntil: p.expiresAt,
+      availability: 'https://schema.org/InStock',
+      itemCondition: 'https://schema.org/NewCondition',
+      seller: { '@type': 'Organization', name: p.market },
+      ...(hasDiscount ? {
+        priceSpecification: [
+          {
+            '@type': 'UnitPriceSpecification',
+            priceType: 'https://schema.org/ListPrice',
+            price: p.originalPrice.toFixed(2),
+            priceCurrency: 'EUR',
+          },
+          {
+            '@type': 'UnitPriceSpecification',
+            priceType: 'https://schema.org/SalePrice',
+            price: p.discountedPrice.toFixed(2),
+            priceCurrency: 'EUR',
+            validThrough: p.expiresAt,
+          },
+        ],
+      } : {}),
+    },
+  }
+}
+
+export function buildProductListSchema(
+  products: Product[],
+  marketName: string,
+  marketSlug: string,
+) {
+  const week = getISOWeek(new Date())
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `${marketName} Aanbiedingen Week ${week}`,
+    url: `${SITE_URL}/supermarkt/${marketSlug}`,
+    numberOfItems: products.length,
+    itemListElement: products.slice(0, 25).map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: buildSingleProductSchema(p, marketSlug),
     })),
   }
 }

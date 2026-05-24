@@ -2,10 +2,12 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getProducts } from '@/lib/api'
 import { MARKETS } from '@/lib/types'
-import { buildBreadcrumbSchema, buildFaqSchema } from '@/lib/schema'
+import { buildBreadcrumbSchema, buildFaqSchema, buildProductListSchema, getISOWeek } from '@/lib/schema'
 import { MarketPage } from '@/components/MarketPage'
 import { MARKET_FAQS } from '@/lib/marketFaqs'
 import { getPostsByMarket } from '@/lib/posts'
+
+export const revalidate = 3600
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -20,7 +22,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const market = MARKETS.find(m => m.slug === slug)
   if (!market) return {}
 
-  const pageTitle = market.ctaTitle ?? `${market.name} Acties & Aanbiedingen Deze Week | DealHunter`
+  const week = getISOWeek(new Date())
+  const year = new Date().getFullYear()
+  const baseTitle = market.ctaTitle ?? `${market.name} Aanbiedingen Deze Week | DealHunter`
+  const pageTitle = baseTitle.replace('Deze Week', `Week ${week} ${year}`)
 
   return {
     title: pageTitle,
@@ -56,6 +61,9 @@ export default async function SupermarktPage({ params }: Props) {
   ])
   const faqs = MARKET_FAQS[slug] ?? []
   const faqSchema = faqs.length ? buildFaqSchema(faqs) : null
+  const productListSchema = products.length > 0
+    ? buildProductListSchema(products, market.name, slug)
+    : null
 
   return (
     <>
@@ -67,6 +75,12 @@ export default async function SupermarktPage({ params }: Props) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
+      {productListSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(productListSchema) }}
         />
       )}
       <MarketPage market={market} initialProducts={products} relatedPosts={relatedPosts} />

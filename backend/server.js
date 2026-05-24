@@ -217,6 +217,32 @@ async function runScraperJob() {
     // Fiyat geçmişini kaydet
     recordPriceHistory(createdProducts).catch(e => console.error('Fiyat geçmişi kayıt hatası:', e.message))
 
+    // IndexNow ping — Bing/Yandex'e güncel URL'leri bildir
+    const INDEXNOW_KEY = 'dh4u-2026-x9k3m7p2'
+    const MARKET_SLUGS = {
+      'Albert Heijn': 'albert-heijn', 'Jumbo': 'jumbo', 'Aldi': 'aldi',
+      'Lidl': 'lidl', 'Dirk': 'dirk', 'Hoogvliet': 'hoogvliet', 'Vomar': 'vomar',
+    }
+    const updatedMarkets = [...new Set(createdProducts.map(p => MARKET_SLUGS[p.market]).filter(Boolean))]
+    const pingUrls = [
+      'https://www.dealhunter4u.nl',
+      'https://www.dealhunter4u.nl/deals',
+      ...updatedMarkets.map(s => `https://www.dealhunter4u.nl/supermarkt/${s}`),
+    ]
+    fetch('https://api.indexnow.org/indexnow', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      body: JSON.stringify({
+        host: 'www.dealhunter4u.nl',
+        key: INDEXNOW_KEY,
+        keyLocation: `https://www.dealhunter4u.nl/${INDEXNOW_KEY}.txt`,
+        urlList: pingUrls,
+      }),
+      signal: AbortSignal.timeout(10000),
+    })
+      .then(r => console.log(`🔍 IndexNow: ${pingUrls.length} URL ping gönderildi (${r.status})`))
+      .catch(e => console.error('IndexNow ping hatası:', e.message))
+
     // Push bildirimleri gönder
     if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
       // 1. Hedefli push — favorisi eşleşen kullanıcılara
