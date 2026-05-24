@@ -810,8 +810,9 @@ async function scrapeAldi() {
       })
     }
 
-    console.log(`  ✅ Aldi: ${results.length} ürün`)
-    return results
+    const withSavings = results.filter(r => r.originalPrice > r.discountedPrice)
+    console.log(`  ✅ Aldi: ${withSavings.length} ürün (${results.length - withSavings.length} OP=OP filtered)`)
+    return withSavings
   } catch (e) {
     console.error('  ❌ Aldi:', e.message)
     return []
