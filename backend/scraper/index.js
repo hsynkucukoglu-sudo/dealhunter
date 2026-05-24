@@ -898,22 +898,25 @@ async function _fetchVomarCategory(category) {
     runInContext(`window.__NUXT__=${html.slice(idx + 16, end).replace(/;$/, '')}`, ctx)
 
     const products = ctx.window.__NUXT__?.data?.[0]?.mainGroupProducts ?? []
-    const deals = products.filter(p =>
-      p.discountDeal || (p.price != null && p.priceDefaultAmount != null && p.price < p.priceDefaultAmount)
-    )
 
-    // Diagnostic: log first discountDeal product to see all available fields
-    const firstDeal = deals.find(p => p.discountDeal)
-    if (firstDeal && category === 'vers/fruit') {
-      console.log(`  [Vomar] discountDeal sample fields: ${Object.keys(firstDeal).join(', ')}`)
-      console.log(`  [Vomar] discountDeal sample:`, JSON.stringify(firstDeal, null, 0).slice(0, 600))
-    }
-
-    return deals.map(p => {
+    return products.reduce((acc, p) => {
       const discountedPrice = parseFloat(p.price) || 0
-      const originalPrice = Math.max(parseFloat(p.priceDefaultAmount) || discountedPrice, discountedPrice)
+      if (!discountedPrice) return acc
+
+      // priceDefaultAmount is inconsistent across categories:
+      // sometimes euros (same unit as price), sometimes 1000× (millieuros)
+      const rawDefault = parseFloat(p.priceDefaultAmount) || 0
+      const originalPrice = rawDefault > discountedPrice * 100
+        ? rawDefault / 1000   // millieuros → euros
+        : rawDefault || discountedPrice
+
+      const isDiscount = originalPrice > discountedPrice
+      const isPromo = p.discountDeal === true
+
+      if (!isDiscount && !isPromo) return acc
+
       const imgFile = p.images?.[0]?.imageUrl || null
-      return {
+      acc.push({
         name: (p.description || '').trim(),
         market: 'Vomar',
         originalPrice,
@@ -924,8 +927,9 @@ async function _fetchVomarCategory(category) {
         expiresAt: EXPIRES_AT,
         campaignType: toCampaignType(p.description),
         brand: p.brand || null,
-      }
-    })
+      })
+      return acc
+    }, [])
   } catch {
     return []
   }
