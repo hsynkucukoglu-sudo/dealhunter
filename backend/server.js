@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors'
+import rateLimit from 'express-rate-limit'
 import { initDatabase } from './db.js'
 import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, updateProductCategory, clearAllProducts } from './models.js'
 import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, getMinPriceMap, getComparisonGroups } from './db.js'
@@ -19,9 +20,51 @@ function escapeHtml(str) {
 const app = express()
 const PORT = process.env.PORT || 3001
 
+// ===== Rate Limiters =====
+const generalLimit = rateLimit({
+  windowMs: 60 * 1000,
+  max: 200,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests, please try again later.' },
+})
+const imageProxyLimit = rateLimit({
+  windowMs: 60 * 1000,
+  max: 40,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many image requests.' },
+})
+const scraperLimit = rateLimit({
+  windowMs: 60 * 1000,
+  max: 3,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Scraper çok sık tetiklenemez.' },
+})
+const pushLimit = rateLimit({
+  windowMs: 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many subscription requests.' },
+})
+
+// ===== Admin Auth Middleware =====
+const requireAdmin = (req, res, next) => {
+  const token = process.env.ADMIN_TOKEN
+  if (!token) return next() // no token configured → dev mode, allow
+  const auth = req.headers['authorization']
+  if (!auth || auth !== `Bearer ${token}`) {
+    return res.status(401).json({ error: 'Yetkisiz erişim' })
+  }
+  next()
+}
+
 // Middleware
 app.use(cors())
 app.use(express.json())
+app.use(generalLimit)
 
 // Extracted screenshots
 app.use(express.static(path.join(__dirname, 'public')))
@@ -35,8 +78,17 @@ const asyncHandler = (fn) => (req, res, next) => {
 
 // ===== API Routes =====
 
+// AH görsel CDN allowlist — SSRF'i önler
+const AH_IMAGE_ALLOWLIST = [
+  /^https:\/\/[\w-]+\.albert\.nl\//,
+  /^https:\/\/[\w-]+\.ah\.nl\//,
+  /^https:\/\/static\.ah\.nl\//,
+  /^https:\/\/images\.albertheijn\.nl\//,
+  /^https:\/\/cdn\.dynamicyield\.com\//,
+]
+
 // GET /api/ah-image/:id - AH ürün görselini ID ile çek
-app.get('/api/ah-image/:id', asyncHandler(async (req, res) => {
+app.get('/api/ah-image/:id', imageProxyLimit, asyncHandler(async (req, res) => {
   const { id } = req.params
   if (!id || !/^\d+$/.test(id)) return res.status(400).send()
 
@@ -81,6 +133,11 @@ app.get('/api/ah-image/:id', asyncHandler(async (req, res) => {
 
   if (!imageUrl) return res.status(404).send()
 
+  // SSRF koruması — sadece AH CDN domain'lerinden görsel çek
+  if (!AH_IMAGE_ALLOWLIST.some(re => re.test(imageUrl))) {
+    return res.status(403).send()
+  }
+
   // Görseli çek ve ilet
   const imgRes = await fetch(imageUrl, {
     headers: AH_HEADERS,
@@ -88,7 +145,10 @@ app.get('/api/ah-image/:id', asyncHandler(async (req, res) => {
   })
   if (!imgRes.ok) return res.status(404).send()
 
-  res.setHeader('Content-Type', imgRes.headers.get('content-type') || 'image/jpeg')
+  const contentType = imgRes.headers.get('content-type') || ''
+  if (!contentType.startsWith('image/')) return res.status(403).send()
+
+  res.setHeader('Content-Type', contentType)
   res.setHeader('Cache-Control', 'public, max-age=604800')
   res.send(Buffer.from(await imgRes.arrayBuffer()))
 }))
@@ -116,7 +176,7 @@ app.get('/api/products/:id', asyncHandler(async (req, res) => {
 }))
 
 // POST /api/products - Yeni ürün oluştur
-app.post('/api/products', asyncHandler(async (req, res) => {
+app.post('/api/products', requireAdmin, asyncHandler(async (req, res) => {
   const { name, market, originalPrice, discountedPrice, imageUrl, expiresAt, isCampaign, source } = req.body
 
   // Validasyon
@@ -139,7 +199,7 @@ app.post('/api/products', asyncHandler(async (req, res) => {
 }))
 
 // PUT /api/products/:id - Ürünü güncelle
-app.put('/api/products/:id', asyncHandler(async (req, res) => {
+app.put('/api/products/:id', requireAdmin, asyncHandler(async (req, res) => {
   const { name, market, originalPrice, discountedPrice, imageUrl, expiresAt } = req.body
 
   if (!name || !market || !originalPrice || !discountedPrice || !expiresAt) {
@@ -159,7 +219,7 @@ app.put('/api/products/:id', asyncHandler(async (req, res) => {
 }))
 
 // PATCH /api/products/:id/image - Görsel URL güncelle
-app.patch('/api/products/:id/image', asyncHandler(async (req, res) => {
+app.patch('/api/products/:id/image', requireAdmin, asyncHandler(async (req, res) => {
   const { imageUrl } = req.body
   if (!imageUrl) return res.status(400).json({ error: 'imageUrl gerekli' })
   await updateProductImage(req.params.id, imageUrl)
@@ -167,7 +227,7 @@ app.patch('/api/products/:id/image', asyncHandler(async (req, res) => {
 }))
 
 // PATCH /api/products/:id/category - Kategori güncelle
-app.patch('/api/products/:id/category', asyncHandler(async (req, res) => {
+app.patch('/api/products/:id/category', requireAdmin, asyncHandler(async (req, res) => {
   const { category } = req.body
   if (!category) return res.status(400).json({ error: 'category gerekli' })
   await updateProductCategory(req.params.id, category)
@@ -175,7 +235,7 @@ app.patch('/api/products/:id/category', asyncHandler(async (req, res) => {
 }))
 
 // DELETE /api/products/:id - Ürünü sil
-app.delete('/api/products/:id', asyncHandler(async (req, res) => {
+app.delete('/api/products/:id', requireAdmin, asyncHandler(async (req, res) => {
   await deleteProduct(req.params.id)
   res.status(204).send()
 }))
@@ -301,7 +361,7 @@ cron.schedule('0 8 * * 1', async () => {
 })
 
 // POST /api/push/subscribe - Push aboneliği kaydet
-app.post('/api/push/subscribe', asyncHandler(async (req, res) => {
+app.post('/api/push/subscribe', pushLimit, asyncHandler(async (req, res) => {
   const { endpoint, keys, userId } = req.body
   if (!endpoint || !keys?.p256dh || !keys?.auth) {
     return res.status(400).json({ error: 'Geçersiz abonelik' })
@@ -364,7 +424,7 @@ app.get('/api/compare', asyncHandler(async (req, res) => {
 }))
 
 // POST /api/scraper/run - Manuel olarak scraper çalıştırır (Arayüzden tetiklendiğinde)
-app.post('/api/scraper/run', (req, res) => {
+app.post('/api/scraper/run', requireAdmin, scraperLimit, (req, res) => {
   if (scraperRunning) {
     return res.json({ success: true, running: true, message: 'Scraper zaten çalışıyor.' })
   }
@@ -497,7 +557,7 @@ if (isProduction) {
 // ===== Global Error Handler =====
 app.use((err, req, res, next) => {
   console.error('❌ Hata:', err)
-  res.status(500).json({ error: 'Sunucu hatası', message: err.message })
+  res.status(500).json({ error: 'Sunucu hatası' })
 })
 
 // ===== Server Start =====
