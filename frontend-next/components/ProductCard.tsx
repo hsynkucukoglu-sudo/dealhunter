@@ -84,23 +84,27 @@ export function ProductCard({ product }: { product: Product }) {
           src={imgSrc}
           alt={product.name}
           loading="lazy"
+          width={300}
+          height={300}
           className="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-500"
           onError={(e) => { e.currentTarget.src = '/icon-192x192.png' }}
         />
         <button
           onClick={(e) => { e.stopPropagation(); addToCart(product) }}
           className="basket-slide"
+          aria-label={`${product.name} winkelmandje toevoegen`}
         >
-          <span className="material-symbols-outlined material-filled">shopping_basket</span>
+          <span className="material-symbols-outlined material-filled" aria-hidden="true">shopping_basket</span>
         </button>
         <div className="absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           <button
             onClick={(e) => { e.stopPropagation(); toggleFavorite(product) }}
             className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
             style={{ background: 'rgba(255,255,255,0.9)' }}
-            title="Favorilere ekle"
+            aria-label={isFavorite(product) ? `${product.name} uit favorieten verwijderen` : `${product.name} aan favorieten toevoegen`}
+            aria-pressed={isFavorite(product)}
           >
-            <span className="material-symbols-outlined text-base" style={{ color: isFavorite(product) ? '#E33D26' : '#8C8478', fontVariationSettings: isFavorite(product) ? '"FILL" 1' : '"FILL" 0' }}>
+            <span className="material-symbols-outlined text-base" aria-hidden="true" style={{ color: isFavorite(product) ? '#E33D26' : '#8C8478', fontVariationSettings: isFavorite(product) ? '"FILL" 1' : '"FILL" 0' }}>
               favorite
             </span>
           </button>
@@ -108,9 +112,10 @@ export function ProductCard({ product }: { product: Product }) {
             onClick={(e) => { e.stopPropagation(); toggleWatch(product) }}
             className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
             style={{ background: 'rgba(255,255,255,0.9)' }}
-            title="Haber ver"
+            aria-label={isWatching(product.id) ? `${product.name} melding uitschakelen` : `${product.name} prijs volgen`}
+            aria-pressed={isWatching(product.id)}
           >
-            <span className="material-symbols-outlined text-base" style={{ color: isWatching(product.id) ? '#FF8C00' : '#8C8478', fontVariationSettings: isWatching(product.id) ? '"FILL" 1' : '"FILL" 0' }}>
+            <span className="material-symbols-outlined text-base" aria-hidden="true" style={{ color: isWatching(product.id) ? '#FF8C00' : '#8C8478', fontVariationSettings: isWatching(product.id) ? '"FILL" 1' : '"FILL" 0' }}>
               notifications
             </span>
           </button>
@@ -177,12 +182,12 @@ export function ProductCard({ product }: { product: Product }) {
               className={`text-[11px] flex items-center gap-1 font-medium${expiryStatus.pulse ? ' animate-pulse' : ''}`}
               style={{ color: expiryStatus.color }}
             >
-              <span className="material-symbols-outlined text-sm">schedule</span>
+              <span className="material-symbols-outlined text-sm" aria-hidden="true">schedule</span>
               {expiryStatus.label}
             </p>
           ) : (
             <p className="text-[11px] flex items-center gap-1" style={{ color: '#9C9389' }}>
-              <span className="material-symbols-outlined text-sm">schedule</span>
+              <span className="material-symbols-outlined text-sm" aria-hidden="true">schedule</span>
               {t.validUntil}
             </p>
           )}
@@ -194,6 +199,7 @@ export function ProductCard({ product }: { product: Product }) {
           whileTap={{ scale: 0.97 }}
           onClick={() => addToCart(product)}
           className="btn-card"
+          aria-label={`${product.name} aan winkelmandje toevoegen`}
         >
           {t.addToCart}
         </motion.button>
@@ -211,7 +217,7 @@ export function ProductCard({ product }: { product: Product }) {
             onClick={(e) => e.stopPropagation()}
           >
             {t.viewDeal}
-            <span className="material-symbols-outlined text-sm leading-none">open_in_new</span>
+            <span className="material-symbols-outlined text-sm leading-none" aria-hidden="true">open_in_new</span>
           </a>
         )}
       </div>

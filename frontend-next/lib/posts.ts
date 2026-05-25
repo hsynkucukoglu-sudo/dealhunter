@@ -54,12 +54,12 @@ export const POSTS: BlogPost[] = [
   <li><strong>Toffifee bij Albert Heijn:</strong> regelmatig in de bonus, perfecte traktatie</li>
   <li><strong>Boomstammetjes bij Aldi:</strong> seizoensgebonden (najaar/winter), populair cadeauproduct</li>
   <li><strong>Chips (Lay's, Doritos):</strong> bij AH en Jumbo regelmatig 1+1 gratis</li>
-  <li><strong>Pepsi en frisdrank:</strong> bij Plus en Jumbo vaak in de weekactie</li>
+  <li><strong>Pepsi en frisdrank:</strong> bij Dirk en Jumbo vaak in de weekactie</li>
   <li><strong>Mora snacks (loempia's, bitterballen):</strong> maandelijks in aanbieding bij wisselende supermarkten</li>
 </ul>
 
 <h2>Hoe vind je de beste snack-deal van de week?</h2>
-<p>De snelste manier: <a href="/">DealHunter4U</a> vergelijkt dagelijks de snack-aanbiedingen van Aldi, Lidl, Albert Heijn, Jumbo, Dirk en Plus. Filter op categorie "Snacks" en zie in één oogopslag welke supermarkt de beste deal heeft.</p>
+<p>De snelste manier: <a href="/">DealHunter4U</a> vergelijkt dagelijks de snack-aanbiedingen van Aldi, Lidl, Albert Heijn, Jumbo, Dirk en Vomar. Filter op categorie "Snacks" en zie in één oogopslag welke supermarkt de beste deal heeft.</p>
 <p>Wil je specifiek Aldi of Lidl snacks volgen?</p>
 <ul>
   <li>→ <a href="/supermarkt/aldi">Alle actuele Aldi aanbiedingen</a> (update elke maandag)</li>
@@ -83,7 +83,7 @@ export const POSTS: BlogPost[] = [
 
 <h2>Waarom kiezen voor DealHunter4U?</h2>
 <ul>
-  <li><strong>Vergelijk direct:</strong> alle kortingen van Albert Heijn, Jumbo, Lidl, Aldi en Dirk op één plek, naast elkaar.</li>
+  <li><strong>Vergelijk direct:</strong> alle kortingen van Albert Heijn, Jumbo, Lidl, Aldi, Dirk, Hoogvliet, Vomar en DekaMarkt op één plek, naast elkaar.</li>
   <li><strong>Behoud kwaliteit:</strong> je bespaart op de prijs, niet op de versheid of kwaliteit van je boodschappen.</li>
   <li><strong>Bespaar tijd én geld:</strong> nooit meer folders bladeren — vind direct de beste prijs en ga gericht winkelen.</li>
 </ul>
@@ -476,7 +476,7 @@ export const POSTS: BlogPost[] = [
   },
   {
     slug: 'vlees-aanbieding-supermarkt-gids',
-    relatedMarkets: ['albert-heijn', 'jumbo', 'aldi', 'lidl', 'dirk'],
+    relatedMarkets: ['albert-heijn', 'jumbo', 'aldi', 'lidl', 'dirk', 'dekamarkt'],
     title: 'Vlees in de aanbieding: wanneer en waar is vlees het goedkoopst?',
     description: 'Ontdek wanneer vlees het goedkoopst is in de supermarkt. Vergelijk kipfilet, gehakt en biefstuk aanbiedingen bij Aldi, Lidl, Albert Heijn en Jumbo.',
     date: '2026-05-16',
@@ -490,6 +490,7 @@ export const POSTS: BlogPost[] = [
 <ul>
   <li><strong>Maandag bij Aldi:</strong> Aldi vernieuwt haar vleesaanbiedingen elke maandag. Kipfilet, varkensvlees en gehakt zijn dan het voordeligst.</li>
   <li><strong>Woensdag bij AH en Jumbo:</strong> De Bonus Week start op woensdag. Vlees is een van de meest gepromote categorieën.</li>
+  <li><strong>Woensdag bij DekaMarkt:</strong> DekaMarkt vernieuwt haar aanbiedingen elke woensdag — regelmatig scherpe vleesdeals.</li>
   <li><strong>Donderdag bij Lidl:</strong> Lidl heeft vaak sterke vlees-weekaanbiedingen op donderdag, met name op vers vlees.</li>
 </ul>
 <p>Tip: plan je weekmenu op de aanbiedingsdag van je supermarkt — dan koop je vlees altijd op het laagste punt.</p>
@@ -532,7 +533,7 @@ export const POSTS: BlogPost[] = [
   },
   {
     slug: 'boodschappen-50-euro-per-week',
-    relatedMarkets: ['albert-heijn', 'jumbo', 'aldi', 'lidl', 'dirk', 'hoogvliet'],
+    relatedMarkets: ['albert-heijn', 'jumbo', 'aldi', 'lidl', 'dirk', 'hoogvliet', 'dekamarkt'],
     title: 'Boodschappen doen voor €50 per week: het complete plan',
     description: 'Leer hoe je als gezin of stel voor slechts €50 per week boodschappen doet zonder in te leveren op voeding of smaak. Met weekmenu en boodschappenlijst.',
     date: '2026-05-15',
@@ -576,7 +577,7 @@ export const POSTS: BlogPost[] = [
 <ul>
   <li><strong>Aldi/Lidl:</strong> Vlees, zuivel, pasta, rijst — basis en vers</li>
   <li><strong>Albert Heijn:</strong> Persoonlijke bonusproducten en 1+1 acties (gebruik de app)</li>
-  <li><strong>Dirk of Vomar:</strong> Goedkope huismerken en regionale aanbiedingen</li>
+  <li><strong>Dirk, Vomar of DekaMarkt:</strong> Goedkope huismerken en regionale aanbiedingen</li>
 </ul>
 
 <h2>Besparingstips die echt werken</h2>
@@ -594,7 +595,7 @@ export const POSTS: BlogPost[] = [
   },
   {
     slug: 'beste-dag-boodschappen-doen',
-    relatedMarkets: ['albert-heijn', 'jumbo', 'aldi', 'lidl'],
+    relatedMarkets: ['albert-heijn', 'jumbo', 'aldi', 'lidl', 'dirk', 'hoogvliet', 'vomar', 'dekamarkt'],
     title: 'Welke dag moet je boodschappen doen voor de laagste prijs?',
     description: 'De dag waarop je boodschappen doet maakt een groot verschil voor je portemonnee. Ontdek wanneer elke supermarkt nieuwe aanbiedingen start en wanneer je de meeste keuze hebt.',
     date: '2026-05-17',
@@ -611,6 +612,8 @@ export const POSTS: BlogPost[] = [
   <li><strong>Woensdag — Albert Heijn:</strong> AH Bonus Week start, inclusief persoonlijke bonussen in de app</li>
   <li><strong>Woensdag — Jumbo:</strong> Nieuwe weekaanbiedingen, tegelijk met AH</li>
   <li><strong>Woensdag — Dirk:</strong> Nieuwe aanbiedingen, iets later op de dag online</li>
+  <li><strong>Woensdag — Hoogvliet &amp; Vomar:</strong> Nieuwe weekaanbiedingen</li>
+  <li><strong>Woensdag — DekaMarkt:</strong> Nieuwe weekdeals, van woensdag t/m dinsdag</li>
   <li><strong>Donderdag — Lidl:</strong> Lidl Actieweek non-food producten (kleding, elektronica, tuin)</li>
 </ul>
 

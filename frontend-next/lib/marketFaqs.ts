@@ -7,7 +7,7 @@ export const MARKET_FAQS: Record<string, FAQ[]> = {
   'albert-heijn': [
     {
       question: 'Wanneer worden de AH Bonus aanbiedingen bijgewerkt?',
-      answer: 'De Albert Heijn Bonus aanbiedingen wisselen elke maandag. De nieuwe weekdeals zijn vanaf maandag geldig en lopen tot en met zondag. Op DealHunter worden alle AH aanbiedingen dagelijks bijgewerkt, zodat je altijd de actuele Bonus deals ziet en maximaal kunt besparen op je boodschappen.',
+      answer: 'De Albert Heijn Bonus aanbiedingen wisselen elke woensdag. De nieuwe weekdeals zijn vanaf woensdag geldig en lopen tot en met dinsdag. Op DealHunter worden alle AH aanbiedingen dagelijks bijgewerkt, zodat je altijd de actuele Bonus deals ziet en maximaal kunt besparen op je boodschappen.',
     },
     {
       question: 'Is de Bonuskaart nodig voor AH aanbiedingen?',
@@ -23,7 +23,7 @@ export const MARKET_FAQS: Record<string, FAQ[]> = {
     },
     {
       question: 'Hoe lang zijn AH Bonus aanbiedingen geldig?',
-      answer: 'Albert Heijn Bonus aanbiedingen zijn doorgaans één week geldig – van maandag tot en met zondag. Sommige acties lopen meerdere weken, en incidenteel zijn er ook dagaanbiedingen. DealHunter toont altijd de vervaldatum per aanbieding, zodat je nooit een deal mist.',
+      answer: 'Albert Heijn Bonus aanbiedingen zijn doorgaans één week geldig – van woensdag tot en met dinsdag. Sommige acties lopen meerdere weken, en incidenteel zijn er ook dagaanbiedingen. DealHunter toont altijd de vervaldatum per aanbieding, zodat je nooit een deal mist.',
     },
   ],
   'jumbo': [
