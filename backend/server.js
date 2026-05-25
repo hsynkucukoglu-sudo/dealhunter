@@ -3,7 +3,7 @@ import cors from 'cors'
 import rateLimit from 'express-rate-limit'
 import { initDatabase } from './db.js'
 import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, updateProductCategory, clearAllProducts } from './models.js'
-import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, getMinPriceMap, getComparisonGroups } from './db.js'
+import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, getMinPriceMap, getComparisonGroups, getScraperStats } from './db.js'
 import { sendPushToAll, sendPushToSubscriptions } from './push.js'
 import { scrapeFlyerProducts } from './scraper/index.js'
 import { categorize } from './categorize.js'
@@ -437,6 +437,12 @@ app.post('/api/scraper/run', requireAdmin, scraperLimit, (req, res) => {
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', message: '🚀 Backend çalışıyor', version: '2026-05-14-v4' })
 })
+
+// GET /api/health/scraper - Market bazında ürün sayıları ve indirim istatistikleri
+app.get('/api/health/scraper', asyncHandler(async (req, res) => {
+  const stats = await getScraperStats()
+  res.json({ ...stats, scraperRunning })
+}))
 
 
 // ===== 404 Handler / SPA Fallback =====

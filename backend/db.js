@@ -287,3 +287,22 @@ export async function deleteProduct(id) {
 export async function clearAllProducts() {
   await pool.query('DELETE FROM products')
 }
+
+export async function getScraperStats() {
+  const { rows } = await pool.query(`
+    SELECT
+      market,
+      COUNT(*)::int                                                                            AS total,
+      COUNT(*) FILTER (WHERE "originalPrice" > "discountedPrice")::int                        AS with_discount,
+      ROUND(
+        AVG(("originalPrice" - "discountedPrice") / NULLIF("originalPrice", 0) * 100)
+        FILTER (WHERE "originalPrice" > "discountedPrice")::numeric, 1
+      )                                                                                        AS avg_discount_pct,
+      MAX("createdAt")                                                                         AS last_scraped
+    FROM products
+    GROUP BY market
+    ORDER BY total DESC
+  `)
+  const total = rows.reduce((s, r) => s + r.total, 0)
+  return { total, markets: rows }
+}
