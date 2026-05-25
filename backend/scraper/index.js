@@ -308,48 +308,61 @@ function decodeHtmlEntities(str) {
 async function scrapeHoogvliet() {
   console.log('🏪 [Hoogvliet] hoogvliet.com/aanbiedingen...')
   try {
-    const res = await fetch('https://www.hoogvliet.com/aanbiedingen', { headers: HEADERS })
+    const res = await fetch('https://www.hoogvliet.com/aanbiedingen', { headers: HEADERS, signal: AbortSignal.timeout(15000) })
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const html = await res.text()
-    // Build ID → image URL map (img srcs fully HTML-encoded: &#47; instead of /)
-    const imgMap = {}
-    for (const m of html.matchAll(/&#47;INTERSHOP&#47;[^"']*ACT[^"']*&#47;(\d+)\.(?:jpg|png|webp)/g)) {
-      const id = m[1]
-      const decoded = m[0].replace(/&#47;/g, '/')
-      if (!imgMap[id]) imgMap[id] = `https://www.hoogvliet.com${decoded}`
-    }
 
-    // Price field may be a range string "2.05 - 3.91" — take minimum value
-    const jsonBlocks = html.match(/\{[^{}]*"price"\s*:\s*"[^"]+[^{}]*\}/g) || []
+    // Split by product card anchor (each card has a data-image-src for the product image)
+    const cards = html.split('data-image-src=')
     const seen = new Set()
     const results = []
 
-    for (const block of jsonBlocks) {
-      try {
-        const obj = JSON.parse(block.replace(/&#47;/g, '/').replace(/&amp;/g, '&'))
-        if (!obj.name || !obj.price) continue
-        const name = decodeHtmlEntities(obj.name)
-        if (seen.has(name)) continue
-        seen.add(name)
-        const priceStr = String(obj.price).split(/\s*-\s*/)[0].trim()
-        const discountedPrice = parseFloat(priceStr)
-        if (!discountedPrice) continue
-        const wasPrice = parseFloat(obj.oldPrice || obj.wasPrice || obj.compareAtPrice || obj.originalPrice || obj.regularPrice || 0)
-        const originalPrice = (wasPrice && wasPrice > discountedPrice) ? wasPrice : discountedPrice
-        results.push({
-          name,
-          market: 'Hoogvliet',
-          originalPrice,
-          discountedPrice,
-          imageUrl: imgMap[obj.id] || null,
-          isCampaign: true,
-          source: 'hoogvliet.com/aanbiedingen',
-          expiresAt: EXPIRES_AT,
-          campaignType: toCampaignType(name),
-        })
-      } catch {}
+    for (let i = 1; i < cards.length; i++) {
+      const card = cards[i]
+
+      // Image URL (encoded as &#47; = /)
+      const imgM = card.match(/^"(&#47;INTERSHOP&#47;[^"]+\.(?:jpg|png|webp))"/)
+      const imageUrl = imgM ? `https://www.hoogvliet.com${imgM[1].replace(/&#47;/g, '/')}` : null
+
+      // Product name from <h3> inside product-title anchor
+      const nameM = card.match(/<h3[^>]*>\s*([^<]+?)\s*<\/h3>/)
+      if (!nameM) continue
+      const name = decodeHtmlEntities(nameM[1].trim())
+      if (!name || seen.has(name.toLowerCase())) continue
+
+      // Was price: first number in strikethrough div (may be a range "3.98 - 10.96", take first)
+      const strikeM = card.match(/class="strikethrough"[^>]*>\s*<div>([\d.]+)</)
+      const wasPrice = strikeM ? parseFloat(strikeM[1]) : 0
+
+      // Deal price: first non-strikethrough euros + cents
+      const eurosM = card.match(/class="non-strikethrough"[^>]*>.*?price-euros[^>]*>.*?<span[^>]*>([\d]+)<\/span>/s)
+      const centsM = card.match(/class="non-strikethrough"[^>]*>.*?price-cents[^>]*><sup>([\d]+)<\/sup>/s)
+      if (!eurosM) continue
+      const discountedPrice = parseFloat(`${eurosM[1]}.${centsM ? centsM[1] : '00'}`)
+      if (!discountedPrice) continue
+
+      const originalPrice = (wasPrice && wasPrice > discountedPrice) ? wasPrice : discountedPrice
+
+      // Promo label
+      const promoM = card.match(/promotion-short-title[^>]*>([^<]+)</)
+      const promoLabel = promoM ? promoM[1].trim() : null
+
+      seen.add(name.toLowerCase())
+      results.push({
+        name,
+        market: 'Hoogvliet',
+        originalPrice,
+        discountedPrice,
+        imageUrl,
+        isCampaign: true,
+        source: 'hoogvliet.com/aanbiedingen',
+        expiresAt: EXPIRES_AT,
+        campaignType: toCampaignType(promoLabel || name),
+      })
     }
 
-    console.log(`  ✅ Hoogvliet: ${results.length} ürün`)
+    const withSavings = results.filter(r => r.originalPrice > r.discountedPrice)
+    console.log(`  ✅ Hoogvliet: ${results.length} ürün (${withSavings.length} met besparing)`)
     return results
   } catch (e) {
     console.error('  ❌ Hoogvliet:', e.message)
