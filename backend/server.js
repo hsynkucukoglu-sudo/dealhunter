@@ -281,7 +281,7 @@ async function runScraperJob() {
     const INDEXNOW_KEY = 'dh4u-2026-x9k3m7p2'
     const MARKET_SLUGS = {
       'Albert Heijn': 'albert-heijn', 'Jumbo': 'jumbo', 'Aldi': 'aldi',
-      'Lidl': 'lidl', 'Dirk': 'dirk', 'Hoogvliet': 'hoogvliet', 'Vomar': 'vomar',
+      'Lidl': 'lidl', 'Dirk': 'dirk', 'Hoogvliet': 'hoogvliet', 'Vomar': 'vomar', 'DekaMarkt': 'dekamarkt',
     }
     const updatedMarkets = [...new Set(createdProducts.map(p => MARKET_SLUGS[p.market]).filter(Boolean))]
     const pingUrls = [

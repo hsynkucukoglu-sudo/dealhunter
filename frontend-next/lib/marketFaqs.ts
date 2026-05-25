@@ -126,4 +126,26 @@ export const MARKET_FAQS: Record<string, FAQ[]> = {
       answer: 'Vomar heeft filialen voornamelijk in Noord-Holland en Flevoland. De keten staat bekend als een betaalbare supermarkt met een goed aanbod aan lokale producten. Alle actuele Vomar weekaanbiedingen en deals zijn te vinden op DealHunter.',
     },
   ],
+  'dekamarkt': [
+    {
+      question: 'Wanneer worden DekaMarkt aanbiedingen bijgewerkt?',
+      answer: 'DekaMarkt wisselt zijn weekaanbiedingen elke week. De actuele deals zijn te vinden op de aanbiedingenpagina van DekaMarkt. Op DealHunter worden alle DekaMarkt deals dagelijks bijgewerkt, zodat je altijd de nieuwste kortingen en acties in één overzicht ziet.',
+    },
+    {
+      question: 'Wat voor soort aanbiedingen heeft DekaMarkt?',
+      answer: 'DekaMarkt biedt wekelijkse acties op verse producten, kruidenierswaren, dranken en huishoudelijke artikelen. Populaire actietypes zijn kortingsacties (bijv. ACTIE! €4,99), combi-deals en 1+1 gratis aanbiedingen. De deals zijn zichtbaar op DealHunter zonder dat je door de folder hoeft te bladeren.',
+    },
+    {
+      question: 'Heeft DekaMarkt een klantenkaart?',
+      answer: 'Ja, DekaMarkt heeft een eigen loyaliteitsprogramma. Informeer bij je dichtstbijzijnde DekaMarkt filiaal of via de website voor de actuele spaarmogelijkheden en extra kortingen voor kaarthouders.',
+    },
+    {
+      question: 'In welke regio\'s zijn DekaMarkt winkels te vinden?',
+      answer: 'DekaMarkt heeft filialen verspreid door Nederland, met name in Noord-Holland, Utrecht en omstreken. De keten staat bekend om verse producten en een breed assortiment. Bekijk alle actuele DekaMarkt aanbiedingen en weekdeals op DealHunter.',
+    },
+    {
+      question: 'Hoe bespaar ik het meest bij DekaMarkt?',
+      answer: 'Bespaar bij DekaMarkt door wekelijks de actuele acties te checken op DealHunter, te profiteren van combi-aanbiedingen en verse producten in de aanbieding te kopen. Let ook op 1+1 gratis en ACTIE!-prijzen voor de grootste kortingen op je boodschappen.',
+    },
+  ],
 }

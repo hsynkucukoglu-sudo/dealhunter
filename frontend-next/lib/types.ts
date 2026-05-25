@@ -102,6 +102,14 @@ export const MARKETS = [
     description: '✅ Bekijk alle Vomar aanbiedingen en beste deals van deze week – actuele folder en weekacties online. Dagelijks bijgewerkt. Bespaar op je boodschappen bij Vomar!',
     keywords: 'vomar aanbiedingen, vomar folder, vomar deals, vomar supermarkt, vomar aanbieding deze week, vomar korting, vomar actie',
   },
+  {
+    slug: 'dekamarkt',
+    name: 'DekaMarkt',
+    color: '#006633',
+    ctaTitle: '🟢 DekaMarkt Aanbiedingen Deze Week | Folder & Beste Deals',
+    description: '✅ Bekijk alle DekaMarkt aanbiedingen van deze week – verse producten, weekdeals en actuele folder online. Dagelijks bijgewerkt. Bespaar op je boodschappen bij DekaMarkt!',
+    keywords: 'dekamarkt aanbiedingen, dekamarkt folder, dekamarkt deals, dekamarkt actie, dekamarkt aanbieding deze week, dekamarkt korting',
+  },
 ]
 
 export const MARKET_COLORS: Record<string, string> = Object.fromEntries(
