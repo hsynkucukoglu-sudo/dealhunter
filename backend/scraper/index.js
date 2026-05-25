@@ -1039,12 +1039,73 @@ function enrichProductMeta(name, price) {
   return { brand: _extractBrand(name), unitSize, unitType, unitPrice, fullSizeLabel }
 }
 
+// ─── DEKAMARKT — HTML product cards (title + prices__offer + regular-strike) ──
+async function scrapeDekaMarkt() {
+  console.log('🏪 [DekaMarkt] dekamarkt.nl/aanbiedingen...')
+  try {
+    const res = await fetch('https://www.dekamarkt.nl/aanbiedingen', {
+      headers: HEADERS,
+      signal: AbortSignal.timeout(15000),
+    })
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    const html = await res.text()
+
+    const cards = html.split('class="product__card--image"')
+    const seen = new Set()
+    const results = []
+
+    for (let i = 1; i < cards.length; i++) {
+      const card = cards[i]
+
+      const nameM = card.match(/class="title"[^>]*>([^<]+)</) || card.match(/alt="([^"]+)"/)
+      if (!nameM) continue
+      const name = nameM[1]
+        .replace(/&#39;/g, "'").replace(/&amp;/g, '&').replace(/&quot;/g, '"').trim()
+      if (!name || seen.has(name.toLowerCase())) continue
+
+      const dealM = card.match(/prices__offer[^>]*>[^<]*<span[^>]*>(\d+)\.<\/span><small[^>]*><span[^>]*>(\d+)/)
+      if (!dealM) continue
+      const discountedPrice = parseFloat(dealM[1] + '.' + dealM[2])
+      if (!discountedPrice) continue
+
+      const wasM = card.match(/regular regular-strike"[^>]*>([\d.]+)</)
+      const originalPrice = wasM ? parseFloat(wasM[1]) : discountedPrice
+
+      const imgM = card.match(/src="(https:\/\/web-fileserver\.dekamarkt\.nl[^"]+|[^"]*\/offers\/[^"]+)"/)
+      const imageUrl = imgM ? imgM[1] : null
+
+      const chipM = card.match(/class="chip"[^>]*>[^<]*<span[^>]*>([^<]+)</)
+      const promoLabel = chipM ? chipM[1].trim() : null
+
+      seen.add(name.toLowerCase())
+      results.push({
+        name,
+        market: 'DekaMarkt',
+        originalPrice: originalPrice > discountedPrice ? originalPrice : discountedPrice,
+        discountedPrice,
+        imageUrl,
+        isCampaign: true,
+        source: 'dekamarkt.nl/aanbiedingen',
+        expiresAt: EXPIRES_AT,
+        campaignType: toCampaignType(promoLabel || name),
+      })
+    }
+
+    const withSavings = results.filter(r => r.originalPrice > r.discountedPrice)
+    console.log(`  ✅ DekaMarkt: ${results.length} ürün (${withSavings.length} met besparing)`)
+    return results
+  } catch (e) {
+    console.error('  ❌ DekaMarkt:', e.message)
+    return []
+  }
+}
+
 // ─── ANA FONKSİYON ────────────────────────────────────────────────────────────
 export async function scrapeFlyerProducts() {
   EXPIRES_AT = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
   console.log('🔍 Fetch-only scraper başlatılıyor...')
 
-  const [dirk, jumbo, hoogvliet, lidl, ah, aldi, vomar] = await Promise.all([
+  const [dirk, jumbo, hoogvliet, lidl, ah, aldi, vomar, deka] = await Promise.all([
     scrapeDirk(),
     scrapeJumbo(),
     scrapeHoogvliet(),
@@ -1052,9 +1113,10 @@ export async function scrapeFlyerProducts() {
     scrapeAlbertHeijn(),
     scrapeAldi(),
     scrapeVomar(),
+    scrapeDekaMarkt(),
   ])
 
-  let all = [...dirk, ...jumbo, ...hoogvliet, ...lidl, ...ah, ...aldi, ...vomar]
+  let all = [...dirk, ...jumbo, ...hoogvliet, ...lidl, ...ah, ...aldi, ...vomar, ...deka]
 
   // Duplicate temizliği
   const seen = new Set()
@@ -1074,10 +1136,10 @@ export async function scrapeFlyerProducts() {
     return { ...p, ...enrichProductMeta(p.name, p.discountedPrice) }
   })
 
-  console.log(`\n✅ Toplam ${all.length} ürün (${dirk.length} Dirk, ${jumbo.length} Jumbo, ${hoogvliet.length} Hoogvliet, ${lidl.length} Lidl, ${ah.length} AH, ${aldi.length} Aldi, ${vomar.length} Vomar)`)
+  console.log(`\n✅ Toplam ${all.length} ürün (${dirk.length} Dirk, ${jumbo.length} Jumbo, ${hoogvliet.length} Hoogvliet, ${lidl.length} Lidl, ${ah.length} AH, ${aldi.length} Aldi, ${vomar.length} Vomar, ${deka.length} DekaMarkt)`)
 
   // Besparing diagnostics
-  const markets = ['Albert Heijn', 'Aldi', 'Jumbo', 'Lidl', 'Dirk', 'Hoogvliet', 'Vomar']
+  const markets = ['Albert Heijn', 'Aldi', 'Jumbo', 'Lidl', 'Dirk', 'Hoogvliet', 'Vomar', 'DekaMarkt']
   for (const m of markets) {
     const mAll = all.filter(p => p.market === m)
     const mDiscount = mAll.filter(p => p.originalPrice > p.discountedPrice)
