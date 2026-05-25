@@ -616,8 +616,7 @@ async function scrapeAlbertHeijn() {
       const prods = json.products || []
       if (!prods.length) break
 
-      // İlk sayfa diagnostiği
-      if (page === 0 && prods[0]) {
+      if (process.env.DEBUG_SCRAPER && page === 0 && prods[0]) {
         const s = prods[0]
         console.log('  [AH] İlk ürün alanları:', Object.keys(s).join(', '))
         console.log('  [AH] İlk ürün örneği:', JSON.stringify({
@@ -753,9 +752,8 @@ async function scrapeAldi() {
     const seen = new Set()
     const results = []
 
-    // Log ALL fields of first product to discover hidden price data
     const allProds = Object.values(algoliaMap)
-    if (allProds[0]) {
+    if (process.env.DEBUG_SCRAPER && allProds[0]) {
       console.log('  [Aldi] tüm alanlar:', Object.keys(allProds[0]).join(', '))
       console.log('  [Aldi] currentPrice alanları:', Object.keys(allProds[0].currentPrice || {}).join(', '))
       console.log('  [Aldi] ilk ürün tam:', JSON.stringify(allProds[0], null, 0).slice(0, 800))
@@ -770,8 +768,7 @@ async function scrapeAldi() {
       const discountedPrice = p.currentPrice.priceValue
       const strikePrice = p.currentPrice.strikePrice?.strikePriceValue ?? null
 
-      // Diagnostic: log first 3 products to see priceTagLabels structure
-      if (!aldiDiagDone && results.length < 3) {
+      if (process.env.DEBUG_SCRAPER && !aldiDiagDone && results.length < 3) {
         console.log(`  [Aldi] sample: ${p.name} | strike=${strikePrice} | labels=`, JSON.stringify(p.currentPrice?.priceTagLabels))
         if (results.length === 2) aldiDiagDone = true
       }
@@ -794,10 +791,9 @@ async function scrapeAldi() {
         }
       }
 
-      // Only include products that are genuine promotions:
-      // either has a real discount price OR has promo labels in the API
-      const isGenuinePromo = originalPrice > discountedPrice || promoText.length > 0
-      if (!isGenuinePromo) continue
+      // Skip explicit "OP=OP" clearance items (stock clearance at regular price, not a deal)
+      const isOpIsOp = /\bop\s*[=is]+\s*op\b/i.test(p.name)
+      if (isOpIsOp && originalPrice <= discountedPrice) continue
 
       const primary = p.assets?.find(a => a.type === 'primary')
       const expiresAt = p.currentPrice.validUntil
