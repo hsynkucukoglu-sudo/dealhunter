@@ -95,13 +95,14 @@ export function buildProductListSchema(
   marketSlug: string,
 ) {
   const week = getISOWeek(new Date())
+  const withImage = products.filter(p => resolveImageUrl(p.imageUrl) !== null)
   return {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: `${marketName} Aanbiedingen Week ${week}`,
     url: `${SITE_URL}/supermarkt/${marketSlug}`,
-    numberOfItems: products.length,
-    itemListElement: products.slice(0, 25).map((p, i) => ({
+    numberOfItems: withImage.length,
+    itemListElement: withImage.slice(0, 25).map((p, i) => ({
       '@type': 'ListItem',
       position: i + 1,
       item: buildSingleProductSchema(p, marketSlug),
