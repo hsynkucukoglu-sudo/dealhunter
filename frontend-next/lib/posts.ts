@@ -713,6 +713,131 @@ export const POSTS: BlogPost[] = [
 <p>Voor de meeste Nederlanders is <strong>Jumbo Online met abonnement</strong> de goedkoopste thuisbezorgoptie, gecombineerd met de weekaanbiedingen. Picnic is handig maar niet het voordeligst op productprijzen. AH Online is sterk bij hoge bestedingen en persoonlijke bonussen.</p>
     `.trim(),
   },
+  {
+    slug: 'supermarkt-vergelijking-2026',
+    relatedMarkets: ['albert-heijn', 'jumbo', 'aldi', 'lidl', 'dirk', 'hoogvliet', 'vomar', 'dekamarkt'],
+    title: 'Supermarkt vergelijking 2026: welke is het goedkoopst?',
+    description: 'Complete vergelijking van alle grote Nederlandse supermarkten in 2026. Prijs, kwaliteit, aanbiedingen en service van Albert Heijn, Jumbo, Aldi, Lidl, Dirk, Hoogvliet, Vomar en DekaMarkt.',
+    date: '2026-05-26',
+    readTime: 6,
+    category: 'Vergelijking',
+    content: `
+<p class="lead">Welke supermarkt is het goedkoopst in 2026? Het antwoord hangt af van wat je koopt — maar met de juiste strategie bespaar je <strong>€20–40 per week</strong> door slim te combineren. We vergelijken alle acht supermarkten op DealHunter4U.</p>
+
+<h2>Overzicht: de 8 supermarkten vergeleken</h2>
+<p>DealHunter4U vergelijkt elke week de aanbiedingen van Albert Heijn, Jumbo, Aldi, Lidl, Dirk, Hoogvliet, Vomar en DekaMarkt. Zo zie je in één oogopslag waar jouw boodschappen het goedkoopst zijn.</p>
+
+<h2>1. Albert Heijn — marktleider met slimme bonussen</h2>
+<p>Albert Heijn is de grootste supermarkt van Nederland met meer dan 1.000 filialen. De Bonus-aanbiedingen wisselen elke <strong>woensdag</strong> en zijn via de app ook persoonlijk.</p>
+<ul>
+  <li><strong>Sterkste punt:</strong> persoonlijke bonussen in de AH-app, breed assortiment</li>
+  <li><strong>Zwakste punt:</strong> reguliere prijzen zijn hoger dan discounters</li>
+  <li><strong>Beste voor:</strong> A-merken in de aanbieding, biologische producten, AH Excellent</li>
+  <li><strong>Aanbiedingen:</strong> woensdag t/m dinsdag</li>
+</ul>
+<p>→ <a href="/supermarkt/albert-heijn">Actuele Albert Heijn aanbiedingen</a></p>
+
+<h2>2. Jumbo — combinatie van prijs en service</h2>
+<p>Jumbo combineert scherpe weekaanbiedingen met goede service en een brede productrange. Weekaanbiedingen starten elke <strong>woensdag</strong>, tegelijk met AH.</p>
+<ul>
+  <li><strong>Sterkste punt:</strong> brede keuze, goede kwaliteit huismerk, Jumbo Extra's spaarprogramma</li>
+  <li><strong>Zwakste punt:</strong> iets duurder dan Aldi/Lidl op dagelijkse producten</li>
+  <li><strong>Beste voor:</strong> combinatie van kwaliteit en prijs, verse producten</li>
+  <li><strong>Aanbiedingen:</strong> woensdag t/m dinsdag</li>
+</ul>
+<p>→ <a href="/supermarkt/jumbo">Actuele Jumbo aanbiedingen</a></p>
+
+<h2>3. Aldi — prijswinnaar op basisproducten</h2>
+<p>Aldi is structureel de goedkoopste supermarkt voor dagelijkse boodschappen. Eigen merken domineren het assortiment, maar de kwaliteit is de laatste jaren sterk verbeterd.</p>
+<ul>
+  <li><strong>Sterkste punt:</strong> laagste basisprijs op zuivel, vlees, pasta, rijst</li>
+  <li><strong>Zwakste punt:</strong> beperkt A-merk assortiment</li>
+  <li><strong>Beste voor:</strong> gezinnen die op budget leven, weekboodschappen basisproducten</li>
+  <li><strong>Aanbiedingen:</strong> maandag t/m zondag</li>
+</ul>
+<p>→ <a href="/supermarkt/aldi">Actuele Aldi aanbiedingen</a></p>
+
+<h2>4. Lidl — discounter met verrassingen</h2>
+<p>Lidl combineert lage dagprijzen met een verrassend assortiment: verse bakkerij, internationale producten en een groeiend biologisch aanbod. De Lidl Plus app geeft extra kortingen bovenop de weekdeals.</p>
+<ul>
+  <li><strong>Sterkste punt:</strong> Lidl Plus app-kortingen, vers vlees, bakkerij</li>
+  <li><strong>Zwakste punt:</strong> wisselend assortiment (Actieweek producten op = op)</li>
+  <li><strong>Beste voor:</strong> vers vlees, internationale specialiteiten, biologisch</li>
+  <li><strong>Aanbiedingen:</strong> maandag + donderdag (Actieweek non-food)</li>
+</ul>
+<p>→ <a href="/supermarkt/lidl">Actuele Lidl aanbiedingen</a></p>
+
+<h2>5. Dirk — regio Amsterdam/Utrecht prijsvechter</h2>
+<p>Dirk van den Broek is een regionale supermarkt met filialen in Noord- en Zuid-Holland en Utrecht. Bekendstaat om zijn scherpe prijzen op groente, fruit en vlees — vergelijkbaar met Aldi/Lidl.</p>
+<ul>
+  <li><strong>Sterkste punt:</strong> lage prijzen, veel verse producten in aanbieding</li>
+  <li><strong>Zwakste punt:</strong> beperkte regio (alleen Randstad)</li>
+  <li><strong>Beste voor:</strong> groente, fruit, vlees, regionale aanbiedingen</li>
+  <li><strong>Aanbiedingen:</strong> woensdag t/m dinsdag</li>
+</ul>
+<p>→ <a href="/supermarkt/dirk">Actuele Dirk aanbiedingen</a></p>
+
+<h2>6. Hoogvliet — kwaliteit in de regio</h2>
+<p>Hoogvliet heeft een sterke positie in Zuid-Holland met moderne filialen en een goede balans tussen prijs en kwaliteit. Weekaanbiedingen wisselen elke woensdag.</p>
+<ul>
+  <li><strong>Sterkste punt:</strong> goed assortiment, aantrekkelijke weekdeals</li>
+  <li><strong>Zwakste punt:</strong> alleen beschikbaar in Zuid-Holland en omgeving</li>
+  <li><strong>Beste voor:</strong> lokale klanten die Aldi/Lidl-prijzen met AH-service combineren</li>
+  <li><strong>Aanbiedingen:</strong> woensdag t/m dinsdag</li>
+</ul>
+<p>→ <a href="/supermarkt/hoogvliet">Actuele Hoogvliet aanbiedingen</a></p>
+
+<h2>7. Vomar — Noord-Holland's lokale favoriet</h2>
+<p>Vomar is een regionale supermarkt in Noord-Holland met lage basisprijs en dagelijkse verse aanbiedingen. Klein assortiment, maar sterk op basisproducten.</p>
+<ul>
+  <li><strong>Sterkste punt:</strong> lage dagprijzen, lokale bekendheid</li>
+  <li><strong>Zwakste punt:</strong> beperkt tot Noord-Holland, klein assortiment</li>
+  <li><strong>Beste voor:</strong> Noord-Hollandse inwoners die laag geprijsde basis willen</li>
+  <li><strong>Aanbiedingen:</strong> woensdag t/m dinsdag</li>
+</ul>
+<p>→ <a href="/supermarkt/vomar">Actuele Vomar aanbiedingen</a></p>
+
+<h2>8. DekaMarkt — volledig assortiment voor de beste prijs</h2>
+<p>DekaMarkt is een middelgrote supermarktketen met een verrassend breed assortiment en scherpe weekaanbiedingen. Filialen bevinden zich verspreid over Noord-Holland en Flevoland.</p>
+<ul>
+  <li><strong>Sterkste punt:</strong> breed assortiment inclusief A-merken, wekelijkse deals</li>
+  <li><strong>Zwakste punt:</strong> beperkte geografische aanwezigheid</li>
+  <li><strong>Beste voor:</strong> klanten die Jumbo/AH-assortiment willen voor Aldi-prijs</li>
+  <li><strong>Aanbiedingen:</strong> woensdag t/m dinsdag</li>
+</ul>
+<p>→ <a href="/supermarkt/dekamarkt">Actuele DekaMarkt aanbiedingen</a></p>
+
+<h2>Prijsvergelijking: wie is écht het goedkoopst?</h2>
+<p>Een gemiddelde weekboodschap van basisproducten (melk, eieren, brood, pasta, vlees, groente) voor 2 personen:</p>
+<ul>
+  <li><strong>Aldi:</strong> €35–45 — goedkoopst op basisproducten</li>
+  <li><strong>Lidl:</strong> €37–47 — vergelijkbaar met Aldi, sterker op vers</li>
+  <li><strong>Dirk / Vomar:</strong> €38–48 — scherp, regional voordeel</li>
+  <li><strong>DekaMarkt / Hoogvliet:</strong> €42–52 — middensegment, breed assortiment</li>
+  <li><strong>Jumbo:</strong> €45–55 — breed assortiment, bonussen helpen</li>
+  <li><strong>Albert Heijn:</strong> €48–60 — hoogste reguliere prijs, maar Bonus maakt het goed</li>
+</ul>
+<p><strong>Conclusie:</strong> Aldi en Lidl zijn structureel 15–25% goedkoper dan AH/Jumbo. Maar met AH/Jumbo-bonussen verklein je dat verschil aanzienlijk.</p>
+
+<h2>De slimste strategie: combineer supermarkten</h2>
+<p>De meest slimme shoppers gaan niet naar één supermarkt. De optimale combinatie:</p>
+<ol>
+  <li><strong>Check op maandag</strong> welke aanbiedingen er zijn bij Aldi en Lidl — koop vlees en basisproducten</li>
+  <li><strong>Check op woensdag</strong> de nieuwe AH/Jumbo Bonus — koop alleen wat echt in de aanbieding is</li>
+  <li><strong>Gebruik DealHunter4U</strong> als startpunt: zie alle 8 supermarkten naast elkaar en beslis dan</li>
+</ol>
+
+<h2>Conclusie: welke supermarkt is het beste?</h2>
+<p>Er is geen absolute winnaar — het hangt af van jouw regio en behoeften:</p>
+<ul>
+  <li><strong>Laagste prijs:</strong> Aldi of Lidl</li>
+  <li><strong>Beste balans:</strong> Jumbo of DekaMarkt</li>
+  <li><strong>Meeste keuze:</strong> Albert Heijn</li>
+  <li><strong>Regionale favoriet:</strong> Dirk (Randstad), Vomar (Noord-Holland), Hoogvliet (Zuid-Holland), DekaMarkt (Noord-Holland/Flevoland)</li>
+</ul>
+<p>Gebruik <a href="https://www.dealhunter4u.nl">DealHunter4U</a> om elke week in één oogopslag te zien welke supermarkt de beste deals heeft — dan hoef je nooit meer te gissen waar je heen moet.</p>
+    `.trim(),
+  },
 ]
 
 export function getPost(slug: string): BlogPost | undefined {
