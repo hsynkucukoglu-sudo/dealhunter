@@ -895,7 +895,10 @@ async function _fetchVomarCategory(category) {
       headers: HEADERS,
       signal: AbortSignal.timeout(15000),
     })
-    if (!res.ok) return []
+    if (!res.ok) {
+      if (res.status === 500) console.log(`  ⚠️  Vomar 500: ${category}`)
+      return []
+    }
     const html = await res.text()
 
     const idx = html.indexOf('window.__NUXT__=')
@@ -963,7 +966,8 @@ async function scrapeVomar() {
       }
     }
 
-    console.log(`  ✅ Vomar: ${results.length} ürün`)
+    const withSavings = results.filter(r => r.originalPrice > r.discountedPrice)
+    console.log(`  ✅ Vomar: ${results.length} ürün (${withSavings.length} met besparing)`)
     return results
   } catch (e) {
     console.error('  ❌ Vomar:', e.message)
