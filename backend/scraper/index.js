@@ -3,7 +3,6 @@
  * Render free tier (512MB) ile uyumlu.
  */
 import * as cheerio from 'cheerio'
-import { createContext, runInContext } from 'node:vm'
 
 let EXPIRES_AT = ''
 
@@ -834,136 +833,57 @@ async function scrapeAldi() {
   }
 }
 
-// ─── VOMAR — Nuxt SSR __NUXT__ extraction ────────────────────────────────────
+// ─── VOMAR — CMS API discount deals endpoint ─────────────────────────────────
 const VOMAR_CDN = 'https://d3vricquk1sjgf.cloudfront.net/articles/'
 
-const VOMAR_CATEGORIES = [
-  // vers (21)
-  'vers/aardappelen', 'vers/banket', 'vers/brood', 'vers/fruit', 'vers/grill',
-  'vers/groente', 'vers/kaas', 'vers/kip-kalkoen', 'vers/ontbijt', 'vers/vegetarisch',
-  'vers/vers-gebak', 'vers/verse-crackers-beschuit', 'vers/verse-kruiden',
-  'vers/verse-maaltijden-maaltijdsalades', 'vers/verse-noten', 'vers/verse-sappen',
-  'vers/verse-tapas', 'vers/verse-vis', 'vers/vlees', 'vers/vleeswaren-salades',
-  'vers/zuivel-boter-eieren',
-  // diepvries (11)
-  'diepvries/diepvries-brood-bladerdeeg', 'diepvries/diepvries-fruit',
-  'diepvries/diepvries-gebak', 'diepvries/diepvries-groente', 'diepvries/diepvries-pizza-s',
-  'diepvries/diepvries-snacks', 'diepvries/diepvries-vis-schaaldieren',
-  'diepvries/diepvries-vlees', 'diepvries/diepvriesaardappelen',
-  'diepvries/diepvriesmaaltijden', 'diepvries/ijs',
-  // voorraadkast (10)
-  'voorraadkast/bakproducten', 'voorraadkast/bewuste-voeding', 'voorraadkast/broodbeleg',
-  'voorraadkast/chips-koek-snacks-nootjes', 'voorraadkast/chocolade-snoep',
-  'voorraadkast/ontbijt', 'voorraadkast/pasta-rijst-wereldmarkt',
-  'voorraadkast/soepen-conserven-sauzen-smaakmakers', 'voorraadkast/tussendoortjes',
-  'voorraadkast/zoetstoffen',
-  // frisdrank-sappen-koffie-thee (4)
-  'frisdrank-sappen-koffie-thee/frisdrank', 'frisdrank-sappen-koffie-thee/houdbare-zuivel',
-  'frisdrank-sappen-koffie-thee/koffie-cacao-en-thee',
-  'frisdrank-sappen-koffie-thee/vruchtensap-siropen',
-  // huishouden (12)
-  'huishouden/babyverzorging', 'huishouden/batterijen-lampen', 'huishouden/keukenpapier',
-  'huishouden/koken-wonen', 'huishouden/lucht-toiletverfrissers', 'huishouden/luiers',
-  'huishouden/schoonmaakmiddelen', 'huishouden/toiletpapier',
-  'huishouden/toiletreinigers-blokjes', 'huishouden/vuilnis-stofzuigerzakken',
-  'huishouden/wasmiddelen-wasverzachter', 'huishouden/zakdoekjes-tissues',
-  // drogisterij (9)
-  'drogisterij/bad-douche-zeep', 'drogisterij/dameshygiene', 'drogisterij/deodorant',
-  'drogisterij/ehbo', 'drogisterij/haarverzorging', 'drogisterij/huidverzorging',
-  'drogisterij/mondverzorging', 'drogisterij/voorbehoedsmiddelen',
-  'drogisterij/geneesmiddelen',
-  // bier-wijn-sterke-drank (3)
-  'bier-wijn-sterke-drank/bier', 'bier-wijn-sterke-drank/sterke-dranken',
-  'bier-wijn-sterke-drank/wijnen-port-sherry-s',
-  // huisdieren (3)
-  'huisdieren/diepvries-dierenvoeding', 'huisdieren/dierbenodigdheden',
-  'huisdieren/dierenvoeding',
-  // koken-tafelen-non-food (10)
-  'koken-tafelen-non-food/aardewerk-porselein-of-glas',
-  'koken-tafelen-non-food/feestartikelen', 'koken-tafelen-non-food/haardhout-barbecue',
-  'koken-tafelen-non-food/kaarsen', 'koken-tafelen-non-food/kantoorartikelen',
-  'koken-tafelen-non-food/kleding-schoenen', 'koken-tafelen-non-food/koken-wonen',
-  'koken-tafelen-non-food/speelgoed', 'koken-tafelen-non-food/textiel',
-  'koken-tafelen-non-food/tuin',
-  // baby-kind (1)
-  'baby-kind/baby-en-kindervoeding',
-]
-
-async function _fetchVomarCategory(category) {
+async function scrapeVomar() {
+  console.log('🏪 [Vomar] CMS discount deals API...')
   try {
-    const res = await fetch(`https://www.vomar.nl/producten/${category}`, {
-      headers: HEADERS,
+    const res = await fetch('https://api.vomar.nl/api/v1/article/getAllDiscountDealArticles', {
+      headers: {
+        ...HEADERS,
+        'Origin': 'https://www.vomar.nl',
+        'Referer': 'https://www.vomar.nl/discount-deals',
+      },
       signal: AbortSignal.timeout(15000),
     })
-    if (!res.ok) {
-      if (res.status === 500) console.log(`  ⚠️  Vomar 500: ${category}`)
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    const products = await res.json()
+
+    if (!Array.isArray(products) || products.length === 0) {
+      console.log('  ℹ️  Vomar: geen actieve discount deals')
       return []
     }
-    const html = await res.text()
 
-    const idx = html.indexOf('window.__NUXT__=')
-    if (idx === -1) return []
-    const end = html.indexOf('</script>', idx)
-    if (end === -1) return []
+    const results = []
+    const seen = new Set()
 
-    const ctx = createContext({ window: {}, undefined: undefined })
-    runInContext(`window.__NUXT__=${html.slice(idx + 16, end).replace(/;$/, '')}`, ctx)
+    for (const p of products) {
+      const name = (p.description || '').trim()
+      if (!name || seen.has(name.toLowerCase())) continue
+      seen.add(name.toLowerCase())
 
-    const products = ctx.window.__NUXT__?.data?.[0]?.mainGroupProducts ?? []
-
-    return products.reduce((acc, p) => {
       const discountedPrice = parseFloat(p.price) || 0
-      if (!discountedPrice) return acc
+      if (!discountedPrice) continue
 
-      // priceDefaultAmount is inconsistent across categories:
-      // sometimes euros (same unit as price), sometimes 1000× (millieuros)
       const rawDefault = parseFloat(p.priceDefaultAmount) || 0
       const originalPrice = rawDefault > discountedPrice * 100
-        ? rawDefault / 1000   // millieuros → euros
+        ? rawDefault / 1000
         : rawDefault || discountedPrice
 
-      const isDiscount = originalPrice > discountedPrice
-      const isPromo = p.discountDeal === true
-
-      if (!isDiscount && !isPromo) return acc
-
       const imgFile = p.images?.[0]?.imageUrl || null
-      acc.push({
-        name: (p.description || '').trim(),
+      results.push({
+        name,
         market: 'Vomar',
-        originalPrice,
+        originalPrice: originalPrice > discountedPrice ? originalPrice : discountedPrice,
         discountedPrice,
         imageUrl: imgFile ? `${VOMAR_CDN}${imgFile}?width=400&height=400&mode=crop` : null,
         isCampaign: true,
-        source: `vomar.nl/producten/${category}`,
+        source: 'vomar.nl/discount-deals',
         expiresAt: EXPIRES_AT,
-        campaignType: toCampaignType(p.description),
+        campaignType: toCampaignType(name),
         brand: p.brand || null,
       })
-      return acc
-    }, [])
-  } catch {
-    return []
-  }
-}
-
-async function scrapeVomar() {
-  console.log(`🏪 [Vomar] ${VOMAR_CATEGORIES.length} categorie-pagina's scannen...`)
-  try {
-    const results = []
-    const seen = new Set()
-    const BATCH = 8
-
-    for (let i = 0; i < VOMAR_CATEGORIES.length; i += BATCH) {
-      const batch = VOMAR_CATEGORIES.slice(i, i + BATCH)
-      const pages = await Promise.all(batch.map(_fetchVomarCategory))
-      for (const products of pages) {
-        for (const p of products) {
-          if (!p.name || seen.has(p.name.toLowerCase())) continue
-          seen.add(p.name.toLowerCase())
-          results.push(p)
-        }
-      }
     }
 
     const withSavings = results.filter(r => r.originalPrice > r.discountedPrice)
@@ -1056,56 +976,58 @@ function enrichProductMeta(name, price) {
   return { brand: _extractBrand(name), unitSize, unitType, unitPrice, fullSizeLabel }
 }
 
-// ─── DEKAMARKT — HTML product cards (title + prices__offer + regular-strike) ──
+// ─── DEKAMARKT — GraphQL API (more reliable than HTML scraping on server IPs) ──
 async function scrapeDekaMarkt() {
-  console.log('🏪 [DekaMarkt] dekamarkt.nl/aanbiedingen...')
+  console.log('🏪 [DekaMarkt] GraphQL API...')
   try {
-    const res = await fetch('https://www.dekamarkt.nl/aanbiedingen', {
-      headers: HEADERS,
-      signal: AbortSignal.timeout(15000),
-    })
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    const html = await res.text()
-
-    const cards = html.split('class="product__card--image"')
+    const GQL = 'https://web-deka-gateway.dekamarkt.nl/graphql'
+    const FILES = 'https://web-fileserver.dekamarkt.nl/offers/'
     const seen = new Set()
     const results = []
 
-    for (let i = 1; i < cards.length; i++) {
-      const card = cards[i]
-
-      const nameM = card.match(/class="title"[^>]*>([^<]+)</) || card.match(/alt="([^"]+)"/)
-      if (!nameM) continue
-      const name = nameM[1]
-        .replace(/&#39;/g, "'").replace(/&amp;/g, '&').replace(/&quot;/g, '"').trim()
-      if (!name || seen.has(name.toLowerCase())) continue
-
-      const dealM = card.match(/prices__offer[^>]*>[^<]*<span[^>]*>(\d+)\.<\/span><small[^>]*><span[^>]*>(\d+)/)
-      if (!dealM) continue
-      const discountedPrice = parseFloat(dealM[1] + '.' + dealM[2])
-      if (!discountedPrice) continue
-
-      const wasM = card.match(/regular regular-strike"[^>]*>([\d.]+)</)
-      const originalPrice = wasM ? parseFloat(wasM[1]) : discountedPrice
-
-      const imgM = card.match(/src="(https:\/\/web-fileserver\.dekamarkt\.nl[^"]+|[^"]*\/offers\/[^"]+)"/)
-      const imageUrl = imgM ? imgM[1] : null
-
-      const chipM = card.match(/class="chip"[^>]*>[^<]*<span[^>]*>([^<]+)</)
-      const promoLabel = chipM ? chipM[1].trim() : null
-
-      seen.add(name.toLowerCase())
-      results.push({
-        name,
-        market: 'DekaMarkt',
-        originalPrice: originalPrice > discountedPrice ? originalPrice : discountedPrice,
-        discountedPrice,
-        imageUrl,
-        isCampaign: true,
-        source: 'dekamarkt.nl/aanbiedingen',
-        expiresAt: EXPIRES_AT,
-        campaignType: toCampaignType(promoLabel || name),
+    for (let section = 1; section <= 30; section++) {
+      const res = await fetch(GQL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Origin': 'https://www.dekamarkt.nl',
+          'Referer': 'https://www.dekamarkt.nl/aanbiedingen',
+          'User-Agent': UA,
+          'Accept-Language': 'nl-NL,nl;q=0.9',
+        },
+        body: JSON.stringify({
+          query: `{ listOffersBySection(section: ${section}) { currentOffers { offerId headerText subText packaging promotionText offerPrice normalPrice image type } } }`,
+        }),
+        signal: AbortSignal.timeout(10000),
       })
+      if (!res.ok) break
+      const data = await res.json()
+      const offers = data?.data?.listOffersBySection?.currentOffers ?? []
+
+      for (const o of offers) {
+        if (seen.has(o.offerId)) continue
+        seen.add(o.offerId)
+
+        const discountedPrice = parseFloat(o.offerPrice) || 0
+        if (!discountedPrice) continue
+
+        const originalPrice = parseFloat(o.normalPrice) || discountedPrice
+        const name = (o.headerText || '').replace(/\s+/g, ' ').trim()
+        if (!name) continue
+
+        const promoLabel = o.promotionText || o.subText || ''
+        results.push({
+          name,
+          market: 'DekaMarkt',
+          originalPrice: originalPrice > discountedPrice ? originalPrice : discountedPrice,
+          discountedPrice,
+          imageUrl: o.image ? `${FILES}${o.image}` : null,
+          isCampaign: true,
+          source: 'dekamarkt.nl/aanbiedingen',
+          expiresAt: EXPIRES_AT,
+          campaignType: toCampaignType(promoLabel || name),
+        })
+      }
     }
 
     const withSavings = results.filter(r => r.originalPrice > r.discountedPrice)
