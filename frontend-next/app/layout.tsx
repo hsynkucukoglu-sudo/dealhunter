@@ -61,11 +61,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6266103134639533"
-          crossOrigin="anonymous"
-        />
         <meta name="theme-color" content="#1A1A1A" />
         <meta name="mobile-web-app-capable" content="yes" />
         <link rel="apple-touch-icon" href="/icon-192x192.png" />
@@ -92,6 +87,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </SessionProvider>
       </body>
       <GoogleAnalytics gaId="G-Y253QH18ZH" />
+      <Script
+        id="adsense"
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6266103134639533"
+        crossOrigin="anonymous"
+        strategy="afterInteractive"
+      />
       <Script
         id="clarity"
         strategy="afterInteractive"
