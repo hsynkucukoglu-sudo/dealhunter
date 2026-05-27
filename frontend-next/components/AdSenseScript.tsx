@@ -1,7 +1,7 @@
 'use client'
 import { useEffect } from 'react'
 
-const CLIENT_ID = 'ca-pub-4113343151276849'
+const CLIENT_ID = 'ca-pub-6266103134639533'
 
 function loadAdSense() {
   if (document.querySelector('script[src*="pagead2"]')) return
