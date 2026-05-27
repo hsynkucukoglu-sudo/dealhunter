@@ -608,10 +608,16 @@ async function scrapeAlbertHeijn() {
     const access_token = tokenData.access_token
     if (!access_token) { console.log('  [AH] token alınamadı:', JSON.stringify(tokenData)); return [] }
 
+    // Akamai Bot Manager: bm_sz cookie'yi token response'dan al ve search'lere geçir
+    const rawCookies = tokenRes.headers.getSetCookie?.() ?? [tokenRes.headers.get('set-cookie') ?? '']
+    const bmCookies = rawCookies.flatMap(c => c.split(',').map(s => s.trim().split(';')[0])).filter(c => c.includes('='))
+    const cookieStr = bmCookies.join('; ')
+
     const h = {
       'Authorization': `Bearer ${access_token}`,
       'x-application': 'AHWEBSHOP',
       'Accept': 'application/json',
+      ...(cookieStr ? { 'Cookie': cookieStr } : {}),
     }
 
     const seenIds = new Set()
@@ -654,56 +660,37 @@ async function scrapeAlbertHeijn() {
 
     console.log(`  [AH] S1 (bonus=true): ${seenIds.size} tarandı, ${candidates.length} promosyon`)
 
-    // Strateji 3: AH website HTML / Next.js data
+    // Strateji 3: AH mobile API — farklı category ile retry (IP bloğu varsa farklı path dene)
     if (candidates.length < 10) {
       try {
-        const htmlRes = await fetch('https://www.ah.nl/aanbiedingen', { headers: HEADERS })
+        // AH /bonus sayfası artık Next.js App Router kullanıyor (__NEXT_DATA__ yok)
+        // Alternatif: /zoeken?bonus=true endpoint'inden JSON-LD dene
+        const htmlRes = await fetch('https://www.ah.nl/zoeken?bonus=true&page=0', { headers: HEADERS })
         const html = await htmlRes.text()
-        const buildId = html.match(/"buildId"\s*:\s*"([^"]+)"/)?.[1]
-        if (buildId) {
-          const dataRes = await fetch(
-            `https://www.ah.nl/_next/data/${buildId}/aanbiedingen.json`,
-            { headers: HEADERS }
-          )
-          if (dataRes.ok) {
-            const raw = await dataRes.text()
-
-            function* extractStrings(obj) {
-              if (typeof obj === 'string') yield obj
-              else if (Array.isArray(obj)) { for (const v of obj) yield* extractStrings(v) }
-              else if (obj && typeof obj === 'object') { for (const v of Object.values(obj)) yield* extractStrings(v) }
+        // JSON-LD structured data
+        for (const [, block] of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+          try {
+            const data = JSON.parse(block)
+            const items = data.itemListElement || (Array.isArray(data) ? data : [])
+            for (const item of items) {
+              const p = item.item || item
+              if (!p.name || !p.offers?.price) continue
+              const discountedPrice = parseFloat(p.offers.price)
+              const originalPrice = parseFloat(p.offers.highPrice || p.offers.price)
+              if (isNaN(discountedPrice) || discountedPrice <= 0) continue
+              if (seenIds.has(p.name)) continue
+              seenIds.add(p.name)
+              candidates.push({
+                discountedPrice,
+                originalPrice: originalPrice > discountedPrice ? originalPrice : discountedPrice,
+                name: p.name,
+                imageUrl: p.image || null,
+                promoLabel: null,
+              })
             }
-            function walkProducts(obj, out, seen) {
-              if (!obj || typeof obj !== 'object') return
-              if ((obj.title || obj.name) && (obj.currentPrice ?? obj.salesPrice)) {
-                const nm = obj.title || obj.name
-                if (!seen.has(nm)) { seen.add(nm); out.push(obj) }
-              }
-              for (const v of (Array.isArray(obj) ? obj : Object.values(obj))) walkProducts(v, out, seen)
-            }
-
-            const outer = JSON.parse(raw)
-            const seen3 = new Set()
-            for (const str of extractStrings(outer)) {
-              if (!str.includes('currentPrice') && !str.includes('salesPrice')) continue
-              try {
-                const inner = JSON.parse(str)
-                const prods = []
-                walkProducts(inner, prods, seen3)
-                for (const p of prods) {
-                  if (seenIds.has(p.webshopId || p.id)) continue
-                  seenIds.add(p.webshopId || p.id || p.title)
-                  const promo = calcAhPromo({ ...p, title: p.title || p.name })
-                  if (!promo) continue
-                  const img = p.images?.[0]?.url || p.image || null
-                  const unitInfo = parseAhUnitInfo(p, promo.discountedPrice)
-                  candidates.push({ ...promo, name: p.title || p.name, imageUrl: img, ...unitInfo })
-                }
-              } catch {}
-            }
-            console.log(`  [AH] S3 (Next.js data) sonrası toplam: ${candidates.length}`)
-          }
+          } catch {}
         }
+        console.log(`  [AH] S3 (JSON-LD fallback) sonrası toplam: ${candidates.length}`)
       } catch (e3) {
         console.log(`  [AH] S3 hata: ${e3.message}`)
       }
