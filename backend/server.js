@@ -49,6 +49,13 @@ const pushLimit = rateLimit({
   legacyHeaders: false,
   message: { error: 'Too many subscription requests.' },
 })
+const newsletterLimit = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Te veel aanmeldingen, probeer later opnieuw.' },
+})
 
 // ===== Admin Auth Middleware =====
 const requireAdmin = (req, res, next) => {
@@ -442,6 +449,38 @@ app.get('/health', (req, res) => {
 app.get('/api/health/scraper', asyncHandler(async (req, res) => {
   const stats = await getScraperStats()
   res.json({ ...stats, scraperRunning })
+}))
+
+app.post('/api/newsletter/subscribe', newsletterLimit, asyncHandler(async (req, res) => {
+  const { email } = req.body
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ error: 'Ongeldig e-mailadres' })
+  }
+
+  const apiKey = process.env.BREVO_API_KEY
+  const listId = parseInt(process.env.BREVO_LIST_ID || '0')
+
+  if (!apiKey || !listId) {
+    return res.status(503).json({ error: 'Newsletter service niet beschikbaar' })
+  }
+
+  const brevoRes = await fetch('https://api.brevo.com/v3/contacts', {
+    method: 'POST',
+    headers: { 'api-key': apiKey, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, listIds: [listId], updateEnabled: false }),
+  })
+
+  if (brevoRes.status === 201 || brevoRes.status === 204) {
+    return res.json({ success: true })
+  }
+
+  const data = await brevoRes.json()
+  // Al zeker ingeschreven → toch success tonen
+  if (data.code === 'duplicate_parameter') {
+    return res.json({ success: true })
+  }
+
+  res.status(500).json({ error: 'Aanmelding mislukt, probeer het later opnieuw' })
 }))
 
 

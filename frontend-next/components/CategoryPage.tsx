@@ -28,7 +28,7 @@ export function CategoryPage({ category, initialProducts }: { category: Category
   const ui = {
     allMarkets: lang === 'tr' ? 'Tüm marketler' : lang === 'en' ? 'All markets' : 'Alle markten',
     deals: lang === 'tr' ? 'fırsatlar' : lang === 'en' ? 'deals' : 'aanbiedingen',
-    savings: lang === 'tr' ? 'tasarruf' : lang === 'en' ? 'savings' : 'besparing',
+
     found: lang === 'tr' ? 'fırsat bulundu' : lang === 'en' ? 'deals found' : 'aanbiedingen gevonden',
     noDeals: lang === 'tr' ? 'Fırsat bulunamadı' : lang === 'en' ? 'No deals found' : 'Geen aanbiedingen gevonden',
     otherCats: lang === 'tr' ? 'Diğer kategoriler' : lang === 'en' ? 'Other categories' : 'Andere categorieën',
@@ -47,9 +47,12 @@ export function CategoryPage({ category, initialProducts }: { category: Category
     return matchSearch && matchMarket
   }), [initialProducts, search, selectedMarket])
 
-  const totalSavings = useMemo(() =>
-    filtered.reduce((sum, p) => sum + (p.originalPrice > p.discountedPrice ? p.originalPrice - p.discountedPrice : 0), 0)
-  , [filtered])
+  const avgDiscount = useMemo(() => {
+    const withDiscount = filtered.filter(p => p.originalPrice > p.discountedPrice)
+    if (!withDiscount.length) return 0
+    const avg = withDiscount.reduce((sum, p) => sum + ((p.originalPrice - p.discountedPrice) / p.originalPrice * 100), 0) / withDiscount.length
+    return Math.round(avg)
+  }, [filtered])
 
   return (
     <div className="min-h-screen" style={{ background: '#F5EDE3' }}>
@@ -136,10 +139,10 @@ export function CategoryPage({ category, initialProducts }: { category: Category
               style={{ background: 'white', border: '1.5px solid #E0D8CE', color: '#1A1A1A' }}
             />
           </div>
-          {totalSavings > 0 && (
+          {avgDiscount > 0 && (
             <div className="flex items-center gap-2 px-4 py-3 rounded-full" style={{ background: 'rgba(27,158,75,0.08)' }}>
               <span className="material-symbols-outlined text-sm" style={{ color: '#1B9E4B' }}>trending_down</span>
-              <span className="text-sm font-bold" style={{ color: '#1B9E4B' }}>€{totalSavings.toFixed(2)} {ui.savings}</span>
+              <span className="text-sm font-bold" style={{ color: '#1B9E4B' }}>Gemiddeld {avgDiscount}% goedkoper</span>
             </div>
           )}
         </div>

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getPost, getAllPosts } from '@/lib/posts'
-import { buildBreadcrumbSchema } from '@/lib/schema'
+import { buildBreadcrumbSchema, buildFaqSchema } from '@/lib/schema'
 import { MARKETS } from '@/lib/types'
 
 export async function generateStaticParams() {
@@ -53,6 +53,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     { name: post.title, url: `/blog/${post.slug}` },
   ])
 
+  const faqSchema = post.faqs?.length ? buildFaqSchema(post.faqs) : null
+
   const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -74,6 +76,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     <div style={{ background: '#F5EDE3', minHeight: '100vh' }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
 
       {/* NAV */}
       <nav style={{ background: '#1A1A1A', padding: '16px 32px', display: 'flex', alignItems: 'center', gap: 24 }}>

@@ -18,6 +18,7 @@ import { PushNotificationButton } from './PushNotificationButton'
 import { AuthButton } from './AuthButton'
 import { detectCampaignType, CAMPAIGN_FILTERS, CampaignType } from '@/lib/campaignType'
 import { StickyFilterBar } from './StickyFilterBar'
+import { NewsletterSignup } from './NewsletterSignup'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
@@ -614,7 +615,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         )}
 
         {/* AD — Hero altı */}
-        <AdBanner slot="5913072775" format="horizontal" className="mb-10" />
+        <AdBanner slot="7882410354" format="horizontal" className="mb-10" />
 
         {/* ANA LAYOUT: sol içerik + sağ Prijsvergelijking sidebar */}
         <div className="flex gap-8 items-start">
@@ -694,7 +695,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
               )}
 
               {/* AD */}
-              <AdBanner slot="5913072775" format="auto" className="mb-10" />
+              <AdBanner slot="6569328687" format="auto" className="mb-10" />
 
               {/* Product Grid */}
               <section>
@@ -716,6 +717,8 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                 </div>
                 <ProductGrid products={filteredProducts} t={t} searchTerm={debouncedSearch} />
               </section>
+
+              <NewsletterSignup />
 
             </motion.div>
           )}
@@ -841,7 +844,7 @@ function ProductGrid({ products, t, searchTerm = '' }: { products: Product[]; t:
     if ((index + 1) % AD_INTERVAL === 0 && index + 1 < products.length) {
       rows.push(
         <div key={`ad-${index}`} className="col-span-2 lg:col-span-3 xl:col-span-4">
-          <AdBanner slot="5913072775" format="auto" className="my-2" />
+          <AdBanner slot="6629568666" format="auto" className="my-2" />
         </div>
       )
     }

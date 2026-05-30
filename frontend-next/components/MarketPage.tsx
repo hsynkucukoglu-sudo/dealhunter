@@ -36,9 +36,12 @@ export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
     return matchSearch && matchCampaign
   }), [initialProducts, search, campaignsOnly])
 
-  const totalSavings = useMemo(() =>
-    filtered.reduce((sum, p) => sum + (p.originalPrice > p.discountedPrice ? p.originalPrice - p.discountedPrice : 0), 0)
-  , [filtered])
+  const avgDiscount = useMemo(() => {
+    const withDiscount = filtered.filter(p => p.originalPrice > p.discountedPrice)
+    if (!withDiscount.length) return 0
+    const avg = withDiscount.reduce((sum, p) => sum + ((p.originalPrice - p.discountedPrice) / p.originalPrice * 100), 0) / withDiscount.length
+    return Math.round(avg)
+  }, [filtered])
 
   return (
     <div className="min-h-screen" style={{ background: '#F5EDE3' }}>
@@ -126,11 +129,11 @@ export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
         </div>
 
         {/* Stats */}
-        {totalSavings > 0 && (
+        {avgDiscount > 0 && (
           <div className="flex items-center gap-2 mb-6 p-3 rounded-2xl w-fit" style={{ background: 'rgba(27,158,75,0.08)' }}>
             <span className="material-symbols-outlined" style={{ color: '#1B9E4B' }}>trending_down</span>
             <span className="text-sm font-medium" style={{ color: '#1A1A1A' }}>
-              Totale besparing op deze pagina: <strong style={{ color: '#1B9E4B' }}>€{totalSavings.toFixed(2)}</strong>
+              Gemiddeld <strong style={{ color: '#1B9E4B' }}>{avgDiscount}% goedkoper</strong>
             </span>
           </div>
         )}
