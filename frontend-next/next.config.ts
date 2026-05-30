@@ -21,7 +21,7 @@ const nextConfig: NextConfig = {
       beforeFiles: [
         {
           source: '/ads.txt',
-          destination: '/api/ads-txt',
+          destination: '/ads-txt',
         },
       ],
       fallback: [
