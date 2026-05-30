@@ -440,6 +440,11 @@ app.post('/api/scraper/run', requireAdmin, scraperLimit, (req, res) => {
   runScraperJob().catch(e => console.error('Manuel scraper hatası:', e.message))
 })
 
+app.get('/api/ads-txt', (req, res) => {
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8')
+  res.send('google.com, pub-6266103134639533, DIRECT, f08c47fec0942fa0\n')
+})
+
 // ===== Health Check =====
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', message: '🚀 Backend çalışıyor', version: '2026-05-14-v4' })
