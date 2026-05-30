@@ -57,6 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <meta name="msvalidate.01" content="10C38B79AA33FFA059F4EE4DC13FBC3C" />
         <meta name="google-site-verification" content="mI1CClABNI4drkqyTq-9JU7dusT9WB8Yx0YMLXgXCA4" />
+        <meta name="google-adsense-account" content="ca-pub-6266103134639533" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
