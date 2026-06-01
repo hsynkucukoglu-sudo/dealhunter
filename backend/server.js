@@ -479,13 +479,14 @@ app.post('/api/newsletter/subscribe', newsletterLimit, asyncHandler(async (req, 
     return res.json({ success: true })
   }
 
-  const data = await brevoRes.json()
+  const data = await brevoRes.json().catch(() => ({}))
   // Al zeker ingeschreven → toch success tonen
   if (data.code === 'duplicate_parameter') {
     return res.json({ success: true })
   }
 
-  res.status(500).json({ error: 'Aanmelding mislukt, probeer het later opnieuw' })
+  console.error('[Newsletter] Brevo error', brevoRes.status, JSON.stringify(data))
+  res.status(500).json({ error: 'Aanmelding mislukt, probeer het later opnieuw', _debug: { status: brevoRes.status, code: data.code, message: data.message } })
 }))
 
 
