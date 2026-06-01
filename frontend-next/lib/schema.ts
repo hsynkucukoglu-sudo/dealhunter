@@ -119,7 +119,10 @@ export function buildHomePageSchema(markets: string) {
     description: `Wekelijkse supermarkt aanbiedingen van ${markets}`,
     potentialAction: {
       '@type': 'SearchAction',
-      target: `${SITE_URL}/?q={search_term_string}`,
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${SITE_URL}/?q={search_term_string}`,
+      },
       'query-input': 'required name=search_term_string',
     },
   }
