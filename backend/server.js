@@ -486,7 +486,7 @@ app.post('/api/newsletter/subscribe', newsletterLimit, asyncHandler(async (req, 
   }
 
   console.error('[Newsletter] Brevo error', brevoRes.status, JSON.stringify(data))
-  res.status(500).json({ error: 'Aanmelding mislukt, probeer het later opnieuw', _debug: { status: brevoRes.status, code: data.code, message: data.message } })
+  res.status(500).json({ error: 'Aanmelding mislukt, probeer het later opnieuw' })
 }))
 
 
