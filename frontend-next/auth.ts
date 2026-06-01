@@ -1,16 +1,14 @@
 import NextAuth from 'next-auth'
 import Google from 'next-auth/providers/google'
 
-if (!process.env.AUTH_GOOGLE_ID || !process.env.AUTH_GOOGLE_SECRET) {
-  throw new Error('AUTH_GOOGLE_ID and AUTH_GOOGLE_SECRET must be set')
-}
-
+// Not: build sırasında (Docker) env var'lar bulunmaz, bu yüzden burada throw etmiyoruz.
+// Runtime'da (Railway) değerler mevcut; eksikse OAuth çağrısı başarısız olur.
 export const { handlers, signIn, signOut, auth } = NextAuth({
   trustHost: true,
   providers: [
     Google({
-      clientId: process.env.AUTH_GOOGLE_ID,
-      clientSecret: process.env.AUTH_GOOGLE_SECRET,
+      clientId: process.env.AUTH_GOOGLE_ID ?? '',
+      clientSecret: process.env.AUTH_GOOGLE_SECRET ?? '',
     }),
   ],
   callbacks: {

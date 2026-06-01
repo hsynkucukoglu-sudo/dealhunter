@@ -18,12 +18,6 @@ const nextConfig: NextConfig = {
   async rewrites() {
     const apiBase = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
     return {
-      beforeFiles: [
-        {
-          source: '/ads.txt',
-          destination: `${apiBase}/api/ads-txt`,
-        },
-      ],
       fallback: [
         {
           source: '/api/:path*',
