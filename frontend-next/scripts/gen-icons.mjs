@@ -5,9 +5,8 @@ import { fileURLToPath } from 'url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const publicDir = path.resolve(__dirname, '..', 'public')
 
-// Cart paths reused from DealHunterLogo (red #D00000).
-// Raw bbox of the cart art ≈ x:[-7,209], y:[-5,140] → center (101, 67.5).
-const cart = `
+// White cart paths on red background — matches the new brand icon.
+const cartPaths = `
   <path d="M 122.8125 119.945312 C 98.414062 109.4375 56.257812 112.335938 34.03125 126.828125 C 25.9375 116.804688 28.714844 92.644531 38.015625 89.867188 C 31.617188 65.347656 44.417969 12.921875 13.375 11.230469 C 0.933594 24.519531 -6.796875 -4.953125 13.015625 2.171875 C 53.957031 6.113281 39.683594 57.082031 49.25 87.332031 C 83.554688 79.839844 141.050781 96.269531 129.335938 105.449219 C 95.273438 96.269531 53.238281 85.277344 38.015625 116.683594 C 54.929688 99.773438 117.5 102.792969 122.8125 119.945312 Z"/>
   <path d="M 120.277344 88.78125 C 147.453125 65.953125 208.753906 -0.582031 46.714844 31.886719 C 165.933594 25.367188 150.351562 35.511719 120.277344 88.78125 Z"/>
   <path d="M 140.570312 52.542969 C 113.996094 43.726562 81.984375 40.34375 52.875 46.019531 C 80.292969 44.085938 112.0625 50.851562 137.667969 59.429688 Z"/>
@@ -19,24 +18,23 @@ const cart = `
   <path d="M 50.089844 113.746094 C 52.269531 113.777344 54.304688 114.394531 55.9375 115.664062 C 60.679688 119.34375 60.238281 127.097656 54.945312 132.96875 C 49.65625 138.839844 41.511719 140.621094 36.765625 136.9375 C 32.019531 133.253906 32.464844 125.496094 37.753906 119.625 C 41.226562 115.773438 45.925781 113.683594 50.089844 113.746094 Z M 46.359375 121.097656 C 44.535156 121.070312 42.476562 122.058594 40.957031 123.878906 C 38.640625 126.648438 38.445312 130.304688 40.523438 132.042969 C 42.597656 133.78125 46.167969 132.941406 48.484375 130.171875 C 50.800781 127.402344 50.996094 123.742188 48.917969 122.003906 C 48.203125 121.40625 47.3125 121.113281 46.359375 121.097656 Z"/>
 `
 
-// Scale cart to ~360px wide and center it; bbox center (101, 67.5) → canvas center.
-const s = 1.667
-const tx = 256 - 101 * s
-const ty = 236 - 67.5 * s
+// Cart bbox: x≈[-7,209] w≈216, y≈[-5,140] h≈145. Center≈(101, 67.5).
+// Scale to ~380px wide, center in upper 72% of the 512 canvas.
+const s = 1.9
+const tx = 256 - 101 * s   // horizontal center
+const ty = 56 - (-5) * s   // top padding ~56px
 
-// rx=112 → rounded ('any' icon); rx=0 → full-bleed square (safe for maskable).
 const makeSvg = (rx) => `<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-  <rect x="0" y="0" width="512" height="512" rx="${rx}" fill="#FFFFFF"/>
-  <g transform="translate(${tx}, ${ty}) scale(${s})" fill="#D00000">
-    ${cart}
+  <rect x="0" y="0" width="512" height="512" rx="${rx}" fill="#D00000"/>
+  <g transform="translate(${tx}, ${ty}) scale(${s})" fill="#FFFFFF">
+    ${cartPaths}
   </g>
-  <rect x="338" y="404" width="120" height="58" rx="16" fill="#D00000"/>
-  <text x="398" y="444" font-family="'Space Grotesk','Nunito',sans-serif" font-size="34" font-weight="900" fill="#FFFFFF" text-anchor="middle">4U</text>
+  <text x="256" y="478" font-family="'Space Grotesk','Nunito',Arial,sans-serif" font-size="80" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="-2">4U</text>
 </svg>`
 
 const targets = [
   { size: 192, rx: 40 },  // purpose: any  → rounded corners
-  { size: 512, rx: 0 },   // purpose: maskable → full-bleed white square
+  { size: 512, rx: 0 },   // purpose: maskable → full-bleed (OS applies mask)
 ]
 
 for (const { size, rx } of targets) {
