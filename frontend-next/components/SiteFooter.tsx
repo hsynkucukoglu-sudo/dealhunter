@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { MARKETS, CATEGORIES } from '@/lib/types'
+import { VISIBLE_MARKETS as MARKETS, CATEGORIES } from '@/lib/types'
 
 export function SiteFooter() {
   return (

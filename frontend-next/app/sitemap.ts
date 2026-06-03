@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next'
-import { MARKETS, CATEGORIES } from '@/lib/types'
+import { VISIBLE_MARKETS as MARKETS, CATEGORIES } from '@/lib/types'
 import { getAllPosts } from '@/lib/posts'
 import { currentWeekSlug } from '@/lib/weeklyDeals'
 

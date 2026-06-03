@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getProducts } from '@/lib/api'
-import { MARKETS, MARKET_COLORS } from '@/lib/types'
+import { MARKETS, VISIBLE_MARKETS, MARKET_COLORS } from '@/lib/types'
 import { buildBreadcrumbSchema } from '@/lib/schema'
 import { parseWeekSlug, currentWeekSlug, getTopDeals } from '@/lib/weeklyDeals'
 
@@ -119,7 +119,8 @@ export default async function WeeklyDealsPage({ params }: Props) {
             </div>
           ) : topDeals.map((product, i) => {
             const pct = Math.round(((product.originalPrice - product.discountedPrice) / product.originalPrice) * 100)
-            const marketSlug = MARKETS.find(m => m.name === product.market)?.slug ?? ''
+            const marketEntry = MARKETS.find(m => m.name === product.market)
+            const marketSlug = marketEntry && !(marketEntry as { hidden?: boolean }).hidden ? marketEntry.slug : ''
             const color = MARKET_COLORS[product.market] ?? '#1A1A1A'
 
             return (
@@ -195,7 +196,7 @@ export default async function WeeklyDealsPage({ params }: Props) {
             Vergelijk direct welke supermarkt de beste deal heeft voor jouw boodschappen.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {MARKETS.map(m => (
+            {VISIBLE_MARKETS.map(m => (
               <Link key={m.slug} href={`/supermarkt/${m.slug}`} style={{
                 padding: '8px 14px', borderRadius: 20, textDecoration: 'none',
                 fontSize: 13, fontWeight: 700, color: 'white',

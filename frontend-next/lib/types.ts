@@ -101,6 +101,9 @@ export const MARKETS = [
     ctaTitle: 'Vomar Aanbiedingen Deze Week | Actuele Deals & Folder',
     description: 'Alle Vomar aanbiedingen van deze week — weekacties, verse producten en huishouddeals. Direct van de website, dagelijks bijgewerkt.',
     keywords: 'vomar aanbiedingen, vomar folder, vomar deals, vomar supermarkt, vomar aanbieding deze week, vomar korting, vomar actie, vomar weekaanbieding',
+    // Vomar publiceert weekaanbiedingen alleen als afbeelding (Publitas-folder),
+    // geen gestructureerde prijsdata beschikbaar → verborgen tot er een bron is.
+    hidden: true,
   },
   {
     slug: 'dekamarkt',
@@ -111,6 +114,11 @@ export const MARKETS = [
     keywords: 'dekamarkt aanbiedingen, dekamarkt folder, dekamarkt deals, dekamarkt actie, dekamarkt aanbieding deze week, dekamarkt korting, dekamarkt weekaanbieding, dekamarkt supermarkt',
   },
 ]
+
+// Markets shown in navigation, filters, footer and sitemap.
+// Hidden markets (e.g. no structured data source) stay in MARKETS so existing
+// products/colors keep resolving, but are excluded from public listings.
+export const VISIBLE_MARKETS = MARKETS.filter(m => !(m as { hidden?: boolean }).hidden)
 
 export const MARKET_COLORS: Record<string, string> = Object.fromEntries(
   MARKETS.map(m => [m.name, m.color])

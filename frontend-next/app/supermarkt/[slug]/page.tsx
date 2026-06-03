@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getProducts } from '@/lib/api'
-import { MARKETS } from '@/lib/types'
+import { MARKETS, VISIBLE_MARKETS } from '@/lib/types'
 import { buildBreadcrumbSchema, buildFaqSchema, buildProductListSchema, getISOWeek } from '@/lib/schema'
 import { MarketPage } from '@/components/MarketPage'
 import { MARKET_FAQS } from '@/lib/marketFaqs'
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  return MARKETS.map(m => ({ slug: m.slug }))
+  return VISIBLE_MARKETS.map(m => ({ slug: m.slug }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function SupermarktPage({ params }: Props) {
   const { slug } = await params
   const market = MARKETS.find(m => m.slug === slug)
-  if (!market) notFound()
+  if (!market || (market as { hidden?: boolean }).hidden) notFound()
 
   const allProducts = await getProducts()
   const products = allProducts.filter(p => p.market === market.name)

@@ -126,7 +126,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
               {post.relatedMarkets!.map(slug => {
                 const market = MARKETS.find(m => m.slug === slug)
-                if (!market) return null
+                if (!market || (market as { hidden?: boolean }).hidden) return null
                 return (
                   <Link key={slug} href={`/supermarkt/${slug}`} style={{
                     display: 'inline-flex', alignItems: 'center', gap: 8,
