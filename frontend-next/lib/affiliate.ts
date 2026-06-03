@@ -1,9 +1,7 @@
-// Daisycon tracked deeplinks — Publisher ID: 51adealhu, Media ID: 478402
-// Format: https://ds1.nl/c/?wi=51adealhu&wm=478402&dl=DESTINATION
-
-const WI = '51adealhu'
-const WM = '478402'
-const dc = (dl: string) => `https://ds1.nl/c/?wi=${WI}&wm=${WM}&dl=${encodeURIComponent(dl)}`
+// Direct links to supermarket offer pages.
+// Daisycon tracking (ds1.nl) was causing redirects to manymorestores.com
+// because the publisher programs are not yet approved. Restore Daisycon
+// wrapping once programs are fully approved in the Daisycon dashboard.
 
 interface AffiliateEntry {
   url: string
@@ -12,36 +10,36 @@ interface AffiliateEntry {
 
 const AFFILIATE_MAP: Record<string, AffiliateEntry> = {
   'Albert Heijn': {
-    url: dc('https://www.ah.nl/bonus'),
-    rel: 'noopener noreferrer sponsored',
+    url: 'https://www.ah.nl/bonus',
+    rel: 'noopener noreferrer',
   },
   Jumbo: {
-    url: dc('https://www.jumbo.com/aanbiedingen'),
-    rel: 'noopener noreferrer sponsored',
+    url: 'https://www.jumbo.com/aanbiedingen',
+    rel: 'noopener noreferrer',
   },
   Lidl: {
-    url: dc('https://www.lidl.nl/aanbiedingen'),
-    rel: 'noopener noreferrer sponsored',
+    url: 'https://www.lidl.nl/aanbiedingen',
+    rel: 'noopener noreferrer',
   },
   Dirk: {
-    url: dc('https://www.dirk.nl/aanbiedingen'),
-    rel: 'noopener noreferrer sponsored',
+    url: 'https://www.dirk.nl/aanbiedingen',
+    rel: 'noopener noreferrer',
   },
   Aldi: {
-    url: dc('https://www.aldi.nl/aanbiedingen.html'),
-    rel: 'noopener noreferrer sponsored',
+    url: 'https://www.aldi.nl/aanbiedingen.html',
+    rel: 'noopener noreferrer',
   },
   Hoogvliet: {
-    url: dc('https://www.hoogvliet.com/aanbiedingen'),
-    rel: 'noopener noreferrer sponsored',
+    url: 'https://www.hoogvliet.com/aanbiedingen',
+    rel: 'noopener noreferrer',
   },
   Vomar: {
-    url: dc('https://www.vomar.nl/aanbiedingen'),
-    rel: 'noopener noreferrer sponsored',
+    url: 'https://www.vomar.nl/aanbiedingen',
+    rel: 'noopener noreferrer',
   },
   DekaMarkt: {
-    url: dc('https://www.dekamarkt.nl/aanbiedingen'),
-    rel: 'noopener noreferrer sponsored',
+    url: 'https://www.dekamarkt.nl/aanbiedingen',
+    rel: 'noopener noreferrer',
   },
 }
 
