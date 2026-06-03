@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { getAllPosts } from '@/lib/posts'
 import BlogCard from './BlogCard'
 import { buildBreadcrumbSchema } from '@/lib/schema'
+import { currentWeekSlug } from '@/lib/weeklyDeals'
+import { getISOWeek } from '@/lib/schema'
 
 export const metadata: Metadata = {
   title: 'Blog — Bespaartips & Supermarkt Aanbiedingen | DealHunter4U',
@@ -18,6 +20,9 @@ export const metadata: Metadata = {
 
 export default function BlogPage() {
   const posts = getAllPosts()
+  const weekSlug = currentWeekSlug()
+  const weekNum = getISOWeek(new Date())
+  const year = new Date().getFullYear()
   const breadcrumbSchema = buildBreadcrumbSchema([
     { name: 'Home', url: '/' },
     { name: 'Blog', url: '/blog' },
@@ -47,6 +52,27 @@ export default function BlogPage() {
             Alles over slim boodschappen doen, aanbiedingen vergelijken en geld besparen op je dagelijkse boodschappen.
           </p>
         </div>
+
+        {/* Weekly deals featured card */}
+        <Link href={`/blog/beste-deals-${weekSlug}`} style={{ textDecoration: 'none', display: 'block', marginBottom: 24 }}>
+          <div style={{
+            background: '#D00000', borderRadius: 20, padding: '24px 28px',
+            boxShadow: '0 4px 0 #A00000', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16,
+          }}>
+            <div>
+              <span style={{ background: 'rgba(255,255,255,0.2)', color: 'white', fontSize: 11, fontWeight: 900, padding: '3px 10px', borderRadius: 20, letterSpacing: 2, textTransform: 'uppercase' }}>
+                Automatisch · Week {weekNum}
+              </span>
+              <h2 style={{ fontSize: 22, fontWeight: 900, color: 'white', marginTop: 10, marginBottom: 6, fontFamily: 'Playfair Display, Georgia, serif' }}>
+                Beste Deals Week {weekNum} {year}
+              </h2>
+              <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 14, margin: 0 }}>
+                Top 15 aanbiedingen van alle supermarkten — automatisch bijgewerkt
+              </p>
+            </div>
+            <div style={{ color: 'white', fontSize: 28, flexShrink: 0 }}>→</div>
+          </div>
+        </Link>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
           {posts.map(post => (
