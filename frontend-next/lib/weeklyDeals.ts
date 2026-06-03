@@ -6,7 +6,8 @@ export function currentWeekSlug(): string {
   return `week-${getISOWeek(now)}-${now.getFullYear()}`
 }
 
-export function parseWeekSlug(slug: string): { week: number; year: number } | null {
+export function parseWeekSlug(slug: string | undefined | null): { week: number; year: number } | null {
+  if (!slug) return null
   const m = slug.match(/^week-(\d+)-(\d{4})$/)
   if (!m) return null
   const week = parseInt(m[1])

@@ -17,7 +17,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { week } = await params
+  const { week } = await params ?? {}
   const parsed = parseWeekSlug(week)
   if (!parsed) return {}
 
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function WeeklyDealsPage({ params }: Props) {
-  const { week } = await params
+  const { week } = await params ?? {}
   const parsed = parseWeekSlug(week)
   if (!parsed) notFound()
 
