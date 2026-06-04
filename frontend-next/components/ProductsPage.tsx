@@ -19,6 +19,7 @@ import { AuthButton } from './AuthButton'
 import { detectCampaignType, CAMPAIGN_FILTERS, CampaignType } from '@/lib/campaignType'
 import { StickyFilterBar } from './StickyFilterBar'
 import { NewsletterSignup } from './NewsletterSignup'
+import { trackMarketFilter, trackCategoryFilter, trackCampaignFilter, trackSearch, trackPwaInstall } from '@/lib/analytics'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
@@ -68,9 +69,13 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
   }, [])
 
   useEffect(() => {
-    const t = setTimeout(() => setDebouncedSearch(searchTerm.trim()), 200)
+    const t = setTimeout(() => {
+      const trimmed = searchTerm.trim()
+      setDebouncedSearch(trimmed)
+      if (trimmed.length >= 2) trackSearch(trimmed, filteredProducts.length)
+    }, 500)
     return () => clearTimeout(t)
-  }, [searchTerm])
+  }, [searchTerm]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const fuse = useMemo(() => new Fuse(products, {
     keys: [
@@ -88,6 +93,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
   const handleInstallPWA = async () => {
     const prompt = deferredPromptRef.current
     if (!prompt) return
+    trackPwaInstall()
     prompt.prompt()
     const result = await prompt.userChoice
     if (result.outcome === 'accepted') {
@@ -399,7 +405,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             <div className="w-px h-6 flex-none" style={{ background: '#C9C1B6' }} />
             {availableMarkets.map(market => (
               <motion.button key={market} whileTap={{ scale: 0.95 }}
-                onClick={() => { setSelectedMarket(market); setShowCampaignsOnly(false); setSelectedCategory('all') }}
+                onClick={() => { setSelectedMarket(market); setShowCampaignsOnly(false); setSelectedCategory('all'); trackMarketFilter(market) }}
                 className={`market-pill flex-none ${selectedMarket === market && !showCampaignsOnly ? 'market-pill-active' : ''}`}>
                 <div className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[9px] font-bold flex-none"
                   style={{ background: MARKET_COLORS[market] || '#6B6259' }}>
@@ -417,7 +423,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             <motion.button
               key={f.type}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setSelectedCampaign(f.type === selectedCampaign ? 'all' : f.type)}
+              onClick={() => { const next = f.type === selectedCampaign ? 'all' : f.type; setSelectedCampaign(next); if (next !== 'all' && next != null) trackCampaignFilter(String(next)) }}
               className={`market-pill flex-none ${selectedCampaign === f.type ? 'market-pill-active' : ''}`}
             >
               <span>{f.emoji}</span>

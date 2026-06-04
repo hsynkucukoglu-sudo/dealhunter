@@ -10,6 +10,7 @@ import { useFavorites } from '@/context/FavoritesContext'
 import { calcUnitPrice } from '@/lib/productMeta'
 import { detectCampaignType } from '@/lib/campaignType'
 import { usePriceHistory } from '@/context/PriceHistoryContext'
+import { trackDealClick, trackAddFavorite, trackAddWatchlist } from '@/lib/analytics'
 
 export function ProductCard({ product }: { product: Product }) {
   const { addToCart } = useShoppingList()
@@ -98,7 +99,7 @@ export function ProductCard({ product }: { product: Product }) {
         </button>
         <div className="absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           <button
-            onClick={(e) => { e.stopPropagation(); toggleFavorite(product) }}
+            onClick={(e) => { e.stopPropagation(); toggleFavorite(product); if (!isFavorite(product)) trackAddFavorite(product.name, product.market) }}
             className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
             style={{ background: 'rgba(255,255,255,0.9)' }}
             aria-label={isFavorite(product) ? `${product.name} uit favorieten verwijderen` : `${product.name} aan favorieten toevoegen`}
@@ -109,7 +110,7 @@ export function ProductCard({ product }: { product: Product }) {
             </span>
           </button>
           <button
-            onClick={(e) => { e.stopPropagation(); toggleWatch(product) }}
+            onClick={(e) => { e.stopPropagation(); toggleWatch(product); if (!isWatching(product.id)) trackAddWatchlist(product.name, product.market) }}
             className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
             style={{ background: 'rgba(255,255,255,0.9)' }}
             aria-label={isWatching(product.id) ? `${product.name} melding uitschakelen` : `${product.name} prijs volgen`}
@@ -207,7 +208,7 @@ export function ProductCard({ product }: { product: Product }) {
             }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = '0.88'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)' }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = '1'; (e.currentTarget as HTMLElement).style.transform = 'translateY(0)' }}
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => { e.stopPropagation(); trackDealClick(product.name, product.market, discountPercent) }}
             aria-label={`Bekijk ${product.name} aanbieding bij ${product.market}`}
           >
             Naar {product.market}

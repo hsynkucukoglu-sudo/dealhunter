@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { trackNewsletterSignup } from '@/lib/analytics'
 
 export function NewsletterSignup() {
   const [email, setEmail] = useState('')
@@ -22,6 +23,7 @@ export function NewsletterSignup() {
       if (data.success) {
         setStatus('success')
         setEmail('')
+        trackNewsletterSignup()
       } else {
         setStatus('error')
         setErrorMsg(data.error || 'Aanmelding mislukt')
