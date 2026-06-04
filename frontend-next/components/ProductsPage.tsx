@@ -152,6 +152,15 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         return detectCampaignType(p.name, discountPct, p.campaignType).type === selectedCampaign
       })()
       return matchesCampaign && matchesMarket && matchesCategory && matchesFavorites && matchesCampaignType
+    }).sort((a, b) => {
+      // Default: highest discount % first
+      const pctA = a.originalPrice > a.discountedPrice && a.originalPrice > 0
+        ? (a.discount || Math.round(((a.originalPrice - a.discountedPrice) / a.originalPrice) * 100))
+        : 0
+      const pctB = b.originalPrice > b.discountedPrice && b.originalPrice > 0
+        ? (b.discount || Math.round(((b.originalPrice - b.discountedPrice) / b.originalPrice) * 100))
+        : 0
+      return pctB - pctA
     })
   }, [products, debouncedSearch, fuse, showCampaignsOnly, selectedMarket, selectedCategory, showFavoritesOnly, favorites, selectedCampaign])
 
@@ -510,6 +519,27 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                   <span className="material-symbols-outlined text-base" style={{ color: '#8C8478' }}>close</span>
                 </button>
               )}
+            </motion.div>
+
+            {/* TRUST BADGES */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.3 }}
+              className="flex flex-wrap gap-2 mb-8"
+            >
+              {[
+                { icon: 'storefront', text: '8 supermarkten vergeleken' },
+                { icon: 'update', text: 'Dagelijks bijgewerkt' },
+                { icon: 'lock_open', text: 'Gratis — geen account nodig' },
+                { icon: 'euro', text: 'Tot 70% besparen' },
+              ].map(b => (
+                <div key={b.icon} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold"
+                  style={{ background: 'rgba(255,255,255,0.7)', color: '#1A1A1A', border: '1px solid rgba(201,193,182,0.4)' }}>
+                  <span className="material-symbols-outlined text-sm" style={{ color: '#E33D26' }}>{b.icon}</span>
+                  {b.text}
+                </div>
+              ))}
             </motion.div>
 
             <motion.div

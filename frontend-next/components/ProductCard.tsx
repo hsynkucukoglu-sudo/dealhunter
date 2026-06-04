@@ -194,31 +194,34 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
       </div>
 
-      <div className="px-4 pb-4 flex flex-col gap-2">
-        <motion.button
-          whileTap={{ scale: 0.97 }}
-          onClick={() => addToCart(product)}
-          className="btn-card"
-          aria-label={`${product.name} aan winkelmandje toevoegen`}
-        >
-          {t.addToCart}
-        </motion.button>
-        {affiliateLink && (
+      <div className="px-4 pb-4">
+        {affiliateLink ? (
           <a
             href={affiliateLink.url}
             target="_blank"
             rel={affiliateLink.rel}
-            className="flex items-center justify-center gap-1.5 w-full py-2 px-3 rounded-lg text-xs font-semibold transition-colors duration-200"
+            className="flex items-center justify-center gap-1.5 w-full py-2.5 px-3 rounded-xl text-sm font-bold transition-all duration-200"
             style={{
-              color: MARKET_COLORS[product.market] || '#1A1A1A',
-              background: 'transparent',
-              border: `1.5px solid ${MARKET_COLORS[product.market] || '#C9C1B6'}`,
+              color: 'white',
+              background: MARKET_COLORS[product.market] || '#1A1A1A',
             }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = '0.88'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)' }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = '1'; (e.currentTarget as HTMLElement).style.transform = 'translateY(0)' }}
             onClick={(e) => e.stopPropagation()}
+            aria-label={`Bekijk ${product.name} aanbieding bij ${product.market}`}
           >
-            {t.viewDeal}
+            Naar {product.market}
             <span className="material-symbols-outlined text-sm leading-none" aria-hidden="true">open_in_new</span>
           </a>
+        ) : (
+          <button
+            onClick={() => addToCart(product)}
+            className="flex items-center justify-center gap-1.5 w-full py-2.5 px-3 rounded-xl text-sm font-bold transition-all duration-200"
+            style={{ background: '#1A1A1A', color: 'white' }}
+            aria-label={`${product.name} aan winkelmandje toevoegen`}
+          >
+            {t.addToCart}
+          </button>
         )}
       </div>
     </div>
