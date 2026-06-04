@@ -179,13 +179,26 @@ export function ProductCard({ product }: { product: Product }) {
 
         <div className="flex items-center justify-between mt-1.5">
           {expiryStatus ? (
-            <p
-              className={`text-[11px] flex items-center gap-1 font-medium${expiryStatus.pulse ? ' animate-pulse' : ''}`}
-              style={{ color: expiryStatus.color }}
-            >
-              <span className="material-symbols-outlined text-sm" aria-hidden="true">schedule</span>
-              {expiryStatus.label}
-            </p>
+            expiryStatus.expired ? (
+              <p className="text-[11px] flex items-center gap-1 font-medium" style={{ color: '#C9C1B6' }}>
+                <span className="material-symbols-outlined text-sm" aria-hidden="true">schedule</span>
+                {expiryStatus.label}
+              </p>
+            ) : expiryStatus.pulse ? (
+              // Vandaag / Morgen — agresif FOMO badge
+              <span
+                className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-black animate-pulse"
+                style={{ background: expiryStatus.color, color: 'white' }}
+              >
+                <span className="material-symbols-outlined text-sm" aria-hidden="true">alarm</span>
+                {expiryStatus.label}
+              </span>
+            ) : (
+              <p className={`text-[11px] flex items-center gap-1 font-medium`} style={{ color: expiryStatus.color }}>
+                <span className="material-symbols-outlined text-sm" aria-hidden="true">schedule</span>
+                {expiryStatus.label}
+              </p>
+            )
           ) : (
             <p className="text-[11px] flex items-center gap-1" style={{ color: '#9C9389' }}>
               <span className="material-symbols-outlined text-sm" aria-hidden="true">schedule</span>
