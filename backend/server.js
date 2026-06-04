@@ -463,9 +463,9 @@ app.post('/api/newsletter/subscribe', newsletterLimit, asyncHandler(async (req, 
   }
 
   const apiKey = process.env.BREVO_API_KEY
-  const listId = parseInt(process.env.BREVO_LIST_ID || '0')
+  const listId = parseInt(process.env.BREVO_LIST_ID || '0', 10)
 
-  if (!apiKey || !listId) {
+  if (!apiKey || !listId || isNaN(listId)) {
     return res.status(503).json({ error: 'Newsletter service niet beschikbaar' })
   }
 
