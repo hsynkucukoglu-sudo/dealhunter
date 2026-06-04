@@ -921,6 +921,205 @@ export const POSTS: BlogPost[] = [
 <p>Bekijk de actuele <a href="/supermarkt/dekamarkt">DekaMarkt aanbiedingen op DealHunter4U</a> en vergelijk direct met de rest.</p>
     `.trim(),
   },
+  {
+    slug: 'dirk-aanbiedingen-gids',
+    relatedMarkets: ['dirk'],
+    title: 'Dirk aanbiedingen: complete gids voor de beste deals',
+    description: 'Alles over Dirk van den Broek aanbiedingen. Wanneer starten de weekdeals, wat zijn de populairste producten in de aanbieding en hoe bespaar je het meest bij Dirk?',
+    date: '2026-06-04',
+    readTime: 4,
+    category: 'Supermarkt gids',
+    content: `
+<p class="lead">Dirk van den Broek is één van de meest populaire supermarkten in de Randstad. Met structureel lage prijzen en scherpe weekaanbiedingen is Dirk al jaren een favoriet van prijsbewuste boodschappers. Maar hoe haal je het maximale uit de <strong>Dirk aanbiedingen</strong>?</p>
+
+<h2>Wanneer beginnen de Dirk aanbiedingen?</h2>
+<p>Dirk vernieuwt zijn weekaanbiedingen elke <strong>woensdag</strong>, tegelijk met Albert Heijn en Jumbo. De aanbiedingen zijn geldig van woensdag tot en met dinsdag. Dirk heeft ook dagaanbiedingen op verse producten die wisselen — check de winkel of de website op woensdag voor de beste keuze.</p>
+
+<h2>Waar is Dirk van den Broek?</h2>
+<p>Dirk is een regionale supermarkt met filialen in <strong>Noord-Holland, Zuid-Holland en Utrecht</strong>. De keten heeft ruim 130 filialen in voornamelijk stedelijke gebieden. Als je in Amsterdam, Rotterdam, Den Haag of Utrecht woont, is er bijna altijd een Dirk in de buurt.</p>
+
+<h2>Wat maakt Dirk aanbiedingen uniek?</h2>
+<ul>
+  <li><strong>Lage basisprijzen:</strong> Dirk staat bekend om zijn lage dagprijzen, vergelijkbaar met Aldi en Lidl — maar met een breder A-merk assortiment.</li>
+  <li><strong>Sterke groenteaanbiedingen:</strong> Vers fruit en groenten zijn bij Dirk structureel goedkoper dan bij AH of Jumbo.</li>
+  <li><strong>Vlees en vis in de aanbieding:</strong> Kipfilet, gehakt en visfilets verschijnen wekelijks in de weekaanbiedingen met kortingen tot 30%.</li>
+  <li><strong>Geen loyaliteitspas nodig:</strong> Alle aanbiedingen gelden voor iedereen — geen app of spaarkaart vereist.</li>
+</ul>
+
+<h2>Populaire Dirk producten in de aanbieding</h2>
+<ul>
+  <li>Verse kipfilet en kippenpoten (wekelijks in actie)</li>
+  <li>Frisdrank (Coca-Cola, Fanta, Sprite) — vaak in grootverpakking</li>
+  <li>Groenten en fruit (komkommer, paprika, tomaten)</li>
+  <li>Brood en bakkerijproducten</li>
+  <li>Zuivel (melk, yoghurt, kaas van eigen merk)</li>
+</ul>
+
+<h2>Dirk vs. Albert Heijn: wie is goedkoper?</h2>
+<p>Op basisprijzen is Dirk gemiddeld <strong>10–20% goedkoper</strong> dan Albert Heijn. Het verschil is het grootst bij:</p>
+<ul>
+  <li>Verse groenten en fruit</li>
+  <li>Zuivel en eieren</li>
+  <li>Vlees en gevogelte</li>
+</ul>
+<p>Bij A-merkproducten in de aanbieding kan AH echter goedkoper uitpakken, dankzij diepe bonusaanbiedingen. De slimste strategie: Dirk voor verse basis, AH voor A-merk acties.</p>
+
+<h2>Dirk vs. Lidl en Aldi</h2>
+<p>Dirk positioneert zich tussen de grote supermarkten (AH, Jumbo) en de harde discounters (Aldi, Lidl). Vergeleken met Aldi en Lidl heeft Dirk:</p>
+<ul>
+  <li><strong>Meer A-merken</strong> in het assortiment</li>
+  <li><strong>Betere bereikbaarheid</strong> in stedelijke gebieden</li>
+  <li><strong>Vergelijkbare prijzen</strong> op verse producten</li>
+  <li><strong>Iets duurdere</strong> houdbare kruidenierswaren dan Aldi/Lidl</li>
+</ul>
+
+<h2>Tips voor de beste Dirk deals</h2>
+<ol>
+  <li><strong>Ga op woensdag</strong> voor de meeste keuze bij nieuwe aanbiedingen</li>
+  <li><strong>Koop groenten in bulk</strong> — Dirk heeft de scherpste groenteprijzen in de regio</li>
+  <li><strong>Let op de versproducten</strong> in de koeling — dagverse aanbiedingen wisselen snel</li>
+  <li><strong>Combineer met Aldi</strong> voor houdbare producten en koop vers bij Dirk</li>
+  <li><strong>Check DealHunter4U</strong> voor de actuele Dirk aanbiedingen naast die van alle andere supermarkten</li>
+</ol>
+
+<h2>Conclusie</h2>
+<p>Dirk van den Broek is de ideale supermarkt als je in de Randstad woont en wil besparen op verse producten en dagelijkse boodschappen. Met wekelijkse aanbiedingen en structureel lage dagprijzen bespaar je als gezin gemakkelijk <strong>€10–15 per week</strong> vergeleken met alleen bij AH winkelen.</p>
+<p>Bekijk de actuele <a href="/supermarkt/dirk">Dirk aanbiedingen op DealHunter4U</a> en vergelijk direct met alle andere supermarkten.</p>
+    `.trim(),
+  },
+  {
+    slug: 'hoogvliet-aanbiedingen-gids',
+    relatedMarkets: ['hoogvliet'],
+    title: 'Hoogvliet aanbiedingen: complete gids voor de beste deals',
+    description: 'Alles over Hoogvliet aanbiedingen in Zuid-Holland. Wanneer starten de weekdeals, populairste producten en hoe bespaar je het meest bij Hoogvliet supermarkt?',
+    date: '2026-06-04',
+    readTime: 4,
+    category: 'Supermarkt gids',
+    content: `
+<p class="lead">Hoogvliet Supermarkt is een geliefde regionale supermarkt in Zuid-Holland met meer dan 70 filialen. Met een goede balans tussen prijs en kwaliteit trekt Hoogvliet een trouwe klantenkring. Maar hoe haal je het maximale uit de <strong>Hoogvliet aanbiedingen</strong>?</p>
+
+<h2>Wanneer beginnen de Hoogvliet aanbiedingen?</h2>
+<p>Hoogvliet vernieuwt zijn weekaanbiedingen elke <strong>woensdag</strong>. De aanbiedingen lopen van woensdag tot en met dinsdag — zeven dagen per actieperiode. Tip: check de Hoogvliet website of DealHunter4U op woensdagochtend voor de nieuwste deals.</p>
+
+<h2>Waar zijn de Hoogvliet filialen?</h2>
+<p>Hoogvliet heeft meer dan 70 filialen verspreid door <strong>Zuid-Holland</strong>, met name in steden als Rotterdam, Dordrecht, Zoetermeer, Delft en omgeving. Ben je niet in Zuid-Holland? Dan is Hoogvliet waarschijnlijk niet in de buurt, maar de website geeft een volledig filiaaloverzicht.</p>
+
+<h2>Wat maakt Hoogvliet bijzonder?</h2>
+<ul>
+  <li><strong>Breed assortiment:</strong> Hoogvliet voert een uitgebreid assortiment inclusief A-merken, biologisch en regionaal — vergelijkbaar met AH of Jumbo.</li>
+  <li><strong>Scherpe weekaanbiedingen:</strong> Wekelijks 50+ producten met kortingen van 20–40%, vergelijkbaar met de AH Bonus.</li>
+  <li><strong>Eigen huismerk:</strong> Hoogvliet heeft een eigen merk (Huismerk) dat structureel 20–30% goedkoper is dan A-merken.</li>
+  <li><strong>Spaarsysteem:</strong> Hoogvliet heeft regelmatig spaarcampagnes met punten voor gratis producten of voordelen.</li>
+  <li><strong>Lokale betrokkenheid:</strong> De keten staat bekend om goede klantenservice en persoonlijke aandacht in de winkel.</li>
+</ul>
+
+<h2>Populaire Hoogvliet producten in de aanbieding</h2>
+<ul>
+  <li>Kipfilet en vleesproducten (wekelijks in actie)</li>
+  <li>Frisdrank en dranken in grootverpakking</li>
+  <li>Zuivel (yoghurt, kaas, melk)</li>
+  <li>Verse groenten en fruit (seizoensgebonden)</li>
+  <li>Wasmiddelen en huishoudproducten (regelmatig 1+1)</li>
+</ul>
+
+<h2>Hoogvliet vs. Albert Heijn: wie is goedkoper?</h2>
+<p>Op basisprijzen is Hoogvliet gemiddeld <strong>5–10% goedkoper</strong> dan Albert Heijn. Op weekaanbiedingen zijn ze vergelijkbaar — beide hebben diepte kortingen. De verschillen:</p>
+<ul>
+  <li><strong>Basisprijzen:</strong> Hoogvliet iets goedkoper</li>
+  <li><strong>Persoonlijke bonussen:</strong> AH wint met de app-gebaseerde persoonlijke aanbiedingen</li>
+  <li><strong>Huismerk:</strong> Vergelijkbare kwaliteit en prijs</li>
+  <li><strong>Versafdeling:</strong> Hoogvliet staat bekend om goede kwaliteit verse producten</li>
+</ul>
+
+<h2>Hoogvliet vs. Jumbo</h2>
+<p>Hoogvliet en Jumbo zijn directe concurrenten in prijs en assortiment. Over het algemeen:</p>
+<ul>
+  <li>Vergelijkbare basisprijzen (Jumbo soms iets goedkoper)</li>
+  <li>Vergelijkbare weekaanbiedingen in diepte</li>
+  <li>Hoogvliet scoort beter op klanttevredenheid in zijn regio</li>
+  <li>Jumbo heeft meer filialen nationaal</li>
+</ul>
+
+<h2>Tips voor de beste Hoogvliet deals</h2>
+<ol>
+  <li><strong>Ga op woensdag</strong> voor de nieuwste aanbiedingen</li>
+  <li><strong>Meld je aan voor de Hoogvliet nieuwsbrief</strong> voor vroege toegang tot weekdeals</li>
+  <li><strong>Koop huismerken</strong> voor maximale besparing op basisproducten</li>
+  <li><strong>Profiteer van spaaracties</strong> — Hoogvliet heeft regelmatig spaarcampagnes voor gratis producten</li>
+  <li><strong>Check DealHunter4U</strong> voor de actuele Hoogvliet aanbiedingen vergeleken met alle andere supermarkten</li>
+</ol>
+
+<h2>Conclusie</h2>
+<p>Hoogvliet is een uitstekende keuze als je in Zuid-Holland woont en een supermarkt zoekt met een breed assortiment voor een scherpe prijs. Met wekelijkse aanbiedingen en goede huismerken bespaar je als gezin gemakkelijk <strong>€8–15 per week</strong> vergeleken met volledig bij AH winkelen.</p>
+<p>Bekijk de actuele <a href="/supermarkt/hoogvliet">Hoogvliet aanbiedingen op DealHunter4U</a> en vergelijk direct met Albert Heijn, Jumbo en andere supermarkten.</p>
+    `.trim(),
+  },
+  {
+    slug: 'vomar-aanbiedingen-gids',
+    relatedMarkets: ['vomar'],
+    title: 'Vomar aanbiedingen: complete gids voor de beste deals',
+    description: 'Alles over Vomar Voordeelmarkt aanbiedingen in Noord-Holland. Wanneer zijn de beste deals, welke producten zijn populair en hoe bespaar je het meest bij Vomar?',
+    date: '2026-06-04',
+    readTime: 4,
+    category: 'Supermarkt gids',
+    content: `
+<p class="lead">Vomar Voordeelmarkt is een bekende regionale supermarkt in Noord-Holland. De naam zegt het al: Vomar staat voor voordeel. Met lage dagprijzen en wekelijkse aanbiedingen is Vomar een populaire keuze voor Noord-Hollanders die willen besparen op boodschappen.</p>
+
+<h2>Wanneer beginnen de Vomar aanbiedingen?</h2>
+<p>Vomar vernieuwt zijn weekaanbiedingen elke <strong>woensdag</strong>. Naast de reguliere weekaanbiedingen heeft Vomar ook <strong>dagaanbiedingen</strong> en seizoensacties. De wekelijkse folder is digitaal te bekijken via de Vomar website.</p>
+
+<h2>Waar zijn de Vomar filialen?</h2>
+<p>Vomar heeft ruim 60 filialen, vrijwel uitsluitend in <strong>Noord-Holland</strong> — van Alkmaar en Haarlem tot Zaandam en de regio Amsterdam-Noord. Voor inwoners van Noord-Holland is Vomar een vaste concurrent van AH en Jumbo.</p>
+
+<h2>Wat maakt Vomar bijzonder?</h2>
+<ul>
+  <li><strong>Lage dagprijzen:</strong> Vomar positioneert zich als "Voordeelmarkt" — structureel goedkoper dan AH en Jumbo op basisprijzen.</li>
+  <li><strong>Wekelijkse folder:</strong> Vomar publiceert wekelijks een digitale folder met tientallen aanbiedingen.</li>
+  <li><strong>Dagknallers:</strong> Vomar heeft speciale dagknallers — producten met extra scherpe kortingen voor een beperkte periode.</li>
+  <li><strong>Breed assortiment:</strong> Ondanks de discounterpositionering voert Vomar veel A-merken en biologische producten.</li>
+  <li><strong>Eigen merk:</strong> Het Vomar-eigen merk is goedkoper dan A-merken, met vergelijkbare kwaliteit.</li>
+</ul>
+
+<h2>Populaire Vomar producten in de aanbieding</h2>
+<ul>
+  <li>Frisdrank en bier (grootverpakkingen, structurele weekdeal)</li>
+  <li>Vlees en gevogelte (kip, gehakt, varkensvlees)</li>
+  <li>Zuivelproducten (melk, yoghurt, kaas)</li>
+  <li>Groenten en fruit (seizoensaanbiedingen)</li>
+  <li>Huishoudproducten en verzorging</li>
+</ul>
+
+<h2>Vomar vs. Albert Heijn: wie is goedkoper?</h2>
+<p>Op basisprijzen is Vomar gemiddeld <strong>10–15% goedkoper</strong> dan Albert Heijn. Vomar wint op:</p>
+<ul>
+  <li>Dagelijkse basisprijzen (melk, brood, eieren)</li>
+  <li>Frisdrank en dranken</li>
+  <li>Verse groenten en fruit</li>
+</ul>
+<p>Albert Heijn wint op:</p>
+<ul>
+  <li>Diepte van bonusaanbiedingen (1+1, 50% korting)</li>
+  <li>Persoonlijke aanbiedingen via de app</li>
+  <li>Breed premium en biologisch assortiment</li>
+</ul>
+
+<h2>Vomar vs. Lidl en Aldi</h2>
+<p>Vomar is vergelijkbaar met Dirk: goedkoper dan AH/Jumbo, maar iets duurder dan de harde discounters Aldi en Lidl op basisproducten. Het voordeel van Vomar ten opzichte van Aldi en Lidl is het bredere assortiment inclusief meer A-merken en een betere winkelervaring.</p>
+
+<h2>Tips voor de beste Vomar deals</h2>
+<ol>
+  <li><strong>Check de digitale folder</strong> elke woensdag op de Vomar website of DealHunter4U</li>
+  <li><strong>Let op de dagknallers</strong> — deze zijn beperkt beschikbaar en snel weg</li>
+  <li><strong>Koop frisdrank bij Vomar</strong> — structureel één van de goedkoopste voor dranken</li>
+  <li><strong>Combineer met Aldi</strong> voor de allergoedkoopste vlees- en zuiveldeals</li>
+  <li><strong>Gebruik DealHunter4U</strong> voor Vomar aanbiedingen naast alle andere supermarkten</li>
+</ol>
+
+<h2>Conclusie</h2>
+<p>Vomar Voordeelmarkt leeft zijn naam na: voor Noord-Hollanders is het een betrouwbare keuze voor lage dagprijzen en wekelijkse aanbiedingen. Je bespaart als gezin gemakkelijk <strong>€8–12 per week</strong> door Vomar te combineren met je reguliere boodschappenstrategie.</p>
+<p>Bekijk de actuele <a href="/supermarkt/vomar">Vomar aanbiedingen op DealHunter4U</a> en vergelijk direct met alle andere supermarkten in jouw regio.</p>
+    `.trim(),
+  },
 ]
 
 export function getPost(slug: string): BlogPost | undefined {
