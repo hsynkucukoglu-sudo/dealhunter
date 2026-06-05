@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 
 // Whitelist — open redirect koruması
@@ -25,7 +25,7 @@ const MARKET_COLORS: Record<string, string> = {
   'DekaMarkt':    '#006633',
 }
 
-export default function GoPage() {
+function GoContent() {
   const params = useSearchParams()
   const market = params.get('m') ?? ''
   const product = params.get('p') ?? ''
@@ -122,5 +122,17 @@ export default function GoPage() {
         </a>
       </div>
     </div>
+  )
+}
+
+export default function GoPage() {
+  return (
+    <Suspense fallback={
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F5EDE3' }}>
+        <div style={{ width: 40, height: 40, borderRadius: '50%', border: '4px solid rgba(0,0,0,0.08)', borderTopColor: '#E33D26', animation: 'spin 0.9s linear infinite' }} />
+      </div>
+    }>
+      <GoContent />
+    </Suspense>
   )
 }
