@@ -418,7 +418,25 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           </div>
         )}
 
-        {/* CAMPAIGN FILTER BAR — hero'nun üstünde */}
+        {/* CATEGORY FILTER BAR */}
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-2">
+          <motion.button whileTap={{ scale: 0.95 }}
+            onClick={() => { setSelectedCategory('all'); trackCategoryFilter('all') }}
+            className={`market-pill flex-none ${selectedCategory === 'all' ? 'market-pill-active' : ''}`}>
+            <span className="material-symbols-outlined text-base">apps</span>
+            {lang === 'tr' ? 'Tümü' : lang === 'en' ? 'All' : 'Alle'}
+          </motion.button>
+          {CATEGORIES.map(cat => (
+            <motion.button key={cat.id} whileTap={{ scale: 0.95 }}
+              onClick={() => { setSelectedCategory(cat.id === selectedCategory ? 'all' : cat.id); trackCategoryFilter(cat.id) }}
+              className={`market-pill flex-none ${selectedCategory === cat.id ? 'market-pill-active' : ''}`}>
+              <span>{cat.emoji}</span>
+              {CATEGORY_LABELS[cat.id]?.[lang] ?? cat.label}
+            </motion.button>
+          ))}
+        </div>
+
+        {/* CAMPAIGN FILTER BAR */}
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-4">
           {CAMPAIGN_FILTERS.map(f => (
             <motion.button
