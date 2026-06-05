@@ -20,6 +20,7 @@ import { detectCampaignType, CAMPAIGN_FILTERS, CampaignType } from '@/lib/campai
 import { StickyFilterBar } from './StickyFilterBar'
 import { NewsletterSignup } from './NewsletterSignup'
 import { trackMarketFilter, trackCategoryFilter, trackCampaignFilter, trackSearch, trackPwaInstall } from '@/lib/analytics'
+import { MarketIndexWidget } from './MarketIndexWidget'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
@@ -623,6 +624,11 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             </motion.div>
           </div>
         </section>
+
+        {/* MARKET INDEX WIDGET */}
+        {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
+          <MarketIndexWidget products={products} />
+        )}
 
         {/* SON GEÇERLİLİK TARİHİ UYARISI */}
         {expiringSoon.length > 0 && searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
