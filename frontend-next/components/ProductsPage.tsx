@@ -527,6 +527,30 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
               )}
             </motion.div>
 
+            {/* POPULAIRE ZOEKOPDRACHTEN */}
+            {!searchTerm && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.3 }}
+                className="flex flex-wrap items-center gap-2 mb-6 -mt-6"
+              >
+                <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#9C9389' }}>
+                  Populair:
+                </span>
+                {['Coca-Cola', 'Pampers', 'Ariel', 'Hertog Jan', 'Grolsch', 'Robijn', 'Douwe Egberts'].map(tag => (
+                  <button
+                    key={tag}
+                    onClick={() => setSearchTerm(tag)}
+                    className="px-3 py-1 rounded-full text-xs font-semibold transition-all hover:scale-105 active:scale-95"
+                    style={{ background: 'rgba(255,255,255,0.8)', color: '#1A1A1A', border: '1px solid rgba(201,193,182,0.5)' }}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </motion.div>
+            )}
+
             {/* TRUST BADGES */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
