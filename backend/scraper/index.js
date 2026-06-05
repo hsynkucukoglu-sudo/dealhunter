@@ -1026,12 +1026,151 @@ async function scrapeDekaMarkt() {
   }
 }
 
+// ─── COOP — JSON-LD + embedded script JSON + HTML fallback ───────────────────
+async function scrapeCoop() {
+  console.log('🏪 [Coop] coop.nl/aanbiedingen...')
+  try {
+    const res = await fetch('https://www.coop.nl/aanbiedingen', {
+      headers: { ...HEADERS, 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' },
+      signal: AbortSignal.timeout(15000),
+    })
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    const html = await res.text()
+
+    const results = []
+    const seen = new Set()
+
+    // Strategy 1: JSON-LD structured data
+    for (const [, block] of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+      try {
+        const data = JSON.parse(block)
+        const items = data.itemListElement
+          || (data['@type'] === 'ItemList' ? data.itemListElement : null)
+          || (Array.isArray(data) ? data : null)
+          || []
+        for (const item of items) {
+          const p = item.item || item
+          if (!p.name || !p.offers?.price) continue
+          const discountedPrice = parseFloat(p.offers.price)
+          if (!discountedPrice || isNaN(discountedPrice) || seen.has(p.name.toLowerCase())) continue
+          seen.add(p.name.toLowerCase())
+          const originalPrice = parseFloat(p.offers.highPrice || p.offers.price)
+          const imgRaw = p.image
+          const imageUrl = typeof imgRaw === 'string' ? imgRaw
+            : Array.isArray(imgRaw) ? imgRaw[0]
+            : imgRaw?.url || null
+          results.push({
+            name: p.name.trim(),
+            market: 'Coop',
+            originalPrice: originalPrice > discountedPrice ? originalPrice : discountedPrice,
+            discountedPrice,
+            imageUrl,
+            isCampaign: true,
+            source: 'coop.nl/aanbiedingen',
+            expiresAt: EXPIRES_AT,
+            campaignType: toCampaignType(p.name),
+          })
+        }
+      } catch {}
+    }
+
+    if (results.length > 0) {
+      console.log(`  ✅ Coop: ${results.length} ürün (JSON-LD)`)
+      return results
+    }
+
+    // Strategy 2: Look for embedded JSON (Next.js __NEXT_DATA__ or window.__INITIAL_STATE__)
+    for (const [, raw] of html.matchAll(/<script[^>]*>\s*(?:window\.__(?:INITIAL_STATE|NUXT|STATE)__|var\s+__data__)\s*=\s*(\{[\s\S]*?\})[\s;]*<\/script>/g)) {
+      try {
+        const state = JSON.parse(raw)
+        // Try common paths where products live
+        const candidates = [
+          state?.products, state?.items, state?.data?.products,
+          state?.promotions, state?.offers, state?.aanbiedingen,
+          state?.pageData?.products, state?.page?.data?.products,
+        ].filter(Array.isArray)
+        for (const list of candidates) {
+          for (const p of list) {
+            const name = (p.name || p.title || p.description || '').trim()
+            if (!name || seen.has(name.toLowerCase())) continue
+            const discountedPrice = parseFloat(p.price || p.offerPrice || p.salePrice || 0)
+            if (!discountedPrice) continue
+            const originalPrice = parseFloat(p.originalPrice || p.normalPrice || p.regularPrice || discountedPrice)
+            seen.add(name.toLowerCase())
+            results.push({
+              name,
+              market: 'Coop',
+              originalPrice: originalPrice > discountedPrice ? originalPrice : discountedPrice,
+              discountedPrice,
+              imageUrl: p.image || p.imageUrl || p.img || null,
+              isCampaign: true,
+              source: 'coop.nl/aanbiedingen',
+              expiresAt: EXPIRES_AT,
+              campaignType: toCampaignType(name),
+            })
+          }
+        }
+      } catch {}
+    }
+
+    if (results.length > 0) {
+      console.log(`  ✅ Coop: ${results.length} ürün (embedded JSON)`)
+      return results
+    }
+
+    // Strategy 3: Cheerio HTML parsing — product cards
+    const $ = cheerio.load(html)
+    $('[class*="product"],[class*="offer"],[class*="aanbieding"]').each((_, el) => {
+      try {
+        const name = $(el).find('[class*="title"],[class*="name"],[class*="heading"],h2,h3').first().text().trim()
+        if (!name || name.length < 3 || seen.has(name.toLowerCase())) return
+
+        // Price: look for price-like text in the card
+        const priceText = $(el).find('[class*="price"],[class*="prijs"]').first().text()
+        const priceMatch = priceText.match(/(\d+)[.,](\d{2})/)
+        if (!priceMatch) return
+        const discountedPrice = parseFloat(`${priceMatch[1]}.${priceMatch[2]}`)
+        if (!discountedPrice) return
+
+        // Original price (strikethrough)
+        const origText = $(el).find('s,[class*="was"],[class*="old"],[class*="strike"],[class*="doorgehaald"]').first().text()
+        const origMatch = origText.match(/(\d+)[.,](\d{2})/)
+        const originalPrice = origMatch
+          ? parseFloat(`${origMatch[1]}.${origMatch[2]}`)
+          : discountedPrice
+
+        const imageUrl = $(el).find('img').first().attr('src') || $(el).find('img').first().attr('data-src') || null
+
+        seen.add(name.toLowerCase())
+        results.push({
+          name,
+          market: 'Coop',
+          originalPrice: originalPrice > discountedPrice ? originalPrice : discountedPrice,
+          discountedPrice,
+          imageUrl,
+          isCampaign: true,
+          source: 'coop.nl/aanbiedingen',
+          expiresAt: EXPIRES_AT,
+          campaignType: toCampaignType(name),
+        })
+      } catch {}
+    })
+
+    const withSavings = results.filter(r => r.originalPrice > r.discountedPrice)
+    console.log(`  ✅ Coop: ${results.length} ürün (${withSavings.length} met besparing)`)
+    return results
+  } catch (e) {
+    console.error('  ❌ Coop:', e.message)
+    return []
+  }
+}
+
 // ─── ANA FONKSİYON ────────────────────────────────────────────────────────────
 export async function scrapeFlyerProducts() {
   EXPIRES_AT = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
   console.log('🔍 Fetch-only scraper başlatılıyor...')
 
-  const [dirk, jumbo, hoogvliet, lidl, ah, aldi, vomar, deka] = await Promise.all([
+  const [dirk, jumbo, hoogvliet, lidl, ah, aldi, vomar, deka, coop] = await Promise.all([
     scrapeDirk(),
     scrapeJumbo(),
     scrapeHoogvliet(),
@@ -1040,9 +1179,10 @@ export async function scrapeFlyerProducts() {
     scrapeAldi(),
     scrapeVomar(),
     scrapeDekaMarkt(),
+    scrapeCoop(),
   ])
 
-  let all = [...dirk, ...jumbo, ...hoogvliet, ...lidl, ...ah, ...aldi, ...vomar, ...deka]
+  let all = [...dirk, ...jumbo, ...hoogvliet, ...lidl, ...ah, ...aldi, ...vomar, ...deka, ...coop]
 
   // Duplicate temizliği
   const seen = new Set()
@@ -1062,10 +1202,10 @@ export async function scrapeFlyerProducts() {
     return { ...p, ...enrichProductMeta(p.name, p.discountedPrice) }
   })
 
-  console.log(`\n✅ Toplam ${all.length} ürün (${dirk.length} Dirk, ${jumbo.length} Jumbo, ${hoogvliet.length} Hoogvliet, ${lidl.length} Lidl, ${ah.length} AH, ${aldi.length} Aldi, ${vomar.length} Vomar, ${deka.length} DekaMarkt)`)
+  console.log(`\n✅ Toplam ${all.length} ürün (${dirk.length} Dirk, ${jumbo.length} Jumbo, ${hoogvliet.length} Hoogvliet, ${lidl.length} Lidl, ${ah.length} AH, ${aldi.length} Aldi, ${vomar.length} Vomar, ${deka.length} DekaMarkt, ${coop.length} Coop)`)
 
   // Besparing diagnostics
-  const markets = ['Albert Heijn', 'Aldi', 'Jumbo', 'Lidl', 'Dirk', 'Hoogvliet', 'Vomar', 'DekaMarkt']
+  const markets = ['Albert Heijn', 'Aldi', 'Jumbo', 'Lidl', 'Dirk', 'Hoogvliet', 'Vomar', 'DekaMarkt', 'Coop']
   for (const m of markets) {
     const mAll = all.filter(p => p.market === m)
     const mDiscount = mAll.filter(p => p.originalPrice > p.discountedPrice)

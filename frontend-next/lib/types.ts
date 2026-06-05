@@ -113,6 +113,14 @@ export const MARKETS = [
     description: 'Alle DekaMarkt aanbiedingen en combi-aanbiedingen van deze week. Dagelijks bijgewerkt. Bespaar direct op verse producten en weekdeals.',
     keywords: 'dekamarkt aanbiedingen, dekamarkt folder, dekamarkt deals, dekamarkt actie, dekamarkt aanbieding deze week, dekamarkt korting, dekamarkt weekaanbieding, dekamarkt supermarkt',
   },
+  {
+    slug: 'coop',
+    name: 'Coop',
+    color: '#007B5E',
+    ctaTitle: 'Coop Aanbiedingen Deze Week | Actuele Deals & Kortingen',
+    description: 'Alle Coop supermarkt aanbiedingen van deze week — weekdeals, verse producten en huishouddeals. Dagelijks bijgewerkt zonder app.',
+    keywords: 'coop aanbiedingen, coop folder, coop supermarkt deals, coop actie, coop aanbieding deze week, coop korting, coop weekaanbieding',
+  },
 ]
 
 // Markets shown in navigation, filters, footer and sitemap.

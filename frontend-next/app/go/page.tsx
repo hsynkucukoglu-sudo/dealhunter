@@ -12,6 +12,7 @@ const MARKET_URLS: Record<string, string> = {
   'Hoogvliet':    'https://www.hoogvliet.com/aanbiedingen',
   'Vomar':        'https://www.vomar.nl/aanbiedingen',
   'DekaMarkt':    'https://www.dekamarkt.nl/aanbiedingen',
+  'Coop':         'https://www.coop.nl/aanbiedingen',
 }
 
 const MARKET_COLORS: Record<string, string> = {
@@ -23,6 +24,7 @@ const MARKET_COLORS: Record<string, string> = {
   'Hoogvliet':    '#E30613',
   'Vomar':        '#FF6600',
   'DekaMarkt':    '#006633',
+  'Coop':         '#007B5E',
 }
 
 function GoContent() {
