@@ -14,9 +14,9 @@ import './globals.css'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.dealhunter4u.nl'),
-  title: 'DealHunter — Beste Supermarkt Aanbiedingen Nederland',
-  description: 'Vergelijk wekelijkse aanbiedingen van Albert Heijn, Jumbo, Lidl, Dirk en meer. Bespaar op boodschappen met de beste supermarktdeals.',
-  keywords: 'supermarkt aanbiedingen, albert heijn bonus, jumbo deals, lidl folder, dirk aanbiedingen, besparen boodschappen',
+  title: 'DealHunter4U | Bespaar tot 70% — AH, Jumbo, Lidl, Dirk Aanbiedingen (Vandaag Actueel)',
+  description: 'Vergelijk dagelijks bijgewerkte aanbiedingen van 8 supermarkten: Albert Heijn, Jumbo, Lidl, Aldi, Dirk en meer. Bespaar gemiddeld €150 per jaar op boodschappen.',
+  keywords: 'supermarkt aanbiedingen, albert heijn bonus, jumbo deals, lidl folder, dirk aanbiedingen, besparen boodschappen, goedkoopste supermarkt nederland, aldi acties, hoogvliet aanbiedingen',
   other: {
     'msvalidate.01': '10C38B79AA33FFA059F4EE4DC13FBC3C',
   },
@@ -27,8 +27,8 @@ export const metadata: Metadata = {
     title: 'DealHunter',
   },
   openGraph: {
-    title: 'DealHunter — Beste Supermarkt Aanbiedingen',
-    description: 'Vergelijk wekelijkse aanbiedingen van alle grote supermarkten.',
+    title: 'DealHunter4U | Bespaar tot 70% — AH, Jumbo, Lidl, Dirk Aanbiedingen',
+    description: 'Vergelijk dagelijks bijgewerkte aanbiedingen van 8 supermarkten. Bespaar gemiddeld €150 per jaar op boodschappen.',
     url: 'https://www.dealhunter4u.nl',
     siteName: 'DealHunter',
     locale: 'nl_NL',

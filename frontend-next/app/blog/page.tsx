@@ -7,9 +7,9 @@ import { currentWeekSlug } from '@/lib/weeklyDeals'
 import { getISOWeek } from '@/lib/schema'
 
 export const metadata: Metadata = {
-  title: 'Blog — Bespaartips & Supermarkt Aanbiedingen | DealHunter4U',
-  description: 'Tips om te besparen op boodschappen, supermarkt vergelijkingen en het laatste nieuws over aanbiedingen in Nederland.',
-  keywords: 'bespaartips boodschappen, supermarkt aanbiedingen vergelijken, goedkoop boodschappen doen, albert heijn jumbo lidl',
+  title: 'Bespaartips & Supermarkt Vergelijkingen — Bespaar €150/jaar | DealHunter4U Blog',
+  description: 'Ontdek hoe je €150+ per jaar bespaart op boodschappen. AH vs Jumbo vs Lidl vergelijkingen, weekmenu tips en de beste supermarktdeals van Nederland.',
+  keywords: 'bespaartips boodschappen, supermarkt vergelijken, goedkoop boodschappen doen, albert heijn jumbo lidl vergelijking, supermarkt aanbiedingen 2026',
   openGraph: {
     title: 'Blog — Bespaartips & Supermarkt Aanbiedingen',
     description: 'Tips om te besparen op boodschappen en supermarkt vergelijkingen.',
