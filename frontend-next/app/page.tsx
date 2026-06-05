@@ -11,9 +11,16 @@ export const metadata: Metadata = {
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   const { q } = await searchParams
-  const products = await getProducts()
-  const markets = [...new Set(products.map(p => p.market))].join(', ')
+  const allProducts = await getProducts()
+  const markets = [...new Set(allProducts.map(p => p.market))].join(', ')
   const schema = buildHomePageSchema(markets)
+
+  // HTML boyutunu 1MB altında tutmak için sadece top 60 ürün SSR ile gönder.
+  // Geri kalanlar ProductsPage içinde client-side API'den yüklenir.
+  const initialProducts = allProducts
+    .filter(p => p.originalPrice > p.discountedPrice && p.originalPrice > 0)
+    .sort((a, b) => ((b.originalPrice - b.discountedPrice) / b.originalPrice) - ((a.originalPrice - a.discountedPrice) / a.originalPrice))
+    .slice(0, 60)
 
   return (
     <>
@@ -21,7 +28,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <ProductsPage initialProducts={products} initialSearch={q ?? ''} />
+      <ProductsPage initialProducts={initialProducts} initialSearch={q ?? ''} />
     </>
   )
 }

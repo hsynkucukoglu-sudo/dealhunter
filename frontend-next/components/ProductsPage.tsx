@@ -49,6 +49,12 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // SSR'da sadece top 60 ürün gelir; mount sonrası tüm ürünleri çek
+  useEffect(() => {
+    refreshProducts()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   useEffect(() => {
     if (!watchlist.length || !products.length) return
     const hits = watchlist.filter(w => products.some(p => p.id === w.id && p.discountedPrice <= w.discountedPrice))
