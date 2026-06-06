@@ -53,7 +53,7 @@ const organizationSchema = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="nl">
+    <html lang="nl" suppressHydrationWarning>
       <head>
         <meta name="msvalidate.01" content="10C38B79AA33FFA059F4EE4DC13FBC3C" />
         <meta name="google-site-verification" content="mI1CClABNI4drkqyTq-9JU7dusT9WB8Yx0YMLXgXCA4" />
@@ -67,12 +67,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6266103134639533"
           crossOrigin="anonymous"
         />
-        {/* Microsoft Clarity */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","x232q20xdj");`,
-          }}
-        />
         <meta name="theme-color" content="#1A1A1A" />
         <meta name="mobile-web-app-capable" content="yes" />
         <link rel="apple-touch-icon" href="/icon-192x192.png" />
@@ -84,7 +78,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* display=block for icon font: invisible until loaded, no text-fallback shift */}
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=block" rel="stylesheet" />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <SessionProvider>
           <LanguageProvider>
             <PriceHistoryProvider>
