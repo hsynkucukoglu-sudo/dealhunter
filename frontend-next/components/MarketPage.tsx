@@ -10,6 +10,7 @@ import { DealHunterLogo } from './DealHunterLogo'
 import { useShoppingList } from '@/context/ShoppingListContext'
 import { MarketFAQ } from './MarketFAQ'
 import { MARKET_FAQS, FAQ } from '@/lib/marketFaqs'
+import { MARKET_CONTENT } from '@/lib/marketContent'
 import { BlogPost } from '@/lib/posts'
 
 interface Market {
@@ -156,6 +157,15 @@ export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
               </motion.div>
             ))}
           </div>
+        )}
+
+        {/* Market content — rich text for SEO */}
+        {MARKET_CONTENT[market.slug] && (
+          <section
+            className="mt-16 rounded-3xl p-6 md:p-8 prose prose-sm max-w-none"
+            style={{ background: 'rgba(255,255,255,0.7)', border: '1px solid rgba(201,193,182,0.4)' }}
+            dangerouslySetInnerHTML={{ __html: MARKET_CONTENT[market.slug] }}
+          />
         )}
 
         {/* FAQ */}
