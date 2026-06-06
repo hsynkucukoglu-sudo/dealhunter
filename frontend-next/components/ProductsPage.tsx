@@ -518,8 +518,9 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           />
           <div className="relative z-10">
             <motion.span
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ y: 8 }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.4 }}
               className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest mb-6"
               style={{ background: '#E33D26', color: 'white', fontFamily: 'Space Grotesk' }}
             >
@@ -527,21 +528,19 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
               {t.weeklyDeals}
             </motion.span>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+            {/* h1 starts fully visible — no opacity:0 so LCP is measured immediately */}
+            <h1
               className="font-headline font-bold leading-[0.9] tracking-tighter mb-10"
               style={{ fontSize: 'clamp(3.5rem, 10vw, 9rem)', color: '#1A1A1A', letterSpacing: '-0.04em' }}
             >
               {t.heroTitle1}<br />
               <span style={{ color: '#E33D26' }}>{t.heroTitle2}</span>
-            </motion.h1>
+            </h1>
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.25 }}
+              initial={{ y: 12 }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
               className="relative max-w-2xl mb-10"
             >
               <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-xl" style={{ color: '#8C8478' }}>search</span>
@@ -565,12 +564,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
 
             {/* POPULAIRE ZOEKOPDRACHTEN */}
             {!searchTerm && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.3 }}
-                className="flex flex-wrap items-center gap-2 mb-6 -mt-6"
-              >
+              <div className="flex flex-wrap items-center gap-2 mb-6 -mt-6">
                 <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#9C9389' }}>
                   Populair:
                 </span>
@@ -584,16 +578,11 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                     {tag}
                   </button>
                 ))}
-              </motion.div>
+              </div>
             )}
 
             {/* TRUST BADGES */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.3 }}
-              className="flex flex-wrap gap-2 mb-8"
-            >
+            <div className="flex flex-wrap gap-2 mb-8">
               {[
                 { icon: 'storefront', text: '8 supermarkten vergeleken' },
                 { icon: 'update', text: 'Dagelijks bijgewerkt' },
@@ -606,14 +595,9 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                   {b.text}
                 </div>
               ))}
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.35 }}
-              className="flex flex-wrap gap-3 items-center"
-            >
+            <div className="flex flex-wrap gap-3 items-center">
               <motion.button
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
@@ -656,7 +640,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                   <span className="text-sm font-bold font-headline" style={{ color: '#1B9E4B' }}>€{potentialSavings.toFixed(2)}</span>
                 </div>
               )}
-            </motion.div>
+            </div>
           </div>
         </section>
 
