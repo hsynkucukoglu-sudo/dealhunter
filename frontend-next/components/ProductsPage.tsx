@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useMemo, useEffect, useRef, useCallback, useTransition, useDeferredValue } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Fuse from 'fuse.js'
 import { Product, CATEGORIES, CATEGORY_LABELS, MARKET_COLORS, getMarketInitial } from '@/lib/types'
@@ -39,6 +39,17 @@ export function ProductsPage({ initialProducts, initialSearch = '' }: { initialP
   const [watchlistToast, setWatchlistToast] = useState<string | null>(null)
   const [canInstall, setCanInstall] = useState(false)
 const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promise<{ outcome: string }> } | null>(null)
+
+  const [isPending, startTransition] = useTransition()
+
+  // Deferred values keep filter button clicks instant (INP fix)
+  // — heavy filteredProducts computation runs after paint
+  const deferredMarket = useDeferredValue(selectedMarket)
+  const deferredCategory = useDeferredValue(selectedCategory)
+  const deferredCampaignsOnly = useDeferredValue(showCampaignsOnly)
+  const deferredFavoritesOnly = useDeferredValue(showFavoritesOnly)
+  const deferredCampaign = useDeferredValue(selectedCampaign)
+  const deferredSearch = useDeferredValue(debouncedSearch)
 
   const { itemCount, setIsCartOpen } = useShoppingList()
   const { t, lang } = useLanguage()
@@ -148,26 +159,25 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
   , [products])
 
   const filteredProducts = useMemo(() => {
-    // Fuzzy-search candidate set (or full set when no query)
-    const searchPool = debouncedSearch
-      ? fuse.search(debouncedSearch).map(r => r.item)
+    // Use deferred values so filter button clicks feel instant
+    const searchPool = deferredSearch
+      ? fuse.search(deferredSearch).map(r => r.item)
       : products
 
     return searchPool.filter((p) => {
-      const matchesCampaign = showCampaignsOnly ? p.isCampaign : true
-      const matchesMarket = selectedMarket === 'all' || p.market === selectedMarket
-      const matchesCategory = selectedCategory === 'all' || p.category === selectedCategory
-      const matchesFavorites = showFavoritesOnly ? favorites.some(f => f.id === p.id || (f.name === p.name && f.market === p.market)) : true
+      const matchesCampaign = deferredCampaignsOnly ? p.isCampaign : true
+      const matchesMarket = deferredMarket === 'all' || p.market === deferredMarket
+      const matchesCategory = deferredCategory === 'all' || p.category === deferredCategory
+      const matchesFavorites = deferredFavoritesOnly ? favorites.some(f => f.id === p.id || (f.name === p.name && f.market === p.market)) : true
       const matchesCampaignType = (() => {
-        if (selectedCampaign === 'all') return true
+        if (deferredCampaign === 'all') return true
         const discountPct = p.originalPrice > p.discountedPrice && p.originalPrice > 0
           ? (p.discount || Math.round(((p.originalPrice - p.discountedPrice) / p.originalPrice) * 100))
           : 0
-        return detectCampaignType(p.name, discountPct, p.campaignType).type === selectedCampaign
+        return detectCampaignType(p.name, discountPct, p.campaignType).type === deferredCampaign
       })()
       return matchesCampaign && matchesMarket && matchesCategory && matchesFavorites && matchesCampaignType
     }).sort((a, b) => {
-      // Default: highest discount % first
       const pctA = a.originalPrice > a.discountedPrice && a.originalPrice > 0
         ? (a.discount || Math.round(((a.originalPrice - a.discountedPrice) / a.originalPrice) * 100))
         : 0
@@ -176,7 +186,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         : 0
       return pctB - pctA
     })
-  }, [products, debouncedSearch, fuse, showCampaignsOnly, selectedMarket, selectedCategory, showFavoritesOnly, favorites, selectedCampaign])
+  }, [products, deferredSearch, fuse, deferredCampaignsOnly, deferredMarket, deferredCategory, deferredFavoritesOnly, favorites, deferredCampaign])
 
   const potentialSavings = useMemo(() =>
     filteredProducts.reduce((sum, p) => sum + (p.originalPrice > p.discountedPrice ? p.originalPrice - p.discountedPrice : 0), 0)
@@ -274,14 +284,14 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
 
           <div className="hidden md:flex gap-1 items-center">
             <button
-              onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setSelectedCategory('all'); setSelectedCampaign('all') }}
+              onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setSelectedCategory('all'); setSelectedCampaign('all') })}
               className="px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-all hover:bg-black/5"
               style={{ color: '#1A1A1A' }}
             >
               {t.scanBtn}
             </button>
             <button
-              onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(true); setSelectedCategory('all'); setSelectedCampaign('all') }}
+              onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(true); setSelectedCategory('all'); setSelectedCampaign('all') })}
               className="px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-all hover:bg-black/5"
               style={{ color: '#6B6259' }}
             >
@@ -378,9 +388,9 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         selectedMarket={selectedMarket}
         selectedCategory={selectedCategory}
         lang={lang}
-        onMarket={(m) => { setSelectedMarket(m); setShowCampaignsOnly(false) }}
-        onCategory={setSelectedCategory}
-        onClearAll={() => { setSelectedMarket('all'); setSelectedCategory('all'); setShowCampaignsOnly(false); setSelectedCampaign('all') }}
+        onMarket={(m) => startTransition(() => { setSelectedMarket(m); setShowCampaignsOnly(false) })}
+        onCategory={(c) => startTransition(() => setSelectedCategory(c))}
+        onClearAll={() => startTransition(() => { setSelectedMarket('all'); setSelectedCategory('all'); setShowCampaignsOnly(false); setSelectedCampaign('all') })}
       />
 
       {/* MAIN CONTENT */}
@@ -390,20 +400,20 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         {availableMarkets.length > 0 && (
           <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-4">
             <motion.button whileTap={{ scale: 0.95 }}
-              onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setSelectedCampaign('all'); setSelectedCategory('all') }}
+              onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setSelectedCampaign('all'); setSelectedCategory('all') })}
               className={`market-pill flex-none ${selectedMarket === 'all' && !showCampaignsOnly ? 'market-pill-active' : ''}`}>
               <span className="material-symbols-outlined text-base">bolt</span>
               {t.allMarkets}
             </motion.button>
             <motion.button whileTap={{ scale: 0.95 }}
-              onClick={() => { setSelectedMarket('all'); setShowCampaignsOnly(true); setSelectedCampaign('all'); setSelectedCategory('all') }}
+              onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(true); setSelectedCampaign('all'); setSelectedCategory('all') })}
               className={`market-pill flex-none ${showCampaignsOnly ? 'market-pill-active' : ''}`}>
               <span className="material-symbols-outlined text-base">local_fire_department</span>
               {t.campaignsOnly}
             </motion.button>
             {favorites.length > 0 && (
               <motion.button whileTap={{ scale: 0.95 }}
-                onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
+                onClick={() => startTransition(() => setShowFavoritesOnly(!showFavoritesOnly))}
                 className={`market-pill flex-none ${showFavoritesOnly ? 'market-pill-active' : ''}`}>
                 <span className="material-symbols-outlined text-base"
                   style={{ fontVariationSettings: showFavoritesOnly ? '"FILL" 1' : '"FILL" 0' }}>favorite</span>
@@ -413,7 +423,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             <div className="w-px h-6 flex-none" style={{ background: '#C9C1B6' }} />
             {availableMarkets.map(market => (
               <motion.button key={market} whileTap={{ scale: 0.95 }}
-                onClick={() => { setSelectedMarket(market); setShowCampaignsOnly(false); setSelectedCategory('all'); trackMarketFilter(market) }}
+                onClick={() => { trackMarketFilter(market); startTransition(() => { setSelectedMarket(market); setShowCampaignsOnly(false); setSelectedCategory('all') }) }}
                 className={`market-pill flex-none ${selectedMarket === market && !showCampaignsOnly ? 'market-pill-active' : ''}`}>
                 <div className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[9px] font-bold flex-none"
                   style={{ background: MARKET_COLORS[market] || '#6B6259' }}>
@@ -428,14 +438,14 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         {/* CATEGORY FILTER BAR */}
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-2">
           <motion.button whileTap={{ scale: 0.95 }}
-            onClick={() => { setSelectedCategory('all'); trackCategoryFilter('all') }}
+            onClick={() => { trackCategoryFilter('all'); startTransition(() => setSelectedCategory('all')) }}
             className={`market-pill flex-none ${selectedCategory === 'all' ? 'market-pill-active' : ''}`}>
             <span className="material-symbols-outlined text-base">apps</span>
             {lang === 'tr' ? 'Tümü' : lang === 'en' ? 'All' : 'Alle'}
           </motion.button>
           {CATEGORIES.map(cat => (
             <motion.button key={cat.id} whileTap={{ scale: 0.95 }}
-              onClick={() => { setSelectedCategory(cat.id === selectedCategory ? 'all' : cat.id); trackCategoryFilter(cat.id) }}
+              onClick={() => { trackCategoryFilter(cat.id); startTransition(() => setSelectedCategory(cat.id === selectedCategory ? 'all' : cat.id)) }}
               className={`market-pill flex-none ${selectedCategory === cat.id ? 'market-pill-active' : ''}`}>
               <span>{cat.emoji}</span>
               {CATEGORY_LABELS[cat.id]?.[lang] ?? cat.label}
@@ -449,7 +459,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             <motion.button
               key={f.type}
               whileTap={{ scale: 0.95 }}
-              onClick={() => { const next = f.type === selectedCampaign ? 'all' : f.type; setSelectedCampaign(next); if (next !== 'all' && next != null) trackCampaignFilter(String(next)) }}
+              onClick={() => { const next = f.type === selectedCampaign ? 'all' : f.type; if (next !== 'all' && next != null) trackCampaignFilter(String(next)); startTransition(() => setSelectedCampaign(next)) }}
               className={`market-pill flex-none ${selectedCampaign === f.type ? 'market-pill-active' : ''}`}
             >
               <span>{f.emoji}</span>
@@ -781,7 +791,9 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                 </div>
               )}
 
-              <ProductGrid products={filteredProducts} t={t} searchTerm={debouncedSearch} />
+              <div style={{ opacity: isPending ? 0.6 : 1, transition: 'opacity 0.15s' }}>
+                <ProductGrid products={filteredProducts} t={t} searchTerm={debouncedSearch} />
+              </div>
             </motion.div>
           ) : (
             <motion.div key="home" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
@@ -790,13 +802,13 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
               {selectedMarket !== 'all' && (
                 <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-6">
                   <motion.button whileTap={{ scale: 0.95 }}
-                    onClick={() => setSelectedCategory('all')}
+                    onClick={() => startTransition(() => setSelectedCategory('all'))}
                     className={`market-pill flex-none ${selectedCategory === 'all' ? 'market-pill-active' : ''}`}>
                     {lang === 'tr' ? 'Tümü' : lang === 'en' ? 'All' : 'Alles'}
                   </motion.button>
                   {CATEGORIES.filter(cat => products.some(p => p.market === selectedMarket && p.category === cat.id)).map(cat => (
                     <motion.button key={cat.id} whileTap={{ scale: 0.95 }}
-                      onClick={() => setSelectedCategory(cat.id)}
+                      onClick={() => startTransition(() => setSelectedCategory(cat.id))}
                       className={`market-pill flex-none ${selectedCategory === cat.id ? 'market-pill-active' : ''}`}>
                       {CATEGORY_LABELS[cat.id]?.[lang] ?? cat.label}
                     </motion.button>
@@ -819,13 +831,15 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                     <p className="text-sm mt-1" style={{ color: '#8C8478' }}>{filteredProducts.length} {t.activeProducts}</p>
                   </div>
                   <motion.button whileTap={{ scale: 0.9 }}
-                    onClick={() => setShowCampaignsOnly(!showCampaignsOnly)}
+                    onClick={() => startTransition(() => setShowCampaignsOnly(!showCampaignsOnly))}
                     className="p-2 rounded-full transition-all cursor-pointer"
                     style={{ background: showCampaignsOnly ? '#E33D26' : 'rgba(0,0,0,0.04)', color: showCampaignsOnly ? 'white' : '#6B6259' }}>
                     <span className="material-symbols-outlined">local_fire_department</span>
                   </motion.button>
                 </div>
-                <ProductGrid products={filteredProducts} t={t} searchTerm={debouncedSearch} />
+                <div style={{ opacity: isPending ? 0.6 : 1, transition: 'opacity 0.15s' }}>
+                  <ProductGrid products={filteredProducts} t={t} searchTerm={debouncedSearch} />
+                </div>
               </section>
 
               <NewsletterSignup />
