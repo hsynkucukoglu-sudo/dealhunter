@@ -735,7 +735,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         )}
 
         {/* AD — Hero altı */}
-        <AdBanner slot="7882410354" format="horizontal" className="mb-10" />
+        <AdBanner slot="7882410354" format="horizontal" className="mb-10" minHeight={90} />
 
         {/* ANA LAYOUT: sol içerik + sağ Prijsvergelijking sidebar */}
         <div className="flex gap-8 items-start">
@@ -817,7 +817,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
               )}
 
               {/* AD */}
-              <AdBanner slot="6569328687" format="auto" className="mb-10" />
+              <AdBanner slot="6569328687" format="auto" className="mb-10" minHeight={280} />
 
               {/* Product Grid */}
               <section>
@@ -983,7 +983,7 @@ function ProductGrid({ products, t, searchTerm = '' }: { products: Product[]; t:
     if ((index + 1) % AD_INTERVAL === 0 && index + 1 < products.length) {
       rows.push(
         <div key={`ad-${index}`} className="col-span-2 lg:col-span-3 xl:col-span-4">
-          <AdBanner slot="6629568666" format="auto" className="my-2" />
+          <AdBanner slot="6629568666" format="auto" className="my-2" minHeight={280} />
         </div>
       )
     }
