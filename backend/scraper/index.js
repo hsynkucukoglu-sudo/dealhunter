@@ -65,12 +65,19 @@ async function scrapeDirk() {
           const discountedPrice = parseFloat(p.offers.price)
           if (!discountedPrice) continue
           const imgSrc = Array.isArray(p.image) ? p.image[0] : (p.image || null)
+          
+          let expiresAt = EXPIRES_AT
+          if (p.offers?.priceValidUntil) {
+            expiresAt = p.offers.priceValidUntil.split('T')[0]
+          }
+
           items.push({
             name: p.name,
             discountedPrice,
             imageUrl: typeof imgSrc === 'string' ? imgSrc : imgSrc?.url || null,
             url: p.url ? (p.url.startsWith('http') ? p.url : `https://www.dirk.nl${p.url}`) : null,
             campaignType: toCampaignType(p.name) || toCampaignType(p.offers?.description || ''),
+            expiresAt,
           })
         }
       } catch {}
@@ -103,6 +110,7 @@ async function scrapeDirk() {
       source: 'dirk.nl/aanbiedingen',
       expiresAt: EXPIRES_AT,
       campaignType: item.campaignType,
+      affiliateUrl: null,
     }))
 
     const withSavings = results.filter(r => r.originalPrice > r.discountedPrice)
@@ -286,6 +294,7 @@ async function scrapeJumbo() {
         source: `jumbo.com - ${deal.promoLabel.replace(/[€]/g, 'EUR')}`,
         expiresAt: EXPIRES_AT,
         campaignType: deal.campaignType,
+        affiliateUrl: null, // Daisycon/Awin linkleri buraya gelecek
       })
     }
 
@@ -651,7 +660,14 @@ async function scrapeAlbertHeijn() {
         if (!promo) continue
         const imageUrl = p.images?.find(i => i.width === 400)?.url ?? p.images?.[0]?.url ?? null
         const unitInfo = parseAhUnitInfo(p, promo.discountedPrice)
-        candidates.push({ ...promo, name: p.title, imageUrl, ...unitInfo })
+        
+        // Real expiry date from AH API if available
+        let expiresAt = EXPIRES_AT
+        if (p.bonus?.endDate) {
+          expiresAt = p.bonus.endDate
+        }
+
+        candidates.push({ ...promo, name: p.title, imageUrl, ...unitInfo, expiresAt })
       }
 
       // 150 ürün bulduktan sonra dur
@@ -1055,6 +1071,12 @@ async function scrapeCoop() {
           if (!discountedPrice || isNaN(discountedPrice) || seen.has(p.name.toLowerCase())) continue
           seen.add(p.name.toLowerCase())
           const originalPrice = parseFloat(p.offers.highPrice || p.offers.price)
+          
+          let expiresAt = EXPIRES_AT
+          if (p.offers?.priceValidUntil) {
+            expiresAt = p.offers.priceValidUntil.split('T')[0]
+          }
+
           const imgRaw = p.image
           const imageUrl = typeof imgRaw === 'string' ? imgRaw
             : Array.isArray(imgRaw) ? imgRaw[0]
@@ -1167,8 +1189,14 @@ async function scrapeCoop() {
 
 // ─── ANA FONKSİYON ────────────────────────────────────────────────────────────
 export async function scrapeFlyerProducts() {
-  EXPIRES_AT = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
-  console.log('🔍 Fetch-only scraper başlatılıyor...')
+  // Hollanda'da çoğu indirim Pazar günü biter. Varsayılan olarak en yakın Pazar'ı bul.
+  const now = new Date()
+  const sunday = new Date(now)
+  sunday.setDate(now.getDate() + (7 - now.getDay()) % 7)
+  if (now.getDay() === 0 && now.getHours() > 18) sunday.setDate(sunday.getDate() + 7) // Pazar akşamıysa gelecek Pazar
+  EXPIRES_AT = sunday.toISOString().split('T')[0]
+
+  console.log(`🔍 Fetch-only scraper başlatılıyor... (Varsayılan bitiş: ${EXPIRES_AT})`)
 
   const [dirk, jumbo, hoogvliet, lidl, ah, aldi, vomar, deka, coop] = await Promise.all([
     scrapeDirk(),

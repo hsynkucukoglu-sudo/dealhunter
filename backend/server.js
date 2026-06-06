@@ -7,15 +7,6 @@ import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite
 import { sendPushToAll, sendPushToSubscriptions } from './push.js'
 import { scrapeFlyerProducts } from './scraper/index.js'
 import { categorize } from './categorize.js'
-import path from 'path'
-import { fileURLToPath } from 'url'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
-function escapeHtml(str) {
-  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
-}
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -72,9 +63,6 @@ const requireAdmin = (req, res, next) => {
 app.use(cors())
 app.use(express.json())
 app.use(generalLimit)
-
-// Extracted screenshots
-app.use(express.static(path.join(__dirname, 'public')))
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -489,121 +477,10 @@ app.post('/api/newsletter/subscribe', newsletterLimit, asyncHandler(async (req, 
   res.status(500).json({ error: 'Aanmelding mislukt, probeer het later opnieuw' })
 }))
 
-
-// ===== 404 Handler / SPA Fallback =====
-if (isProduction) {
-  const frontendDist = path.join(__dirname, '..', 'frontend', 'dist')
-  // Hashed assets uzun süre cache'lenebilir
-  app.use('/assets', express.static(path.join(frontendDist, 'assets'), {
-    maxAge: '1y',
-    immutable: true,
-  }))
-  // Diğer statik dosyalar
-  app.use(express.static(frontendDist, {
-    setHeaders: (res, filePath) => {
-      if (filePath.endsWith('index.html')) {
-        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
-      }
-    },
-    index: false,
-  }))
-  // SPA fallback — bot gelirse ürünleri HTML'e göm, normal kullanıcıya SPA ver
-  app.get('*', asyncHandler(async (req, res) => {
-    if (req.path.startsWith('/api/')) return res.status(404).json({ error: 'Not found' })
-
-    const ua = req.headers['user-agent'] || ''
-    const isBot = /googlebot|bingbot|slurp|duckduckbot|baiduspider|yandex|sogou|facebot|ia_archiver|twitterbot|linkedinbot|whatsapp|telegrambot/i.test(ua)
-
-    if (!isBot) {
-      return res.sendFile(path.join(frontendDist, 'index.html'))
-    }
-
-    // Bot: ürünleri DB'den çek, HTML'e göm
-    const products = await getProducts()
-    const productCards = products.slice(0, 200).map(p => {
-      const discount = p.originalPrice > p.discountedPrice
-        ? Math.round(((p.originalPrice - p.discountedPrice) / p.originalPrice) * 100)
-        : 0
-      return `
-        <article itemscope itemtype="https://schema.org/Product">
-          <h2 itemprop="name">${escapeHtml(p.name)}</h2>
-          <p itemprop="brand">${escapeHtml(p.market)}</p>
-          ${p.imageUrl ? `<img itemprop="image" src="${escapeHtml(p.imageUrl.startsWith('ah-product-id:') ? `/api/ah-image/${p.imageUrl.replace('ah-product-id:', '')}` : p.imageUrl)}" alt="${escapeHtml(p.name)}" loading="lazy"/>` : ''}
-          <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-            <meta itemprop="priceCurrency" content="EUR"/>
-            <span itemprop="price" content="${p.discountedPrice}">€${p.discountedPrice.toFixed(2)}</span>
-            ${discount > 0 ? `<s>€${p.originalPrice.toFixed(2)}</s> <strong>-%${discount}</strong>` : ''}
-            <meta itemprop="availability" content="https://schema.org/InStock"/>
-          </div>
-          <p>Geldig t/m: ${escapeHtml(p.expiresAt || '')}</p>
-        </article>`
-    }).join('\n')
-
-    const markets = [...new Set(products.map(p => p.market))].join(', ')
-
-    res.setHeader('Content-Type', 'text/html; charset=utf-8')
-    res.send(`<!DOCTYPE html>
-<html lang="nl">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>DealHunter — Beste Supermarkt Aanbiedingen Nederland</title>
-  <meta name="description" content="Vergelijk wekelijkse aanbiedingen van Albert Heijn, Jumbo, Lidl, Dirk en meer. Bespaar op boodschappen met de beste supermarktdeals."/>
-  <meta name="keywords" content="supermarkt aanbiedingen, albert heijn bonus, jumbo deals, lidl folder, dirk aanbiedingen, besparen boodschappen"/>
-  <link rel="canonical" href="https://www.dealhunter4u.nl/"/>
-  <meta property="og:title" content="DealHunter — Beste Supermarkt Aanbiedingen"/>
-  <meta property="og:description" content="Vergelijk wekelijkse aanbiedingen van alle grote supermarkten."/>
-  <meta property="og:url" content="https://www.dealhunter4u.nl"/>
-  <meta property="og:type" content="website"/>
-  <script type="application/ld+json">${JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "DealHunter",
-    "url": "https://www.dealhunter4u.nl",
-    "description": "Wekelijkse supermarkt aanbiedingen van " + markets,
-    "potentialAction": { "@type": "SearchAction", "target": "https://www.dealhunter4u.nl/?q={search_term_string}", "query-input": "required name=search_term_string" }
-  })}</script>
-  <script type="application/ld+json">${JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "DealHunter",
-    "url": "https://www.dealhunter4u.nl",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://www.dealhunter4u.nl/icon-512x512.png",
-      "width": 512,
-      "height": 512
-    },
-    "sameAs": ["https://www.dealhunter4u.nl"]
-  })}</script>
-  <style>
-    body { font-family: sans-serif; max-width: 1200px; margin: 0 auto; padding: 1rem; background: #F5EDE3; color: #1A1A1A; }
-    h1 { color: #E33D26; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
-    article { background: white; border-radius: 12px; padding: 1rem; }
-    article img { width: 100%; height: 160px; object-fit: contain; }
-    strong { color: #E33D26; }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>DealHunter — Beste Supermarkt Aanbiedingen Nederland</h1>
-    <p>${products.length} actieve aanbiedingen van ${escapeHtml(markets)}</p>
-  </header>
-  <main class="grid">
-    ${productCards}
-  </main>
-  <footer>
-    <p>DealHunter vergelijkt wekelijkse aanbiedingen van alle grote Nederlandse supermarkten.</p>
-  </footer>
-</body>
-</html>`)
-  }))
-} else {
-  app.use((req, res) => {
-    res.status(404).json({ error: 'Endpoint bulunamadı' })
-  })
-}
+// ===== 404 Handler =====
+app.use((req, res) => {
+  res.status(404).json({ error: 'Endpoint bulunamadı' })
+})
 
 // ===== Global Error Handler =====
 app.use((err, req, res, next) => {

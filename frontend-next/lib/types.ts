@@ -17,6 +17,7 @@ export interface Product {
   unitPrice?: number | null
   fullSizeLabel?: string | null
   campaignType?: string | null
+  affiliateUrl?: string | null
 }
 
 export const CATEGORY_LABELS: Record<string, Record<string, string>> = {

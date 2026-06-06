@@ -32,6 +32,7 @@ export async function createProduct(data) {
     createdAt: new Date().toISOString(),
     category: data.category || 'overig',
     campaignType: data.campaignType ?? null,
+    affiliateUrl: data.affiliateUrl ?? null,
   }
 
   await db.createProduct(product)
@@ -71,6 +72,7 @@ export async function updateProduct(id, data) {
     isCampaign: data.isCampaign !== undefined ? data.isCampaign : false,
     source: data.source || 'Manuel Ekleme',
     expiresAt: data.expiresAt,
+    affiliateUrl: data.affiliateUrl ?? null,
   }
 
   return db.updateProduct(id, updatedData)

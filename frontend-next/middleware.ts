@@ -3,12 +3,11 @@ import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
   const host = request.headers.get('host') || ''
+  const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
 
-  // Redirect non-www to www
-  if (host === 'dealhunter4u.nl') {
-    const url = request.nextUrl.clone()
-    url.host = 'www.dealhunter4u.nl'
-    return NextResponse.redirect(url, 301)
+  // Production ortamında www.dealhunter4u.nl dışındaki tüm domainleri yönlendir
+  if (process.env.NODE_ENV === 'production' && host !== 'www.dealhunter4u.nl' && !host.includes('localhost')) {
+    return NextResponse.redirect(`https://www.dealhunter4u.nl${request.nextUrl.pathname}${request.nextUrl.search}`, 301)
   }
 
   return NextResponse.next()

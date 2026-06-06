@@ -31,7 +31,12 @@ function GoContent() {
   const params = useSearchParams()
   const market = params.get('m') ?? ''
   const product = params.get('p') ?? ''
-  const destination = MARKET_URLS[market] ?? null
+  const customUrl = params.get('u')
+  
+  // Custom URL (affiliate) varsa ve geçerliyse onu kullan, yoksa market'in genel linkini kullan
+  const destination = (customUrl && customUrl.startsWith('http')) 
+    ? customUrl 
+    : (MARKET_URLS[market] ?? null)
 
   const [countdown, setCountdown] = useState(3)
   const redirected = useRef(false)

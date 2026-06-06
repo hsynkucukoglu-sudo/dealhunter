@@ -27,6 +27,7 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-producti
 
 export function ProductsPage({ initialProducts, initialSearch = '' }: { initialProducts: Product[], initialSearch?: string }) {
   const [products, setProducts] = useState<Product[]>(initialProducts)
+  const [fetchError, setFetchError] = useState(false)
   const [isScraping, setIsScraping] = useState(false)
   const [searchTerm, setSearchTerm] = useState(initialSearch)
   const [debouncedSearch, setDebouncedSearch] = useState(initialSearch)
@@ -122,11 +123,18 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
   }
 
   const refreshProducts = async () => {
+    setFetchError(false)
     try {
       const res = await fetch(`${API_BASE}/api/products`)
+      if (!res.ok) throw new Error('API Error')
       const data = await res.json()
-      if (data?.length) setProducts(data)
-    } catch {}
+      if (Array.isArray(data)) {
+        setProducts(data)
+      }
+    } catch (e) {
+      console.error('Failed to refresh products:', e)
+      setFetchError(true)
+    }
   }
 
   const handleFetchFlyers = async () => {
@@ -776,7 +784,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
               )}
 
               <div style={{ opacity: isPending ? 0.6 : 1, transition: 'opacity 0.15s' }}>
-                <ProductGrid products={filteredProducts} t={t} searchTerm={debouncedSearch} />
+                <ProductGrid products={filteredProducts} t={t} searchTerm={debouncedSearch} fetchError={fetchError} onRetry={refreshProducts} />
               </div>
             </motion.div>
           ) : (
@@ -822,7 +830,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                   </motion.button>
                 </div>
                 <div style={{ opacity: isPending ? 0.6 : 1, transition: 'opacity 0.15s' }}>
-                  <ProductGrid products={filteredProducts} t={t} searchTerm={debouncedSearch} />
+                  <ProductGrid products={filteredProducts} t={t} searchTerm={debouncedSearch} fetchError={fetchError} onRetry={refreshProducts} />
                 </div>
               </section>
 
@@ -926,7 +934,28 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
 
 const AD_INTERVAL = 12
 
-function ProductGrid({ products, t, searchTerm = '' }: { products: Product[]; t: { noProducts: string; noProductsDesc: string }; searchTerm?: string }) {
+function ProductGrid({ products, t, searchTerm = '', fetchError = false, onRetry }: { products: Product[]; t: { noProducts: string; noProductsDesc: string }; searchTerm?: string; fetchError?: boolean; onRetry?: () => void }) {
+  if (fetchError) {
+    return (
+      <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+        className="text-center py-20 rounded-3xl px-6 border-2 border-dashed border-red-200" style={{ background: 'rgba(255,255,255,0.6)' }}>
+        <span className="material-symbols-outlined text-6xl mb-4 block" style={{ color: '#E33D26' }}>signal_disconnected</span>
+        <p className="text-xl font-headline font-bold mb-2" style={{ color: '#1A1A1A' }}>Bağlantı Hatası</p>
+        <p className="max-w-md mx-auto text-sm mb-6" style={{ color: '#8C8478' }}>
+          Ürünler yüklenirken bir sorun oluştu. Lütfen bağlantınızı kontrol edip tekrar deneyin.
+        </p>
+        <button
+          onClick={onRetry}
+          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold transition-all shadow-md hover:shadow-lg active:scale-95"
+          style={{ background: '#1A1A1A', color: 'white' }}
+        >
+          <span className="material-symbols-outlined text-base">refresh</span>
+          Tekrar Dene
+        </button>
+      </motion.div>
+    )
+  }
+
   if (products.length === 0) {
     return (
       <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
