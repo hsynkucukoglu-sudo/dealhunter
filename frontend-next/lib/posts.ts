@@ -103,8 +103,8 @@ export const POSTS: BlogPost[] = [
   {
     slug: '10-tips-goedkoper-boodschappen-doen-2026',
     relatedMarkets: ['albert-heijn', 'jumbo', 'aldi', 'lidl'],
-    title: '10 tips om goedkoper boodschappen te doen in 2026',
-    description: 'Bespaar elke week tientallen euro\'s op je boodschappen met deze bewezen tips. Van 1+1 gratis acties tot het slim combineren van supermarktaanbiedingen.',
+    title: 'Goedkoper Boodschappen Doen? 10 Tips Die Echt Werken (Bespaar €200/Jaar)',
+    description: 'Vergelijk supermarkten, gebruik 1+1 acties en sla in bij aanbieding. Met deze 10 praktische tips bespaar je gemiddeld €150–200 per jaar op boodschappen.',
     date: '2026-05-07',
     readTime: 5,
     category: 'Bespaartips',
@@ -150,8 +150,8 @@ export const POSTS: BlogPost[] = [
   {
     slug: 'albert-heijn-vs-jumbo-vs-lidl-wie-is-goedkoper',
     relatedMarkets: ['albert-heijn', 'jumbo', 'lidl'],
-    title: 'AH vs Jumbo vs Lidl: Wie is Goedkoper? (2026)',
-    description: 'We vergeleken 200+ producten: Jumbo wint op basisprijs, AH op bonuskorting, Lidl op budget. Lees welke supermarkt jou €150+ per jaar bespaart.',
+    title: 'AH, Jumbo of Lidl: Welke Supermarkt is Goedkoopst? (2026 Test)',
+    description: 'Jumbo wint op basisprijs, maar AH slaat terug met diepe bonusacties. Wij vergeleken 200+ producten — ontdek welke supermarkt jou tot €400/jaar bespaart.',
     date: '2026-05-05',
     readTime: 7,
     category: 'Vergelijking',

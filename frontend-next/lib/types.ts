@@ -74,8 +74,8 @@ export const MARKETS = [
     slug: 'dirk',
     name: 'Dirk',
     color: '#C8102E',
-    ctaTitle: 'Dirk Aanbiedingen: Vlees, Dranken & Meer tot 50% Korting | Vandaag Actueel',
-    description: 'Alle Dirk aanbiedingen van deze week — vlees, dranken en huishoudproducten. Dagelijks bijgewerkt. Altijd de nieuwste Dirk folder online.',
+    ctaTitle: 'Dirk Folder Deze Week: Goedkoopste Vlees & Dranken van Nederland',
+    description: 'Dirk heeft structureel de laagste vleesprijzen van Nederland. Alle actuele Dirk acties — dagelijks bijgewerkt en vergeleken met AH, Jumbo en Lidl.',
     keywords: 'dirk aanbiedingen, dirk acties, dirk van den broek folder, reclamefolder dirk van de broek, dirk van de broek deals, dirk folder, dirk aanbieding deze week',
   },
   {
