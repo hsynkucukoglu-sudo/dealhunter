@@ -1120,6 +1120,251 @@ export const POSTS: BlogPost[] = [
 <p>Bekijk de actuele <a href="/supermarkt/vomar">Vomar aanbiedingen op DealHunter4U</a> en vergelijk direct met alle andere supermarkten in jouw regio.</p>
     `.trim(),
   },
+  {
+    slug: 'dranken-aanbieding-supermarkt-2026',
+    relatedMarkets: ['albert-heijn', 'jumbo', 'dirk', 'aldi', 'lidl'],
+    title: 'Dranken in de aanbieding: cola, bier, sap en water goedkoop in 2026',
+    description: 'Wanneer zijn Coca-Cola, Heineken, Grolsch en fruitsap het goedkoopst? Ontdek de beste dranken-aanbiedingen bij AH, Jumbo, Dirk, Aldi en Lidl.',
+    date: '2026-06-06',
+    readTime: 6,
+    category: 'Aanbiedingen',
+    faqs: [
+      {
+        question: 'Wanneer is Coca-Cola in de aanbieding?',
+        answer: 'Coca-Cola is bij Albert Heijn en Jumbo gemiddeld elke 3-4 weken in de aanbieding, vaak als 1+1 gratis of met 30-40% korting. De beste deals zijn rond feestdagen en in de zomer (BBQ-seizoen).',
+      },
+      {
+        question: 'Welke supermarkt heeft de goedkoopste bier aanbiedingen?',
+        answer: 'Dirk en Aldi hebben structureel de laagste bierprijzen. Heineken (24-pack) is bij Dirk gemiddeld €2-3 goedkoper dan bij AH of Jumbo.',
+      },
+      {
+        question: 'Hoe bespaar ik op dranken boodschappen?',
+        answer: 'Koop grootverpakkingen als ze in de aanbieding zijn (cola 1,5L en 6-packs bier). Gebruik DealHunter4U om te vergelijken wanneer je favoriete drank het goedkoopst is.',
+      },
+      {
+        question: 'Is kraanwater echt goedkoper dan flessenwater?',
+        answer: 'Ja. Nederlands kraanwater kost circa €0,001 per liter. Goedkoop flessenwater (Jumbo huismerk) kost al snel €0,15-0,20 per liter — 150-200x duurder.',
+      },
+    ],
+    content: `
+<p class="lead">Dranken zijn een groot deel van je boodschappenbudget — zeker in de zomer. Cola, bier, sap, water en vruchtensap gaan snel door. Maar wanneer zijn ze het goedkoopst, en bij welke supermarkt? Dit is de complete gids voor dranken-aanbiedingen in Nederland.</p>
+
+<h2>Cola en frisdrank: wanneer goedkoopst?</h2>
+<p><strong>Coca-Cola</strong> is de meest gekochte frisdrankbrand van Nederland en staat regelmatig in de aanbieding bij grote supermarkten. De beste momenten om te slaan:</p>
+<ul>
+  <li><strong>Albert Heijn Bonus:</strong> Coca-Cola 6-pack (6×1,5L) voor ±€5,99 (normaal ±€8,99) — elke 3-4 weken</li>
+  <li><strong>Jumbo weekdeal:</strong> Coca-Cola 1,5L 2 voor €3,00 (normaal €2,19 per fles)</li>
+  <li><strong>Dirk:</strong> Coca-Cola 8-pack blikjes voor ±€4,99 — structureel goedkoper dan AH</li>
+  <li><strong>Aldi:</strong> eigen merk cola (River Cola) ±€0,49 per 1,5L — 70% goedkoper dan Coca-Cola</li>
+</ul>
+<p><strong>Tip:</strong> bij Aldi en Lidl zijn de huismerk-alternatieven voor cola uitstekend van kwaliteit en tot 70% goedkoper. Een 1,5L fles kost er minder dan €0,50.</p>
+
+<h2>Bier aanbiedingen: Heineken, Grolsch en Hertog Jan</h2>
+<p>Bier is — zeker in de zomer — een van de meest gezochte aanbiedingen. De prijsverschillen per supermarkt zijn groot:</p>
+<ul>
+  <li><strong>Heineken 24-pack (0,33L blikjes)</strong>
+    <ul>
+      <li>Albert Heijn bonus: ±€14,99 (normaal ±€18,99)</li>
+      <li>Jumbo weekdeal: ±€13,99</li>
+      <li>Dirk: ±€12,99 — structureel goedkoopst</li>
+      <li>Aldi/Lidl eigen merk bier: ±€5,99 per 24-pack</li>
+    </ul>
+  </li>
+  <li><strong>Grolsch (6-pack, 0,5L fles)</strong>
+    <ul>
+      <li>AH Bonus: ±€5,99 (normaal ±€7,49)</li>
+      <li>Jumbo: ±€5,79 bij weekdeal</li>
+    </ul>
+  </li>
+  <li><strong>Hertog Jan (6-pack)</strong>
+    <ul>
+      <li>AH: regelmatig 1+1 gratis (effectief ±€4,00 per 6-pack)</li>
+      <li>Hoogvliet: sterke regionale bier-acties</li>
+    </ul>
+  </li>
+</ul>
+<p>Bekijk actuele <a href="/supermarkt/dirk">Dirk bier-aanbiedingen</a> — Dirk heeft structureel de laagste bierprijzen van Nederland.</p>
+
+<h2>Fruitsap en sap aanbiedingen</h2>
+<p>Appelsap, sinaasappelsap en vruchtensap zijn populaire aanbiedingen bij alle grote supermarkten:</p>
+<ul>
+  <li><strong>Appelsap 1L (AH of Jumbo huismerk):</strong> normaal ±€0,99, regelmatig 3 voor €2,00</li>
+  <li><strong>Innocent smoothies (750ml):</strong> AH Bonus 2e halve prijs (effectief ±€2,75)</li>
+  <li><strong>Fruitdrink (Capri-Sun, 10-pack):</strong> Jumbo en AH afwisselend in actie voor ±€2,49</li>
+  <li><strong>Vers geperst sinaasappelsap (1L):</strong> Lidl heeft het structureel goedkoopst: ±€1,99</li>
+</ul>
+
+<h2>Water: flessenwater vs kraanwater</h2>
+<p>Nederland heeft uitstekend kraanwater (hardheid varieert per regio), maar veel mensen kopen toch flessenwater. De goedkoopste opties:</p>
+<ul>
+  <li><strong>Jumbo huismerk water (6×1,5L):</strong> ±€1,19 (±€0,13 per liter)</li>
+  <li><strong>Aldi water (6×1,5L):</strong> ±€0,99 — goedkoopste van Nederland</li>
+  <li><strong>Spa Blauw (6×1,5L):</strong> AH Bonus ±€2,49 (normaal ±€3,79)</li>
+  <li><strong>Kraanwater:</strong> ±€0,001 per liter — 100x goedkoper dan flessenwater</li>
+</ul>
+<p>Waterfilter als tussenvorm: een Brita-filter (±€25) kost terugverdiend in 3 maanden als je normaal flessenwater koopt.</p>
+
+<h2>Energiedranken: Red Bull, Monster en alternatieven</h2>
+<p>Energiedranken zijn duur, maar ook hier zijn goede deals te vinden:</p>
+<ul>
+  <li><strong>Red Bull (4-pack 250ml):</strong> AH Bonus ±€3,99 (normaal ±€5,49)</li>
+  <li><strong>Monster Energy (500ml):</strong> Jumbo weekdeal 2 voor €3,00</li>
+  <li><strong>Aldi eigen merk energydrank:</strong> ±€0,59 per blikje — 70% goedkoper dan Red Bull</li>
+  <li><strong>Tip:</strong> koffie (AH huismerk cappuccino sachet ±€0,15) is goedkoper en effectiever dan energydrank</li>
+</ul>
+
+<h2>Wanneer zijn dranken het goedkoopst? Seizoenspatronen</h2>
+<ul>
+  <li><strong>Zomer (mei–augustus):</strong> BBQ-seizoen, alle supermarkten concurreren op bier, cola en sapjes</li>
+  <li><strong>Koningsdag / EK / WK:</strong> bierprijzen dalen 20-30% in de weken ervoor</li>
+  <li><strong>Oud &amp; Nieuw:</strong> champagne, cava en prosecco in actie (december)</li>
+  <li><strong>Januari:</strong> alcohol juist duurder (Dry January effect — minder concurrentie)</li>
+</ul>
+
+<h2>Slimste strategie voor dranken besparen</h2>
+<ol>
+  <li><strong>Koop grootverpakkingen bij aanbieding</strong> — bier en cola zijn maanden houdbaar</li>
+  <li><strong>Vergelijk altijd eerst</strong> op <a href="/">DealHunter4U</a> — grote prijsverschillen per week</li>
+  <li><strong>Huismerk cola en bier</strong> bij Aldi/Lidl: zelfde smaakprofiel, 50-70% goedkoper</li>
+  <li><strong>Filter op "Dranken"</strong> in DealHunter4U voor alle actuele deals tegelijk</li>
+</ol>
+
+<p>→ <a href="/?category=dranken">Bekijk alle actuele dranken-aanbiedingen</a> bij 8 supermarkten</p>
+    `.trim(),
+  },
+  {
+    slug: 'wasmiddel-verzorging-aanbieding-2026',
+    relatedMarkets: ['albert-heijn', 'jumbo', 'aldi', 'dirk'],
+    title: 'Wasmiddel & verzorgingsproducten aanbieding: Ariel, Pampers en Douwe Egberts goedkoop',
+    description: 'Wanneer zijn Ariel, Persil, Pampers luiers en Douwe Egberts koffie het goedkoopst? De complete gids voor huishoudproducten-aanbiedingen bij Nederlandse supermarkten.',
+    date: '2026-06-06',
+    readTime: 6,
+    category: 'Aanbiedingen',
+    faqs: [
+      {
+        question: 'Wanneer is Ariel wasmiddel in de aanbieding?',
+        answer: 'Ariel is bij Albert Heijn en Jumbo gemiddeld elke 4-6 weken in de aanbieding, vaak met 40-50% korting. De beste deal: Ariel 3-in-1 Pods groot formaat (40-50 wasbeurten) voor ±€7,99 i.p.v. €13,99.',
+      },
+      {
+        question: 'Zijn Pampers luiers goedkoper bij Aldi of AH?',
+        answer: 'Aldi\'s eigen merk luiers (Mamia) zijn structureel 40-50% goedkoper dan Pampers bij AH of Jumbo. Pampers zelf is bij Dirk en Aldi structureel goedkoper dan bij AH.',
+      },
+      {
+        question: 'Wanneer is Douwe Egberts koffie in de aanbieding?',
+        answer: 'Douwe Egberts is bij AH en Jumbo elke 3-4 weken in de aanbieding. Beste deal: DE filterkoffie 500g voor ±€4,99 (normaal ±€7,49). Bij Dirk zijn DE-producten structureel goedkoper.',
+      },
+      {
+        question: 'Welke supermarkt heeft de goedkoopste wasmiddelen?',
+        answer: 'Voor merkwasmiddelen is Dirk structureel het goedkoopst. Voor huismerk-alternatieven is Aldi (Tandil) de absolute winnaar — tot 70% goedkoper dan Ariel of Persil.',
+      },
+    ],
+    content: `
+<p class="lead">Wasmiddel, luiers, koffie en shampoo — huishoudproducten en verzorgingsartikelen vormen een flink deel van je boodschappenbudget. Maar deze producten zijn ook de meest aangeboden categorie bij supermarkten. Met de juiste strategie bespaar je honderden euro's per jaar.</p>
+
+<h2>Wasmiddel aanbieding: Ariel, Persil, Bold en Robijn</h2>
+<p>Wasmiddelen worden bijna wekelijks door een supermarkt aangeboden. De meest populaire merken:</p>
+<ul>
+  <li><strong>Ariel 3-in-1 Pods (40 stuks):</strong>
+    <ul>
+      <li>Normaal: ±€13,99 bij AH</li>
+      <li>AH Bonus: ±€7,99 (43% korting) — elke 5-6 weken</li>
+      <li>Jumbo weekdeal: ±€8,49</li>
+      <li>Dirk: ±€7,49 structureel</li>
+    </ul>
+  </li>
+  <li><strong>Persil (30 wasbeurten vloeibaar):</strong>
+    <ul>
+      <li>AH Bonus: ±€6,99 (normaal ±€9,99)</li>
+      <li>Jumbo: 2 voor €14,00 bij actie</li>
+    </ul>
+  </li>
+  <li><strong>Robijn (34 wasbeurten):</strong>
+    <ul>
+      <li>AH 1+1 gratis: ±€5,49 per stuk (normaal ±€8,49)</li>
+      <li>Hoogvliet: sterke Robijn-acties, check wekelijks</li>
+    </ul>
+  </li>
+  <li><strong>Aldi Tandil (40 wasbeurten):</strong> ±€2,99 — structureel 70% goedkoper dan Ariel, vergelijkbare wasresultaten in onafhankelijke tests</li>
+</ul>
+<p><strong>Tip:</strong> koop merk-wasmiddel altijd in grote verpakkingen bij aanbieding en sla op voor 2-3 maanden. Je bespaart per jaar gemakkelijk €50-80 op wasmiddel alleen.</p>
+
+<h2>Luiers aanbieding: Pampers, Huggies en Libero</h2>
+<p>Jonge ouders geven gemiddeld €80-120 per maand uit aan luiers. Slimme alternatieven en timing kunnen dit halveren:</p>
+<ul>
+  <li><strong>Pampers Baby-Dry (maat 4, 52 stuks):</strong>
+    <ul>
+      <li>AH normaal: ±€14,99</li>
+      <li>AH Bonus: ±€9,99 (33% korting) — elke 4-6 weken</li>
+      <li>Jumbo actie: ±€9,49</li>
+      <li>Dirk: ±€8,99 structureel — goedkoopst voor Pampers</li>
+    </ul>
+  </li>
+  <li><strong>Huggies (maat 4, 50 stuks):</strong>
+    <ul>
+      <li>Jumbo actie: ±€8,99</li>
+      <li>AH Bonus: 2+1 gratis (effectief ±€7,50 per pak)</li>
+    </ul>
+  </li>
+  <li><strong>Aldi Mamia luiers (52 stuks maat 4):</strong> ±€5,99 — 60% goedkoper dan Pampers, Stiftung Warentest-winnaar 2024</li>
+  <li><strong>Lidl Lupilu luiers:</strong> ±€5,49 — ook hoog getest, perfecte Pampers-alternatief</li>
+</ul>
+<p>Bekijk wekelijks <a href="/supermarkt/dirk">Dirk aanbiedingen</a> voor de scherpste luierprijzen van merkluiers.</p>
+
+<h2>Koffie aanbieding: Douwe Egberts, Nescafé en Senseo</h2>
+<p>Nederland is een van de grootste koffieverbruikers ter wereld. Koffie staat dan ook structureel in de aanbieding:</p>
+<ul>
+  <li><strong>Douwe Egberts Filterkoffie (500g):</strong>
+    <ul>
+      <li>Normaal: ±€7,49 bij AH</li>
+      <li>AH Bonus: ±€4,99 (33% korting) — elke 3-4 weken</li>
+      <li>Dirk: ±€4,79 structureel</li>
+      <li>Jumbo weekdeal: ±€4,99</li>
+    </ul>
+  </li>
+  <li><strong>Senseo Pads (36 stuks):</strong>
+    <ul>
+      <li>AH Bonus: ±€4,49 (normaal ±€6,49)</li>
+      <li>Jumbo: 2 voor €8,00 bij actie</li>
+    </ul>
+  </li>
+  <li><strong>Nescafé Gold (200g):</strong>
+    <ul>
+      <li>AH Bonus: ±€5,49 (normaal ±€7,99)</li>
+      <li>Aldi Bellarom oploskoffie 200g: ±€1,99 — huismerk alternatief</li>
+    </ul>
+  </li>
+</ul>
+
+<h2>Shampoo, doucheproducten en tandpasta</h2>
+<p>Verzorgingsproducten zijn sterk in omloop bij supermarkten als aanvulling op hun core-assortiment:</p>
+<ul>
+  <li><strong>Head &amp; Shoulders (400ml):</strong> AH Bonus ±€3,99 (normaal ±€5,49) — elke 4-6 weken</li>
+  <li><strong>Dove douchegel (500ml):</strong> Jumbo 1+1 gratis ±€3,49 per stuk</li>
+  <li><strong>Oral-B tandpasta (75ml):</strong> AH Bonus 3 voor €5,00 (normaal ±€2,49 per stuk)</li>
+  <li><strong>Gillette scheermesjes (4 stuks):</strong> AH of Jumbo 2e halve prijs — grote besparing op dit dure product</li>
+  <li><strong>Aldi eigen merk (Lacura shampoo, tandpasta):</strong> ±€0,89–€1,49 per stuk — tot 70% goedkoper, vergelijkbare kwaliteit</li>
+</ul>
+
+<h2>Afwasmiddel en schoonmaakproducten</h2>
+<ul>
+  <li><strong>Dreft afwasmiddel (900ml):</strong> Jumbo 1+1 gratis ±€2,29 per fles</li>
+  <li><strong>Glorix WC-reiniger:</strong> AH Bonus ±€1,49 (normaal ±€2,39)</li>
+  <li><strong>Fairy vaatwastabletten (40 stuks):</strong> AH Bonus ±€5,99 (normaal ±€8,49)</li>
+  <li><strong>Aldi Potz schoonmaak:</strong> huismerk reiniger ±€0,79 — effectief en spotgoedkoop</li>
+</ul>
+
+<h2>Strategie: maximaal besparen op huishoudproducten</h2>
+<ol>
+  <li><strong>Stockpile bij aanbieding:</strong> wasmiddel, luiers en koffie zijn lang houdbaar — koop 2-3 maanden voorraad bij een goede deal</li>
+  <li><strong>Vergelijk merk vs. huismerk:</strong> Aldi en Lidl huismerk scoort in blindtests vaak gelijk aan A-merken</li>
+  <li><strong>Check DealHunter4U wekelijks</strong> — filter op categorie "Huishouden" en "Verzorging" voor alle actuele deals</li>
+  <li><strong>Combineer supermarkten:</strong> wasmiddel bij Dirk (structureel goedkoopst), luiers bij Aldi (huismerk), koffie bij AH (bonus)</li>
+</ol>
+
+<p>→ <a href="/?category=huishouden">Bekijk alle actuele huishoud-aanbiedingen</a> van 8 supermarkten</p>
+<p>→ <a href="/?category=verzorging">Bekijk alle actuele verzorgingsproducten in aanbieding</a></p>
+    `.trim(),
+  },
 ]
 
 export function getPost(slug: string): BlogPost | undefined {
