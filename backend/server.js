@@ -1,7 +1,6 @@
 import express from 'express'
 import cors from 'cors'
 import rateLimit from 'express-rate-limit'
-import httpProxy from 'http-proxy'
 import { initDatabase } from './db.js'
 import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, updateProductCategory, clearAllProducts } from './models.js'
 import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, getMinPriceMap, getComparisonGroups, getScraperStats } from './db.js'
@@ -479,20 +478,9 @@ app.post('/api/newsletter/subscribe', newsletterLimit, asyncHandler(async (req, 
   res.status(500).json({ error: 'Aanmelding mislukt, probeer het later opnieuw' })
 }))
 
-// ===== API 404 Handler =====
-app.use('/api', (req, res) => {
-  res.status(404).json({ error: 'Endpoint bulunamadı' })
-})
-
-// ===== Next.js Proxy =====
-const NEXT_PORT = process.env.NEXT_PORT || 3000
-const nextProxy = httpProxy.createProxyServer({ target: `http://localhost:${NEXT_PORT}`, xfwd: true })
-nextProxy.on('error', (_err, _req, res) => {
-  res.writeHead(502, { 'Content-Type': 'text/html' })
-  res.end('<h1>Frontend başlatılıyor, lütfen bekleyin...</h1>')
-})
+// ===== 404 Handler =====
 app.use((req, res) => {
-  nextProxy.web(req, res)
+  res.status(404).json({ error: 'Endpoint bulunamadı' })
 })
 
 // ===== Global Error Handler =====
