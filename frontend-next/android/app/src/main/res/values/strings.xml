@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">DealHunter4U</string>
+    <string name="title_activity_main">DealHunter4U</string>
+    <string name="package_name">nl.dealhunter4u.app</string>
+    <string name="custom_url_scheme">nl.dealhunter4u.app</string>
+</resources>

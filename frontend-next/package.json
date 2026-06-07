@@ -8,6 +8,9 @@
     "start": "next start -p $PORT"
   },
   "dependencies": {
+    "@capacitor/android": "^8.4.0",
+    "@capacitor/cli": "^8.4.0",
+    "@capacitor/core": "^8.4.0",
     "@next/third-parties": "^16.2.6",
     "@tailwindcss/postcss": "^4",
     "framer-motion": "^12.38.0",
