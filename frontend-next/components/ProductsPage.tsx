@@ -53,7 +53,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
   const deferredSearch = useDeferredValue(debouncedSearch)
 
   const { itemCount, setIsCartOpen } = useShoppingList()
-  const { t, lang } = useLanguage()
+  const { t, lang, setLang } = useLanguage()
   const { favorites, watchlist } = useFavorites()
 
   useEffect(() => {
@@ -898,6 +898,18 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             {lang === 'tr' ? 'Kampanya' : lang === 'en' ? 'Deals' : 'Actie'}
           </span>
         </button>
+        <button
+          onClick={() => setLang(lang === 'nl' ? 'en' : lang === 'en' ? 'tr' : 'nl')}
+          className="flex flex-col items-center justify-center p-2 cursor-pointer"
+          style={{ color: '#6B6259' }}
+        >
+          <span style={{ fontSize: 22, lineHeight: 1 }}>
+            {lang === 'nl' ? '🇳🇱' : lang === 'en' ? '🇬🇧' : '🇹🇷'}
+          </span>
+          <span className="font-headline text-[10px] font-bold uppercase mt-0.5">
+            {lang.toUpperCase()}
+          </span>
+        </button>
       </nav>
 
       <ShoppingListSidebar />
@@ -919,7 +931,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         href="https://chat.whatsapp.com/C4Q20ugQTIYKdY4ZCeNqL2"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-4 z-50 flex items-center gap-2 px-4 py-3 rounded-full shadow-lg transition-transform hover:scale-105 active:scale-95 md:hidden"
+        className="fixed bottom-24 right-4 z-50 flex items-center gap-2 px-4 py-3 rounded-full shadow-lg transition-transform hover:scale-105 active:scale-95 md:hidden"
         style={{ background: '#25D366', color: 'white', fontWeight: 700, fontSize: 13 }}
         aria-label="WhatsApp groep — dagelijkse topdeals"
       >
