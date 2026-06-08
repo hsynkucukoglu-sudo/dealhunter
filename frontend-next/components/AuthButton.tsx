@@ -1,6 +1,6 @@
 'use client'
 
-import { useSession, signIn, signOut } from 'next-auth/react'
+import { useSession, signOut } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useRef, useEffect } from 'react'
@@ -22,16 +22,23 @@ export function AuthButton() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [menuOpen])
 
+  // Prevent body scroll when bottom sheet open on mobile
+  useEffect(() => {
+    if (menuOpen) document.body.style.overflow = 'hidden'
+    else document.body.style.overflow = ''
+    return () => { document.body.style.overflow = '' }
+  }, [menuOpen])
+
   if (status === 'loading') return null
 
   if (!session) {
     return (
       <Link
         href="/login"
-        className="flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-full transition-opacity hover:opacity-80"
+        className="flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-full transition-all hover:opacity-80 active:scale-95"
         style={{
-          border: '1.5px solid rgba(255,255,255,0.2)',
-          color: 'rgba(255,255,255,0.85)',
+          background: '#1A1A1A',
+          color: 'white',
         }}
       >
         <span className="material-symbols-outlined text-base leading-none">person</span>
@@ -47,10 +54,10 @@ export function AuthButton() {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setMenuOpen(v => !v)}
-        className="flex items-center gap-2 pl-3 pr-1 py-1 rounded-full transition-opacity hover:opacity-80"
-        style={{ border: '1.5px solid rgba(255,255,255,0.2)' }}
+        className="flex items-center gap-2 pl-2 pr-2 py-1 rounded-full transition-all hover:opacity-80 active:scale-95"
+        style={{ background: '#1A1A1A' }}
       >
-        <span className="text-sm font-semibold" style={{ color: 'rgba(255,255,255,0.9)' }}>
+        <span className="text-sm font-semibold hidden sm:inline" style={{ color: 'white', paddingLeft: 4 }}>
           {firstName}
         </span>
         <div className="relative">
@@ -81,70 +88,119 @@ export function AuthButton() {
         </div>
       </button>
 
+      {/* Desktop dropdown */}
       {menuOpen && (
-        <div
-          className="absolute right-0 top-11 rounded-2xl overflow-hidden"
-          style={{
-            background: 'white',
-            border: '1.5px solid #E0D8CE',
-            boxShadow: '0 12px 40px rgba(0,0,0,0.14)',
-            minWidth: '220px',
-            zIndex: 1000,
-          }}
-        >
-          {/* User info */}
-          <div className="px-4 py-3.5" style={{ borderBottom: '1.5px solid #F0EBE5' }}>
-            <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>{session.user?.name}</p>
-            <p className="text-xs mt-0.5 truncate" style={{ color: '#8C8478' }}>{session.user?.email}</p>
-          </div>
-
-          {/* Stats */}
+        <>
+          {/* Mobile bottom sheet backdrop */}
           <div
-            className="grid grid-cols-3 divide-x text-center"
-            style={{ borderBottom: '1.5px solid #F0EBE5', borderColor: '#F0EBE5' }}
+            className="fixed inset-0 sm:hidden z-[998]"
+            style={{ background: 'rgba(0,0,0,0.4)' }}
+            onClick={() => setMenuOpen(false)}
+          />
+
+          {/* Desktop dropdown */}
+          <div
+            className="absolute right-0 top-11 rounded-2xl overflow-hidden z-[999] hidden sm:block"
+            style={{
+              background: 'white',
+              border: '1.5px solid #E0D8CE',
+              boxShadow: '0 12px 40px rgba(0,0,0,0.14)',
+              minWidth: '220px',
+            }}
           >
-            {[
-              { label: 'Favorieten', count: favorites.length, icon: 'favorite' },
-              { label: 'Alerts', count: watchlist.length, icon: 'notifications' },
-            ].map((s) => (
-              <div key={s.label} className="py-3 px-2 col-span-1" style={{ borderColor: '#F0EBE5' }}>
-                <p className="text-base font-headline font-black" style={{ color: '#1A1A1A' }}>{s.count}</p>
-                <p className="text-[10px] font-medium" style={{ color: '#8C8478' }}>{s.label}</p>
-              </div>
-            ))}
-            <div className="py-3 px-2 col-span-1">
-              <span
-                className="material-symbols-outlined text-lg"
-                style={{ color: '#E33D26', fontVariationSettings: '"FILL" 1' }}
-              >
-                verified
-              </span>
-              <p className="text-[10px] font-medium" style={{ color: '#8C8478' }}>Actief</p>
-            </div>
+            <MenuContent
+              session={session}
+              favorites={favorites.length}
+              watchlist={watchlist.length}
+              onClose={() => setMenuOpen(false)}
+            />
           </div>
 
-          {/* Actions */}
-          <div className="p-2">
-            <Link
-              href="/profiel"
-              onClick={() => setMenuOpen(false)}
-              className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors hover:opacity-80"
-              style={{ color: '#1A1A1A', background: '#FAF6F0' }}
-            >
-              <span className="material-symbols-outlined text-base" style={{ color: '#E33D26' }}>person</span>
-              Mijn profiel
-            </Link>
-            <button
-              onClick={() => { setMenuOpen(false); signOut({ callbackUrl: '/' }) }}
-              className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-sm font-semibold mt-1 transition-colors hover:opacity-80"
-              style={{ color: '#8C8478' }}
-            >
-              <span className="material-symbols-outlined text-base">logout</span>
-              Uitloggen
-            </button>
+          {/* Mobile bottom sheet */}
+          <div
+            className="fixed bottom-0 left-0 right-0 sm:hidden z-[999] rounded-t-3xl overflow-hidden"
+            style={{
+              background: 'white',
+              boxShadow: '0 -8px 40px rgba(0,0,0,0.18)',
+            }}
+          >
+            {/* Handle bar */}
+            <div className="flex justify-center pt-3 pb-1">
+              <div className="w-10 h-1 rounded-full" style={{ background: '#E0D8CE' }} />
+            </div>
+            <MenuContent
+              session={session}
+              favorites={favorites.length}
+              watchlist={watchlist.length}
+              onClose={() => setMenuOpen(false)}
+            />
+            {/* Safe area padding */}
+            <div className="h-6" />
           </div>
-        </div>
+        </>
       )}
     </div>
+  )
+}
+
+function MenuContent({
+  session,
+  favorites,
+  watchlist,
+  onClose,
+}: {
+  session: NonNullable<ReturnType<typeof useSession>['data']>
+  favorites: number
+  watchlist: number
+  onClose: () => void
+}) {
+  return (
+    <>
+      <div className="px-4 py-3.5" style={{ borderBottom: '1.5px solid #F0EBE5' }}>
+        <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>{session.user?.name}</p>
+        <p className="text-xs mt-0.5 truncate" style={{ color: '#8C8478' }}>{session.user?.email}</p>
+      </div>
+
+      <div
+        className="grid grid-cols-3 divide-x text-center"
+        style={{ borderBottom: '1.5px solid #F0EBE5' }}
+      >
+        {[
+          { label: 'Favorieten', count: favorites },
+          { label: 'Alerts', count: watchlist },
+        ].map((s) => (
+          <div key={s.label} className="py-3 px-2 col-span-1" style={{ borderColor: '#F0EBE5' }}>
+            <p className="text-base font-headline font-black" style={{ color: '#1A1A1A' }}>{s.count}</p>
+            <p className="text-[10px] font-medium" style={{ color: '#8C8478' }}>{s.label}</p>
+          </div>
+        ))}
+        <div className="py-3 px-2 col-span-1">
+          <span className="material-symbols-outlined text-lg" style={{ color: '#E33D26', fontVariationSettings: '"FILL" 1' }}>
+            verified
+          </span>
+          <p className="text-[10px] font-medium" style={{ color: '#8C8478' }}>Actief</p>
+        </div>
+      </div>
+
+      <div className="p-2">
+        <Link
+          href="/profiel"
+          onClick={onClose}
+          className="flex items-center gap-2.5 w-full px-3 py-3 rounded-xl text-sm font-semibold transition-colors hover:opacity-80"
+          style={{ color: '#1A1A1A', background: '#FAF6F0' }}
+        >
+          <span className="material-symbols-outlined text-base" style={{ color: '#E33D26' }}>person</span>
+          Mijn profiel
+        </Link>
+        <button
+          onClick={() => { onClose(); signOut({ callbackUrl: '/' }) }}
+          className="flex items-center gap-2.5 w-full px-3 py-3 rounded-xl text-sm font-semibold mt-1 transition-colors hover:opacity-80"
+          style={{ color: '#8C8478' }}
+        >
+          <span className="material-symbols-outlined text-base">logout</span>
+          Uitloggen
+        </button>
+      </div>
+    </>
   )
 }
