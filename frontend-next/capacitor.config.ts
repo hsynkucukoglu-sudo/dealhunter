@@ -15,6 +15,11 @@ const config: CapacitorConfig = {
       androidSplashResourceName: 'splash',
       showSpinner: false,
     },
+    GoogleAuth: {
+      scopes: ['profile', 'email'],
+      serverClientId: '824303476060-9jh588gqcarlahsi2f3cnrgpqu1cvtnq.apps.googleusercontent.com',
+      forceCodeForRefreshToken: true,
+    },
   },
   android: {
     allowMixedContent: false,
