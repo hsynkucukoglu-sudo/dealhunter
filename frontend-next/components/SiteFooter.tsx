@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { VISIBLE_MARKETS as MARKETS, CATEGORIES } from '@/lib/types'
+import { LanguageSwitcher } from './LanguageSwitcher'
 
 export function SiteFooter() {
   return (
@@ -104,7 +105,10 @@ export function SiteFooter() {
           style={{ borderTop: '1px solid rgba(255,255,255,0.08)', color: '#6B6259' }}
         >
           <span>© {new Date().getFullYear()} DealHunter. Alle rechten voorbehouden.</span>
-          <span>Prijzen kunnen afwijken — controleer altijd bij de supermarkt.</span>
+          <div className="block sm:hidden">
+            <LanguageSwitcher />
+          </div>
+          <span className="hidden sm:inline">Prijzen kunnen afwijken — controleer altijd bij de supermarkt.</span>
         </div>
       </div>
     </footer>

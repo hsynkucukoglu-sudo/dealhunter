@@ -28,14 +28,14 @@ export function AuthButton() {
     return (
       <Link
         href="/login"
-        className="flex items-center gap-1.5 text-sm font-semibold px-3.5 py-2 rounded-full transition-opacity hover:opacity-80"
+        className="flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-full transition-opacity hover:opacity-80"
         style={{
           border: '1.5px solid rgba(255,255,255,0.2)',
           color: 'rgba(255,255,255,0.85)',
         }}
       >
         <span className="material-symbols-outlined text-base leading-none">person</span>
-        Inloggen
+        <span className="hidden sm:inline">Inloggen</span>
       </Link>
     )
   }
