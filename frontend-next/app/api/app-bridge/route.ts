@@ -2,9 +2,6 @@ import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { createTransferToken } from '@/lib/auth-transfer'
 
-// Called after Google OAuth in Chrome Custom Tabs.
-// Reads the session set by NextAuth, creates a signed transfer token,
-// and redirects to the app via deep link.
 export async function GET() {
   const session = await auth()
 
@@ -19,5 +16,11 @@ export async function GET() {
     image: session.user.image,
   })
 
-  return NextResponse.redirect(`dealhunter://auth?t=${encodeURIComponent(token)}`)
+  // Use plain Response — NextResponse.redirect rejects non-http(s) schemes
+  return new Response(null, {
+    status: 302,
+    headers: {
+      Location: `dealhunter://auth?t=${encodeURIComponent(token)}`,
+    },
+  })
 }
