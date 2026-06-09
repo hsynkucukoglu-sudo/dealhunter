@@ -1,38 +1,91 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { googleSignIn } from './actions'
 
-function isCapacitor(): boolean {
-  return typeof window !== 'undefined' && !!(window as unknown as { Capacitor?: unknown }).Capacitor
+const APP_BRIDGE_URL =
+  'https://www.dealhunter4u.nl/api/auth/signin/google?callbackUrl=%2Fapi%2Fauth%2Fapp-bridge'
+
+function isNativeApp(): boolean {
+  try {
+    const cap = (window as unknown as { Capacitor?: { isNativePlatform?: () => boolean } }).Capacitor
+    return !!(cap?.isNativePlatform?.())
+  } catch {
+    return false
+  }
 }
 
 export function GoogleLoginButton() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const tokenHandled = useRef(false)
+
+  useEffect(() => {
+    if (!isNativeApp()) return
+
+    let appHandle: { remove: () => void } | undefined
+
+    async function setup() {
+      try {
+        const { App } = await import('@capacitor/app')
+        const handle = await App.addListener('appUrlOpen', async (event) => {
+          if (!event.url.startsWith('dealhunter://auth')) return
+
+          tokenHandled.current = true
+          setLoading(true)
+          setError(null)
+
+          try {
+            const url = new URL(event.url)
+            const transferToken = url.searchParams.get('t')
+            if (!transferToken) throw new Error('Geen token ontvangen')
+
+            const { signIn: clientSignIn } = await import('next-auth/react')
+            const result = await clientSignIn('app-transfer', {
+              transferToken,
+              redirect: false,
+            })
+
+            if (result?.ok) {
+              window.location.href = '/'
+            } else {
+              throw new Error('Inloggen mislukt, probeer opnieuw')
+            }
+          } catch (e) {
+            setError(e instanceof Error ? e.message : 'Er is iets misgegaan')
+            setLoading(false)
+          }
+        })
+        appHandle = handle
+      } catch {
+        // @capacitor/app not available in this environment
+      }
+    }
+
+    setup()
+    return () => appHandle?.remove()
+  }, [])
 
   async function handleClick() {
     setLoading(true)
     setError(null)
-    try {
-      if (isCapacitor()) {
-        // Native Google Sign-In — token doğrudan WebView session'ına işlenir
-        const { GoogleAuth } = await import('@codetrix-studio/capacitor-google-auth')
-        const googleUser = await GoogleAuth.signIn()
-        const idToken = googleUser.authentication.idToken
-        if (!idToken) throw new Error('No id_token received')
+    tokenHandled.current = false
 
-        // next-auth/react credentials signIn — session cookie WebView'a set edilir
-        const { signIn: clientSignIn } = await import('next-auth/react')
-        const result = await clientSignIn('google-native', {
-          idToken,
-          redirect: false,
+    try {
+      if (isNativeApp()) {
+        const { Browser } = await import('@capacitor/browser')
+
+        const browserHandle = await Browser.addListener('browserFinished', () => {
+          browserHandle.remove()
+          if (!tokenHandled.current) {
+            setLoading(false)
+          }
         })
-        if (result?.ok) {
-          window.location.href = '/'
-        } else {
-          throw new Error('Login failed')
-        }
+
+        await Browser.open({
+          url: APP_BRIDGE_URL,
+          presentationStyle: 'popover',
+        })
       } else {
         await googleSignIn()
       }
