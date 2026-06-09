@@ -47,6 +47,10 @@ export async function clearAllProducts() {
   await db.clearAllProducts()
 }
 
+export async function clearProductsByMarket(market) {
+  await db.clearProductsByMarket(market)
+}
+
 export async function updateProductImage(id, imageUrl) {
   return db.updateProductImage(id, imageUrl)
 }

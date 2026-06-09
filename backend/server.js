@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import rateLimit from 'express-rate-limit'
 import { initDatabase } from './db.js'
-import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, updateProductCategory, clearAllProducts } from './models.js'
+import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, updateProductCategory, clearAllProducts, clearProductsByMarket } from './models.js'
 import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, getMinPriceMap, getComparisonGroups, getScraperStats } from './db.js'
 import { sendPushToAll, sendPushToSubscriptions } from './push.js'
 import { scrapeFlyerProducts } from './scraper/index.js'
@@ -250,9 +250,12 @@ async function runScraperJob() {
   try {
   const newProducts = await scrapeFlyerProducts()
 
-  // Sadece ürünler başarıyla geldiyse eskileri temizle
+  // Sadece ürünler başarıyla geldiyse eskileri temizle (market bazlı — başarısız market silinmez)
   if (newProducts && newProducts.length > 0) {
-    await clearAllProducts()
+    const updatedMarketSet = new Set(newProducts.map(p => p.market))
+    for (const market of updatedMarketSet) {
+      await clearProductsByMarket(market)
+    }
 
     // Bulunan ürünleri veritabanına ekle (NaN fiyatlıları atla)
     const createdProducts = []

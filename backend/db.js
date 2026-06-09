@@ -289,6 +289,10 @@ export async function clearAllProducts() {
   await pool.query('DELETE FROM products')
 }
 
+export async function clearProductsByMarket(market) {
+  await pool.query('DELETE FROM products WHERE market = $1', [market])
+}
+
 export async function getScraperStats() {
   const { rows } = await pool.query(`
     SELECT
