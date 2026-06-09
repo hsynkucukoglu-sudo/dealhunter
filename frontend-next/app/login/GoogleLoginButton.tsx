@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { googleSignIn } from './actions'
 
 const APP_BRIDGE_URL =
-  'https://www.dealhunter4u.nl/api/auth/signin/google?callbackUrl=%2Fapi%2Fauth%2Fapp-bridge'
+  'https://www.dealhunter4u.nl/api/auth/signin/google?callbackUrl=%2Fapi%2Fapp-bridge'
 
 function isNativeApp(): boolean {
   try {
