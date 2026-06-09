@@ -3,10 +3,12 @@ import { getProducts } from '@/lib/api'
 import { buildHomePageSchema } from '@/lib/schema'
 import { ProductsPage } from '@/components/ProductsPage'
 
-export const metadata: Metadata = {
-  alternates: {
-    canonical: 'https://www.dealhunter4u.nl',
-  },
+export async function generateMetadata({ searchParams }: { searchParams: Promise<{ q?: string }> }): Promise<Metadata> {
+  const { q } = await searchParams
+  if (q) {
+    return { robots: { index: false, follow: true } }
+  }
+  return { alternates: { canonical: 'https://www.dealhunter4u.nl' } }
 }
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
