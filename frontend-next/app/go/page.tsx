@@ -39,6 +39,24 @@ function GoContent() {
       if (typeof gtag !== 'undefined') gtag('event', 'deal_redirect', { market, product })
     } catch {}
 
+    // Capacitor uygulaması: harici market sitesi WebView içinde açılamaz (allowNavigation'da yok).
+    // Sistem tarayıcısında (Chrome Custom Tab) aç, sonra WebView'ı ana sayfaya geri al.
+    const cap = (window as unknown as { Capacitor?: { isNativePlatform?: () => boolean } }).Capacitor
+    if (cap?.isNativePlatform?.()) {
+      redirected.current = true
+      ;(async () => {
+        try {
+          const { Browser } = await import('@capacitor/browser')
+          await Browser.open({ url: destination })
+        } catch {
+          window.location.href = destination
+          return
+        }
+        window.location.replace('/')
+      })()
+      return
+    }
+
     const timer = setInterval(() => {
       setCountdown(c => {
         if (c <= 1) {

@@ -221,7 +221,17 @@ export function ProductCard({ product }: { product: Product }) {
             }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = '0.88'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)' }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = '1'; (e.currentTarget as HTMLElement).style.transform = 'translateY(0)' }}
-            onClick={(e) => { e.stopPropagation(); trackDealClick(product.name, product.market, discountPercent) }}
+            onClick={(e) => {
+              e.stopPropagation()
+              trackDealClick(product.name, product.market, discountPercent)
+              // Native app: target=_blank WebView'da bozuk popup açıyor — aynı pencerede /go'ya git,
+              // /go oradan Custom Tab açar.
+              const cap = (window as unknown as { Capacitor?: { isNativePlatform?: () => boolean } }).Capacitor
+              if (cap?.isNativePlatform?.()) {
+                e.preventDefault()
+                window.location.href = e.currentTarget.getAttribute('href') || '/'
+              }
+            }}
             aria-label={`Bekijk ${product.name} aanbieding bij ${product.market}`}
           >
             Naar {product.market}
