@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { Product } from '@/lib/types'
 import { ProductCard } from './ProductCard'
+import { AdBanner } from './AdBanner'
 import { ShoppingListSidebar } from './ShoppingListSidebar'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { DealHunterLogo } from './DealHunterLogo'
@@ -157,6 +158,11 @@ export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
               </motion.div>
             ))}
           </div>
+        )}
+
+        {/* Reklam — ürün gridi ile SEO içeriği arasında doğal mola */}
+        {filtered.length > 0 && (
+          <AdBanner slot="6569328687" format="auto" className="mt-12" minHeight={280} />
         )}
 
         {/* Market content — rich text for SEO */}

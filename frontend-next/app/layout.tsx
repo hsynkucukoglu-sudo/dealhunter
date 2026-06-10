@@ -62,11 +62,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6266103134639533"
-          crossOrigin="anonymous"
-        />
+        {/* AdSense script is loaded by <AdSenseScript /> AFTER cookie consent (GDPR).
+            Do not add a hardcoded adsbygoogle.js here — it bypasses consent and double-loads. */}
         <meta name="theme-color" content="#1A1A1A" />
         <meta name="mobile-web-app-capable" content="yes" />
         <link rel="apple-touch-icon" href="/icon-192x192.png" />

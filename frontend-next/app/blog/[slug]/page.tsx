@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { getPost, getAllPosts } from '@/lib/posts'
 import { buildBreadcrumbSchema, buildFaqSchema } from '@/lib/schema'
 import { MARKETS } from '@/lib/types'
+import { AdBanner } from '@/components/AdBanner'
 
 export async function generateStaticParams() {
   return getAllPosts().map(p => ({ slug: p.slug }))
@@ -116,6 +117,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           className="blog-content"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
+
+        {/* Reklam — yazı gövdesinden sonra, in-content yerleşim */}
+        <AdBanner slot="6629568666" format="auto" className="mt-8" minHeight={280} />
 
         {/* Market CTAs */}
         {(post.relatedMarkets?.length ?? 0) > 0 ? (
