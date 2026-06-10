@@ -5,7 +5,7 @@ import { Product } from '@/lib/types'
 import { MARKET_COLORS } from '@/lib/types'
 import { useShoppingList } from '@/context/ShoppingListContext'
 import { useLanguage } from '@/context/LanguageContext'
-import { getAffiliateLink } from '@/lib/affiliate'
+import { getAffiliateLink, getMarketDestination, isAllowedAffiliateUrl } from '@/lib/affiliate'
 import { useFavorites } from '@/context/FavoritesContext'
 import { calcUnitPrice } from '@/lib/productMeta'
 import { detectCampaignType } from '@/lib/campaignType'
@@ -224,12 +224,19 @@ export function ProductCard({ product }: { product: Product }) {
             onClick={(e) => {
               e.stopPropagation()
               trackDealClick(product.name, product.market, discountPercent)
-              // Native app: target=_blank WebView'da bozuk popup açıyor — aynı pencerede /go'ya git,
-              // /go oradan Custom Tab açar.
+              // Native app: harici market sitesi WebView'da açılamaz (allowNavigation'da yok) ve
+              // target=_blank bozuk popup açıyor. /go ara adımını atla, doğrudan Custom Tab aç.
               const cap = (window as unknown as { Capacitor?: { isNativePlatform?: () => boolean } }).Capacitor
               if (cap?.isNativePlatform?.()) {
                 e.preventDefault()
-                window.location.href = e.currentTarget.getAttribute('href') || '/'
+                const dest = (product.affiliateUrl && isAllowedAffiliateUrl(product.affiliateUrl))
+                  ? product.affiliateUrl
+                  : getMarketDestination(product.market)
+                if (dest) {
+                  import('@capacitor/browser')
+                    .then(({ Browser }) => Browser.open({ url: dest }))
+                    .catch(() => { window.location.href = dest })
+                }
               }
             }}
             aria-label={`Bekijk ${product.name} aanbieding bij ${product.market}`}

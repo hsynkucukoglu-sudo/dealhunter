@@ -1,4 +1,4 @@
-const CACHE = 'dh-v1'
+const CACHE = 'dh-v2'
 const OFFLINE_URLS = ['/', '/deals', '/offline.html']
 
 self.addEventListener('install', event => {
