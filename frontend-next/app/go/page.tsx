@@ -1,19 +1,7 @@
 'use client'
 import { useEffect, useState, useRef, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-
-// Whitelist — open redirect koruması
-const MARKET_URLS: Record<string, string> = {
-  'Albert Heijn': 'https://www.ah.nl/bonus',
-  'Jumbo':        'https://www.jumbo.com/aanbiedingen',
-  'Lidl':         'https://www.lidl.nl/aanbiedingen',
-  'Dirk':         'https://www.dirk.nl/aanbiedingen',
-  'Aldi':         'https://www.aldi.nl/aanbiedingen.html',
-  'Hoogvliet':    'https://www.hoogvliet.com/aanbiedingen',
-  'Vomar':        'https://www.vomar.nl/aanbiedingen',
-  'DekaMarkt':    'https://www.dekamarkt.nl/aanbiedingen',
-  'Coop':         'https://www.coop.nl/aanbiedingen',
-}
+import { getMarketDestination, isAllowedAffiliateUrl } from '@/lib/affiliate'
 
 const MARKET_COLORS: Record<string, string> = {
   'Albert Heijn': '#00A0E2',
@@ -32,11 +20,12 @@ function GoContent() {
   const market = params.get('m') ?? ''
   const product = params.get('p') ?? ''
   const customUrl = params.get('u')
-  
-  // Custom URL (affiliate) varsa ve geçerliyse onu kullan, yoksa market'in genel linkini kullan
-  const destination = (customUrl && customUrl.startsWith('http')) 
-    ? customUrl 
-    : (MARKET_URLS[market] ?? null)
+
+  // Özel affiliate URL'i yalnızca onaylı host listesindeyse kullan (open-redirect koruması),
+  // yoksa market'in merkezi (gerekirse tracking'e sarılmış) linkine düş.
+  const destination = (customUrl && isAllowedAffiliateUrl(customUrl))
+    ? customUrl
+    : getMarketDestination(market)
 
   const [countdown, setCountdown] = useState(3)
   const redirected = useRef(false)

@@ -213,7 +213,7 @@ export function ProductCard({ product }: { product: Product }) {
           <a
             href={`/go?m=${encodeURIComponent(product.market)}&p=${encodeURIComponent(product.name)}${product.affiliateUrl ? `&u=${encodeURIComponent(product.affiliateUrl)}` : ''}`}
             target="_blank"
-            rel="noopener noreferrer"
+            rel={affiliateLink.rel}
             className="flex items-center justify-center gap-1.5 w-full py-2.5 px-3 rounded-xl text-sm font-bold transition-all duration-200"
             style={{
               color: 'white',
