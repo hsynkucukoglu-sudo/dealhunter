@@ -7,6 +7,15 @@ const config: CapacitorConfig = {
   server: {
     url: 'https://www.dealhunter4u.nl',
     cleartext: false,
+    // Keep Google OAuth inside the WebView so the PKCE/session cookie jar is shared.
+    // Without this, accounts.google.com opens in an external browser and the callback
+    // loses the pkce cookie set in the WebView → "server error" after account selection.
+    allowNavigation: [
+      'accounts.google.com',
+      'accounts.googleusercontent.com',
+      'www.googleapis.com',
+      'oauth2.googleapis.com',
+    ],
   },
   plugins: {
     SplashScreen: {
