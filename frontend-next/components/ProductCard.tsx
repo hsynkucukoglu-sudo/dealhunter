@@ -211,7 +211,7 @@ export function ProductCard({ product }: { product: Product }) {
       <div className="px-4 pb-4">
         {affiliateLink ? (
           <a
-            href={`/go?m=${encodeURIComponent(product.market)}&p=${encodeURIComponent(product.name)}${product.affiliateUrl ? `&u=${encodeURIComponent(product.affiliateUrl)}` : ''}`}
+            href={affiliateLink.url}
             target="_blank"
             rel={affiliateLink.rel}
             className="flex items-center justify-center gap-1.5 w-full py-2.5 px-3 rounded-xl text-sm font-bold transition-all duration-200"
@@ -224,8 +224,6 @@ export function ProductCard({ product }: { product: Product }) {
             onClick={(e) => {
               e.stopPropagation()
               trackDealClick(product.name, product.market, discountPercent)
-              // Native app: harici market sitesi WebView'da açılamaz (allowNavigation'da yok) ve
-              // target=_blank bozuk popup açıyor. /go ara adımını atla, doğrudan Custom Tab aç.
               const cap = (window as unknown as { Capacitor?: { isNativePlatform?: () => boolean } }).Capacitor
               if (cap?.isNativePlatform?.()) {
                 e.preventDefault()
