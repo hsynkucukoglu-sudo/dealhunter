@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const host = request.headers.get('host') || ''
-  const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
 
   // Production ortamında www.dealhunter4u.nl dışındaki tüm domainleri yönlendir
   if (process.env.NODE_ENV === 'production' && host !== 'www.dealhunter4u.nl' && !host.includes('localhost')) {
