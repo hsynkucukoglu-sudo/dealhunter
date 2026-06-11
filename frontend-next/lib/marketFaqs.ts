@@ -61,6 +61,10 @@ export const MARKET_FAQS: Record<string, FAQ[]> = {
       question: 'Is Lidl goedkoper dan Albert Heijn?',
       answer: 'Over het algemeen liggen de prijzen bij Lidl gemiddeld 15-25% lager dan bij Albert Heijn, met name voor huismerken en basisproducten. Lidl scoort goed op prijs-kwaliteitverhouding. Via DealHunter kun je de actuele aanbiedingen van Lidl en AH direct vergelijken en zo altijd de goedkoopste deal vinden.',
     },
+    {
+      question: 'Heeft Lidl een deal van de dag?',
+      answer: 'Lidl biedt geen vaste "deal van de dag" zoals webshops, maar heeft wel dagelijks wisselende aanbiedingen. Nieuwe weekdeals starten op maandag en donderdag komen er verse "Vers van de Week" aanbiedingen bij op vlees, groente en fruit — die soms maar een paar dagen geldig zijn. Op DealHunter vind je elke dag de actuele Lidl deals overzichtelijk bij elkaar.',
+    },
   ],
   'dirk': [
     {
@@ -78,6 +82,10 @@ export const MARKET_FAQS: Record<string, FAQ[]> = {
     {
       question: 'Wat zijn de beste deals bij Dirk van den Broek?',
       answer: 'Dirk biedt wekelijks scherpe kortingen op versproducten (groente, fruit, vlees), dranken en diepvries. Populaire acties zijn procentuele kortingen tot 50% en meerpaks voordelen. Vergelijk de huidige Dirk aanbiedingen op DealHunter en bespaar direct op je boodschappen.',
+    },
+    {
+      question: 'Heeft Dirk van den Broek de laagste vleesprijzen?',
+      answer: 'Ja, Dirk van den Broek staat bekend om structureel de laagste vleesprijzen van alle grote Nederlandse supermarkten. Met name rund-, varkens- en kipvlees zijn bij Dirk regelmatig goedkoper dan bij AH, Jumbo of Lidl. DealHunter vergelijkt wekelijks de vlees-aanbiedingen zodat je altijd de beste deal vindt.',
     },
   ],
   'aldi': [
