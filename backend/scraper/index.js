@@ -25,93 +25,82 @@ const HEADERS = {
   'Accept': 'text/html,application/xhtml+xml',
 }
 
-// ─── DIRK — JSON-LD + product page normalPrice/offerPrice ────────────────────
-function parseDirkDevaluePrice(html) {
-  const m = html.match(/"normalPrice":(\d+),"offerPrice":(\d+)/)
-  if (!m) return null
-  const ni = parseInt(m[1]), oi = parseInt(m[2])
-  if (ni === oi) return null  // same price, no savings
-
-  // Values appear immediately after the closing } of the product info object
-  const priceMatch = html.match(/"normalPrice":\d+,"offerPrice":\d+[^}]*\},([\d.]+),([\d.]+)/)
-  if (!priceMatch) return null
-  const normalPrice = parseFloat(priceMatch[1])
-  const offerPrice = parseFloat(priceMatch[2])
-  return (normalPrice > 0 && offerPrice > 0 && normalPrice > offerPrice)
-    ? { normalPrice, offerPrice }
-    : null
+// ─── DIRK — __NUXT_DATA__ (Nuxt 3 SSR payload, covers all 100+ offers) ────────
+function resolveNuxt(raw, idx, depth = 0, cache = new Map()) {
+  if (depth > 20) return raw[idx]
+  if (cache.has(idx)) return cache.get(idx)
+  const val = raw[idx]
+  if (val === null || val === undefined || typeof val !== 'object') { cache.set(idx, val); return val }
+  if (Array.isArray(val)) {
+    // Nuxt type annotations: ["ShallowReactive", N] → resolve N
+    if (val.length === 2 && typeof val[0] === 'string' && typeof val[1] === 'number') return resolveNuxt(raw, val[1], depth + 1, cache)
+    const result = val.map(i => typeof i === 'number' ? resolveNuxt(raw, i, depth + 1, cache) : i)
+    cache.set(idx, result); return result
+  }
+  const result = {}
+  for (const [k, v] of Object.entries(val)) result[k] = typeof v === 'number' ? resolveNuxt(raw, v, depth + 1, cache) : v
+  cache.set(idx, result); return result
 }
 
 async function scrapeDirk() {
-  console.log('🏪 [Dirk] dirk.nl/aanbiedingen...')
+  console.log('🏪 [Dirk] dirk.nl/aanbiedingen (__NUXT_DATA__)...')
   try {
-    const res = await fetch('https://www.dirk.nl/aanbiedingen', { headers: HEADERS })
+    const res = await fetch('https://www.dirk.nl/aanbiedingen', { headers: HEADERS, signal: AbortSignal.timeout(20000) })
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const html = await res.text()
 
-    // Phase 1: collect items + URLs from JSON-LD
-    const items = []
+    const nd = html.match(/<script[^>]*id="__NUXT_DATA__"[^>]*>([\s\S]*?)<\/script>/)
+    if (!nd) throw new Error('__NUXT_DATA__ bulunamadı — JSON-LD fallback gerekli')
+    const raw = JSON.parse(nd[1])
+
+    // Find the object containing "offers-currentOffers" key (robust, not index-hardcoded)
+    const stateObjIdx = raw.findIndex(item =>
+      item !== null && typeof item === 'object' && !Array.isArray(item) && 'offers-currentOffers' in item
+    )
+    if (stateObjIdx === -1) throw new Error('offers-currentOffers key bulunamadı')
+    const catPointersIdx = raw[stateObjIdx]['offers-currentOffers']
+    const catPointers = raw[catPointersIdx]
+    if (!Array.isArray(catPointers)) throw new Error('Kategori pointer listesi bekleniyordu')
+
+    const cache = new Map()
     const seen = new Set()
-    for (const [, block] of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
-      try {
-        const data = JSON.parse(block)
-        const list = data['@graph']?.[0]?.itemListElement
-          || (data['@type'] === 'ItemList' ? data.itemListElement : null)
-          || []
-        for (const item of list) {
-          const p = item.item || item
-          if (!p?.name || !p.offers?.price) continue
-          if (seen.has(p.name)) continue
-          seen.add(p.name)
-          const discountedPrice = parseFloat(p.offers.price)
-          if (!discountedPrice) continue
-          const imgSrc = Array.isArray(p.image) ? p.image[0] : (p.image || null)
-          
-          let expiresAt = EXPIRES_AT
-          if (p.offers?.priceValidUntil) {
-            expiresAt = p.offers.priceValidUntil.split('T')[0]
-          }
+    const results = []
 
-          items.push({
-            name: p.name,
-            discountedPrice,
-            imageUrl: typeof imgSrc === 'string' ? imgSrc : imgSrc?.url || null,
-            url: p.url ? (p.url.startsWith('http') ? p.url : `https://www.dirk.nl${p.url}`) : null,
-            campaignType: toCampaignType(p.name) || toCampaignType(p.offers?.description || ''),
-            expiresAt,
-          })
-        }
-      } catch {}
+    for (const catPtr of catPointers) {
+      const cat = resolveNuxt(raw, catPtr, 0, cache)
+      const offers = cat?.currentOffers
+      if (!Array.isArray(offers)) continue
+
+      for (const offer of offers) {
+        if (!offer?.headerText) continue
+        const key = String(offer.offerId || offer.headerText)
+        if (seen.has(key)) continue
+        seen.add(key)
+
+        const offerPrice = typeof offer.offerPrice === 'number' ? offer.offerPrice : null
+        if (!offerPrice) continue
+
+        const normalPrice = typeof offer.normalPrice === 'number' && offer.normalPrice > 0 ? offer.normalPrice : null
+        const name = offer.packaging ? `${offer.headerText} ${offer.packaging}` : offer.headerText
+        const imageUrl = offer.image
+          ? `https://web-fileserver.dirk.nl/offers/${encodeURIComponent(offer.image)}?width=190`
+          : null
+        const expiresAt = offer.endDate ? offer.endDate.split('T')[0] : EXPIRES_AT
+
+        results.push({
+          name,
+          market: 'Dirk',
+          originalPrice: normalPrice && normalPrice > offerPrice ? normalPrice : offerPrice,
+          discountedPrice: offerPrice,
+          imageUrl,
+          isCampaign: true,
+          source: 'dirk.nl/aanbiedingen',
+          expiresAt,
+          campaignType: toCampaignType(offer.textPriceSign || '') || toCampaignType(name),
+          affiliateUrl: null,
+        })
+      }
     }
-
-    // Phase 2: batch-fetch product pages to get normalPrice vs offerPrice
-    const BATCH = 6
-    for (let i = 0; i < items.length; i += BATCH) {
-      await Promise.all(items.slice(i, i + BATCH).map(async item => {
-        if (!item.url) return
-        try {
-          const r = await fetch(item.url, { headers: HEADERS, signal: AbortSignal.timeout(8000) })
-          if (!r.ok) return
-          const pHtml = await r.text()
-          const prices = parseDirkDevaluePrice(pHtml)
-          if (prices) item.normalPrice = prices.normalPrice
-        } catch {}
-      }))
-    }
-
-    const results = items.map(item => ({
-      name: item.name,
-      market: 'Dirk',
-      originalPrice: item.normalPrice && item.normalPrice > item.discountedPrice
-        ? item.normalPrice
-        : item.discountedPrice,
-      discountedPrice: item.discountedPrice,
-      imageUrl: item.imageUrl,
-      isCampaign: true,
-      source: 'dirk.nl/aanbiedingen',
-      expiresAt: EXPIRES_AT,
-      campaignType: item.campaignType,
-      affiliateUrl: null,
-    }))
 
     const withSavings = results.filter(r => r.originalPrice > r.discountedPrice)
     console.log(`  ✅ Dirk: ${results.length} ürün (${withSavings.length} met besparing)`)
