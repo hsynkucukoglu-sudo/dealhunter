@@ -815,6 +815,100 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
       <ShoppingListSidebar />
       <AddProductForm onAdded={refreshProducts} />
 
+      {/* SEO / editorial content — unieke inhoud onderaan de homepage */}
+      <section
+        className="max-w-4xl mx-auto px-4 md:px-8 mt-20"
+        style={{ color: '#3A352F' }}
+      >
+        <div
+          className="rounded-3xl p-6 md:p-10"
+          style={{ background: 'rgba(255,255,255,0.7)', border: '1px solid rgba(201,193,182,0.4)' }}
+        >
+          <h2 className="font-headline font-bold mb-4" style={{ fontSize: 'clamp(1.5rem, 3vw, 2.1rem)', color: '#1A1A1A' }}>
+            Alle supermarkt aanbiedingen van Nederland op één plek
+          </h2>
+          <p className="mb-4 leading-relaxed" style={{ color: '#5A534B' }}>
+            DealHunter4U verzamelt elke dag automatisch de actuele aanbiedingen van de grootste Nederlandse
+            supermarkten — <strong>Albert Heijn, Jumbo, Lidl, Aldi, Dirk van den Broek, Hoogvliet, Vomar en
+            DekaMarkt</strong> — en zet ze overzichtelijk naast elkaar. Zo zie je in één oogopslag waar jouw
+            boodschappen deze week het goedkoopst zijn, zonder eindeloos folders door te bladeren of tussen apps
+            te wisselen.
+          </p>
+
+          <h3 className="font-headline font-bold mt-8 mb-3" style={{ fontSize: '1.25rem', color: '#1A1A1A' }}>
+            Hoe werkt DealHunter4U?
+          </h3>
+          <p className="mb-4 leading-relaxed" style={{ color: '#5A534B' }}>
+            Wij scannen dagelijks de weekaanbiedingen van alle aangesloten supermarkten en berekenen per product
+            het werkelijke kortingspercentage ten opzichte van de normale prijs. Je kunt filteren op supermarkt,
+            op productcategorie (zoals zuivel, vlees, groente of dranken) of zoeken naar een specifiek product.
+            Met de favorietenfunctie houd je producten in de gaten en krijg je een seintje zodra ze in de
+            aanbieding zijn.
+          </p>
+
+          <h3 className="font-headline font-bold mt-8 mb-3" style={{ fontSize: '1.25rem', color: '#1A1A1A' }}>
+            Waarom supermarktprijzen vergelijken?
+          </h3>
+          <p className="mb-4 leading-relaxed" style={{ color: '#5A534B' }}>
+            De prijsverschillen tussen supermarkten zijn groter dan veel mensen denken. Discounters als Aldi en
+            Lidl zijn op basisproducten gemiddeld 20-30% goedkoper dan Albert Heijn, terwijl AH en Jumbo juist
+            uitblinken in diepe weekacties zoals 1+1 gratis. Door per week te kiezen waar je wat koopt, bespaart
+            een gemiddeld gezin al snel <strong>€150 tot €300 per jaar</strong> — zonder in te leveren op kwaliteit.
+          </p>
+
+          <h3 className="font-headline font-bold mt-8 mb-3" style={{ fontSize: '1.25rem', color: '#1A1A1A' }}>
+            Wanneer wisselen de aanbiedingen?
+          </h3>
+          <p className="mb-4 leading-relaxed" style={{ color: '#5A534B' }}>
+            De meeste supermarkten vernieuwen hun weekaanbiedingen op <strong>woensdag</strong> (Albert Heijn,
+            Jumbo, Hoogvliet, DekaMarkt, Vomar en Dirk). Lidl en Aldi starten hun nieuwe acties op
+            <strong> maandag</strong>, met extra versdeals op donderdag. DealHunter4U werkt continu bij, zodat je
+            altijd de meest actuele prijzen en vervaldatums ziet.
+          </p>
+
+          <h3 className="font-headline font-bold mt-8 mb-4" style={{ fontSize: '1.25rem', color: '#1A1A1A' }}>
+            Veelgestelde vragen
+          </h3>
+          <div className="space-y-4">
+            <div>
+              <p className="font-bold mb-1" style={{ color: '#1A1A1A' }}>Is DealHunter4U gratis te gebruiken?</p>
+              <p className="leading-relaxed" style={{ color: '#5A534B' }}>
+                Ja, DealHunter4U is volledig gratis. Je kunt alle aanbiedingen bekijken, vergelijken en
+                filteren zonder account. Een gratis account geeft je toegang tot favorieten en
+                prijsmeldingen.
+              </p>
+            </div>
+            <div>
+              <p className="font-bold mb-1" style={{ color: '#1A1A1A' }}>Welke supermarkten staan op DealHunter4U?</p>
+              <p className="leading-relaxed" style={{ color: '#5A534B' }}>
+                Op dit moment vergelijken we de aanbiedingen van acht supermarkten: Albert Heijn, Jumbo, Lidl,
+                Aldi, Dirk van den Broek, Hoogvliet, Vomar en DekaMarkt. We breiden het aanbod regelmatig uit.
+              </p>
+            </div>
+            <div>
+              <p className="font-bold mb-1" style={{ color: '#1A1A1A' }}>Hoe vaak worden de aanbiedingen bijgewerkt?</p>
+              <p className="leading-relaxed" style={{ color: '#5A534B' }}>
+                De aanbiedingen worden elke dag automatisch ververst. Nieuwe weekacties verschijnen doorgaans op
+                maandag (Lidl, Aldi) en woensdag (Albert Heijn, Jumbo en de meeste andere supermarkten).
+              </p>
+            </div>
+            <div>
+              <p className="font-bold mb-1" style={{ color: '#1A1A1A' }}>Kan ik zien hoeveel ik bespaar?</p>
+              <p className="leading-relaxed" style={{ color: '#5A534B' }}>
+                Ja. Bij elk product zie je het kortingspercentage en de besparing ten opzichte van de normale
+                prijs. Een &quot;Laagste prijs&quot;-label geeft aan welke supermarkt op dat moment het
+                goedkoopst is voor een vergelijkbaar product.
+              </p>
+            </div>
+          </div>
+
+          <p className="mt-8 leading-relaxed text-sm" style={{ color: '#8C8478' }}>
+            Lees meer bespaartips en supermarktvergelijkingen op ons <a href="/blog" style={{ color: '#E33D26', fontWeight: 600 }}>blog</a>,
+            of bekijk de aanbiedingen per <a href="/categories" style={{ color: '#E33D26', fontWeight: 600 }}>categorie</a>.
+          </p>
+        </div>
+      </section>
+
       <footer style={{ textAlign: 'center', padding: '32px 24px', marginTop: 40, borderTop: '1px solid #F0E6DE', fontSize: 13, color: '#888' }}>
         <div style={{ marginBottom: 12 }}>
           <a href="/privacy" style={{ color: '#E33D26', textDecoration: 'none', marginRight: 24 }}>Privacybeleid</a>

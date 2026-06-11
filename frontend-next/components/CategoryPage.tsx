@@ -8,6 +8,7 @@ import { ShoppingListSidebar } from './ShoppingListSidebar'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { useShoppingList } from '@/context/ShoppingListContext'
 import { useLanguage } from '@/context/LanguageContext'
+import { CATEGORY_CONTENT } from '@/lib/categoryContent'
 
 interface Category {
   id: string
@@ -164,6 +165,15 @@ export function CategoryPage({ category, initialProducts }: { category: Category
               </motion.div>
             ))}
           </div>
+        )}
+
+        {/* Categorie content — unieke redactionele tekst voor SEO */}
+        {CATEGORY_CONTENT[category.id] && (
+          <section
+            className="mt-16 rounded-3xl p-6 md:p-8 prose prose-sm max-w-none"
+            style={{ background: 'rgba(255,255,255,0.7)', border: '1px solid rgba(201,193,182,0.4)' }}
+            dangerouslySetInnerHTML={{ __html: CATEGORY_CONTENT[category.id] }}
+          />
         )}
 
         {/* Andere categorieën */}
