@@ -54,7 +54,7 @@ export default function BlogPage() {
         </div>
 
         {/* Weekly deals featured card */}
-        <Link href={`/blog/beste-deals-${weekSlug}`} style={{ textDecoration: 'none', display: 'block', marginBottom: 24 }}>
+        <Link href={`/blog/beste-deals/${weekSlug}`} style={{ textDecoration: 'none', display: 'block', marginBottom: 24 }}>
           <div style={{
             background: '#D00000', borderRadius: 20, padding: '24px 28px',
             boxShadow: '0 4px 0 #A00000', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16,

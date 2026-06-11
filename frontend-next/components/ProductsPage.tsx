@@ -540,8 +540,8 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                 placeholder={t.searchPlaceholder}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-9 pr-8 py-2.5 rounded-full text-sm border focus:outline-none focus:ring-2"
-                style={{ background: 'rgba(255,255,255,0.9)', border: '1px solid rgba(201,193,182,0.6)', color: '#1A1A1A', focusRingColor: '#E33D26' }}
+                className="w-full pl-9 pr-8 py-2.5 rounded-full text-sm border focus:outline-none focus:ring-2 focus:ring-[#E33D26]"
+                style={{ background: 'rgba(255,255,255,0.9)', border: '1px solid rgba(201,193,182,0.6)', color: '#1A1A1A' }}
               />
               {searchTerm && (
                 <button

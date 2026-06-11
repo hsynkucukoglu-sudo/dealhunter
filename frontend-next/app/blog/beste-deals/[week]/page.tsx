@@ -27,11 +27,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${title} | DealHunter4U`,
     description,
-    alternates: { canonical: `https://www.dealhunter4u.nl/blog/beste-deals-${week}` },
+    alternates: { canonical: `https://www.dealhunter4u.nl/blog/beste-deals/${week}` },
     openGraph: {
       title,
       description,
-      url: `https://www.dealhunter4u.nl/blog/beste-deals-${week}`,
+      url: `https://www.dealhunter4u.nl/blog/beste-deals/${week}`,
       type: 'article',
       publishedTime: new Date().toISOString(),
       authors: ['DealHunter4U'],
@@ -51,7 +51,7 @@ export default async function WeeklyDealsPage({ params }: Props) {
   const breadcrumb = buildBreadcrumbSchema([
     { name: 'Home', url: '/' },
     { name: 'Blog', url: '/blog' },
-    { name: `Beste Deals Week ${parsed.week}`, url: `/blog/beste-deals-${week}` },
+    { name: `Beste Deals Week ${parsed.week}`, url: `/blog/beste-deals/${week}` },
   ])
 
   const articleSchema = {
@@ -68,7 +68,7 @@ export default async function WeeklyDealsPage({ params }: Props) {
       name: 'DealHunter4U',
       logo: { '@type': 'ImageObject', url: 'https://www.dealhunter4u.nl/icon-512x512.png' },
     },
-    mainEntityOfPage: { '@type': 'WebPage', '@id': `https://www.dealhunter4u.nl/blog/beste-deals-${week}` },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `https://www.dealhunter4u.nl/blog/beste-deals/${week}` },
   }
 
   return (

@@ -38,7 +38,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/deals`, lastModified: now, changeFrequency: 'daily' as const, priority: 0.95 },
     { url: `${base}/categories`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.85 },
     { url: `${base}/blog`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.8 },
-    { url: `${base}/blog/beste-deals-${currentWeekSlug()}`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.85 },
+    { url: `${base}/blog/beste-deals/${currentWeekSlug()}`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.85 },
         ...blogPages,
         ...marketPages,
         ...categoryPages,

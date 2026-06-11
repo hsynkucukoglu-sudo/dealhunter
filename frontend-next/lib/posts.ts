@@ -1229,7 +1229,7 @@ export const POSTS: BlogPost[] = [
   <li><strong>Filter op "Dranken"</strong> in DealHunter4U voor alle actuele deals tegelijk</li>
 </ol>
 
-<p>→ <a href="/?category=dranken">Bekijk alle actuele dranken-aanbiedingen</a> bij 8 supermarkten</p>
+<p>→ <a href="/categorie/dranken">Bekijk alle actuele dranken-aanbiedingen</a> bij 8 supermarkten</p>
     `.trim(),
   },
   {
@@ -1440,7 +1440,7 @@ export const POSTS: BlogPost[] = [
   <li><strong>Augustus (uitverkoop):</strong> BBQ-artikelen en kolen -50% aan het einde van het seizoen</li>
 </ul>
 
-<p>→ <a href="/?category=vlees">Bekijk alle actuele vlees-aanbiedingen</a> bij 8 supermarkten voor de beste BBQ-deals van vandaag.</p>
+<p>→ <a href="/categorie/vlees-vis">Bekijk alle actuele vlees-aanbiedingen</a> bij 8 supermarkten voor de beste BBQ-deals van vandaag.</p>
     `.trim(),
   },
   {
@@ -1650,8 +1650,8 @@ export const POSTS: BlogPost[] = [
   <li><strong>Ga op woensdag</strong> — nieuwe aanbiedingen en meeste keuze</li>
 </ol>
 
-<p>→ <a href="/?category=groenten">Bekijk alle actuele groente-aanbiedingen</a> bij 8 supermarkten</p>
-<p>→ <a href="/?category=fruit">Bekijk alle actuele fruitaanbiedingen</a> bij 8 supermarkten</p>
+<p>→ <a href="/categorie/groente-fruit">Bekijk alle actuele groente-aanbiedingen</a> bij 8 supermarkten</p>
+<p>→ <a href="/categorie/groente-fruit">Bekijk alle actuele fruitaanbiedingen</a> bij 8 supermarkten</p>
     `.trim(),
   },
   {
@@ -2023,7 +2023,7 @@ export const POSTS: BlogPost[] = [
   <li><strong>Croissant (bakkerij):</strong> ±€0,80–€1,50 — duurste optie</li>
 </ol>
 
-<p>→ <a href="/?category=ontbijt">Bekijk alle actuele ontbijtaanbiedingen</a> bij 8 supermarkten</p>
+<p>→ <a href="/categorie/bakkerij">Bekijk alle actuele ontbijtaanbiedingen</a> bij 8 supermarkten</p>
     `.trim(),
   },
   {
@@ -2147,7 +2147,7 @@ export const POSTS: BlogPost[] = [
   <li><strong>A-merken alleen in aanbieding</strong> — Lay's, Pringles, Oreo zijn elke 3-4 weken in de aanbieding bij AH of Jumbo</li>
 </ol>
 
-<p>→ <a href="/?category=snacks">Bekijk alle actuele snacks-aanbiedingen</a> bij 8 supermarkten</p>
+<p>→ <a href="/categorie/snacks">Bekijk alle actuele snacks-aanbiedingen</a> bij 8 supermarkten</p>
     `.trim(),
   },
   {
@@ -2371,7 +2371,7 @@ export const POSTS: BlogPost[] = [
   <li><strong>Yoghurt en kwark:</strong> huismerk is prima voor dagelijks gebruik, Fage/Activia alleen bij aanbieding</li>
 </ol>
 
-<p>→ <a href="/?category=zuivel">Bekijk alle actuele zuivel-aanbiedingen</a> bij 8 supermarkten</p>
+<p>→ <a href="/categorie/zuivel">Bekijk alle actuele zuivel-aanbiedingen</a> bij 8 supermarkten</p>
     `.trim(),
   },
   {
@@ -2503,8 +2503,8 @@ export const POSTS: BlogPost[] = [
   <li><strong>Combineer supermarkten:</strong> wasmiddel bij Dirk (structureel goedkoopst), luiers bij Aldi (huismerk), koffie bij AH (bonus)</li>
 </ol>
 
-<p>→ <a href="/?category=huishouden">Bekijk alle actuele huishoud-aanbiedingen</a> van 8 supermarkten</p>
-<p>→ <a href="/?category=verzorging">Bekijk alle actuele verzorgingsproducten in aanbieding</a></p>
+<p>→ <a href="/categorie/huishouden">Bekijk alle actuele huishoud-aanbiedingen</a> van 8 supermarkten</p>
+<p>→ <a href="/categorie/verzorging">Bekijk alle actuele verzorgingsproducten in aanbieding</a></p>
     `.trim(),
   },
 ]
