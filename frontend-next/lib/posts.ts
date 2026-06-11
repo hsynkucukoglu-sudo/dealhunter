@@ -1233,6 +1233,1148 @@ export const POSTS: BlogPost[] = [
     `.trim(),
   },
   {
+    slug: 'goedkoopste-supermarkt-nederland-2026',
+    relatedMarkets: ['albert-heijn', 'jumbo', 'lidl', 'aldi', 'dirk'],
+    title: 'Goedkoopste supermarkt Nederland 2026: uitgebreide vergelijking',
+    description: 'Welke supermarkt is het goedkoopst in 2026? Vergelijking van Albert Heijn, Jumbo, Lidl, Aldi, Dirk, Vomar en meer op prijs, kwaliteit en aanbiedingen.',
+    date: '2026-06-11',
+    readTime: 7,
+    category: 'Vergelijking',
+    faqs: [
+      {
+        question: 'Welke supermarkt is het goedkoopst in Nederland?',
+        answer: 'Aldi en Lidl zijn structureel de goedkoopste supermarkten in Nederland, gemiddeld 20-30% goedkoper dan Albert Heijn. Dirk en Vomar zijn de goedkoopste full-service supermarkten in hun regio.',
+      },
+      {
+        question: 'Is Lidl of Aldi goedkoper?',
+        answer: 'Op de meeste productcategorieën zijn Aldi en Lidl vergelijkbaar van prijs. Aldi is iets goedkoper op levensmiddelen en zuivel; Lidl heeft voordelen op vers vlees en bakkerijproducten.',
+      },
+      {
+        question: 'Is Albert Heijn duur?',
+        answer: 'Albert Heijn heeft hogere basisprijzen dan discounters, maar met de Bonus-app en persoonlijke aanbiedingen kun je flink besparen. Effectief is AH voor de gemiddelde boodschapper 10-15% duurder dan Dirk.',
+      },
+      {
+        question: 'Welke supermarkt heeft de beste aanbiedingen?',
+        answer: 'Albert Heijn en Jumbo hebben de diepste procentuele kortingen (tot 50%) op weekaanbiedingen. Dirk en Vomar hebben structureel lage dagprijzen. De slimste strategie is combineren: haal A-merk deals bij AH/Jumbo, basis bij Dirk/Aldi.',
+      },
+    ],
+    content: `
+<p class="lead">Nederlanders doen gemiddeld €350–€500 per maand boodschappen. De supermarkt die je kiest maakt een verschil van honderden euro's per jaar. Maar welke is nu écht het goedkoopst? We vergelijken alle grote supermarkten op prijs, kwaliteit en aanbiedingen.</p>
+
+<h2>Ranglijst: goedkoopste supermarkten Nederland 2026</h2>
+<p>Op basis van een mandje met 50 gangbare producten (zuivel, vlees, groenten, houdbaar, dranken):</p>
+<ol>
+  <li><strong>Aldi</strong> — gemiddeld €85–€95 voor standaard boodschappenmand</li>
+  <li><strong>Lidl</strong> — gemiddeld €87–€97</li>
+  <li><strong>Dirk van den Broek</strong> — gemiddeld €95–€105 (Randstad)</li>
+  <li><strong>Vomar</strong> — gemiddeld €96–€106 (Noord-Holland)</li>
+  <li><strong>Jumbo</strong> — gemiddeld €105–€115</li>
+  <li><strong>DekaMarkt</strong> — gemiddeld €107–€117</li>
+  <li><strong>Hoogvliet</strong> — gemiddeld €108–€118</li>
+  <li><strong>Albert Heijn</strong> — gemiddeld €110–€125</li>
+</ol>
+<p><em>Opmerking: bij gebruik van AH Bonus-app en persoonlijke aanbiedingen kan AH 10–15% goedkoper uitpakken in de praktijk.</em></p>
+
+<h2>Aldi vs. Lidl: wie is goedkoper?</h2>
+<p>De twee grootste discounters liggen dicht bij elkaar. Waar elk de winnaar is:</p>
+<ul>
+  <li><strong>Aldi wint op:</strong> zuivel, eieren, vleeswaren, basislevensmiddelen</li>
+  <li><strong>Lidl wint op:</strong> vers vlees en vis, bakkerij (Bakery-in-store), groenten en fruit</li>
+  <li><strong>Vergelijkbaar:</strong> frisdrank, diepvriesproducten, drogisterij</li>
+</ul>
+<p>Praktijkadvies: woon je naast een Aldi én een Lidl? Ga naar Aldi voor zuivel en houdbaar, Lidl voor vers vlees en brood.</p>
+
+<h2>Albert Heijn: duur of slim?</h2>
+<p>AH heeft de hoogste basisprijzen — maar ook het meest geavanceerde aanbiedingssysteem:</p>
+<ul>
+  <li><strong>Bonus-app persoonlijke aanbiedingen:</strong> gemiddeld 10–20 producten per week met 20–50% korting, afgestemd op jouw koopgedrag</li>
+  <li><strong>1+1 en 2e halve prijs:</strong> AH heeft wekelijks 30–40 producten in diepe aanbieding</li>
+  <li><strong>Bonuskaart:</strong> spaarvoordelen op brandstof (Shell), bonuspunten</li>
+</ul>
+<p>Een actieve AH-app-gebruiker betaalt in de praktijk 10–15% minder dan de "normale" prijs. Dat brengt AH dichter bij Jumbo — maar nog steeds meer dan Dirk of Aldi.</p>
+
+<h2>Jumbo: prijs-kwaliteitsverhouding</h2>
+<p>Jumbo positioneert zich als "beste prijs-kwaliteitsverhouding". Sterk punt: <strong>Jumbo garandeert de laagste prijs</strong> op meer dan 300 producten. Als een concurrent goedkoper is, krijg je het verschil terug. Voor families is Jumbo vaak het beste compromis: breed assortiment, redelijke prijs, goede kwaliteit.</p>
+
+<h2>Regionale supermarkten: Dirk, Vomar, Hoogvliet, DekaMarkt</h2>
+<p>Als je in hun verzorgingsgebied woont, zijn deze supermarkten vaak de slimste keuze:</p>
+<ul>
+  <li><strong>Dirk (Randstad):</strong> 10–20% goedkoper dan AH op basisprijzen. Beste keuze voor verse producten in Amsterdam/Rotterdam/Den Haag.</li>
+  <li><strong>Vomar (Noord-Holland):</strong> vergelijkbaar met Dirk, sterk op dranken en frisdrank</li>
+  <li><strong>Hoogvliet (Zuid-Holland):</strong> prijs vergelijkbaar met Jumbo, sterk op klantenservice en versafdeling</li>
+  <li><strong>DekaMarkt (Noord-Holland/Flevoland):</strong> sterk op combi-deals en A-merk aanbiedingen</li>
+</ul>
+
+<h2>De slimste strategie: supermarkten combineren</h2>
+<p>De grootste besparingen worden niet bij één supermarkt behaald, maar door slim te combineren:</p>
+<ol>
+  <li><strong>Basis en zuivel:</strong> Aldi of Lidl (20–30% goedkoper)</li>
+  <li><strong>Vers vlees en groenten:</strong> Dirk of Lidl (structureel scherp)</li>
+  <li><strong>A-merk deals:</strong> Albert Heijn of Jumbo (diepe weekaanbiedingen)</li>
+  <li><strong>Huishoud- en verzorgingsproducten:</strong> Dirk of Aldi (lage dagprijzen)</li>
+</ol>
+<p>Gebruik <a href="/">DealHunter4U</a> om elke week in één overzicht te zien bij welke supermarkt jouw favoriete producten het goedkoopst zijn. Geen folders doorbladeren meer — alles staat naast elkaar.</p>
+
+<h2>Conclusie</h2>
+<p>Er is geen absolute winnaar — het hangt af van regio, gezinssamenstelling en koopgedrag. Maar de gulden regel: <strong>voor de allerlaagste prijs kies Aldi of Lidl; voor het beste totaalpakket in de Randstad is Dirk de winner; voor A-merk deals profiteer je van AH Bonus en Jumbo weekacties.</strong></p>
+<p>→ <a href="/">Vergelijk vandaag alle supermarktdeals op DealHunter4U</a></p>
+    `.trim(),
+  },
+  {
+    slug: 'barbecue-aanbieding-supermarkt-2026',
+    relatedMarkets: ['albert-heijn', 'jumbo', 'lidl', 'aldi', 'dirk'],
+    title: 'BBQ aanbieding supermarkt 2026: goedkoop barbecueën met de beste deals',
+    description: 'Welke supermarkt heeft de beste BBQ-aanbiedingen? Goedkoop barbecueën met vlees, kolen, sausjes en bier. Vergelijking AH, Jumbo, Lidl, Aldi en Dirk voor zomer 2026.',
+    date: '2026-06-11',
+    readTime: 6,
+    category: 'Seizoensaanbiedingen',
+    faqs: [
+      {
+        question: 'Wanneer zijn BBQ-producten het goedkoopst?',
+        answer: 'BBQ-producten zijn het goedkoopst aan het begin van het barbecueseizoen (mei–juni) en rond koningsdag. Aan het einde van de zomer (augustus) zijn prijzen ook laag omdat supermarkten seizoensvoorraden uitverkopen.',
+      },
+      {
+        question: 'Welke supermarkt heeft de goedkoopste BBQ?',
+        answer: 'Lidl en Aldi hebben de goedkoopste BBQ-producten, met complete BBQ-pakketten voor €10–€20. Albert Heijn en Jumbo hebben de beste A-merk BBQ-aanbiedingen op vlees en sauzen in de zomer.',
+      },
+      {
+        question: 'Hoe barbecue ik goedkoop voor een gezin?',
+        answer: 'Koop kippenbouten in plaats van kipfilet (3x goedkoper), kies huismerk worstjes, koop kolen of briketten bij de Action/Lidl in bulk, en check DealHunter4U voor de BBQ-deals van de week.',
+      },
+    ],
+    content: `
+<p class="lead">Barbecueën is een van de leukste zomertradities — maar een BBQ-avond voor een gezin van vier kan zomaar €40–€60 kosten. Met de juiste supermarkt-deals kom je weg voor de helft. Dit is de complete gids voor goedkoop barbecueën in de zomer van 2026.</p>
+
+<h2>BBQ-vlees aanbieding: vergelijking per supermarkt</h2>
+<p>Vlees is de grootste kostenpost bij een BBQ. Prijzen per populair product (prijspeil zomer 2026):</p>
+<ul>
+  <li><strong>Kippenbouten (1 kg)</strong>
+    <ul>
+      <li>Aldi: ±€3,49 — structureel goedkoopst</li>
+      <li>Lidl: ±€3,69</li>
+      <li>Dirk: ±€3,99</li>
+      <li>AH Bonus: ±€4,99 (normaal ±€6,49)</li>
+      <li>Jumbo weekdeal: ±€4,79</li>
+    </ul>
+  </li>
+  <li><strong>Spareribs (500g)</strong>
+    <ul>
+      <li>Lidl BBQ-week: ±€3,99 — beste deal in Nederland</li>
+      <li>AH Bonus: ±€4,99 (normaal ±€7,49)</li>
+      <li>Dirk: ±€4,79 structureel</li>
+    </ul>
+  </li>
+  <li><strong>BBQ-worstjes (500g, 8 stuks)</strong>
+    <ul>
+      <li>Aldi eigen merk: ±€2,49</li>
+      <li>Unox BBQ (AH Bonus): ±€2,99 (normaal ±€4,49)</li>
+      <li>Jumbo huismerk: ±€2,69</li>
+    </ul>
+  </li>
+  <li><strong>Hamburgers (4 stuks)</strong>
+    <ul>
+      <li>Aldi: ±€2,99 voor 4 stuks (250g)</li>
+      <li>AH 1+1: ±€3,49 per pak (effectief ±€1,75)</li>
+      <li>Jumbo vleesafdeling: ±€3,29</li>
+    </ul>
+  </li>
+</ul>
+<p><strong>Beste tip:</strong> ga voor kippenbouten en drummers in plaats van kipfilet. Ze zijn 2-3x goedkoper en smaken op de BBQ minstens zo goed — het vet zorgt voor extra smaak.</p>
+
+<h2>BBQ-sauzen, marinades en kruiden aanbieding</h2>
+<ul>
+  <li><strong>Heinz BBQ-saus (480ml):</strong> AH Bonus ±€1,99 (normaal ±€2,99), ook bij Jumbo in actie zomerperiode</li>
+  <li><strong>Bull's-Eye BBQ-saus (300ml):</strong> structureel aanwezig bij Lidl voor ±€1,49 — uitstekende waarde</li>
+  <li><strong>Maggi Steak BBQ-rub:</strong> Jumbo ±€1,79</li>
+  <li><strong>Aldi eigen merk BBQ-sauzen:</strong> ±€0,89 per fles — prima kwaliteit, enorme besparing</li>
+  <li><strong>Tip:</strong> huismerk marinade (yoghurt + knoflook + paprika) kost €0,50 en smaakt beter dan fles</li>
+</ul>
+
+<h2>Stokbrood, broodjes en bijgerechten</h2>
+<ul>
+  <li><strong>Stokbrood (2 stuks):</strong> Lidl bakkerij ±€0,89 — bak af in de BBQ voor perfecte korst</li>
+  <li><strong>Pita-broodjes (8 stuks):</strong> Aldi ±€0,99 — ideaal voor kebab-style BBQ</li>
+  <li><strong>Maar-aardappelen (1 kg zakje):</strong> Dirk ±€1,49 voor BBQ-aardappelen in folie</li>
+  <li><strong>Coleslaw (500g):</strong> AH huismerk ±€1,29, Jumbo ±€1,19</li>
+  <li><strong>Maïskolven (4 stuks):</strong> Lidl seizoensactie ±€1,99 — grillgroente van het jaar</li>
+</ul>
+
+<h2>BBQ-dranken: bier, frisdrank en sap goedkoop</h2>
+<p>In het BBQ-seizoen concurreren supermarkten fel op bier en frisdrank:</p>
+<ul>
+  <li><strong>Heineken 24-pack blik:</strong> Dirk ±€12,99 — structureel goedkoopst</li>
+  <li><strong>Grolsch 6-pack fles:</strong> AH BBQ-week ±€5,49 (normaal ±€7,49)</li>
+  <li><strong>Coca-Cola 1,5L (6-pack):</strong> Jumbo of AH BBQ-actie ±€5,99 (normaal ±€8,99)</li>
+  <li><strong>Jumbo fruitlimonade 1,5L:</strong> 2 voor €3,00 in de zomer</li>
+</ul>
+
+<h2>BBQ-spullen: barbecue, kolen en accessoires</h2>
+<p>Lidl en Action zijn de beste bronnen voor BBQ-spullen, niet de supermarkt:</p>
+<ul>
+  <li><strong>Wegwerp-BBQ (Aldi/Lidl):</strong> ±€3,49 — ideaal voor camping of strand</li>
+  <li><strong>Houtskool (3 kg, Lidl):</strong> ±€3,49 in het seizoen</li>
+  <li><strong>BBQ-briketten (5 kg, Aldi):</strong> ±€4,99 — branden 2x langer dan houtskool</li>
+  <li><strong>BBQ-handschoenen, tang, borstel:</strong> Action voor ±€3-5 per stuk</li>
+</ul>
+
+<h2>Compleet BBQ-menu voor €25 voor 4 personen</h2>
+<p>Dit is haalbaar als je de aanbiedingen van de week benut:</p>
+<ul>
+  <li>Kippenbouten 1,5 kg (Aldi): €5,24</li>
+  <li>BBQ-worstjes (Aldi): €2,49</li>
+  <li>Maïskolven 4 stuks (Lidl): €1,99</li>
+  <li>Stokbrood 2 stuks (Lidl bakkerij): €0,89</li>
+  <li>Coleslaw 500g (Jumbo): €1,19</li>
+  <li>BBQ-saus Aldi: €0,89</li>
+  <li>Heineken 12-pack (Dirk): €6,99</li>
+  <li>Frisdrank 1,5L x2 (AH of Jumbo actie): €3,00</li>
+  <li>Houtskool (Lidl): €3,49</li>
+  <li><strong>Totaal: ±€26,17</strong></li>
+</ul>
+
+<h2>Wanneer zijn BBQ-deals het best?</h2>
+<ul>
+  <li><strong>Meivakantie:</strong> eerste grote BBQ-deals van het jaar</li>
+  <li><strong>Pinksteren:</strong> alle supermarkten in de strijd met BBQ-aanbiedingen</li>
+  <li><strong>Koningsdag (27 april):</strong> structureel de eerste grote bier+BBQ deals</li>
+  <li><strong>Augustus (uitverkoop):</strong> BBQ-artikelen en kolen -50% aan het einde van het seizoen</li>
+</ul>
+
+<p>→ <a href="/?category=vlees">Bekijk alle actuele vlees-aanbiedingen</a> bij 8 supermarkten voor de beste BBQ-deals van vandaag.</p>
+    `.trim(),
+  },
+  {
+    slug: 'supermarkt-huismerk-test-2026',
+    relatedMarkets: ['albert-heijn', 'jumbo', 'lidl', 'aldi'],
+    title: 'Supermarkt huismerk test 2026: zijn huismerken net zo goed als A-merken?',
+    description: 'Vergelijking van Aldi, Lidl, AH en Jumbo huismerkproducten met A-merken op kwaliteit en prijs. Is eigen merk echt zo goed als Ariel, Pampers en Coca-Cola?',
+    date: '2026-06-11',
+    readTime: 5,
+    category: 'Vergelijking',
+    faqs: [
+      {
+        question: 'Zijn huismerken net zo goed als A-merken?',
+        answer: 'In veel categorieën wel. Onafhankelijke tests (Consumentenbond, Stiftung Warentest) wijzen uit dat huismerk-wasmiddelen, luiers, zuivel en basislevensmiddelen bij Aldi en Lidl gelijkwaardig zijn aan A-merken bij een fractie van de prijs.',
+      },
+      {
+        question: 'Welk supermarkt huismerk is het beste?',
+        answer: 'Aldi en Lidl hebben de sterkste huismerkportfolio\'s. AH Huismerk scoort goed op kwaliteit maar is duurder dan Aldi/Lidl. Jumbo Huismerk is vergelijkbaar met AH Huismerk in prijs en kwaliteit.',
+      },
+      {
+        question: 'Hoeveel kun je besparen met huismerken?',
+        answer: 'Gemiddeld 30-50% op de meeste categorieën. Een gezin dat consequent huismerken kiest bespaart €600-€1200 per jaar op jaarbasis vergeleken met dezelfde boodschappen in A-merken.',
+      },
+    ],
+    content: `
+<p class="lead">Albert Heijn Huismerk, Jumbo Huismerk, Aldi eigen merk, Lidl Favorina — supermarkten hebben de afgelopen jaren hun eigen merken enorm verbeterd. Maar zijn ze echt net zo goed als Ariel, Pampers of Coca-Cola? En hoeveel bespaar je precies?</p>
+
+<h2>Huismerk vs. A-merk: de cijfers</h2>
+<p>Op een standaard boodschappenmand van €100 aan A-merken bespaar je met huismerken gemiddeld:</p>
+<ul>
+  <li><strong>AH Huismerk:</strong> ±€25–30 besparing (25–30% goedkoper)</li>
+  <li><strong>Jumbo Huismerk:</strong> ±€28–33 besparing</li>
+  <li><strong>Lidl (eigen merk):</strong> ±€40–50 besparing</li>
+  <li><strong>Aldi (eigen merk):</strong> ±€45–55 besparing</li>
+</ul>
+
+<h2>Categorie voor categorie: wanneer kiezen voor huismerk?</h2>
+
+<h3>Zuivel (melk, yoghurt, kaas)</h3>
+<p><strong>Kies huismerk</strong> — bijna identiek aan A-merk. Melk is melk; de productiemethode is hetzelfde, het enige verschil is het label. Besparing: 30–40%.</p>
+<ul>
+  <li>AH Huismerk halfvolle melk 1L: €0,89 vs. Campina €1,19</li>
+  <li>Aldi volle melk 1L: €0,79 — goedkoopste van Nederland</li>
+  <li>Jumbo Griekse yoghurt 500g: €1,29 vs. Fage €2,29</li>
+</ul>
+
+<h3>Wasmiddelen</h3>
+<p><strong>Kies huismerk</strong> — Stiftung Warentest en Consumentenbond testen huismerk-wasmiddelen consistent als gelijkwaardig of beter dan A-merken. Besparing: 60–70%.</p>
+<ul>
+  <li>Aldi Tandil capsules 40 stuks: €2,99 vs. Ariel Pods €13,99</li>
+  <li>Lidl W5 vloeibaar wasmiddel: €2,49 vs. Persil €9,99</li>
+</ul>
+
+<h3>Luiers</h3>
+<p><strong>Kies huismerk</strong> — Aldi Mamia en Lidl Lupilu zijn door Stiftung Warentest hoger beoordeeld dan Pampers op absorptie en huidvriendelijkheid. Besparing: 50–60%.</p>
+<ul>
+  <li>Aldi Mamia maat 4 (52 stuks): €5,99 vs. Pampers €14,99</li>
+  <li>Besparing voor een baby van 0–2 jaar: ±€700</li>
+</ul>
+
+<h3>Frisdrank</h3>
+<p><strong>Gemengd</strong> — huismerk cola (Aldi River Cola, Lidl Freeway) smaakt anders dan Coca-Cola. Als je de smaak van echte Coca-Cola wil, koop dan A-merk bij een aanbieding. Voor dagelijks gebruik is huismerk een goed alternatief.</p>
+<ul>
+  <li>Aldi River Cola 1,5L: €0,49 vs. Coca-Cola €1,89</li>
+  <li>Verschil in smaak: merkbaar, maar niet storend voor de meeste mensen</li>
+</ul>
+
+<h3>Koffie</h3>
+<p><strong>Afhankelijk van voorkeur</strong> — huismerk filterkoffie (Aldi Bellarom, Lidl) is goedkoop maar minder complex van smaak. Douwe Egberts heeft loyale fans die het verschil proeven. Bij aanbieding is DE echter niet veel duurder.</p>
+<ul>
+  <li>Aldi Bellarom filterkoffie 500g: €2,49 vs. Douwe Egberts €7,49 (normaal)</li>
+  <li>DE op AH Bonus: €4,99 — dan is het €2,50 meer voor merkelijk betere kwaliteit</li>
+</ul>
+
+<h3>Chipszakken en snacks</h3>
+<p><strong>Kies soms A-merk</strong> — Lay's, Pringles en Doritos hebben unieke smaken en texturen die huismerken niet evenaren. Maar voor standaard naturel chips is huismerk prima. Besparing: 40–50%.</p>
+
+<h3>Chocolade</h3>
+<p><strong>Kies huismerk</strong> — Aldi Choceur en Lidl chocolade worden consistent hoog beoordeeld in blindtests. Besparing: 50–60% versus Tony's of Côte d'Or.</p>
+
+<h2>Het slimste huismerk-systeem</h2>
+<p>De meest kostenefficiënte aanpak:</p>
+<ol>
+  <li><strong>Altijd huismerk:</strong> zuivel, eieren, water, wasmiddel, schoonmaakmiddelen, luiers, basisvoeding</li>
+  <li><strong>Soms A-merk bij aanbieding:</strong> koffie (DE bonus), wasmiddel (Ariel groot pak), frisdrank (Coca-Cola 6-pack)</li>
+  <li><strong>Altijd A-merk:</strong> specifieke merkproducten die je echt mist (Nutella, Lay's Paprika)</li>
+</ol>
+<p>Dit systeem levert een doorsnee gezin ±€800–€1000 besparing per jaar op.</p>
+
+<p>→ <a href="/">Vergelijk deze week de beste supermarktdeals</a> op DealHunter4U — zie direct wanneer jouw favoriete A-merk goedkoper is dan normaal.</p>
+    `.trim(),
+  },
+  {
+    slug: 'groenten-fruit-goedkoop-supermarkt',
+    relatedMarkets: ['lidl', 'aldi', 'dirk', 'albert-heijn'],
+    title: 'Goedkope groenten en fruit: welke supermarkt is het voordeligst in 2026?',
+    description: 'Vergelijking van groenten en fruitprijzen bij Aldi, Lidl, Dirk, AH en Jumbo. Tips voor seizoensgroenten, bevroren alternatieven en de goedkoopste groente-deals.',
+    date: '2026-06-11',
+    readTime: 5,
+    category: 'Vergelijking',
+    faqs: [
+      {
+        question: 'Welke supermarkt is het goedkoopst voor groenten?',
+        answer: 'Aldi, Lidl en Dirk zijn structureel het goedkoopst voor verse groenten. Dirk in de Randstad heeft de scherpste dagprijzen voor basisgroenten zoals komkommer, paprika en tomaten.',
+      },
+      {
+        question: 'Zijn diepvriesgroenten goedkoper dan verse?',
+        answer: 'Ja, en ze zijn even voedzaam. Diepvrieserwten, spinazie en broccoli bij Aldi of Lidl kosten 40-60% minder dan verse varianten en gaan maanden mee in de vriezer.',
+      },
+      {
+        question: 'Wanneer zijn groenten het goedkoopst?',
+        answer: 'Seizoensgroenten zijn het goedkoopst: tomaten en paprika in de zomer, prei en kool in de herfst/winter, aardbeien in mei-juni. Koop altijd wat er in het seizoen is.',
+      },
+    ],
+    content: `
+<p class="lead">Groenten en fruit zouden dagelijks op tafel moeten staan — maar de prijzen bij sommige supermarkten zijn fors. Door de juiste supermarkt te kiezen en slim te kopen bespaar je €15–25 per maand zonder in te leveren op kwaliteit.</p>
+
+<h2>Prijsvergelijking basisgroenten (2026)</h2>
+<p>Prijzen per supermarkt voor gangbare groenten:</p>
+<ul>
+  <li><strong>Komkommer (1 stuk)</strong>
+    <ul>
+      <li>Aldi: €0,49 — goedkoopst</li>
+      <li>Lidl: €0,59</li>
+      <li>Dirk: €0,59</li>
+      <li>AH: €0,79 (±€0,59 bij bonus)</li>
+    </ul>
+  </li>
+  <li><strong>Paprika's (3 stuks gemengd)</strong>
+    <ul>
+      <li>Lidl: €1,29 — beste deal</li>
+      <li>Aldi: €1,39</li>
+      <li>Dirk: €1,49</li>
+      <li>AH: €1,99 (±€1,49 bij bonus)</li>
+    </ul>
+  </li>
+  <li><strong>Broccoli (500g)</strong>
+    <ul>
+      <li>Dirk: €0,89 — Hollandse teelt</li>
+      <li>Aldi: €0,99</li>
+      <li>Lidl: €0,89–€0,99</li>
+      <li>AH: €1,29</li>
+    </ul>
+  </li>
+  <li><strong>Aardappelen (1 kg)</strong>
+    <ul>
+      <li>Aldi: €0,99</li>
+      <li>Dirk: €1,09</li>
+      <li>AH huismerk: €1,19</li>
+    </ul>
+  </li>
+</ul>
+
+<h2>Fruit prijsvergelijking</h2>
+<ul>
+  <li><strong>Appels (1 kg)</strong>
+    <ul>
+      <li>Aldi: €1,29 — hollandse cox orange</li>
+      <li>Lidl: €1,39</li>
+      <li>Dirk: €1,49</li>
+      <li>AH: €1,79–€2,19</li>
+    </ul>
+  </li>
+  <li><strong>Bananen (1 kg)</strong>
+    <ul>
+      <li>Aldi: €0,99</li>
+      <li>Lidl: €0,99</li>
+      <li>Dirk: €1,09</li>
+      <li>AH: €1,29 (±€0,99 bij bonus)</li>
+    </ul>
+  </li>
+  <li><strong>Aardbeien (500g, zomer)</strong>
+    <ul>
+      <li>Dirk: €1,99 — Hollandse seizoensaardbeien</li>
+      <li>Lidl: €1,99</li>
+      <li>Aldi: €2,29</li>
+      <li>AH: €2,99 (±€1,99 bij bonus)</li>
+    </ul>
+  </li>
+</ul>
+
+<h2>Diepvries vs. vers: wanneer is diepvries verstandiger?</h2>
+<p>Diepvriesgroenten worden direct na de oogst ingevroren, waardoor ze soms <em>meer</em> vitaminen bevatten dan verse groenten die dagenlang in transport waren. Voordelen:</p>
+<ul>
+  <li><strong>Goedkoper:</strong> diepvries spinazie (Aldi 450g) €1,09 vs. vers €1,99</li>
+  <li><strong>Minder voedselverspilling:</strong> gebruik precies wat je nodig hebt</li>
+  <li><strong>Altijd beschikbaar:</strong> geen seizoensgebondenheid</li>
+  <li><strong>Even voedzaam:</strong> snelle invriestechniek behoudt vitaminen</li>
+</ul>
+<p>Beste diepvriesgroenten om altijd in huis te hebben: spinazie, erwten, broccoli, wokgroenten, maïs.</p>
+
+<h2>Seizoenskalender: wanneer is wat goedkoopst?</h2>
+<ul>
+  <li><strong>Voorjaar (maart–mei):</strong> asperges (wit + groen), spinazie, aardbeien (mei)</li>
+  <li><strong>Zomer (juni–augustus):</strong> komkommer, paprika, courgette, tomaten, blauwe bessen</li>
+  <li><strong>Herfst (september–november):</strong> appels, peren, pompoenen, spruitjes, prei</li>
+  <li><strong>Winter (december–februari):</strong> kool, wortelen, winterpeen, aardappelen</li>
+</ul>
+<p>Seizoensgroenten zijn 30–50% goedkoper dan buiten het seizoen. Een zomerse paprika van €0,89 kost in de winter €1,49.</p>
+
+<h2>Tips voor de goedkoopste groenten en fruit</h2>
+<ol>
+  <li><strong>Koop bij Aldi, Lidl of Dirk</strong> voor structureel lagere dagprijzen</li>
+  <li><strong>Kies seizoensproducten</strong> — altijd goedkoper en lekkerder</li>
+  <li><strong>Diepvries voor niet-verse toepassingen</strong> (soep, wok, stamppot)</li>
+  <li><strong>Check AH en Jumbo bonus</strong> voor grotere hoeveelheden (1+1 op paprika, 2e halve prijs op fruit)</li>
+  <li><strong>Ga op woensdag</strong> — nieuwe aanbiedingen en meeste keuze</li>
+</ol>
+
+<p>→ <a href="/?category=groenten">Bekijk alle actuele groente-aanbiedingen</a> bij 8 supermarkten</p>
+<p>→ <a href="/?category=fruit">Bekijk alle actuele fruitaanbiedingen</a> bij 8 supermarkten</p>
+    `.trim(),
+  },
+  {
+    slug: 'supermarkt-app-vergelijking-2026',
+    relatedMarkets: ['albert-heijn', 'jumbo', 'lidl', 'aldi'],
+    title: 'Supermarkt app vergelijking 2026: AH, Jumbo, Lidl en Aldi app review',
+    description: 'Welke supermarkt-app is het beste in 2026? Vergelijking van Albert Heijn app, Jumbo app, Lidl Plus en Aldi app op aanbiedingen, gebruiksgemak en besparingen.',
+    date: '2026-06-11',
+    readTime: 5,
+    category: 'Tips & Tricks',
+    faqs: [
+      {
+        question: 'Welke supermarkt-app geeft de meeste korting?',
+        answer: 'De Albert Heijn-app geeft gemiddeld de meeste korting via persoonlijke aanbiedingen — tot €5-10 per week extra besparing bovenop de reguliere Bonus-aanbiedingen. Jumbo App biedt vergelijkbare voordelen.',
+      },
+      {
+        question: 'Is de Lidl Plus app het waard?',
+        answer: 'Ja. Lidl Plus is gratis en geeft je toegang tot digitale coupons (€0,50–€2,00 per product), een virtuele kraskaart en kortingen op tankstations. Gemiddeld €2-5 besparing per bezoek als je de coupons actief gebruikt.',
+      },
+      {
+        question: 'Heb ik een AH-account nodig voor Bonusaanbiedingen?',
+        answer: 'Ja. Om persoonlijke AH Bonus-aanbiedingen te zien en te activeren heb je een AH-account en de app nodig. De reguliere Bonus-aanbiedingen gelden voor iedereen, maar de persoonlijke deals zijn exclusief voor app-gebruikers.',
+      },
+    ],
+    content: `
+<p class="lead">Elke grote supermarkt heeft een eigen app met aanbiedingen, loyaliteitsprogramma's en bespaartips. Maar welke app levert je echt het meeste op? Wij vergelijken de vier grootste supermarkt-apps van Nederland.</p>
+
+<h2>Albert Heijn App: de meest uitgebreide</h2>
+<p>De AH-app is de meest geavanceerde supermarkt-app van Nederland, met meer dan 8 miljoen actieve gebruikers.</p>
+<p><strong>Wat kun je:</strong></p>
+<ul>
+  <li><strong>Persoonlijke Bonus-aanbiedingen:</strong> 10–20 producten per week met extra korting, gepersonaliseerd op jouw aankoopgedrag</li>
+  <li><strong>Bonus-sparen:</strong> spaarkaarten voor gratis producten of kortingen</li>
+  <li><strong>Boodschappenlijst:</strong> slim systeem dat je favorieten onthoudt</li>
+  <li><strong>Bezorging/afhalen:</strong> bestellen voor thuisbezorging of click &amp; collect</li>
+  <li><strong>AH-betalen:</strong> scan en betaal via de app (geen kassa)</li>
+  <li><strong>Brandstofkorting:</strong> Bonuspunten inwisselen bij Shell</li>
+</ul>
+<p><strong>Nadeel:</strong> account vereist, dataverzameling is uitgebreid. Maar de persoonlijke aanbiedingen leveren gemiddeld €5–10 extra korting per week op vergeleken met alleen de reguliere Bonus.</p>
+<p><strong>Beoordeling: 9/10</strong></p>
+
+<h2>Jumbo App: sterk alternatief</h2>
+<p>De Jumbo-app doet veel van wat de AH-app doet, maar met een iets eenvoudiger interface.</p>
+<p><strong>Wat kun je:</strong></p>
+<ul>
+  <li><strong>Jumbo Extra's:</strong> persoonlijke kortingscoupons, vergelijkbaar met AH</li>
+  <li><strong>Jumbo Koningsmarkt:</strong> loyaliteitsprogramma met stempelkaarten</li>
+  <li><strong>Boodschappenlijst met prijsindicatie</strong></li>
+  <li><strong>Online bestellen</strong> voor bezorging of afhalen</li>
+  <li><strong>Jumbo Foodcoach:</strong> gezondheidstools in de app</li>
+</ul>
+<p><strong>Beoordeling: 8/10</strong></p>
+
+<h2>Lidl Plus App: de beste gratis coupons</h2>
+<p>De Lidl Plus-app valt op door zijn eenvoud en de royale coupons die je per week kunt activeren.</p>
+<p><strong>Wat kun je:</strong></p>
+<ul>
+  <li><strong>Digitale coupons:</strong> 3–5 coupons per week met €0,50–€2,00 korting per product</li>
+  <li><strong>Virtuele kraskaart:</strong> elke week kans op gratis product of extra korting</li>
+  <li><strong>Lidl Plus-kaart:</strong> scan bij de kassa voor korting en punten</li>
+  <li><strong>Tankstation-kortingen:</strong> Lidl-benzinestations met app-korting</li>
+  <li><strong>Weekfolder digitaal:</strong> preview op komende aanbiedingen</li>
+</ul>
+<p><strong>Beoordeling: 8/10</strong> — bijzonder sterk voor de wekelijkse coupons.</p>
+
+<h2>Aldi App: eenvoudig maar effectief</h2>
+<p>Aldi heeft een soberdere app dan de concurrenten, maar levert toch nuttige functies.</p>
+<p><strong>Wat kun je:</strong></p>
+<ul>
+  <li><strong>Weekfolder:</strong> digitale versie van de papieren folder</li>
+  <li><strong>Aldi Talk:</strong> mobiele abonnementen via de app</li>
+  <li><strong>Aanbiedingen preview:</strong> zie volgende week's deals alvast</li>
+  <li><strong>Filiaalzoeker:</strong> dichtstbijzijnde Aldi-vestiging</li>
+</ul>
+<p><strong>Nadeel:</strong> geen persoonlijke coupons of loyaliteitsprogramma zoals AH of Lidl.</p>
+<p><strong>Beoordeling: 6/10</strong></p>
+
+<h2>Vergelijking tabel</h2>
+<ul>
+  <li><strong>Persoonlijke aanbiedingen:</strong> AH ✅ | Jumbo ✅ | Lidl ✅ | Aldi ❌</li>
+  <li><strong>Wekelijkse coupons:</strong> AH ✅ | Jumbo ✅ | Lidl ✅✅ | Aldi ❌</li>
+  <li><strong>Online bestellen:</strong> AH ✅ | Jumbo ✅ | Lidl ❌ | Aldi ❌</li>
+  <li><strong>Scannen en betalen:</strong> AH ✅ | Jumbo ✅ | Lidl ❌ | Aldi ❌</li>
+  <li><strong>Gemiddelde wekelijkse besparing:</strong> AH €5-10 | Jumbo €4-8 | Lidl €2-5 | Aldi €0</li>
+</ul>
+
+<h2>Conclusie: welke app moet je gebruiken?</h2>
+<p>Als je bij AH of Jumbo boodschappen doet: installeer hun app — de persoonlijke aanbiedingen leveren direct op. Als je bij Lidl shopt: de Lidl Plus-coupons zijn gratis geld. Als je bij Aldi gaat: de app voegt weinig toe, maar de dagprijzen zijn al laag genoeg.</p>
+<p><strong>Slim systeem:</strong> gebruik de AH-app voor persoonlijke deals, en check <a href="/">DealHunter4U</a> voor een overzicht van alle supermarktdeals in één app — zonder meerdere apps te installeren.</p>
+    `.trim(),
+  },
+  {
+    slug: 'gezinsboodschappen-besparen-2026',
+    relatedMarkets: ['albert-heijn', 'jumbo', 'aldi', 'lidl', 'dirk'],
+    title: 'Gezinsboodschappen besparen: complete gids voor families in 2026',
+    description: 'Hoe bespaar je als gezin op boodschappen? Complete gids met maaltijdplanning, slimme supermarkt-strategie, huismerken en tips om €150-300 per maand te besparen.',
+    date: '2026-06-11',
+    readTime: 7,
+    category: 'Besparen',
+    faqs: [
+      {
+        question: 'Hoeveel geven Nederlandse gezinnen uit aan boodschappen?',
+        answer: 'Een gezin van 2 volwassenen en 2 kinderen geeft gemiddeld €500-650 per maand uit aan boodschappen en huishoudproducten. Met een slimme strategie is dat €350-450 realistisch.',
+      },
+      {
+        question: 'Hoe plan ik een goedkoop weekmenu voor een gezin?',
+        answer: 'Begin met de aanbiedingen van de week (check DealHunter4U), bouw je weekmenu rondom goedkope eiwitbronnen (peulvruchten, kip, eieren), en maak grote porties die je de volgende dag kunt opeten.',
+      },
+      {
+        question: 'Is online boodschappen doen goedkoper?',
+        answer: 'Niet per se. Online bestellen bij AH of Jumbo kost €3-5 bezorgkosten. Maar je koopt minder impuls-aankopen (gemiddeld 15-20% van je totaal), waardoor het per saldo goedkoper kan uitpakken.',
+      },
+    ],
+    content: `
+<p class="lead">Met twee kinderen, een druk schema en stijgende voedselprijzen is boodschappen doen een serieuze kostenpost. Een gemiddeld Nederlands gezin geeft €550–€650 per maand uit. Met een doordachte strategie kun je dat terugbrengen naar €350–€450 — zonder in te leveren op kwaliteit.</p>
+
+<h2>Stap 1: begrijp waar je geld naartoe gaat</h2>
+<p>Verdeling van een typisch gezinsbudget:</p>
+<ul>
+  <li><strong>Vlees en vis:</strong> 25–30% van het totaal</li>
+  <li><strong>Zuivel en eieren:</strong> 15–20%</li>
+  <li><strong>Brood, granen, pasta:</strong> 10–12%</li>
+  <li><strong>Groenten en fruit:</strong> 10–15%</li>
+  <li><strong>Dranken (frisdrank, sap, bier):</strong> 8–12%</li>
+  <li><strong>Huishoudproducten (wasmiddel, etc.):</strong> 8–10%</li>
+  <li><strong>Snacks, snoep, chips:</strong> 5–8%</li>
+</ul>
+<p>Aanval de grote categorieën eerst: vlees, zuivel en dranken. Dat is waar de grootste besparingen zitten.</p>
+
+<h2>Stap 2: de beste supermarkt-strategie voor gezinnen</h2>
+<p>Eén supermarkt gebruiken voor alles is comfortabel maar duur. Het alternatief:</p>
+<ul>
+  <li><strong>Aldi of Lidl:</strong> voor zuivel, eieren, pasta, rijst, diepvries, huismerk-alles</li>
+  <li><strong>Dirk of Vomar (als in de regio):</strong> voor vlees, verse groenten, brood</li>
+  <li><strong>AH of Jumbo:</strong> alleen voor A-merk producten die je echt wil én die in aanbieding zijn</li>
+</ul>
+<p>Klinkt als veel supermarkten — maar in de praktijk gaat het om 1-2 extra stops per week. Besparing: €80–€120 per maand voor een gezin van vier.</p>
+
+<h2>Stap 3: weekmenu plannen op basis van aanbiedingen</h2>
+<p>Omgekeerd plannen werkt: kijk eerst wat er in de aanbieding is, plan dán het menu. Principe:</p>
+<ol>
+  <li><strong>Maandag:</strong> check aanbiedingen op DealHunter4U en de AH-app</li>
+  <li><strong>Dinsdag:</strong> boodschappenlijst maken op basis van geplande maaltijden</li>
+  <li><strong>Woensdag:</strong> winkelen — nieuwe weekaanbiedingen starten</li>
+  <li><strong>Weekend:</strong> grotere inkopen voor de komende week</li>
+</ol>
+<p>Eiwitrotatie voor een week op budget:</p>
+<ul>
+  <li><strong>Dag 1:</strong> kip (kippenbouten uit aanbieding, €3,50 voor 1 kg / 4 personen)</li>
+  <li><strong>Dag 2:</strong> linzensoep (linzen €0,99/500g = 4 porties)</li>
+  <li><strong>Dag 3:</strong> pasta met gehakt (gehakt 500g uit aanbieding €3,99)</li>
+  <li><strong>Dag 4:</strong> omelet/eiersalade (6 eieren €1,29)</li>
+  <li><strong>Dag 5:</strong> vis (diepvries koolvis of pangasius: €3,49/600g)</li>
+  <li><strong>Dag 6:</strong> bonen/kikkererwten (blik €0,69 = 2 porties)</li>
+  <li><strong>Dag 7:</strong> restjes of uitje</li>
+</ul>
+<p>Eiwitkosten voor een week: ±€14–€18 voor vier personen.</p>
+
+<h2>Stap 4: huismerk strategie</h2>
+<p>Voor een gezin is konsequent huismerk kiezen de grootste besparing. Omschakelen op Aldi/Lidl-eigen merk voor:</p>
+<ul>
+  <li>Wasmiddel: bespaar €60–€80/jaar</li>
+  <li>Luiers (jonge kinderen): bespaar €400–€700/jaar</li>
+  <li>Melk en zuivel: bespaar €40–€60/jaar</li>
+  <li>Pasta, rijst, bloem: bespaar €20–€30/jaar</li>
+  <li><strong>Totaal: €520–€870/jaar met huismerken</strong></li>
+</ul>
+
+<h2>Stap 5: vermijd de 5 duurste valkuilen</h2>
+<ol>
+  <li><strong>Honger boodschappen doen</strong> — je koopt 20-30% meer. Eet iets voor je naar de winkel gaat.</li>
+  <li><strong>Zonder boodschappenlijst gaan</strong> — impulsaankopen kosten gemiddeld €15-25 extra per trip.</li>
+  <li><strong>Kant-en-klaar maaltijden</strong> — een maaltijdbox of lasagne kant-en-klaar kost 3x zoveel als zelf maken.</li>
+  <li><strong>Kleine verpakkingen kopen</strong> — grote verpakkingen zijn bijna altijd goedkoper per 100g.</li>
+  <li><strong>Dure tussendoortjes</strong> — pakjes drinken, koekjes, snoep en chips voor kinderen zijn peperdure gewoontes. Alternatief: stuk fruit, cracker met pindakaas.</li>
+</ol>
+
+<h2>Realistische besparing per maatregel</h2>
+<ul>
+  <li>Supermarkt-strategie (Aldi/Lidl voor basis): €80–€120/maand</li>
+  <li>Weekmenu plannen op aanbiedingen: €30–€60/maand</li>
+  <li>Huismerken keuze: €40–€70/maand</li>
+  <li>Minder kant-en-klaar: €20–€40/maand</li>
+  <li><strong>Totaal mogelijk: €170–€290/maand</strong></li>
+</ul>
+
+<p>→ <a href="/">DealHunter4U</a>: vergelijk alle supermarktdeals wekelijks — de basis van slimme gezinsboodschappen.</p>
+    `.trim(),
+  },
+  {
+    slug: 'biologisch-boodschappen-goedkoop',
+    relatedMarkets: ['albert-heijn', 'jumbo', 'lidl', 'aldi'],
+    title: 'Biologische boodschappen goedkoop: beste bio-deals bij Nederlandse supermarkten',
+    description: 'Goedkoop biologische producten kopen in 2026. Waar vind je de beste bio-aanbiedingen bij AH, Jumbo, Lidl en Aldi? En wanneer is bio de moeite waard?',
+    date: '2026-06-11',
+    readTime: 5,
+    category: 'Vergelijking',
+    content: `
+<p class="lead">Biologische producten zijn populairder dan ooit, maar ook duurder. Toch hoef je geen premium te betalen voor goede bio-kwaliteit — als je weet waar en wanneer je moet kopen. Dit is de complete gids voor goedkope biologische boodschappen bij Nederlandse supermarkten.</p>
+
+<h2>Biologisch bij de grote supermarkten: vergelijking</h2>
+<p>Elke grote supermarkt heeft zijn eigen biologische lijn:</p>
+<ul>
+  <li><strong>Albert Heijn AH Biologisch:</strong> uitgebreid assortiment, 300+ producten. Wekelijks meerdere bio-producten in de Bonus. Prijs: 20–50% hoger dan regulier AH-product.</li>
+  <li><strong>Jumbo Biologisch:</strong> vergelijkbaar assortiment, ook regelmatig in de aanbieding. Jumbo biedt soms 1+1 op biologische producten.</li>
+  <li><strong>Lidl Bio Organic:</strong> beperkt maar scherp geprijsd assortiment. Lidl bio-producten zijn gemiddeld 15–25% goedkoper dan AH Biologisch.</li>
+  <li><strong>Aldi (bio-producten):</strong> Aldi heeft een selectie biologische producten — yoghurt, zuivel, eieren — tegen discounterprijzen.</li>
+</ul>
+
+<h2>Goedkoopste biologische producten per categorie</h2>
+
+<h3>Biologische melk en zuivel</h3>
+<ul>
+  <li><strong>Bio halfvolle melk 1L:</strong> Aldi ±€1,19 | Lidl ±€1,25 | AH Biologisch ±€1,49 | Jumbo ±€1,45</li>
+  <li><strong>Bio Griekse yoghurt 500g:</strong> Lidl ±€1,79 | AH Biologisch ±€2,29</li>
+  <li><strong>Bio eieren (6 stuks):</strong> Aldi ±€2,49 | Lidl ±€2,59 | AH ±€3,29</li>
+</ul>
+<p><strong>Beste keuze:</strong> Aldi en Lidl voor biologische zuivel en eieren — tot 30% goedkoper dan AH, zelfde biologisch certificaat.</p>
+
+<h3>Biologische groenten en fruit</h3>
+<ul>
+  <li><strong>Bio appels (1 kg):</strong> Lidl ±€2,29 | AH ±€2,99</li>
+  <li><strong>Bio spinazie (400g):</strong> AH Bonus ±€1,49 | Jumbo ±€1,59</li>
+  <li><strong>Bio wortelen (1 kg):</strong> Lidl ±€1,49 | AH ±€1,99</li>
+</ul>
+
+<h3>Biologische granen en pasta</h3>
+<ul>
+  <li><strong>Bio volkoren pasta (500g):</strong> AH Bonus ±€1,39 | Jumbo ±€1,49</li>
+  <li><strong>Bio rijst (1 kg):</strong> Lidl ±€2,49 | AH ±€2,99</li>
+  <li><strong>Bio havermouten (500g):</strong> Aldi ±€1,19 — beste deal</li>
+</ul>
+
+<h2>Wanneer is biologisch de moeite waard?</h2>
+<p>Niet elk product loont om biologisch te kopen. De prioriteitenlijst:</p>
+<p><strong>Altijd de moeite waard (hoge pesticidenbelasting bij conventioneel):</strong></p>
+<ul>
+  <li>Aardbeien, appels, peren, paprika, spinazie — koop bij voorkeur bio</li>
+  <li>Eieren en zuivel — biologische dieren leven beter, minder antibioticagebruik</li>
+</ul>
+<p><strong>Minder prioriteit (lage pesticidenbelasting):</strong></p>
+<ul>
+  <li>Avocado's, ananas, mango, uien, knoflook — dikke schil beschermt het eetbare deel</li>
+  <li>Bananen, kiwi — de schil eet je toch niet</li>
+</ul>
+
+<h2>Bio-aanbiedingen slim benutten</h2>
+<ol>
+  <li><strong>AH Biologisch in Bonus:</strong> AH heeft wekelijks 3–5 biologische producten in de Bonus met 20–40% korting — check maandag de app</li>
+  <li><strong>Jumbo Bio 1+1:</strong> Jumbo biedt regelmatig 1+1 gratis op biologische zuivel of pasta</li>
+  <li><strong>Lidl Bio-week:</strong> Lidl heeft een jaarlijkse "Bio-week" met 20–30% korting op het biologische assortiment</li>
+  <li><strong>Biologische A-merken:</strong> merken als Oatly, Innocent en Ekoplaza zijn bij AH en Jumbo regelmatig in aanbieding</li>
+</ol>
+
+<h2>Conclusie: goedkoop bio is mogelijk</h2>
+<p>Voor de meest impactvolle biologische producten (eieren, zuivel, aardbeien, spinazie) is Aldi of Lidl structureel goedkoper dan AH of Jumbo. Combineer dat met AH Biologisch Bonus-aanbiedingen voor een complete bio-strategie voor minimale meerprijs.</p>
+<p>→ <a href="/">Check DealHunter4U</a> voor alle biologische producten die deze week in de aanbieding zijn.</p>
+    `.trim(),
+  },
+  {
+    slug: 'ontbijt-producten-aanbieding-supermarkt',
+    relatedMarkets: ['albert-heijn', 'jumbo', 'lidl', 'aldi'],
+    title: 'Ontbijtproducten aanbieding: cornflakes, muesli, hagelslag en brood goedkoop',
+    description: 'Wanneer zijn Brinta, Kellogg\'s cornflakes, Nutella, hagelslag en brood het goedkoopst? Complete gids voor ontbijtproducten-aanbiedingen bij Nederlandse supermarkten.',
+    date: '2026-06-11',
+    readTime: 5,
+    category: 'Aanbiedingen',
+    faqs: [
+      {
+        question: 'Wanneer is Nutella in de aanbieding?',
+        answer: 'Nutella staat bij Albert Heijn gemiddeld elke 4-6 weken in de Bonus, met kortingen van 30-40%. De grootste pot (900g) voor ±€4,99 is de beste deal. Jumbo heeft ook regelmatig Nutella-acties.',
+      },
+      {
+        question: 'Welke supermarkt heeft de goedkoopste cornflakes?',
+        answer: 'Aldi en Lidl hebben structureel de goedkoopste cornflakes (eigen merk). Kellogg\'s cornflakes zijn het goedkoopst bij AH of Jumbo tijdens een aanbieding (elke 3-4 weken).',
+      },
+      {
+        question: 'Is huismerk hagelslag net zo goed als De Ruijter?',
+        answer: 'Voor de meeste mensen smaakt huismerk hagelslag (AH of Jumbo) vergelijkbaar met De Ruijter. Puur puntje van smaakvoorkeur. De Ruijter heeft een iets intensere cacaosmaak in de pure variant.',
+      },
+    ],
+    content: `
+<p class="lead">Ontbijt is de eerste maaltijd van de dag — en als je het verkeerd aanpakt, ook een van de duurste per eetmoment. Met slimme keuzes en timing van de aanbiedingen bespaar je als gezin €20–40 per maand op ontbijtproducten alleen.</p>
+
+<h2>Brood: welke supermarkt is het goedkoopst?</h2>
+<p>Brood is een dagelijks product dat snel duur kan worden. Vergelijking per supermarkt:</p>
+<ul>
+  <li><strong>Witbrood (800g):</strong> Aldi ±€1,19 | Lidl ±€1,25 | Dirk ±€1,29 | AH Huismerk ±€1,39</li>
+  <li><strong>Volkoren (800g):</strong> Aldi ±€1,49 | Jumbo huismerk ±€1,59 | AH ±€1,69</li>
+  <li><strong>Ambachtelijk brood (Lidl/AH bakkerij):</strong> Lidl ±€1,69–€2,49 | AH in-store bakkerij ±€2,49–€3,99</li>
+</ul>
+<p><strong>Tip:</strong> koop meer brood dan je in één keer eet en vries de rest in. Ontdooid brood smaakt nauwelijks anders dan vers.</p>
+
+<h2>Cornflakes en granen: Kellogg's vs. huismerk</h2>
+<ul>
+  <li><strong>Kellogg's Cornflakes (375g):</strong>
+    <ul>
+      <li>AH Bonus: ±€1,99 (normaal ±€2,99) — elke 3-4 weken</li>
+      <li>Jumbo weekdeal: ±€2,09</li>
+      <li>Aldi eigen merk (500g): ±€1,19 — beste waarde</li>
+    </ul>
+  </li>
+  <li><strong>Muesli/granola (500g):</strong>
+    <ul>
+      <li>Lidl eigen merk: ±€1,49 — beste prijs-kwaliteitverhouding</li>
+      <li>AH Huismerk: ±€1,79</li>
+      <li>Jordans, Quaker: ±€3,49–€4,99 (koop alleen in aanbieding)</li>
+    </ul>
+  </li>
+  <li><strong>Brinta (havergrout, 1 kg):</strong>
+    <ul>
+      <li>AH Bonus: ±€2,49 (normaal ±€3,49)</li>
+      <li>Aldi havergrout: ±€1,49/kg — zelfde product, andere verpakking</li>
+    </ul>
+  </li>
+  <li><strong>Havermout (500g):</strong>
+    <ul>
+      <li>Aldi: ±€0,69 — goedkoopste ontbijtproduct per portie in Nederland</li>
+      <li>Quaker Oats: ±€2,49 (koop alleen in aanbieding)</li>
+    </ul>
+  </li>
+</ul>
+
+<h2>Beleg: hagelslag, pindakaas, jam en Nutella</h2>
+<ul>
+  <li><strong>Hagelslag (melkchocolade, 400g):</strong>
+    <ul>
+      <li>Aldi eigen merk: ±€0,99 — uitstekende kwaliteit</li>
+      <li>AH Huismerk: ±€1,19</li>
+      <li>De Ruijter (AH Bonus): ±€1,69 (normaal ±€2,49)</li>
+    </ul>
+  </li>
+  <li><strong>Pindakaas (350g):</strong>
+    <ul>
+      <li>Aldi eigen merk: ±€0,99</li>
+      <li>AH Huismerk: ±€1,29</li>
+      <li>Calvé (Jumbo actie): ±€1,79 (normaal ±€2,79)</li>
+    </ul>
+  </li>
+  <li><strong>Nutella (900g):</strong>
+    <ul>
+      <li>AH Bonus: ±€4,99 (normaal ±€7,49) — de beste deal van het jaar</li>
+      <li>Jumbo weekdeal: ±€5,49</li>
+      <li>Koop in bulk als Nutella in actie is — jarenlang houdbaar</li>
+    </ul>
+  </li>
+  <li><strong>Jam (aardbei/bosvruchten, 450g):</strong>
+    <ul>
+      <li>Aldi: ±€0,99</li>
+      <li>Jumbo huismerk: ±€1,19</li>
+      <li>Hero (AH Bonus): ±€1,49</li>
+    </ul>
+  </li>
+</ul>
+
+<h2>Zuivel voor bij het ontbijt</h2>
+<ul>
+  <li><strong>Kwark (500g):</strong> Lidl ±€0,99 | AH huismerk ±€1,19 | Campina ±€1,79</li>
+  <li><strong>Yoghurt (500g):</strong> Aldi ±€0,69 | Jumbo huismerk ±€0,89 | Activia (AH Bonus) ±€1,29</li>
+  <li><strong>Sinaasappelsap (1L vers geperst):</strong> Lidl ±€1,99 | AH ±€2,49</li>
+</ul>
+
+<h2>Goedkoopste ontbijtopties per portie</h2>
+<ol>
+  <li><strong>Havermout met melk (Aldi):</strong> ±€0,15 per portie — absoluut goedkoopst</li>
+  <li><strong>Brood met huismerk beleg:</strong> ±€0,30–€0,50 per boterham</li>
+  <li><strong>Yoghurt met muesli:</strong> ±€0,60 per portie (Lidl combinatie)</li>
+  <li><strong>Cornflakes met melk:</strong> ±€0,40–€0,60 per kom</li>
+  <li><strong>Croissant (bakkerij):</strong> ±€0,80–€1,50 — duurste optie</li>
+</ol>
+
+<p>→ <a href="/?category=ontbijt">Bekijk alle actuele ontbijtaanbiedingen</a> bij 8 supermarkten</p>
+    `.trim(),
+  },
+  {
+    slug: 'chips-snacks-koek-aanbieding-supermarkt',
+    relatedMarkets: ['albert-heijn', 'jumbo', 'aldi', 'lidl'],
+    title: 'Chips, snacks en koek in aanbieding: Lay\'s, Pringles en Verkade goedkoop',
+    description: 'Wanneer zijn Lay\'s chips, Pringles, Oreo, Verkade koeken en M&Ms het goedkoopst? Complete gids voor snacks-aanbiedingen bij AH, Jumbo, Aldi en Lidl.',
+    date: '2026-06-11',
+    readTime: 5,
+    category: 'Aanbiedingen',
+    faqs: [
+      {
+        question: 'Wanneer zijn Lay\'s chips in de aanbieding?',
+        answer: 'Lay\'s staat bij Albert Heijn gemiddeld elke 3-4 weken in de aanbieding, met kortingen van 30-50%. De beste deal is een multipak (5-6 zakjes) voor ±€3,99. Jumbo en Dirk hebben ook regelmatig Lay\'s-acties.',
+      },
+      {
+        question: 'Welke supermarkt heeft de goedkoopste chips?',
+        answer: 'Aldi en Lidl hebben structureel de goedkoopste chips (eigen merk). Voor Lay\'s en Pringles is Dirk of AH/Jumbo bij aanbieding het goedkoopst.',
+      },
+      {
+        question: 'Zijn Aldi-chips net zo goed als Lay\'s?',
+        answer: 'Aldi- en Lidl-chips zijn kwalitatief goed maar smaken anders dan Lay\'s. Voor snackmomenten waarbij de specifieke Lay\'s-smaak niet uitmaakt, zijn ze een prima alternatief voor 50-60% minder.',
+      },
+    ],
+    content: `
+<p class="lead">Chips, koek en snacks zijn de ultieme impuls-aankopen — en daarmee ook de categorie waar je het makkelijkst overschrijdt. Maar met de juiste timing kun je ook hier flink besparen, zonder je favoriete merken op te geven.</p>
+
+<h2>Chips aanbiedingen: Lay's, Pringles, Doritos</h2>
+<ul>
+  <li><strong>Lay's (175g regulier zakje)</strong>
+    <ul>
+      <li>AH Bonus: ±€1,29 (normaal ±€1,99) — elke 3-4 weken</li>
+      <li>Jumbo weekdeal: ±€1,39</li>
+      <li>Dirk: structureel ±€1,49</li>
+      <li>Aldi eigen merk (175g): ±€0,79 — 60% goedkoper</li>
+    </ul>
+  </li>
+  <li><strong>Lay's multipak (5×25g of 6×40g)</strong>
+    <ul>
+      <li>AH Bonus: ±€3,99 (normaal ±€5,99) — beste deal voor kinderen lunches</li>
+      <li>Jumbo: ±€3,99–€4,49</li>
+    </ul>
+  </li>
+  <li><strong>Pringles (165g)</strong>
+    <ul>
+      <li>AH Bonus: ±€1,49 (normaal ±€2,49)</li>
+      <li>Jumbo 2 voor €3,00</li>
+      <li>Dirk: ±€1,79 structureel</li>
+    </ul>
+  </li>
+  <li><strong>Doritos (185g)</strong>
+    <ul>
+      <li>AH of Jumbo: ±€1,99 bij aanbieding (normaal ±€2,79)</li>
+    </ul>
+  </li>
+</ul>
+
+<h2>Koek en biscuit: Verkade, LU en Oreo</h2>
+<ul>
+  <li><strong>Verkade chocolate chip cookies (175g)</strong>
+    <ul>
+      <li>AH Bonus: ±€1,49 (normaal ±€2,29) — elke 4-6 weken</li>
+      <li>Jumbo: ±€1,59 bij actie</li>
+    </ul>
+  </li>
+  <li><strong>Oreo (176g)</strong>
+    <ul>
+      <li>AH Bonus: ±€1,29 (normaal ±€2,09)</li>
+      <li>Jumbo 1+1: ±€2,09 per pak (effectief ±€1,05)</li>
+    </ul>
+  </li>
+  <li><strong>Bastogne koeken (260g)</strong>
+    <ul>
+      <li>AH Bonus 2 voor €2,00 (normaal ±€1,59 per pak)</li>
+      <li>Dirk: structureel ±€1,29</li>
+    </ul>
+  </li>
+  <li><strong>Liga Milkbreak (5 stuks)</strong>
+    <ul>
+      <li>AH of Jumbo: ±€1,49 bij aanbieding (normaal ±€2,19)</li>
+      <li>Huismerk variant (Aldi): ±€0,79 voor vergelijkbare koek</li>
+    </ul>
+  </li>
+  <li><strong>Aldi/Lidl eigen koek:</strong> cookies, wafers, biscuits voor ±€0,59–€1,29 — een doos voor de prijs van één Verkade-pak</li>
+</ul>
+
+<h2>Snoep en chocolade: M&Ms, KitKat en Toblerone</h2>
+<ul>
+  <li><strong>M&Ms (200g)</strong>
+    <ul>
+      <li>AH Bonus: ±€1,99 (normaal ±€3,29) — elke 4-6 weken</li>
+      <li>Jumbo: ±€2,09</li>
+    </ul>
+  </li>
+  <li><strong>KitKat (4-pack of multipack)</strong>
+    <ul>
+      <li>AH: 3 voor €2,00 bij actie</li>
+      <li>Jumbo: 1+1 gratis</li>
+    </ul>
+  </li>
+  <li><strong>Aldi Choceur chocolade (200g)</strong>
+    <ul>
+      <li>±€0,89 — structureel, verrassend hoge kwaliteit</li>
+      <li>Vergelijkbaar met Milka of Tony's Chocolonely in blindtests</li>
+    </ul>
+  </li>
+</ul>
+
+<h2>Noten en gezonde snacks</h2>
+<ul>
+  <li><strong>Gemengde noten (200g):</strong> Aldi ±€1,99 | AH Huismerk ±€2,29 | AH Bonus €2,29 (normaal €3,49)</li>
+  <li><strong>Cashewnoten (200g):</strong> Lidl ±€2,29 | AH Bonus ±€2,49</li>
+  <li><strong>Rijstwafels (12 stuks):</strong> Aldi ±€0,79 | AH ±€1,29</li>
+</ul>
+
+<h2>Snack-strategie: wanneer kopen?</h2>
+<ol>
+  <li><strong>Stockpile chips bij aanbieding</strong> — chips en koek zijn lang houdbaar. Als Lay's op AH Bonus staat, koop 4–6 zakjes.</li>
+  <li><strong>Multipakken &gt; losse zakken</strong> — voor dagelijkse school-trommel altijd goedkoper per gram</li>
+  <li><strong>Aldi/Lidl voor basis-snacks</strong> — huismerkchocolade, koeken en rijstwafels voor regulier gebruik</li>
+  <li><strong>A-merken alleen in aanbieding</strong> — Lay's, Pringles, Oreo zijn elke 3-4 weken in de aanbieding bij AH of Jumbo</li>
+</ol>
+
+<p>→ <a href="/?category=snacks">Bekijk alle actuele snacks-aanbiedingen</a> bij 8 supermarkten</p>
+    `.trim(),
+  },
+  {
+    slug: 'boodschappen-week-menu-goedkoop',
+    relatedMarkets: ['aldi', 'lidl', 'dirk', 'albert-heijn'],
+    title: 'Goedkoop weekmenu boodschappen: complete maaltijdplanning voor €50 per week',
+    description: 'Een compleet weekmenu met boodschappenlijst voor 2 personen voor €50 of minder. Recepten op basis van supermarktaanbiedingen bij Aldi, Lidl, Dirk en AH.',
+    date: '2026-06-11',
+    readTime: 8,
+    category: 'Besparen',
+    faqs: [
+      {
+        question: 'Kan een gezin echt voor €50 per week boodschappen doen?',
+        answer: 'Voor 2 personen is €50 per week realistisch met goede planning: simpele ingrediënten, weinig verspilling, en slim gebruik van aanbiedingen. Voor een gezin van 4 is €80-100 per week haalbaar.',
+      },
+      {
+        question: 'Hoe maak ik een goedkoop weekmenu?',
+        answer: 'Begin met goedkope eiwitbronnen (eieren, peulvruchten, kip), bouw maaltijden rondom seizoensgroenten, maak grotere porties die je twee keer eet, en plan één restjesmaaltijd per week.',
+      },
+      {
+        question: 'Welke zijn de goedkoopste eiwitten bij de supermarkt?',
+        answer: 'Eieren (±€0,25 per stuk), conservenbonen (±€0,34 per portie), linzen (±€0,40 per portie), kippenbouten (±€0,75 per 200g). Vis en rundvlees zijn het duurst per gram eiwit.',
+      },
+    ],
+    content: `
+<p class="lead">Met een slim weekmenu en een goede boodschappenlijst kun je als stel voor €50 per week volledig, lekker en gevarieerd eten. Hier is het bewijs — inclusief concreet boodschappenlijstje en zeven avondmaaltijden.</p>
+
+<h2>De regels van goedkoop koken</h2>
+<ol>
+  <li><strong>Peulvruchten zijn je beste vriend:</strong> linzen, kikkererwten, witte bonen — €0,30–€0,50 per portie eiwit vs. €1,50–€2,50 voor vlees</li>
+  <li><strong>Koop kip in stukken, niet filet:</strong> kippenbouten en -dijen kosten 2–3x minder en smaken rijker</li>
+  <li><strong>Grote porties, twee avonden:</strong> kook voor 4 als je met 2 bent — lunch of 2e avond is dan gratis</li>
+  <li><strong>Seizoensgroenten:</strong> de goedkoopste groente is altijd de groente van het seizoen</li>
+  <li><strong>Pasta en rijst als basis:</strong> €0,10–€0,20 per portie koolhydraten</li>
+</ol>
+
+<h2>Boodschappenlijst voor 2 personen, 7 avondmaaltijden (budget: €50)</h2>
+
+<h3>Eiwitten (±€16)</h3>
+<ul>
+  <li>Kippenbouten 1 kg (Aldi): €3,49</li>
+  <li>Gehakt rundergehakt 500g (Dirk of Lidl bonus): €3,99</li>
+  <li>Eieren 12 stuks (Aldi): €2,49</li>
+  <li>Rode linzen 500g (Jumbo/AH huismerk): €1,39</li>
+  <li>Kikkererwten blik 400g x2 (AH of Lidl): €1,38</li>
+  <li>Makreel blik 125g x2 (Aldi): €1,98</li>
+</ul>
+
+<h3>Groenten en fruit (±€12)</h3>
+<ul>
+  <li>Paprika 3-pack (Lidl): €1,29</li>
+  <li>Courgette x2 (Aldi): €0,98</li>
+  <li>Tomaten 500g (Dirk): €0,99</li>
+  <li>Ui 2 kg netzak (Aldi): €1,29</li>
+  <li>Knoflook bolletje (Lidl): €0,39</li>
+  <li>Broccoli 500g (Dirk): €0,89</li>
+  <li>Diepvries spinazie 450g (Aldi): €1,09</li>
+  <li>Appels 1 kg (Aldi): €1,29</li>
+  <li>Bananen 1 kg (Aldi): €0,99</li>
+  <li>Seizoensfruit/extra naar keuze: €2,00</li>
+</ul>
+
+<h3>Basisproducten (±€12)</h3>
+<ul>
+  <li>Pasta 500g x2 (Aldi huismerk): €0,98</li>
+  <li>Rijst 1 kg (Aldi): €1,19</li>
+  <li>Brood volkoren (Aldi): €1,49</li>
+  <li>Aardappelen 1,5 kg (Dirk): €1,69</li>
+  <li>Blikjes tomaten 400g x2 (Aldi): €0,98</li>
+  <li>Halfvolle melk 2L (Aldi): €1,69</li>
+  <li>Yoghurt 500g (Aldi): €0,69</li>
+  <li>Kaas 500g (Aldi Gouda): €3,29</li>
+</ul>
+
+<h3>Ontbijt (±€6)</h3>
+<ul>
+  <li>Havermout 500g (Aldi): €0,69</li>
+  <li>Pindakaas 350g (Aldi): €0,99</li>
+  <li>Jam 450g (Aldi): €0,99</li>
+  <li>Vruchtenmueslireep x6 (Lidl): €1,49</li>
+</ul>
+
+<p><strong>Totaal: ±€46–€52</strong> afhankelijk van seizoen en actuele aanbiedingen.</p>
+
+<h2>Zeven-dagenplan</h2>
+<ul>
+  <li><strong>Maandag:</strong> pasta met tomatensaus en gehakt (spaghetti bolognese) — voor 4, maandag + dinsdag lunch</li>
+  <li><strong>Dinsdag:</strong> kippenbouten uit de oven met broccoli en aardappelen</li>
+  <li><strong>Woensdag:</strong> linzensoep met brood (grote pot, ook voor lunch)</li>
+  <li><strong>Donderdag:</strong> rijst met wok-courgette, paprika en kikkererwten (vegetarisch)</li>
+  <li><strong>Vrijdag:</strong> aardappels-stampot met spinazie en gebakken ei (boerenomelet)</li>
+  <li><strong>Zaterdag:</strong> makreelsalade met pasta en tomaten (koud gerecht)</li>
+  <li><strong>Zondag:</strong> restjesdag of simpele omelet met wat je nog hebt</li>
+</ul>
+
+<h2>Extra besparen: minder voedselverspilling</h2>
+<p>Gemiddelde Nederlander gooit €70 per maand aan eten weg. Tips:</p>
+<ul>
+  <li>FIFO in de koelkast: Oudste producten vooraan</li>
+  <li>Rotte bananen? Invriezen voor smoothies of bananenbrood</li>
+  <li>Restjes groenten? Week afsluiten met soep of wokgerecht</li>
+  <li>Brood bijna op? French toast of tosti als avondmaaltijd</li>
+</ul>
+
+<p>→ <a href="/">Bekijk deze week de goedkoopste producten</a> op DealHunter4U en pas je weekmenu aan op de aanbiedingen.</p>
+    `.trim(),
+  },
+  {
+    slug: 'zuivel-kaas-aanbieding-supermarkt-2026',
+    relatedMarkets: ['albert-heijn', 'jumbo', 'lidl', 'aldi'],
+    title: 'Zuivel en kaas aanbieding 2026: melk, yoghurt en kaas goedkoop bij supermarkt',
+    description: 'Wanneer zijn Campina, Fage yoghurt, Old Amsterdam kaas en zuivelproducten het goedkoopst? Complete gids voor de beste zuivel-aanbiedingen bij Nederlandse supermarkten.',
+    date: '2026-06-11',
+    readTime: 5,
+    category: 'Aanbiedingen',
+    faqs: [
+      {
+        question: 'Welke supermarkt heeft de goedkoopste melk?',
+        answer: 'Aldi heeft structureel de goedkoopste melk in Nederland: volle en halfvolle melk voor ±€0,79–€0,89 per liter. Lidl zit op vergelijkbaar niveau. AH en Jumbo zijn 20-30% duurder op melk.',
+      },
+      {
+        question: 'Wanneer is kaas in de aanbieding?',
+        answer: 'Kaas staat wekelijks in de aanbieding bij minstens één grote supermarkt. Albert Heijn heeft elke 3-4 weken een 48-uurs Bonus op gesneden kaas. Jumbo heeft regelmatig 1+1 op kaasblokken.',
+      },
+      {
+        question: 'Is Fage yoghurt echt beter dan huismerk?',
+        answer: 'Fage heeft een hogere proteïne-inhoud dan de meeste huismerk Griekse yoghurts en een dikkere textuur. Voor gebruik in smoothies of als basis is huismerk prima. Voor een rijke dessert-yoghurt kies Fage bij aanbieding.',
+      },
+    ],
+    content: `
+<p class="lead">Zuivel is een van de meest gekochte categorieën in de supermarkt — en ook een van de meest aangeboden. Van melk en yoghurt tot kaas en roomboter: elke week zijn er tientallen zuivelproducten in de aanbieding. Zo benut je die optimaal.</p>
+
+<h2>Melk: grote prijsverschillen per supermarkt</h2>
+<p>Melk is een dagelijks product waar de prijsverschillen per supermarkt flink oplopen:</p>
+<ul>
+  <li><strong>Volle melk 1L:</strong> Aldi €0,79 | Lidl €0,85 | Jumbo huismerk €0,95 | AH huismerk €0,99 | Campina (AH) €1,19</li>
+  <li><strong>Halfvolle melk 1L:</strong> Aldi €0,79 | Dirk €0,89 | AH huismerk €0,99</li>
+  <li><strong>Plantaardige melk (havermelk, 1L):</strong> Aldi €0,89 | Oatly (AH Bonus) €1,79 (normaal €2,79)</li>
+</ul>
+<p><strong>Jaarlijkse besparing door naar Aldi of Lidl te gaan voor melk:</strong> een gezin van 4 dat 2L per dag drinkt bespaart €70–€90 per jaar vergeleken met AH Campina-melk.</p>
+
+<h2>Yoghurt en kwark aanbiedingen</h2>
+<ul>
+  <li><strong>Griekse yoghurt (500g)</strong>
+    <ul>
+      <li>Lidl eigen merk: €0,99 — beste waarde</li>
+      <li>AH huismerk: €1,19</li>
+      <li>Fage (AH Bonus): €1,69 (normaal €2,69)</li>
+    </ul>
+  </li>
+  <li><strong>Activia (4-pack)</strong>
+    <ul>
+      <li>AH Bonus: €1,99 (normaal €2,99)</li>
+      <li>Jumbo: 1+1 gratis</li>
+    </ul>
+  </li>
+  <li><strong>Kwark (500g)</strong>
+    <ul>
+      <li>Lidl: €0,99</li>
+      <li>AH huismerk: €1,19</li>
+      <li>Campina magere kwark: AH Bonus €1,49</li>
+    </ul>
+  </li>
+  <li><strong>Vla (1L)</strong>
+    <ul>
+      <li>Aldi: €0,89</li>
+      <li>AH huismerk: €0,99</li>
+      <li>Campina (AH Bonus): €1,19</li>
+    </ul>
+  </li>
+</ul>
+
+<h2>Kaas: gesneden, blok en speciaalkaas</h2>
+<ul>
+  <li><strong>Gesneden Gouda (150g)</strong>
+    <ul>
+      <li>Aldi eigen merk: €1,29 — structureel goedkoopst</li>
+      <li>AH huismerk: €1,49</li>
+      <li>AH 48-uurs Bonus: Leerdammer of Milner voor ±€1,69 (normaal €2,49)</li>
+    </ul>
+  </li>
+  <li><strong>Kaasblok (500g)</strong>
+    <ul>
+      <li>Jumbo 1+1 gratis: effectief ±€2,49 per 500g</li>
+      <li>AH Bonus Jong Belegen: ±€2,99 (normaal €4,49)</li>
+      <li>Dirk: structureel ±€3,29 voor 500g jong belegen</li>
+    </ul>
+  </li>
+  <li><strong>Parmezaan (100g)</strong>
+    <ul>
+      <li>Aldi: €1,29 — beste deal voor Italiaanse kaas</li>
+      <li>AH: €1,99 normaal</li>
+    </ul>
+  </li>
+  <li><strong>Mozzarella (125g)</strong>
+    <ul>
+      <li>Aldi: €0,59 — goedkoopste van Nederland</li>
+      <li>AH huismerk: €0,89</li>
+      <li>Galbani (AH Bonus): €1,19</li>
+    </ul>
+  </li>
+</ul>
+
+<h2>Boter en roomboter</h2>
+<ul>
+  <li><strong>Roomboter (250g):</strong> Aldi €1,79 | AH huismerk €2,09 | Campina (AH Bonus) €2,49 | Lurpak (AH Bonus) €2,79</li>
+  <li><strong>Halvarine (500g):</strong> Aldi €0,99 | AH huismerk €1,29 | Becel (AH Bonus) €1,69</li>
+</ul>
+
+<h2>Eieren</h2>
+<ul>
+  <li><strong>Vrije uitloop eieren 12 stuks:</strong> Aldi €2,49 | Lidl €2,59 | AH huismerk €2,89 | Rondeel €3,99</li>
+  <li><strong>Eieren kopen per pakje of als los:</strong> een pak van 10 is altijd goedkoper per ei dan los kopen</li>
+</ul>
+
+<h2>Zuivel-strategie: maximale besparing</h2>
+<ol>
+  <li><strong>Melk en basis-yoghurt:</strong> altijd bij Aldi of Lidl — tot €90/jaar besparing</li>
+  <li><strong>Kaas:</strong> kijk wekelijks naar AH 48-uurs Bonus en Jumbo 1+1 — kaas is makkelijk in te vriezen</li>
+  <li><strong>Speciaalkaas:</strong> Aldi heeft verrassend goede kaas (Parmezaan, Mozzarella) voor discounterprijzen</li>
+  <li><strong>Yoghurt en kwark:</strong> huismerk is prima voor dagelijks gebruik, Fage/Activia alleen bij aanbieding</li>
+</ol>
+
+<p>→ <a href="/?category=zuivel">Bekijk alle actuele zuivel-aanbiedingen</a> bij 8 supermarkten</p>
+    `.trim(),
+  },
+  {
     slug: 'wasmiddel-verzorging-aanbieding-2026',
     relatedMarkets: ['albert-heijn', 'jumbo', 'aldi', 'dirk'],
     title: 'Wasmiddel & verzorgingsproducten aanbieding: Ariel, Pampers en Douwe Egberts goedkoop',
