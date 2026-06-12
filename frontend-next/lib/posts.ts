@@ -2520,3 +2520,33 @@ export function getAllPosts(): BlogPost[] {
 export function getPostsByMarket(marketSlug: string): BlogPost[] {
   return POSTS.filter(p => p.relatedMarkets?.includes(marketSlug))
 }
+
+const CATEGORY_POSTS_MAP: Record<string, string[]> = {
+  'vlees-vis':   ['vlees-aanbieding-supermarkt-gids', 'barbecue-aanbieding-supermarkt-2026'],
+  'snacks':      ['snacks-in-de-aanbieding-aldi-lidl', 'chips-snacks-koek-aanbieding-supermarkt'],
+  'dranken':     ['dranken-aanbieding-supermarkt-2026'],
+  'groente-fruit': ['groenten-fruit-goedkoop-supermarkt'],
+  'zuivel':      ['zuivel-kaas-aanbieding-supermarkt-2026', 'ontbijt-producten-aanbieding-supermarkt'],
+  'bakkerij':    ['ontbijt-producten-aanbieding-supermarkt'],
+  'verzorging':  ['wasmiddel-verzorging-aanbieding-2026'],
+  'huishouden':  ['wasmiddel-verzorging-aanbieding-2026'],
+  'maaltijden':  ['boodschappen-week-menu-goedkoop', 'boodschappen-50-euro-per-week'],
+  'overig':      [],
+}
+
+export function getPostsByCategory(categoryId: string): BlogPost[] {
+  const slugs = CATEGORY_POSTS_MAP[categoryId] ?? []
+  return slugs.map(slug => POSTS.find(p => p.slug === slug)).filter(Boolean) as BlogPost[]
+}
+
+export function getRelatedPosts(post: BlogPost, limit = 3): BlogPost[] {
+  const sameCat = POSTS.filter(p =>
+    p.slug !== post.slug && p.category === post.category
+  )
+  const sameMarkets = POSTS.filter(p =>
+    p.slug !== post.slug &&
+    !sameCat.find(s => s.slug === p.slug) &&
+    p.relatedMarkets?.some(m => post.relatedMarkets?.includes(m))
+  )
+  return [...sameCat, ...sameMarkets].slice(0, limit)
+}

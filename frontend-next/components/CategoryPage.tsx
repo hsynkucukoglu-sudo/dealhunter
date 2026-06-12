@@ -9,6 +9,7 @@ import { LanguageSwitcher } from './LanguageSwitcher'
 import { useShoppingList } from '@/context/ShoppingListContext'
 import { useLanguage } from '@/context/LanguageContext'
 import { CATEGORY_CONTENT } from '@/lib/categoryContent'
+import { BlogPost } from '@/lib/posts'
 
 interface Category {
   id: string
@@ -16,7 +17,7 @@ interface Category {
   emoji: string
 }
 
-export function CategoryPage({ category, initialProducts }: { category: Category; initialProducts: Product[] }) {
+export function CategoryPage({ category, initialProducts, relatedPosts = [] }: { category: Category; initialProducts: Product[]; relatedPosts?: BlogPost[] }) {
   const [search, setSearch] = useState('')
   const [selectedMarket, setSelectedMarket] = useState('all')
   const { itemCount, setIsCartOpen } = useShoppingList()
@@ -174,6 +175,41 @@ export function CategoryPage({ category, initialProducts }: { category: Category
             style={{ background: 'rgba(255,255,255,0.7)', border: '1px solid rgba(201,193,182,0.4)' }}
             dangerouslySetInnerHTML={{ __html: CATEGORY_CONTENT[category.id] }}
           />
+        )}
+
+        {/* Related blog posts */}
+        {relatedPosts.length > 0 && (
+          <section className="mt-16">
+            <h2 className="text-xl font-headline font-bold mb-5" style={{ color: '#1A1A1A' }}>
+              Lees ook op ons blog
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {relatedPosts.map(post => (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="block rounded-2xl p-5 transition-all hover:shadow-md"
+                  style={{ background: 'white', border: '1.5px solid #E0D8CE', textDecoration: 'none' }}
+                >
+                  <span
+                    className="inline-block text-[10px] font-bold px-2.5 py-1 rounded-full mb-3"
+                    style={{ background: '#E33D26', color: 'white', letterSpacing: 1, textTransform: 'uppercase' }}
+                  >
+                    {post.category}
+                  </span>
+                  <p className="font-bold text-sm leading-snug mb-2" style={{ color: '#1A1A1A' }}>
+                    {post.title}
+                  </p>
+                  <p className="text-xs leading-relaxed" style={{ color: '#8C8478' }}>
+                    {post.description.slice(0, 90)}…
+                  </p>
+                  <span className="inline-block mt-3 text-xs font-semibold" style={{ color: '#E33D26' }}>
+                    Lees meer →
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </section>
         )}
 
         {/* Andere categorieën */}

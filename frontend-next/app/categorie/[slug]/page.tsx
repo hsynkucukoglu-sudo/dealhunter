@@ -4,6 +4,7 @@ import { getProducts } from '@/lib/api'
 import { CATEGORIES } from '@/lib/types'
 import { buildBreadcrumbSchema } from '@/lib/schema'
 import { CategoryPage } from '@/components/CategoryPage'
+import { getPostsByCategory } from '@/lib/posts'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -46,6 +47,7 @@ export default async function CategoriePageRoute({ params }: Props) {
 
   const allProducts = await getProducts()
   const products = allProducts.filter(p => p.category === slug)
+  const relatedPosts = getPostsByCategory(slug)
 
   const breadcrumb = buildBreadcrumbSchema([
     { name: 'Home', url: '/' },
@@ -59,7 +61,7 @@ export default async function CategoriePageRoute({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
       />
-      <CategoryPage category={cat} initialProducts={products} />
+      <CategoryPage category={cat} initialProducts={products} relatedPosts={relatedPosts} />
     </>
   )
 }

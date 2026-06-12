@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getPost, getAllPosts } from '@/lib/posts'
+import { getPost, getAllPosts, getRelatedPosts } from '@/lib/posts'
 import { buildBreadcrumbSchema, buildFaqSchema } from '@/lib/schema'
 import { MARKETS } from '@/lib/types'
 import { AdBanner } from '@/components/AdBanner'
@@ -47,6 +47,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const { slug } = await params
   const post = getPost(slug)
   if (!post) notFound()
+
+  const relatedPosts = getRelatedPosts(post)
 
   const breadcrumbSchema = buildBreadcrumbSchema([
     { name: 'Home', url: '/' },
@@ -157,6 +159,39 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             }}>
               Bekijk alle deals →
             </Link>
+          </div>
+        )}
+
+        {/* Related posts */}
+        {relatedPosts.length > 0 && (
+          <div style={{ marginTop: 40 }}>
+            <p style={{ fontWeight: 700, fontSize: 15, color: '#1A1A1A', marginBottom: 16 }}>
+              Lees ook
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 12 }}>
+              {relatedPosts.map(related => (
+                <Link
+                  key={related.slug}
+                  href={`/blog/${related.slug}`}
+                  style={{
+                    display: 'block', borderRadius: 16, padding: '16px 20px',
+                    background: 'white', border: '1.5px solid #E0D8CE', textDecoration: 'none',
+                  }}
+                >
+                  <span style={{
+                    display: 'inline-block', fontSize: 10, fontWeight: 900,
+                    padding: '3px 10px', borderRadius: 20, marginBottom: 8,
+                    background: '#E33D26', color: 'white', letterSpacing: 1, textTransform: 'uppercase',
+                  }}>
+                    {related.category}
+                  </span>
+                  <p style={{ fontWeight: 700, fontSize: 13, lineHeight: 1.4, color: '#1A1A1A', marginBottom: 6 }}>
+                    {related.title}
+                  </p>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: '#E33D26' }}>Lees meer →</span>
+                </Link>
+              ))}
+            </div>
           </div>
         )}
 
