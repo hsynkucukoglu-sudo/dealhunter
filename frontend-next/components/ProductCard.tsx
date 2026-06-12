@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Product } from '@/lib/types'
 import { MARKET_COLORS } from '@/lib/types'
@@ -48,11 +48,13 @@ export function ProductCard({ product }: { product: Product }) {
   const unitPrice = calcUnitPrice(product.name, product.discountedPrice)
   const campaign = detectCampaignType(product.name, discountPercent, product.campaignType)
 
+  const [imgError, setImgError] = useState(false)
+
   const imgSrc = product.imageUrl
     ? product.imageUrl.startsWith('ah-product-id:')
       ? `/api/ah-image/${product.imageUrl.replace('ah-product-id:', '')}`
       : product.imageUrl
-    : '/icon-192x192.png'
+    : null
 
   return (
     <div className="card-product group">
@@ -80,16 +82,22 @@ export function ProductCard({ product }: { product: Product }) {
       )}
 
       <div className="aspect-square overflow-hidden relative" style={{ background: '#FAF6F0' }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={imgSrc}
-          alt={product.name}
-          loading="lazy"
-          width={300}
-          height={300}
-          className="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-500"
-          onError={(e) => { e.currentTarget.src = '/icon-192x192.png' }}
-        />
+        {imgSrc && !imgError ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={imgSrc}
+            alt={product.name}
+            loading="lazy"
+            width={300}
+            height={300}
+            className="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-500"
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <span className="material-symbols-outlined" style={{ fontSize: 56, color: '#C9C1B6' }}>nutrition</span>
+          </div>
+        )}
         <button
           onClick={(e) => { e.stopPropagation(); addToCart(product) }}
           className="basket-slide"

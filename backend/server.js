@@ -3,7 +3,7 @@ import cors from 'cors'
 import rateLimit from 'express-rate-limit'
 import { initDatabase } from './db.js'
 import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, updateProductCategory, clearAllProducts, clearProductsByMarket } from './models.js'
-import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, getMinPriceMap, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts } from './db.js'
+import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, getMinPriceMap, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts, updateSubscriptionPreferences, getUnsegmentedSubscriptions, getSegmentedSubscriptions } from './db.js'
 import { sendWeeklyNewsletter, sendWatchlistAlert } from './email.js'
 import { sendPushToAll, sendPushToSubscriptions } from './push.js'
 import { scrapeFlyerProducts } from './scraper/index.js'
@@ -334,13 +334,42 @@ async function runScraperJob() {
         console.error('Hedefli push sorgulama hatası:', e.message)
       }
 
-      // 2. Genel push — hedefli bildirim almayanlara
-      sendPushToAll({
-        title: '🛒 Nieuwe aanbiedingen beschikbaar!',
-        body: `${createdProducts.length} nieuwe deals van Albert Heijn, Jumbo, Lidl en meer.`,
-        url: 'https://www.dealhunter4u.nl',
-        icon: 'https://www.dealhunter4u.nl/icon-512x512.png',
-      }, targetedEndpoints).catch(e => console.error('Genel push hatası:', e.message))
+      // 2. Segment push — market/kategori tercihli kullanıcılara
+      try {
+        const newMarkets = [...new Set(createdProducts.map(p => p.market))]
+        const newCategories = [...new Set(createdProducts.map(p => p.category).filter(Boolean))]
+        const segmented = await getSegmentedSubscriptions(newMarkets, newCategories)
+        const segmentTargets = segmented.filter(s => !targetedEndpoints.has(s.endpoint))
+        if (segmentTargets.length > 0) {
+          sendPushToSubscriptions(segmentTargets, {
+            title: '🎯 Aanbiedingen voor jou!',
+            body: `Nieuwe deals bij jouw favoriete supermarkten.`,
+            url: 'https://www.dealhunter4u.nl',
+            icon: 'https://www.dealhunter4u.nl/icon-512x512.png',
+          }).catch(e => console.error('Segment push hatası:', e.message))
+          segmentTargets.forEach(s => targetedEndpoints.add(s.endpoint))
+          console.log(`🎯 ${segmentTargets.length} segment kullanıcısına bildirim gönderildi`)
+        }
+      } catch (e) {
+        console.error('Segment push sorgulama hatası:', e.message)
+      }
+
+      // 3. Genel push — hiç tercihi olmayan kullanıcılara
+      try {
+        const unsegmented = await getUnsegmentedSubscriptions()
+        const generalTargets = unsegmented.filter(s => !targetedEndpoints.has(s.endpoint))
+        if (generalTargets.length > 0) {
+          sendPushToSubscriptions(generalTargets, {
+            title: '🛒 Nieuwe aanbiedingen beschikbaar!',
+            body: `${createdProducts.length} nieuwe deals van Albert Heijn, Jumbo, Lidl en meer.`,
+            url: 'https://www.dealhunter4u.nl',
+            icon: 'https://www.dealhunter4u.nl/icon-512x512.png',
+          }).catch(e => console.error('Genel push hatası:', e.message))
+          console.log(`📢 ${generalTargets.length} genel kullanıcıya bildirim gönderildi`)
+        }
+      } catch (e) {
+        console.error('Genel push sorgulama hatası:', e.message)
+      }
     }
 
     // Watchlist email alerts — favorisi eşleşen kullanıcılara email gönder
@@ -408,6 +437,18 @@ app.delete('/api/push/unsubscribe', asyncHandler(async (req, res) => {
   if (!endpoint) return res.status(400).json({ error: 'endpoint gerekli' })
   await deleteSubscription(endpoint)
   res.json({ ok: true })
+}))
+
+// PATCH /api/push/preferences - Market/kategori tercihleri güncelle
+app.patch('/api/push/preferences', asyncHandler(async (req, res) => {
+  const { endpoint, markets, categories } = req.body
+  if (!endpoint) return res.status(400).json({ error: 'endpoint gerekli' })
+  const VALID_MARKETS = ['Albert Heijn', 'Jumbo', 'Lidl', 'Aldi', 'Dirk', 'Hoogvliet', 'Vomar', 'DekaMarkt']
+  const VALID_CATEGORIES = ['groente-fruit', 'zuivel', 'vlees-vis', 'dranken', 'bakkerij', 'snacks', 'maaltijden', 'verzorging', 'huishouden', 'overig']
+  const cleanMarkets = Array.isArray(markets) ? markets.filter(m => VALID_MARKETS.includes(m)) : []
+  const cleanCategories = Array.isArray(categories) ? categories.filter(c => VALID_CATEGORIES.includes(c)) : []
+  await updateSubscriptionPreferences(endpoint, { markets: cleanMarkets, categories: cleanCategories })
+  res.json({ ok: true, markets: cleanMarkets, categories: cleanCategories })
 }))
 
 // GET /api/push/vapid-public-key - Frontend'e public key ver

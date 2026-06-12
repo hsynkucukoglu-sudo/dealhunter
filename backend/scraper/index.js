@@ -10,12 +10,13 @@ let EXPIRES_AT = ''
 function toCampaignType(text) {
   if (!text) return null
   const s = text.toLowerCase()
-  if (/1\s*\+\s*1|one.plus.one|bogo/.test(s)) return '1+1'
-  if (/2e\s*(halve|helft|50%)|tweede.*(halve|gratis)|2de\s*(halve|gratis)/.test(s)) return '2e-halve-prijs'
-  if (/3\s*(halen|voor)\s*2|3\s*halen.*2\s*betalen/.test(s)) return '3-halen-2-betalen'
+  if (/1\s*\+\s*1|one.plus.one|bogo|buy\s*one\s*get\s*one|1\s*plus\s*1|\bgratis\b.*\bex(tra)?\b/.test(s)) return '1+1'
+  if (/2e\s*(halve|helft|50%|gratis)|tweede.*(halve|gratis)|2de\s*(halve|gratis)|half\s*price/.test(s)) return '2e-halve-prijs'
+  if (/3\s*(halen|voor)\s*2|3\s*halen.*2\s*betalen|buy\s*3.*get\s*(1|one)\s*free/.test(s)) return '3-halen-2-betalen'
   if (/2\s*\+\s*1|3\s*voor\s*2/.test(s)) return '3-halen-2-betalen'
-  if (/combi(natie)?/.test(s)) return 'combinatie'
-  if (/tijdelijk(\s*lager)?/.test(s)) return 'tijdelijk'
+  if (/combi(natie(voordeel)?)?|combi\s*deal|samen\s*goedkoper/.test(s)) return 'combinatie'
+  if (/tijdelijk(\s*lager)?|limited\s*time|op\s*=\s*op/.test(s)) return 'tijdelijk'
+  if (/\bactie\b|\bspecial\b|\bpromo\b/.test(s)) return 'actie'
   return null
 }
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
@@ -253,6 +254,27 @@ async function scrapeJumbo() {
           if (cents && cents > 0) d.regularPrice = cents / 100
         })
       } catch {}
+    }
+
+    // Step 4b: Retry relative deals still missing regularPrice (individual GraphQL fetch)
+    const missingRelative = deals.filter(d => d.parsed.type === 'relative' && !d.regularPrice && d.sku)
+    if (missingRelative.length > 0) {
+      console.log(`  [Jumbo] ${missingRelative.length} relative deal fiyat retry...`)
+      for (const deal of missingRelative) {
+        try {
+          await new Promise(r => setTimeout(r, 300))
+          const r = await fetch(JUMBO_GQL_URL, {
+            method: 'POST',
+            headers: JUMBO_GQL_HEADERS,
+            body: JSON.stringify({ query: `{ product(sku: "${deal.sku}") { price { price } } }` }),
+            signal: AbortSignal.timeout(8000),
+          })
+          if (!r.ok) continue
+          const data = await r.json()
+          const cents = data.data?.product?.price?.price
+          if (cents && cents > 0) deal.regularPrice = cents / 100
+        } catch {}
+      }
     }
 
     // Step 5: Compute final prices

@@ -95,13 +95,19 @@ export function ShoppingListSidebar() {
                     className="flex gap-3 p-3 rounded-2xl"
                     style={{ background: 'white', border: '1px solid #E0D8CE' }}
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={item.imageUrl || '/icon-192x192.png'}
-                      alt={item.name}
-                      className="w-16 h-16 object-contain rounded-xl p-1"
-                      style={{ background: '#FAF6F0' }}
-                    />
+                    {item.imageUrl ? (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img
+                        src={item.imageUrl}
+                        alt={item.name}
+                        className="w-16 h-16 object-contain rounded-xl p-1"
+                        style={{ background: '#FAF6F0' }}
+                        onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.nextElementSibling?.classList.remove('hidden') }}
+                      />
+                    ) : null}
+                    <div className={`w-16 h-16 flex items-center justify-center rounded-xl ${item.imageUrl ? 'hidden' : ''}`} style={{ background: '#FAF6F0' }}>
+                      <span className="material-symbols-outlined" style={{ fontSize: 28, color: '#C9C1B6' }}>nutrition</span>
+                    </div>
                     <div className="flex-1 min-w-0">
                       <h4 className="font-headline font-bold line-clamp-1 text-sm" style={{ color: '#1A1A1A' }}>{item.name}</h4>
                       <p className="text-[11px] font-headline uppercase tracking-widest mt-0.5" style={{ color: '#8C8478' }}>{item.market}</p>

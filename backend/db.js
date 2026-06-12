@@ -45,6 +45,14 @@ export async function initDatabase() {
     ADD COLUMN IF NOT EXISTS user_id TEXT
   `)
   await pool.query(`
+    ALTER TABLE push_subscriptions
+    ADD COLUMN IF NOT EXISTS preferred_markets TEXT[] DEFAULT NULL
+  `)
+  await pool.query(`
+    ALTER TABLE push_subscriptions
+    ADD COLUMN IF NOT EXISTS preferred_categories TEXT[] DEFAULT NULL
+  `)
+  await pool.query(`
     CREATE TABLE IF NOT EXISTS user_favorites (
       id SERIAL PRIMARY KEY,
       user_id TEXT NOT NULL,
@@ -79,11 +87,63 @@ export async function initDatabase() {
 
 export async function saveSubscription(subscription) {
   await pool.query(
-    `INSERT INTO push_subscriptions (endpoint, keys, user_id)
-     VALUES ($1, $2, $3)
-     ON CONFLICT (endpoint) DO UPDATE SET user_id = COALESCE(EXCLUDED.user_id, push_subscriptions.user_id)`,
-    [subscription.endpoint, JSON.stringify(subscription.keys), subscription.userId || null]
+    `INSERT INTO push_subscriptions (endpoint, keys, user_id, preferred_markets, preferred_categories)
+     VALUES ($1, $2, $3, $4, $5)
+     ON CONFLICT (endpoint) DO UPDATE
+       SET user_id = COALESCE(EXCLUDED.user_id, push_subscriptions.user_id),
+           preferred_markets = COALESCE(EXCLUDED.preferred_markets, push_subscriptions.preferred_markets),
+           preferred_categories = COALESCE(EXCLUDED.preferred_categories, push_subscriptions.preferred_categories)`,
+    [
+      subscription.endpoint,
+      JSON.stringify(subscription.keys),
+      subscription.userId || null,
+      subscription.preferredMarkets?.length ? subscription.preferredMarkets : null,
+      subscription.preferredCategories?.length ? subscription.preferredCategories : null,
+    ]
   )
+}
+
+export async function updateSubscriptionPreferences(endpoint, { markets, categories }) {
+  await pool.query(
+    `UPDATE push_subscriptions
+     SET preferred_markets = $1, preferred_categories = $2
+     WHERE endpoint = $3`,
+    [
+      markets?.length ? markets : null,
+      categories?.length ? categories : null,
+      endpoint,
+    ]
+  )
+}
+
+// Sadece tercihsiz aboneler (genel push için)
+export async function getUnsegmentedSubscriptions() {
+  const { rows } = await pool.query(
+    `SELECT endpoint, keys FROM push_subscriptions
+     WHERE preferred_markets IS NULL AND preferred_categories IS NULL`
+  )
+  return rows.map(r => ({ endpoint: r.endpoint, keys: r.keys }))
+}
+
+// Verilen market veya kategorilerden herhangi biriyle eşleşen tercihli aboneler
+export async function getSegmentedSubscriptions(markets, categories) {
+  const { rows } = await pool.query(
+    `SELECT DISTINCT endpoint, keys FROM push_subscriptions
+     WHERE
+       (preferred_markets IS NOT NULL AND preferred_markets && $1::text[])
+       OR (preferred_categories IS NOT NULL AND preferred_categories && $2::text[])`,
+    [markets.length ? markets : ['__none__'], categories.length ? categories : ['__none__']]
+  )
+  return rows.map(r => ({ endpoint: r.endpoint, keys: r.keys }))
+}
+
+export async function getSubscriptionsByMarket(market) {
+  const { rows } = await pool.query(
+    `SELECT endpoint, keys FROM push_subscriptions
+     WHERE preferred_markets IS NULL OR $1 = ANY(preferred_markets)`,
+    [market]
+  )
+  return rows.map(r => ({ endpoint: r.endpoint, keys: r.keys }))
 }
 
 export async function deleteSubscription(endpoint) {

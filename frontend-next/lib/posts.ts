@@ -1237,7 +1237,7 @@ export const POSTS: BlogPost[] = [
     relatedMarkets: ['albert-heijn', 'jumbo', 'lidl', 'aldi', 'dirk'],
     title: 'Goedkoopste supermarkt Nederland 2026: uitgebreide vergelijking',
     description: 'Welke supermarkt is het goedkoopst in 2026? Vergelijking van Albert Heijn, Jumbo, Lidl, Aldi, Dirk, Vomar en meer op prijs, kwaliteit en aanbiedingen.',
-    date: '2026-06-11',
+    date: '2026-05-28',
     readTime: 7,
     category: 'Vergelijking',
     faqs: [
@@ -1325,7 +1325,7 @@ export const POSTS: BlogPost[] = [
     relatedMarkets: ['albert-heijn', 'jumbo', 'lidl', 'aldi', 'dirk'],
     title: 'BBQ aanbieding supermarkt 2026: goedkoop barbecueën met de beste deals',
     description: 'Welke supermarkt heeft de beste BBQ-aanbiedingen? Goedkoop barbecueën met vlees, kolen, sausjes en bier. Vergelijking AH, Jumbo, Lidl, Aldi en Dirk voor zomer 2026.',
-    date: '2026-06-11',
+    date: '2026-05-30',
     readTime: 6,
     category: 'Seizoensaanbiedingen',
     faqs: [
@@ -1448,7 +1448,7 @@ export const POSTS: BlogPost[] = [
     relatedMarkets: ['albert-heijn', 'jumbo', 'lidl', 'aldi'],
     title: 'Supermarkt huismerk test 2026: zijn huismerken net zo goed als A-merken?',
     description: 'Vergelijking van Aldi, Lidl, AH en Jumbo huismerkproducten met A-merken op kwaliteit en prijs. Is eigen merk echt zo goed als Ariel, Pampers en Coca-Cola?',
-    date: '2026-06-11',
+    date: '2026-06-01',
     readTime: 5,
     category: 'Vergelijking',
     faqs: [
@@ -1538,7 +1538,7 @@ export const POSTS: BlogPost[] = [
     relatedMarkets: ['lidl', 'aldi', 'dirk', 'albert-heijn'],
     title: 'Goedkope groenten en fruit: welke supermarkt is het voordeligst in 2026?',
     description: 'Vergelijking van groenten en fruitprijzen bij Aldi, Lidl, Dirk, AH en Jumbo. Tips voor seizoensgroenten, bevroren alternatieven en de goedkoopste groente-deals.',
-    date: '2026-06-11',
+    date: '2026-06-02',
     readTime: 5,
     category: 'Vergelijking',
     faqs: [
@@ -1659,7 +1659,7 @@ export const POSTS: BlogPost[] = [
     relatedMarkets: ['albert-heijn', 'jumbo', 'lidl', 'aldi'],
     title: 'Supermarkt app vergelijking 2026: AH, Jumbo, Lidl en Aldi app review',
     description: 'Welke supermarkt-app is het beste in 2026? Vergelijking van Albert Heijn app, Jumbo app, Lidl Plus en Aldi app op aanbiedingen, gebruiksgemak en besparingen.',
-    date: '2026-06-11',
+    date: '2026-06-03',
     readTime: 5,
     category: 'Tips & Tricks',
     faqs: [
@@ -1748,7 +1748,7 @@ export const POSTS: BlogPost[] = [
     relatedMarkets: ['albert-heijn', 'jumbo', 'aldi', 'lidl', 'dirk'],
     title: 'Gezinsboodschappen besparen: complete gids voor families in 2026',
     description: 'Hoe bespaar je als gezin op boodschappen? Complete gids met maaltijdplanning, slimme supermarkt-strategie, huismerken en tips om €150-300 per maand te besparen.',
-    date: '2026-06-11',
+    date: '2026-06-05',
     readTime: 7,
     category: 'Besparen',
     faqs: [
@@ -1846,7 +1846,7 @@ export const POSTS: BlogPost[] = [
     relatedMarkets: ['albert-heijn', 'jumbo', 'lidl', 'aldi'],
     title: 'Biologische boodschappen goedkoop: beste bio-deals bij Nederlandse supermarkten',
     description: 'Goedkoop biologische producten kopen in 2026. Waar vind je de beste bio-aanbiedingen bij AH, Jumbo, Lidl en Aldi? En wanneer is bio de moeite waard?',
-    date: '2026-06-11',
+    date: '2026-06-07',
     readTime: 5,
     category: 'Vergelijking',
     content: `
@@ -1916,7 +1916,7 @@ export const POSTS: BlogPost[] = [
     relatedMarkets: ['albert-heijn', 'jumbo', 'lidl', 'aldi'],
     title: 'Ontbijtproducten aanbieding: cornflakes, muesli, hagelslag en brood goedkoop',
     description: 'Wanneer zijn Brinta, Kellogg\'s cornflakes, Nutella, hagelslag en brood het goedkoopst? Complete gids voor ontbijtproducten-aanbiedingen bij Nederlandse supermarkten.',
-    date: '2026-06-11',
+    date: '2026-06-08',
     readTime: 5,
     category: 'Aanbiedingen',
     faqs: [
@@ -2031,7 +2031,7 @@ export const POSTS: BlogPost[] = [
     relatedMarkets: ['albert-heijn', 'jumbo', 'aldi', 'lidl'],
     title: 'Chips, snacks en koek in aanbieding: Lay\'s, Pringles en Verkade goedkoop',
     description: 'Wanneer zijn Lay\'s chips, Pringles, Oreo, Verkade koeken en M&Ms het goedkoopst? Complete gids voor snacks-aanbiedingen bij AH, Jumbo, Aldi en Lidl.',
-    date: '2026-06-11',
+    date: '2026-06-09',
     readTime: 5,
     category: 'Aanbiedingen',
     faqs: [
@@ -2155,7 +2155,7 @@ export const POSTS: BlogPost[] = [
     relatedMarkets: ['aldi', 'lidl', 'dirk', 'albert-heijn'],
     title: 'Goedkoop weekmenu boodschappen: complete maaltijdplanning voor €50 per week',
     description: 'Een compleet weekmenu met boodschappenlijst voor 2 personen voor €50 of minder. Recepten op basis van supermarktaanbiedingen bij Aldi, Lidl, Dirk en AH.',
-    date: '2026-06-11',
+    date: '2026-06-10',
     readTime: 8,
     category: 'Besparen',
     faqs: [
@@ -2375,6 +2375,371 @@ export const POSTS: BlogPost[] = [
     `.trim(),
   },
   {
+    slug: 'baby-producten-aanbieding-supermarkt',
+    relatedMarkets: ['albert-heijn', 'jumbo', 'aldi', 'lidl'],
+    title: 'Baby Producten in Aanbieding: Luiers, Babyvoeding en Verzorging Goedkoop (2026)',
+    description: 'Wanneer zijn Pampers, Huggies, Nutrilon en Olvarit het goedkoopst? Complete gids voor baby-aanbiedingen bij AH, Jumbo, Aldi en Lidl. Bespaar €500+ per jaar.',
+    date: '2026-06-12',
+    readTime: 6,
+    category: 'Aanbiedingen',
+    faqs: [
+      {
+        question: 'Welke supermarkt heeft de goedkoopste luiers?',
+        answer: 'Aldi en Lidl hebben structureel de goedkoopste luiers via hun eigen merken (Aldi Mamia, Lidl Lupilu) — tot 60% goedkoper dan Pampers en Huggies. Voor merkluiers zijn AH en Jumbo het goedkoopst bij aanbieding, vaak met 40-50% korting.',
+      },
+      {
+        question: 'Wanneer zijn Pampers in de aanbieding?',
+        answer: 'Pampers staat bij Albert Heijn gemiddeld elke 4-6 weken in de Bonus, met kortingen van 30-50%. De grootste verpakking (maandbox) geeft de beste prijs per luier. Jumbo heeft ook regelmatig Pampers-acties.',
+      },
+      {
+        question: 'Is Aldi Mamia net zo goed als Pampers?',
+        answer: 'Aldi Mamia scoort uitstekend in onafhankelijke tests (Consumentenbond, Stiftung Warentest) — vergelijkbaar absorptievermogen als Pampers Baby-Dry, maar 50-60% goedkoper. Voor nachtluiers adviseren sommige ouders toch merkluiers vanwege het absorptievermogen.',
+      },
+      {
+        question: 'Hoeveel bespaar je per jaar met huismerk luiers?',
+        answer: 'Een baby heeft gemiddeld 2.500 luiers nodig in het eerste jaar. Pampers kost ±€0,25 per luier (€625/jaar), Aldi Mamia ±€0,10 per luier (€250/jaar). Besparing: €375 per jaar — alleen op luiers.',
+      },
+    ],
+    content: `
+<p class="lead">Een baby kost gemiddeld <strong>€6.000–€10.000 in het eerste jaar</strong>. Luiers, babyvoeding en verzorgingsproducten zijn een flinke kostenpost. Met de juiste timing en supermarktkeuzes bespaar je als ouder <strong>€500–€1.000 per jaar</strong> — zonder in te leveren op kwaliteit.</p>
+
+<h2>Luiers: de grootste besparing voor nieuwe ouders</h2>
+<p>Een baby gebruikt gemiddeld <strong>2.500 luiers</strong> in het eerste jaar (6–8 per dag). Prijsvergelijking per luier:</p>
+<ul>
+  <li><strong>Pampers Baby-Dry (maat 3):</strong>
+    <ul>
+      <li>AH Bonus: ±€0,18–€0,22 per luier (normaal ±€0,28–€0,32)</li>
+      <li>Jumbo weekdeal: ±€0,20 per luier</li>
+      <li>Reguliere prijs: ±€0,28–€0,35 per luier</li>
+    </ul>
+  </li>
+  <li><strong>Huggies (maat 3):</strong>
+    <ul>
+      <li>AH Bonus: ±€0,19–€0,23 per luier</li>
+      <li>Reguliere prijs: ±€0,26–€0,32 per luier</li>
+    </ul>
+  </li>
+  <li><strong>Aldi Mamia (huismerk):</strong> ±€0,09–€0,12 per luier — <strong>60% goedkoper dan Pampers</strong></li>
+  <li><strong>Lidl Lupilu (huismerk):</strong> ±€0,10–€0,13 per luier</li>
+  <li><strong>AH Huismerk luiers:</strong> ±€0,13–€0,16 per luier</li>
+</ul>
+<p><strong>Jaarlijkse kosten (2.500 luiers):</strong></p>
+<ul>
+  <li>Pampers regulier: €700–€875</li>
+  <li>Pampers alleen bij aanbieding kopen: €450–€550</li>
+  <li>Aldi Mamia: €225–€300</li>
+</ul>
+<p><strong>Beste strategie:</strong> gebruik Aldi Mamia of Lidl Lupilu overdag, kies een merkluier (Pampers Pants of Huggies) alleen voor de nacht als je baby last heeft van lekkage.</p>
+
+<h2>Wanneer zijn Pampers en Huggies in de aanbieding?</h2>
+<ul>
+  <li><strong>Albert Heijn:</strong> Pampers of Huggies staat gemiddeld elke 4–6 weken in de Bonus (30–50% korting). Zet een alert in de AH-app voor je maat.</li>
+  <li><strong>Jumbo:</strong> vergelijkbaar ritme, regelmatig 1+1 of maandbox-acties</li>
+  <li><strong>Dirk:</strong> Pampers hier minder frequent maar soms scherp geprijsd</li>
+  <li><strong>Tip:</strong> koop bij aanbieding altijd de grootste verpakking (maandbox/economy pack) — prijs per luier is 15–25% lager dan de kleine verpakking</li>
+</ul>
+
+<h2>Babyvoeding: Nutrilon, Olvarit en alternatieven</h2>
+<p>Kunstmatige zuigelingenvoeding (flesvoeding) is duur — en hier geldt: <strong>merk maakt weinig verschil</strong>. De EU stelt strenge kwaliteitseisen aan alle babymelk, ongeacht het merk.</p>
+
+<h3>Flesvoeding vergelijking (per 100g poeder)</h3>
+<ul>
+  <li><strong>Nutrilon 1 (900g):</strong>
+    <ul>
+      <li>AH Bonus: ±€14,99 (normaal ±€19,99)</li>
+      <li>Jumbo: ±€15,49</li>
+    </ul>
+  </li>
+  <li><strong>Aptamil:</strong> vergelijkbaar met Nutrilon in prijs en kwaliteit</li>
+  <li><strong>Aldi Mamia flesvoeding:</strong> ±€9,99 per 800g — 40% goedkoper, voldoet aan dezelfde EU-normen</li>
+  <li><strong>Lidl Babylove:</strong> ±€9,49–€10,49 — ook een sterke keuze</li>
+</ul>
+<p>Altijd overleggen met je verloskundige of huisarts bij twijfel over het merk.</p>
+
+<h3>Pap en hapjes (Olvarit, HiPP, Hipp)</h3>
+<ul>
+  <li><strong>Olvarit 4+ maanden (190g):</strong> AH Bonus ±€0,99 (normaal ±€1,39) | Jumbo ±€1,09</li>
+  <li><strong>HiPP Biologisch potje:</strong> ±€1,49–€1,79 — premiumsegment</li>
+  <li><strong>AH Huismerk babyhapje:</strong> ±€0,69–€0,89 — goedkoopst, voldoet aan alle normen</li>
+  <li><strong>Tip:</strong> zelf pureren met seizoensgroenten van Aldi of Lidl is 70% goedkoper dan potjes en net zo gezond</li>
+</ul>
+
+<h2>Babyverzorging: zeep, shampoo en crème</h2>
+<p>Voor babyverzorging is het merk minder belangrijk dan bij luiers. Basisverzorging bestaat uit milde ingrediënten die goedkoop te verkrijgen zijn:</p>
+<ul>
+  <li><strong>Johnson's Baby (shampoo 500ml):</strong> AH Bonus ±€2,49 (normaal ±€3,99)</li>
+  <li><strong>Etos Babylijn (huismerk):</strong> ±€1,99 — vergelijkbare formule, geparfumeerd</li>
+  <li><strong>Aldi babyverzorging (shampoo + was):</strong> ±€1,29–€1,79 — goedkoopste optie</li>
+  <li><strong>Bepanthen billencème (30g):</strong> AH Bonus ±€4,49 (normaal ±€6,99) — koop altijd bij aanbieding</li>
+</ul>
+
+<h2>Babykleding: supermarkt vs. kledingwinkel</h2>
+<p>Supermarkten hebben steeds vaker goede babykleding:</p>
+<ul>
+  <li><strong>Aldi babykleding (seizoensactie):</strong> ±€2,99–€4,99 per kledingstuk — uitstekende prijs-kwaliteitverhouding</li>
+  <li><strong>Lidl babykleding:</strong> vergelijkbaar, regelmatig in thema-acties (zomer/winter)</li>
+  <li>Baby's groeien snel — dure kleding is zelden de moeite waard voor de eerste 12 maanden</li>
+</ul>
+
+<h2>Slimste strategie voor baby-aanbiedingen</h2>
+<ol>
+  <li><strong>Sla luiers in bij aanbieding</strong> — koop 2–3 dozen als Pampers of Huggies op AH Bonus staat. Luiers zijn lang houdbaar.</li>
+  <li><strong>Test Aldi Mamia of Lidl Lupilu</strong> — de meeste ouders zijn verrast hoe goed deze zijn voor de prijs</li>
+  <li><strong>Nutrilon alleen kopen bij aanbieding</strong> — stel een alert in de AH-app in voor babyvoeding</li>
+  <li><strong>Vergelijk maandelijks</strong> op <a href="/categorie/verzorging">DealHunter4U Verzorging</a> — hier staan alle actuele baby-aanbiedingen</li>
+  <li><strong>Marktplaats voor kleding</strong> — tweedehands babykleding is bijna altijd zo goed als nieuw</li>
+</ol>
+
+<p>→ <a href="/categorie/verzorging">Bekijk alle actuele verzorgings- en baby-aanbiedingen</a> bij 8 supermarkten</p>
+    `.trim(),
+  },
+  {
+    slug: 'vleeswaren-aanbieding-supermarkt',
+    relatedMarkets: ['albert-heijn', 'jumbo', 'dirk', 'aldi', 'lidl'],
+    title: 'Vleeswaren in Aanbieding: Salami, Ham en Worst Goedkoop bij AH, Jumbo en Dirk (2026)',
+    description: 'Wanneer zijn salami, rookvlees, ham en worst het goedkoopst? Complete gids voor vleeswaren-aanbiedingen bij AH, Jumbo, Dirk, Aldi en Lidl. Bespaar tot 50%.',
+    date: '2026-06-12',
+    readTime: 5,
+    category: 'Aanbiedingen',
+    faqs: [
+      {
+        question: 'Wanneer zijn vleeswaren in de aanbieding?',
+        answer: 'Vleeswaren zoals salami, ham en rookvlees zijn bij Albert Heijn en Jumbo gemiddeld elke 3–4 weken in de aanbieding met 30–50% korting. Dirk heeft structureel de laagste dagprijzen voor vleeswaren in Nederland.',
+      },
+      {
+        question: 'Welke supermarkt heeft de goedkoopste ham?',
+        answer: 'Dirk van den Broek en Aldi hebben de goedkoopste ham op reguliere dagprijs. Voor merkham (Heks\'nkaas, Unox) zijn AH en Jumbo het goedkoopst bij aanbieding — koop dan altijd de grotere verpakking.',
+      },
+      {
+        question: 'Hoe lang zijn vleeswaren houdbaar?',
+        answer: 'Ongeopende vacuümverpakkingen zijn 10–21 dagen houdbaar in de koelkast. Na openen: 3–5 dagen. Je kunt gesneden vleeswaren invriezen (tot 3 maanden) — doe dit direct na aankoop als je groot hebt ingekocht bij aanbieding.',
+      },
+    ],
+    content: `
+<p class="lead">Nederlanders eten gemiddeld <strong>3,5 boterhammen per dag</strong> — en vleeswaren zijn het meest populaire broodbeleg. Salami, rookvlees, ham en filet américain gaan snel door je budget als je niet oplet. Met slimme timing bespaar je <strong>€150–300 per jaar</strong> op vleeswaren alleen.</p>
+
+<h2>Vleeswaren prijsvergelijking (2026)</h2>
+<p>Prijzen voor populaire vleeswaren (gesneden, standaardverpakking ±150g):</p>
+
+<h3>Ham (gekookt, gesneden)</h3>
+<ul>
+  <li><strong>Dirk van den Broek:</strong> ±€1,29–€1,49 — structureel goedkoopst</li>
+  <li><strong>Aldi eigen merk:</strong> ±€1,19–€1,39</li>
+  <li><strong>AH Huismerk:</strong> ±€1,49–€1,69</li>
+  <li><strong>AH Bonus (merken als Stegeman):</strong> ±€1,79 (normaal ±€2,49)</li>
+  <li><strong>Jumbo weekdeal:</strong> ±€1,89 voor 200g — beste waarde bij aanbieding</li>
+</ul>
+
+<h3>Salami (gesneden)</h3>
+<ul>
+  <li><strong>Aldi salami (100g):</strong> ±€0,99 — goedkoopst van Nederland</li>
+  <li><strong>Lidl salami:</strong> ±€1,09–€1,19</li>
+  <li><strong>AH Huismerk salami (125g):</strong> ±€1,29</li>
+  <li><strong>Campofrio/Stegeman AH Bonus:</strong> ±€1,69–€1,99 (normaal ±€2,79–€3,29)</li>
+  <li><strong>Bertolli / Casa Italiano (premium):</strong> koop uitsluitend bij aanbieding</li>
+</ul>
+
+<h3>Rookvlees</h3>
+<ul>
+  <li><strong>Dirk rookvlees (100g):</strong> ±€1,49 — beste basisprijs</li>
+  <li><strong>Unox rookvlees AH Bonus (130g):</strong> ±€1,79 (normaal ±€2,99)</li>
+  <li><strong>Jumbo eigen merk rookvlees:</strong> ±€1,59</li>
+</ul>
+
+<h3>Filet Américain</h3>
+<ul>
+  <li><strong>AH Huismerk (125g):</strong> ±€1,29</li>
+  <li><strong>Aldi eigen merk:</strong> ±€1,09</li>
+  <li><strong>Heks\'nkaas Filet Américain (150g) AH Bonus:</strong> ±€1,99 (normaal ±€2,79)</li>
+</ul>
+
+<h2>Welke supermarkt heeft de beste vleeswaren-deals?</h2>
+<ul>
+  <li><strong>Dirk van den Broek</strong> — structureel laagste dagprijzen voor ham, worst en rookvlees. Geen folder nodig: dagprijs is al scherp.</li>
+  <li><strong>Aldi en Lidl</strong> — goedkoopste huismerken. Kwaliteit is goed; minder merkdiversiteit.</li>
+  <li><strong>Albert Heijn</strong> — beste aanbieding op A-merken (Stegeman, Unox, Heks\'nkaas). Alleen de moeite bij Bonus.</li>
+  <li><strong>Jumbo</strong> — goede weekdeals, vooral op grotere verpakkingen (200–250g). Jumbo eigen merk is concurrerend geprijsd.</li>
+</ul>
+
+<h2>Worst en hotdogs</h2>
+<ul>
+  <li><strong>Unox knakworst (6 stuks):</strong> AH Bonus ±€1,99 (normaal ±€3,29) — koop in bulk</li>
+  <li><strong>Jumbo hotdog-worstjes (10 stuks):</strong> ±€1,49 — beste waarde</li>
+  <li><strong>Aldi knakworst:</strong> ±€1,29 voor 6 stuks — structureel goedkoopst</li>
+  <li><strong>Alvaro Chorizo (AH Bonus):</strong> ±€1,99 — lekker en scherp geprijsd bij aanbieding</li>
+</ul>
+
+<h2>Kaasbeleg: kort meegenomen</h2>
+<p>Vleeswaren en kaasbeleg worden vaak samen gekocht. Goedkoopste opties:</p>
+<ul>
+  <li><strong>Aldi gesneden Gouda (150g):</strong> ±€1,29 — goedkoopste gesneden kaas van Nederland</li>
+  <li><strong>Lidl gesneden kaas (150g):</strong> ±€1,35</li>
+  <li><strong>AH Leerdammer/Milner Bonus:</strong> ±€1,69 voor grotere verpakking (200g) — uitstekende deal</li>
+</ul>
+
+<h2>Invriezen: de ultieme bespaarstrategie voor vleeswaren</h2>
+<p>Gesneden vleeswaren zijn uitstekend in te vriezen. Zo profiteer je van aanbiedingen zonder verspilling:</p>
+<ol>
+  <li>Koop bij AH Bonus of Jumbo weekdeal 3–5 pakjes tegelijk</li>
+  <li>Verpak per portie in kleine zakjes of wikkel in aluminiumfolie</li>
+  <li>Invriezen direct na aankoop (tot 3 maanden houdbaar)</li>
+  <li>Ontdooien in de koelkast \'s avonds voor de volgende ochtend</li>
+</ol>
+<p>Met deze methode koop je vleeswaren altijd voor de aanbiedingsprijs — nooit meer voor de reguliere prijs.</p>
+
+<h2>Timing: wanneer kopen?</h2>
+<ul>
+  <li><strong>Woensdag:</strong> nieuwe AH Bonus + Jumbo weekaanbiedingen starten — vleeswaren zijn dan nog volledig in voorraad</li>
+  <li><strong>Dirk:</strong> dagprijs is altijd geldig — geen specifiek dag nodig</li>
+  <li><strong>Aldi:</strong> maandag nieuwe weekaanbiedingen — controleer dan voor seizoensgebonden vleeswaren (BBQ-worst, etc.)</li>
+</ul>
+
+<p>→ <a href="/categorie/vlees-vis">Bekijk alle actuele vleeswaren- en vleesaanbiedingen</a> bij 8 supermarkten</p>
+<p>→ <a href="/supermarkt/dirk">Dirk van den Broek aanbiedingen</a> — structureel laagste vleesprijzen van Nederland</p>
+    `.trim(),
+  },
+  {
+    slug: 'maaltijdbox-vergelijken-2026',
+    relatedMarkets: [],
+    title: 'Maaltijdbox Vergelijken 2026: HelloFresh, Marley Spoon en meer — welke is het beste?',
+    description: 'Welke maaltijdbox is het beste in 2026? Vergelijking van HelloFresh, Marley Spoon en Dinnerly op prijs, portiegrootte, variatie en gemak. Inclusief kortingscode-tips.',
+    date: '2026-06-12',
+    readTime: 7,
+    category: 'Vergelijking',
+    faqs: [
+      {
+        question: 'Welke maaltijdbox is het goedkoopst?',
+        answer: 'Dinnerly is structureel de goedkoopste maaltijdbox in Nederland, vanaf €3,99 per portie. HelloFresh begint rond €5,50 per portie voor nieuwe klanten. Marley Spoon zit daar tussenin met starttarieven rond €4,99 per portie. Alle drie bieden flinke welkomstkorting voor nieuwe abonnees.',
+      },
+      {
+        question: 'Is een maaltijdbox goedkoper dan zelf boodschappen doen?',
+        answer: 'Nee, een maaltijdbox kost gemiddeld €5–8 per portie, terwijl je zelf koken voor €2–4 per portie uitkomt. Het voordeel van een maaltijdbox zit in tijdbesparing (geen recepten bedenken, geen restjes), vermindering van voedselverspilling en receptinspiratie. Financieel gezien ben je beter af met slim boodschappen doen bij supermarkten.',
+      },
+      {
+        question: 'Kan ik een maaltijdbox opzeggen?',
+        answer: 'Ja, HelloFresh, Marley Spoon en Dinnerly zijn allemaal opzegbaar. Je kunt een week overslaan of het abonnement pauzeren zonder kosten. Zeg op vóór de wekelijkse besteldeadline (meestal donderdag of vrijdag) om de volgende levering te stoppen.',
+      },
+      {
+        question: 'Welke maaltijdbox heeft de beste recepten?',
+        answer: 'Marley Spoon scoort het hoogst op receptkwaliteit en variatie, met meer dan 40 recepten per week waaronder speciale Hollandse en internationale gerechten. HelloFresh heeft consistente, bewezen recepten die ook voor beginners goed te bereiden zijn. Dinnerly heeft eenvoudigere recepten passend bij de lagere prijs.',
+      },
+    ],
+    content: `
+<p class="lead">Maaltijdboxen zijn in 2026 populairder dan ooit: je hoeft niet na te denken over recepten, krijgt verse ingrediënten thuisbezorgd en vermijdt voedselverspilling. Maar welke box is de beste keuze voor jou? We vergelijken HelloFresh, Marley Spoon en Dinnerly op prijs, kwaliteit en gemak.</p>
+
+<h2>Overzicht: de 3 grootste maaltijdboxen in Nederland</h2>
+<ul>
+  <li><strong>HelloFresh</strong> — marktleider, 35+ recepten per week, voor iedereen geschikt</li>
+  <li><strong>Marley Spoon</strong> — premium kwaliteit, 40+ recepten, sterkere nadruk op verse ingrediënten</li>
+  <li><strong>Dinnerly</strong> — goedkoopste optie, eenvoudigere recepten, ideaal voor budget-bewuste gezinnen</li>
+</ul>
+
+<h2>Prijsvergelijking maaltijdboxen (2026)</h2>
+<p>Prijzen per portie voor een box met 3 maaltijden voor 2 personen (6 porties):</p>
+<ul>
+  <li><strong>HelloFresh:</strong>
+    <ul>
+      <li>Normale prijs: ±€6,49–€7,49 per portie</li>
+      <li>Eerste box: sterk gereduceerd (welkomstkorting)</li>
+      <li>Bezorgkosten: €3,99 per levering</li>
+    </ul>
+  </li>
+  <li><strong>Marley Spoon:</strong>
+    <ul>
+      <li>Normale prijs: ±€5,99–€7,49 per portie</li>
+      <li>Eerste 4 weken: tot 40% korting voor nieuwe klanten</li>
+      <li>Bezorgkosten: €3,99 per levering</li>
+    </ul>
+  </li>
+  <li><strong>Dinnerly:</strong>
+    <ul>
+      <li>Normale prijs: ±€3,99–€5,49 per portie — goedkoopste van Nederland</li>
+      <li>Bezorgkosten: €3,99 per levering</li>
+    </ul>
+  </li>
+</ul>
+<p><strong>Vergelijking met zelf koken:</strong> voor dezelfde maaltijden bij Aldi of Lidl betaal je €2–4 per portie. Een maaltijdbox kost je gemiddeld €20–30 meer per week ten opzichte van slim supermarkt boodschappen doen.</p>
+
+<h2>HelloFresh Nederland: betrouwbaar en gevarieerd</h2>
+<p>HelloFresh is de marktleider in Nederland en dat is niet voor niets. Met meer dan 35 recepten per week heb je elke week voldoende keuze. De recepten zijn goed getest en ook voor beginners in de keuken eenvoudig te volgen.</p>
+<p><strong>Sterktes HelloFresh:</strong></p>
+<ul>
+  <li>Consistente kwaliteit — recepten zijn bewezen en duidelijk uitgelegd</li>
+  <li>Brede keuze: vegetarisch, gezond, gezin, snelklaar (20 minuten)</li>
+  <li>Flexibel: eenvoudig overslaan, pauzeren of opzeggen</li>
+  <li>Goede app voor receptenoverzicht en boodschappenlijst</li>
+</ul>
+<p><strong>Zwaktes HelloFresh:</strong></p>
+<ul>
+  <li>Hogere basisprijs dan concurrenten</li>
+  <li>Recepten soms wat voorspelbaar voor mensen die al goed kunnen koken</li>
+  <li>Kleine portiegrootten voor grote eters</li>
+</ul>
+<p><strong>Beste voor:</strong> kookstarters, drukke gezinnen, mensen die variatie willen zonder plannen.</p>
+
+<h2>Marley Spoon: premium kwaliteit, sterkste variatie</h2>
+<p>Marley Spoon onderscheidt zich met een breed menu van 40+ recepten per week, waaronder indrukwekkende internationale gerechten, speciale dieetopties en samengestelde menu's. De ingrediënten zijn merkbaar vers en van goede kwaliteit.</p>
+<p><strong>Sterktes Marley Spoon:</strong></p>
+<ul>
+  <li>Meest uitgebreid menu van alle Nederlandse maaltijdboxen</li>
+  <li>Betere ingrediëntkwaliteit dan gemiddeld — lokale en seizoensproducten</li>
+  <li>Uitstekende receptinstructies met duidelijke stap-voor-stap foto's</li>
+  <li>Speciale opties: plantaardig, premium vlees, familierecepten</li>
+  <li>Prijsgarantie: zelfde recept is altijd hetzelfde bedrag</li>
+</ul>
+<p><strong>Zwaktes Marley Spoon:</strong></p>
+<ul>
+  <li>Bereidingstijd is gemiddeld iets langer (30–45 minuten)</li>
+  <li>Minder geschikt voor absolute kookbeginnner</li>
+</ul>
+<p><strong>Beste voor:</strong> ervaren koks, mensen die kwaliteit boven prijs stellen, gezinnen met bijzondere dieetwensen.</p>
+<p>→ <a href="https://www.marleyspoon.nl" target="_blank" rel="noopener">Bekijk de actuele aanbiedingen van Marley Spoon</a></p>
+
+<h2>Dinnerly: de budgetkeuze</h2>
+<p>Dinnerly is bewust ontworpen als goedkope maaltijdbox: minder ingrediënten per recept, eenvoudigere bereidingen en digitale receptkaarten (geen papier). Dat maakt de prijs lager, maar ook de belevenis basischer.</p>
+<p><strong>Sterktes Dinnerly:</strong></p>
+<ul>
+  <li>Goedkoopste maaltijdbox in Nederland — tot €2 goedkoper per portie dan HelloFresh</li>
+  <li>Snelle bereiding: de meeste recepten zijn klaar in 20–30 minuten</li>
+  <li>Prima kwaliteit voor de prijs</li>
+</ul>
+<p><strong>Zwaktes Dinnerly:</strong></p>
+<ul>
+  <li>Minder keuze: ±20 recepten per week</li>
+  <li>Eenvoudigere ingrediënten — geen premium vlees of bijzondere producten</li>
+  <li>Recepten minder uitdagend voor gevorderde koks</li>
+</ul>
+<p><strong>Beste voor:</strong> mensen voor wie prijs de hoofdrol speelt en die geen behoefte hebben aan culinaire avonturen.</p>
+
+<h2>Maaltijdbox vs. supermarkt zelf koken: eerlijke vergelijking</h2>
+<p>Voor wie twijfelt tussen een maaltijdbox en slimme supermarktboodschappen:</p>
+<ul>
+  <li><strong>Prijs per portie zelf koken (Aldi/Lidl):</strong> €2–4 — duidelijk goedkoper</li>
+  <li><strong>Prijs per portie maaltijdbox:</strong> €4–8 — 2-3x duurder</li>
+  <li><strong>Tijdsbesparing maaltijdbox:</strong> geen recepten bedenken, boodschappenlijst al gedaan, minder verspilling</li>
+  <li><strong>Voordeel zelf koken:</strong> volledige controle over kwaliteit, grootte en smaken — en je leert beter koken</li>
+</ul>
+<p>De maaltijdbox betaalt zichzelf terug als je normaal gesproken impulsmatig boodschappen doet, veel restjes weggooit of regelmatig kant-en-klaarmaaltijden of afhaal koopt. Dan is een maaltijdbox goedkoper dan je denkt.</p>
+
+<h2>Welke maaltijdbox past bij jou?</h2>
+<ul>
+  <li><strong>Kookbeginner of druk gezin</strong> → <strong>HelloFresh</strong>: meest toegankelijk, breed vertrouwd</li>
+  <li><strong>Kookliefhebber, wil kwaliteit</strong> → <strong>Marley Spoon</strong>: beste receptvariatie, premium ingrediënten</li>
+  <li><strong>Budget is prioriteit</strong> → <strong>Dinnerly</strong>: structureel het goedkoopst</li>
+</ul>
+
+<h2>Tips voor de eerste maaltijdbox</h2>
+<ol>
+  <li><strong>Gebruik altijd de welkomstkorting</strong> — alle boxen geven nieuwe klanten 30-50% korting op de eerste weken</li>
+  <li><strong>Stel een herinnering in</strong> om de box op tijd te pauzeren als je op vakantie gaat</li>
+  <li><strong>Kies de kleinste box</strong> om te testen — je kunt altijd uitbreiden</li>
+  <li><strong>Vergelijk met afhaalmaaltijden</strong> — een maaltijdbox kost €5-7 per portie, veel minder dan een gemiddeld restaurant</li>
+</ol>
+
+<p>Wil je toch zelf boodschappen doen en de beste deals pakken? → <a href="/">Bekijk alle supermarkt-aanbiedingen op DealHunter4U</a> — dagelijks bijgewerkt van AH, Jumbo, Lidl, Aldi en meer.</p>
+    `.trim(),
+  },
+  {
     slug: 'wasmiddel-verzorging-aanbieding-2026',
     relatedMarkets: ['albert-heijn', 'jumbo', 'aldi', 'dirk'],
     title: 'Wasmiddel & verzorgingsproducten aanbieding: Ariel, Pampers en Douwe Egberts goedkoop',
@@ -2522,15 +2887,15 @@ export function getPostsByMarket(marketSlug: string): BlogPost[] {
 }
 
 const CATEGORY_POSTS_MAP: Record<string, string[]> = {
-  'vlees-vis':   ['vlees-aanbieding-supermarkt-gids', 'barbecue-aanbieding-supermarkt-2026'],
+  'vlees-vis':   ['vleeswaren-aanbieding-supermarkt', 'vlees-aanbieding-supermarkt-gids', 'barbecue-aanbieding-supermarkt-2026'],
   'snacks':      ['snacks-in-de-aanbieding-aldi-lidl', 'chips-snacks-koek-aanbieding-supermarkt'],
   'dranken':     ['dranken-aanbieding-supermarkt-2026'],
   'groente-fruit': ['groenten-fruit-goedkoop-supermarkt'],
   'zuivel':      ['zuivel-kaas-aanbieding-supermarkt-2026', 'ontbijt-producten-aanbieding-supermarkt'],
   'bakkerij':    ['ontbijt-producten-aanbieding-supermarkt'],
-  'verzorging':  ['wasmiddel-verzorging-aanbieding-2026'],
+  'verzorging':  ['baby-producten-aanbieding-supermarkt', 'wasmiddel-verzorging-aanbieding-2026'],
   'huishouden':  ['wasmiddel-verzorging-aanbieding-2026'],
-  'maaltijden':  ['boodschappen-week-menu-goedkoop', 'boodschappen-50-euro-per-week'],
+  'maaltijden':  ['maaltijdbox-vergelijken-2026', 'boodschappen-week-menu-goedkoop', 'boodschappen-50-euro-per-week'],
   'overig':      [],
 }
 
