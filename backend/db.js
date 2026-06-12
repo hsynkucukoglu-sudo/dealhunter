@@ -304,6 +304,7 @@ export async function getComparisonGroups() {
 export async function getProducts() {
   const { rows } = await pool.query(`
     SELECT * FROM products
+    WHERE "expiresAt" >= CURRENT_DATE
     ORDER BY ("imageUrl" IS NOT NULL AND "imageUrl" != '') DESC, discount DESC
   `)
   return rows.map(r => ({ ...r, isCampaign: Boolean(r.isCampaign) }))
