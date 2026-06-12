@@ -10,6 +10,7 @@ import { PriceHistoryProvider } from '@/context/PriceHistoryContext'
 import { SiteFooter } from '@/components/SiteFooter'
 import { InstallPrompt } from '@/components/InstallPrompt'
 import { SessionProvider } from 'next-auth/react'
+import { AuthEmailSync } from '@/components/AuthEmailSync'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -77,6 +78,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body suppressHydrationWarning>
         <SessionProvider>
+          <AuthEmailSync />
           <LanguageProvider>
             <PriceHistoryProvider>
             <FavoritesProvider>

@@ -67,6 +67,13 @@ export async function initDatabase() {
   `)
   await pool.query(`ALTER TABLE price_history ADD COLUMN IF NOT EXISTS unit_size REAL`)
   await pool.query(`ALTER TABLE price_history ADD COLUMN IF NOT EXISTS unit_type TEXT`)
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS user_emails (
+      user_id TEXT PRIMARY KEY,
+      email TEXT NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `)
   console.log('✅ PostgreSQL veritabanı başlatıldı')
 }
 
@@ -291,6 +298,38 @@ export async function clearAllProducts() {
 
 export async function clearProductsByMarket(market) {
   await pool.query('DELETE FROM products WHERE market = $1', [market])
+}
+
+export async function upsertUserEmail(userId, email) {
+  await pool.query(
+    `INSERT INTO user_emails (user_id, email)
+     VALUES ($1, $2)
+     ON CONFLICT (user_id) DO UPDATE SET email = EXCLUDED.email`,
+    [userId, email]
+  )
+}
+
+export async function getEmailsForFavoritedProducts() {
+  const { rows } = await pool.query(`
+    SELECT
+      ue.email,
+      array_agg(
+        json_build_object(
+          'name', p.name,
+          'market', p.market,
+          'discountedPrice', p."discountedPrice",
+          'originalPrice', p."originalPrice",
+          'discount', p.discount
+        )
+      ) AS products
+    FROM user_emails ue
+    JOIN user_favorites uf ON ue.user_id = uf.user_id
+    JOIN products p
+      ON lower(p.name) = lower(uf.product_name)
+     AND p.market = uf.product_market
+    GROUP BY ue.email
+  `)
+  return rows.map(r => ({ email: r.email, products: r.products }))
 }
 
 export async function getScraperStats() {

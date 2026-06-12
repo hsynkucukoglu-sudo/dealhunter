@@ -3,7 +3,8 @@ import cors from 'cors'
 import rateLimit from 'express-rate-limit'
 import { initDatabase } from './db.js'
 import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, updateProductCategory, clearAllProducts, clearProductsByMarket } from './models.js'
-import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, getMinPriceMap, getComparisonGroups, getScraperStats } from './db.js'
+import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, getMinPriceMap, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts } from './db.js'
+import { sendWeeklyNewsletter, sendWatchlistAlert } from './email.js'
 import { sendPushToAll, sendPushToSubscriptions } from './push.js'
 import { scrapeFlyerProducts } from './scraper/index.js'
 import { categorize } from './categorize.js'
@@ -52,7 +53,9 @@ const newsletterLimit = rateLimit({
 // ===== Admin Auth Middleware =====
 const requireAdmin = (req, res, next) => {
   const token = process.env.ADMIN_TOKEN
-  if (!token) return next() // no token configured → dev mode, allow
+  if (!token) {
+    return res.status(401).json({ error: 'Admin token yapılandırılmamış' })
+  }
   const auth = req.headers['authorization']
   if (!auth || auth !== `Bearer ${token}`) {
     return res.status(401).json({ error: 'Yetkisiz erişim' })
@@ -277,7 +280,7 @@ async function runScraperJob() {
     recordPriceHistory(createdProducts).catch(e => console.error('Fiyat geçmişi kayıt hatası:', e.message))
 
     // IndexNow ping — Bing/Yandex'e güncel URL'leri bildir
-    const INDEXNOW_KEY = 'dh4u-2026-x9k3m7p2'
+    const INDEXNOW_KEY = process.env.INDEXNOW_KEY || 'dh4u-2026-x9k3m7p2'
     const MARKET_SLUGS = {
       'Albert Heijn': 'albert-heijn', 'Jumbo': 'jumbo', 'Aldi': 'aldi',
       'Lidl': 'lidl', 'Dirk': 'dirk', 'Hoogvliet': 'hoogvliet', 'Vomar': 'vomar', 'DekaMarkt': 'dekamarkt',
@@ -340,6 +343,22 @@ async function runScraperJob() {
       }, targetedEndpoints).catch(e => console.error('Genel push hatası:', e.message))
     }
 
+    // Watchlist email alerts — favorisi eşleşen kullanıcılara email gönder
+    if (process.env.BREVO_API_KEY) {
+      getEmailsForFavoritedProducts()
+        .then(async rows => {
+          for (const { email, products } of rows) {
+            await sendWatchlistAlert(email, products).catch(e =>
+              console.error(`[Email] Watchlist alert hatası (${email}):`, e.message)
+            )
+          }
+          if (rows.length > 0) {
+            console.log(`📧 Watchlist email: ${rows.length} kullanıcıya gönderildi`)
+          }
+        })
+        .catch(e => console.error('[Email] Watchlist email sorgulama hatası:', e.message))
+    }
+
     return createdProducts
   } else {
     console.log('❌ Yeni ürün bulunamadı, tablo güncellenmedi.')
@@ -350,12 +369,26 @@ async function runScraperJob() {
   }
 }
 
-// "Her Pazartesi sabah 08:00'de" otomatik çalışacak Cron Job
+// Pazartesi 08:00 — scraper
 cron.schedule('0 8 * * 1', async () => {
   try {
     await runScraperJob()
   } catch (error) {
     console.error('⏰ Scraper Zamanlama Hatası:', error)
+  }
+})
+
+// Pazartesi 09:00 — haftalık bülten (scraper bittikten 1 saat sonra)
+cron.schedule('0 9 * * 1', async () => {
+  try {
+    const allProducts = await getProducts()
+    const topDeals = allProducts
+      .filter(p => p.discount >= 20)
+      .sort((a, b) => b.discount - a.discount)
+      .slice(0, 10)
+    await sendWeeklyNewsletter(topDeals)
+  } catch (error) {
+    console.error('⏰ Haftalık Bülten Hatası:', error)
   }
 })
 
@@ -446,6 +479,34 @@ app.get('/health', (req, res) => {
 app.get('/api/health/scraper', asyncHandler(async (req, res) => {
   const stats = await getScraperStats()
   res.json({ ...stats, scraperRunning })
+}))
+
+// POST /api/user/email - Store user email after OAuth login (for watchlist alerts)
+app.post('/api/user/email', asyncHandler(async (req, res) => {
+  const { userId, email } = req.body
+  if (!userId || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ error: 'userId en geldig email zijn verplicht' })
+  }
+  await upsertUserEmail(userId, email)
+  res.json({ ok: true })
+}))
+
+// GET /api/newsletter/unsubscribe - Remove contact from Brevo list
+app.get('/api/newsletter/unsubscribe', asyncHandler(async (req, res) => {
+  const { email } = req.query
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).send('Ongeldig e-mailadres')
+  }
+  const apiKey = process.env.BREVO_API_KEY
+  const listId = parseInt(process.env.BREVO_LIST_ID || '0', 10)
+  if (apiKey && listId) {
+    await fetch(`https://api.brevo.com/v3/contacts/lists/${listId}/contacts/remove`, {
+      method: 'POST',
+      headers: { 'api-key': apiKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ emails: [email] }),
+    }).catch(() => {})
+  }
+  res.redirect('https://www.dealhunter4u.nl?unsubscribed=1')
 }))
 
 app.post('/api/newsletter/subscribe', newsletterLimit, asyncHandler(async (req, res) => {
