@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getPost, getAllPosts, getRelatedPosts } from '@/lib/posts'
+import { getCategoryStyle } from '@/lib/postImages'
 import { buildBreadcrumbSchema, buildFaqSchema } from '@/lib/schema'
 import { MARKETS } from '@/lib/types'
 import { AdBanner } from '@/components/AdBanner'
@@ -49,6 +50,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   if (!post) notFound()
 
   const relatedPosts = getRelatedPosts(post)
+  const catStyle = getCategoryStyle(post.category)
 
   const breadcrumbSchema = buildBreadcrumbSchema([
     { name: 'Home', url: '/' },
@@ -91,9 +93,41 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       </nav>
 
       <main style={{ maxWidth: 720, margin: '0 auto', padding: '48px 24px 80px' }}>
+
+        {/* Hero banner */}
+        <div style={{
+          borderRadius: 24,
+          overflow: 'hidden',
+          marginBottom: 32,
+          height: 200,
+          background: catStyle.bg,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'relative',
+        }}>
+          <div style={{
+            position: 'absolute', top: -60, right: -60,
+            width: 280, height: 280, borderRadius: '50%',
+            background: catStyle.accent, opacity: 0.08,
+          }} />
+          <div style={{
+            position: 'absolute', bottom: -40, left: -30,
+            width: 180, height: 180, borderRadius: '50%',
+            background: catStyle.accent, opacity: 0.06,
+          }} />
+          <div style={{
+            position: 'absolute', left: 0, top: 0, bottom: 0,
+            width: 6, background: catStyle.accent,
+          }} />
+          <span style={{ fontSize: 72, lineHeight: 1, position: 'relative', zIndex: 1 }}>
+            {catStyle.emoji}
+          </span>
+        </div>
+
         {/* Meta */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-          <span style={{ background: '#E33D26', color: 'white', fontSize: 11, fontWeight: 900, padding: '3px 10px', borderRadius: 20, letterSpacing: 2, textTransform: 'uppercase' }}>
+          <span style={{ background: catStyle.accent, color: 'white', fontSize: 11, fontWeight: 900, padding: '3px 10px', borderRadius: 20, letterSpacing: 2, textTransform: 'uppercase' }}>
             {post.category}
           </span>
           <span style={{ color: '#9C9389', fontSize: 13 }}>

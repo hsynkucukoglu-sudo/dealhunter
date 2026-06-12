@@ -74,7 +74,7 @@ export default function BlogPage() {
           </div>
         </Link>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 24 }}>
           {posts.map(post => (
             <BlogCard
               key={post.slug}
