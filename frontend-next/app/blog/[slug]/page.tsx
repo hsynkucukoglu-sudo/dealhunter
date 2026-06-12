@@ -147,6 +147,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           {post.title}
         </h1>
 
+        {/* Reklam — başlık altı, okuyucu henüz engaged */}
+        <AdBanner slot="7882410354" format="auto" className="mb-6" minHeight={100} />
+
         {/* Article body */}
         <div
           style={{ background: 'white', borderRadius: 20, padding: '36px 40px', boxShadow: '0 4px 0 #DDD0C4', border: '1px solid rgba(201,193,182,0.3)' }}
