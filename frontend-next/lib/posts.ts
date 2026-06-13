@@ -150,8 +150,8 @@ export const POSTS: BlogPost[] = [
   {
     slug: 'albert-heijn-vs-jumbo-vs-lidl-wie-is-goedkoper',
     relatedMarkets: ['albert-heijn', 'jumbo', 'lidl'],
-    title: 'AH, Jumbo of Lidl: Welke Supermarkt is Goedkoopst? (2026 Test)',
-    description: 'Jumbo wint op basisprijs, maar AH slaat terug met diepe bonusacties. Wij vergeleken 200+ producten — ontdek welke supermarkt jou tot €400/jaar bespaart.',
+    title: 'Is Jumbo Goedkoper dan AH? Jumbo vs Albert Heijn & Lidl Vergelijking 2026',
+    description: 'Is jumbo goedkoper dan AH? Jumbo wint op basisprijs, maar AH slaat terug met bonusacties. Is Lidl goedkoper dan Jumbo en AH? Ja — Lidl is structureel 15-25% goedkoper. Vergelijking van 200+ producten.',
     date: '2026-05-05',
     readTime: 7,
     category: 'Vergelijking',
@@ -165,8 +165,12 @@ export const POSTS: BlogPost[] = [
         answer: 'Lidl is over het algemeen het goedkoopst voor basisproducten. Jumbo heeft de laagste basisprijzen van de grote supermarkten. Albert Heijn wint op bonusaanbiedingen. Op DealHunter4U vergelijk je actuele deals van alle drie supermarkten.',
       },
       {
+        question: 'Is Lidl goedkoper dan AH?',
+        answer: 'Ja, Lidl is gemiddeld 15–25% goedkoper dan Albert Heijn op basisprijzen. Op vers vlees, groenten en zuivel is het verschil het grootst. Lidl heeft een kleiner assortiment, maar op de producten die Lidl voert is het structureel goedkoper dan AH.',
+      },
+      {
         question: 'Heeft Lidl betere aanbiedingen dan Jumbo?',
-        answer: 'Lidl heeft vaak scherpe weekdeals op vlees, groente en non-food artikelen. Jumbo biedt meer variatie in aanbiedingen en persoonlijke kortingen via de app. Voor budgetboodschappen wint Lidl; voor variatie en bonusdeals wint Jumbo.',
+        answer: 'Lidl is op basisprijzen goedkoper dan Jumbo — gemiddeld 10–20%. Jumbo biedt meer A-merken en weekaanbiedingen met persoonlijke kortingen via de app. Voor budgetboodschappen wint Lidl; voor variatie en bonusdeals wint Jumbo.',
       },
       {
         question: 'Hoeveel kan ik besparen door supermarkten te vergelijken?',
@@ -254,9 +258,12 @@ export const POSTS: BlogPost[] = [
 </ul>
 <p>Op huismerken is het gelijkspel. Kies op basis van wat er in de buurt is.</p>
 
-<h2>En Lidl dan? Wie is het goedkoopst: AH, Jumbo of Lidl?</h2>
-<p>Als je Lidl meeneemt in de vergelijking, verandert het plaatje: <strong>Lidl is structureel de goedkoopste van de drie</strong> op vers vlees, groenten en huismerken — gemiddeld 15–25% goedkoper dan AH of Jumbo. Het assortiment is kleiner, maar op basisproducten verslaat Lidl beide grote supermarkten.</p>
-<p>Volgorde van goedkoopst naar duurste: <strong>Lidl → Jumbo → Albert Heijn</strong> (op basisprijzen).</p>
+<h2>Is Lidl goedkoper dan AH?</h2>
+<p><strong>Ja, Lidl is goedkoper dan Albert Heijn</strong> — gemiddeld 15–25% op basisprijzen. Op vers vlees, groenten en zuivel is het verschil het grootst. Waar AH voor kipfilet €5,49 rekent, betaal je bij Lidl vaak €3,99–€4,49. Het enige nadeel: Lidl heeft een kleiner assortiment en voert minder A-merken dan AH. Maar op de producten die Lidl wél heeft, is <strong>Lidl goedkoper dan AH</strong> in bijna alle categorieën.</p>
+<h2>Is Lidl goedkoper dan Jumbo?</h2>
+<p>Ook hier wint Lidl: <strong>Lidl is goedkoper dan Jumbo</strong> op vers, groenten en huismerken — gemiddeld 10–20%. Jumbo heeft hogere basisprijzen dan Lidl, maar biedt meer A-merken en een bredere keuze. De vergelijking <strong>Lidl Jumbo</strong> hangt af van wat je koopt: op basisproducten wint Lidl, op A-merken en weekaanbiedingen is Jumbo concurrerend.</p>
+<h2>Lidl vs Albert Heijn vs Jumbo: de ranglijst</h2>
+<p>Van goedkoopst naar duurste op basisprijzen: <strong>Lidl → Jumbo → Albert Heijn</strong>. Maar de beste deal hangt af van de weekaanbiedingen. Albert Heijn wint soms met diepe 1+1 acties, Jumbo met weekdeals. Vergelijk alle actuele deals op DealHunter voor de slimste keuze deze week.</p>
 
 <h2>Conclusie: wie is goedkoper, AH of Jumbo?</h2>
 <p>Voor dagelijkse boodschappen zonder kortingen: <strong>Jumbo is goedkoper</strong>. Voor wie actief gebruik maakt van bonusaanbiedingen en de AH-app: <strong>Albert Heijn kan goedkoper uitpakken</strong> — zeker bij grote 1+1 acties op houdbare producten.</p>
