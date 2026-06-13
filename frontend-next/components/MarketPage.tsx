@@ -94,7 +94,9 @@ export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-headline font-bold" style={{ color: '#1A1A1A' }}>
-                {market.name} Acties & Aanbiedingen
+                {market.ctaTitle
+                  ? market.ctaTitle.split(' | ')[0].replace(' Deze Week', '')
+                  : `${market.name} Aanbiedingen`}
               </h1>
               <p className="text-sm mt-1" style={{ color: '#8C8478' }}>Deze week · {filtered.length} aanbiedingen</p>
             </div>
