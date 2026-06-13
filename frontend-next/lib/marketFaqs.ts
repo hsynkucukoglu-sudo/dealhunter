@@ -32,6 +32,10 @@ export const MARKET_FAQS: Record<string, FAQ[]> = {
   ],
   'jumbo': [
     {
+      question: 'Waar vind ik alle aanbiedingen Jumbo van deze week?',
+      answer: 'Alle aanbiedingen Jumbo van deze week vind je overzichtelijk op DealHunter. We verzamelen dagelijks alle Jumbo aanbiedingen — van 1+1 gratis en weekdeals tot procentuele kortingen. Zo zie je in één oogopslag welke jumbo aanbieding nu geldig is, zonder zelf de folder te hoeven bladeren.',
+    },
+    {
       question: 'Wanneer beginnen de Jumbo weekaanbiedingen?',
       answer: 'Jumbo weekaanbiedingen starten elke woensdag en zijn geldig t/m dinsdag. Zo heeft Jumbo altijd verse, actuele deals. DealHunter werkt de Jumbo aanbiedingen wekelijks bij zodat je de beste weekdeals direct kunt vergelijken en besparen op je boodschappen.',
     },
@@ -49,6 +53,10 @@ export const MARKET_FAQS: Record<string, FAQ[]> = {
     },
   ],
   'lidl': [
+    {
+      question: 'Waar vind ik Lidl deals en aanbiedingen van deze week?',
+      answer: 'Alle Lidl deals en aanbiedingen van deze week vind je op DealHunter. We verzamelen dagelijks alle actuele Lidl kortingen — weekdeals, verse producten en non-food. Zo check je snel welke deals lidl nu biedt, zonder de folder te bladeren.',
+    },
     {
       question: 'Wanneer wisselen de Lidl aanbiedingen?',
       answer: 'Lidl heeft twee wisselingsmomenten per week: maandag starten de nieuwe weekaanbiedingen en donderdag komen er verse "Vers van de Week" deals bij, voornamelijk op groente, fruit en vlees. DealHunter werkt de Lidl aanbiedingen wekelijks bij zodat je altijd de actuele folder en kortingen kunt bekijken.',
@@ -72,6 +80,10 @@ export const MARKET_FAQS: Record<string, FAQ[]> = {
   ],
   'dirk': [
     {
+      question: 'Waar vind ik aanbiedingen Dirk van den Broek?',
+      answer: 'Alle aanbiedingen Dirk van den Broek vind je dagelijks bijgewerkt op DealHunter. We verzamelen elke aanbieding Dirk van den Broek — van vleesdeals en groenteacties tot dranken en huishoudproducten. Geen folder bladeren nodig: de Dirk folder is hier direct doorzoekbaar.',
+    },
+    {
       question: 'Wanneer beginnen de Dirk aanbiedingen?',
       answer: 'Dirk van den Broek aanbiedingen starten elke zondag en zijn geldig t/m zaterdag. Zo heb je elke week nieuwe deals op groente, fruit, vlees, dranken en meer. DealHunter werkt de Dirk acties wekelijks bij, zodat je altijd de meest actuele folder en kortingen kunt bekijken.',
     },
@@ -93,6 +105,10 @@ export const MARKET_FAQS: Record<string, FAQ[]> = {
     },
   ],
   'aldi': [
+    {
+      question: 'Waar vind ik aanbiedingen Aldi en Aldi deals?',
+      answer: 'Alle aanbiedingen Aldi en actuele Aldi deals vind je op DealHunter. We updaten dagelijks alle Aldi food-aanbiedingen — van groente en fruit tot vlees en zuivel. Zo zie je in één oogopslag welke Aldi deals nu geldig zijn zonder de app of folder te openen.',
+    },
     {
       question: 'Wanneer gaan de nieuwe Aldi aanbiedingen in?',
       answer: 'De Aldi weekaanbiedingen starten elke maandag en lopen t/m zondag. Aldi biedt zowel food als non-food aanbiedingen. Non-food deals (kleding, elektronica, tuin) zijn vaak een week geldig en op = op. DealHunter werkt de actuele Aldi kortingen wekelijks bij.',
@@ -139,6 +155,10 @@ export const MARKET_FAQS: Record<string, FAQ[]> = {
     },
   ],
   'dekamarkt': [
+    {
+      question: 'Waar vind ik aanbiedingen DekaMarkt en actuele aanbieding deka?',
+      answer: 'Alle aanbiedingen DekaMarkt vind je dagelijks bijgewerkt op DealHunter. We verzamelen elke actuele aanbieding DekaMarkt — combi-deals, 1+1 gratis en weekacties op verse producten. Zo check je snel de DekaMarkt aanbiedingen zonder folder bladeren.',
+    },
     {
       question: 'Wanneer worden DekaMarkt aanbiedingen bijgewerkt?',
       answer: 'DekaMarkt wisselt zijn weekaanbiedingen elke week. De actuele deals zijn te vinden op de aanbiedingenpagina van DekaMarkt. Op DealHunter worden alle DekaMarkt deals dagelijks bijgewerkt, zodat je altijd de nieuwste kortingen en acties in één overzicht ziet.',
