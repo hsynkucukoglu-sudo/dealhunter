@@ -51,9 +51,9 @@ export const MARKETS = [
     slug: 'albert-heijn',
     name: 'Albert Heijn',
     color: '#00A0E2',
-    ctaTitle: 'Bonus Aanbiedingen Deze Week: AH 1+1 Gratis & Halve Prijs (Actueel)',
-    description: 'Alle AH bonus aanbiedingen deze week op één pagina — 1+1 gratis, 2e halve prijs en tot 50% korting. Bonus aanbiedingen dagelijks bijgewerkt, geen app nodig. Direct vergelijken met Jumbo en Lidl.',
-    keywords: 'bonus aanbiedingen, bonus aanbiedingen deze week, ah aanbiedingen, albert heijn bonus aanbiedingen, ah aanbieding, albert heijn bonus, albert heijn aanbiedingen, AH acties, ah bonus deze week, 1+1 gratis ah, a h aanbiedingen',
+    ctaTitle: 'AH Bonus Aanbiedingen | Albert Heijn Deals & 1+1 Gratis Acties Deze Week',
+    description: 'Alle AH aanbiedingen en bonus deals deze week op één plek — 1+1 gratis, 2e halve prijs en tot 50% korting. Aanbieding Albert Heijn dagelijks bijgewerkt, geen app nodig. Direct vergelijken met Jumbo en Lidl.',
+    keywords: 'ah aanbiedingen, bonus aanbiedingen, bonus aanbiedingen deze week, aanbiedingen ah, ah aanbieding, albert heijn bonus aanbiedingen, albert heijn aanbieding, albert heijn aanbiedingen, albert heijn bonus, AH acties, ah bonus deze week, 1+1 gratis ah, a h aanbiedingen',
   },
   {
     slug: 'jumbo',

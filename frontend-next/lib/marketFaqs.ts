@@ -6,6 +6,10 @@ export interface FAQ {
 export const MARKET_FAQS: Record<string, FAQ[]> = {
   'albert-heijn': [
     {
+      question: 'Waar vind ik alle actuele AH aanbiedingen?',
+      answer: 'Alle actuele AH aanbiedingen en bonus deals vind je overzichtelijk op DealHunter. We verzamelen dagelijks alle Albert Heijn aanbiedingen — van 1+1 gratis en 2e halve prijs tot procentuele kortingen. Zo zie je in één oogopslag welke aanbieding bij AH nu geldig is, zonder zelf de folder te hoeven bladeren.',
+    },
+    {
       question: 'Wanneer worden de AH Bonus aanbiedingen bijgewerkt?',
       answer: 'De Albert Heijn Bonus aanbiedingen wisselen elke woensdag. De nieuwe weekdeals zijn vanaf woensdag geldig en lopen tot en met dinsdag. Op DealHunter worden alle AH aanbiedingen dagelijks bijgewerkt, zodat je altijd de actuele Bonus deals ziet en maximaal kunt besparen op je boodschappen.',
     },
