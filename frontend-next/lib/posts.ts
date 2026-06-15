@@ -2700,7 +2700,7 @@ export const POSTS: BlogPost[] = [
   <li>Minder geschikt voor absolute kookbeginnner</li>
 </ul>
 <p><strong>Beste voor:</strong> ervaren koks, mensen die kwaliteit boven prijs stellen, gezinnen met bijzondere dieetwensen.</p>
-<p>→ <a href="https://www.marleyspoon.nl" target="_blank" rel="noopener">Bekijk de actuele aanbiedingen van Marley Spoon</a></p>
+<p>→ <a href="https://www.awin1.com/cread.php?s=4641161&v=8591&q=319913&r=2932569" target="_blank" rel="sponsored noopener">Bekijk de actuele aanbiedingen van Marley Spoon</a></p>
 
 <h2>Dinnerly: de budgetkeuze</h2>
 <p>Dinnerly is bewust ontworpen als goedkope maaltijdbox: minder ingrediënten per recept, eenvoudigere bereidingen en digitale receptkaarten (geen papier). Dat maakt de prijs lager, maar ook de belevenis basischer.</p>
