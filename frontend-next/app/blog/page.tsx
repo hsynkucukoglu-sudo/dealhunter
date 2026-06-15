@@ -10,10 +10,13 @@ export const metadata: Metadata = {
   title: 'Bespaartips & Supermarkt Vergelijkingen — Bespaar €150/jaar | DealHunter4U Blog',
   description: 'Ontdek hoe je €150+ per jaar bespaart op boodschappen. AH vs Jumbo vs Lidl vergelijkingen, weekmenu tips en de beste supermarktdeals van Nederland.',
   keywords: 'bespaartips boodschappen, supermarkt vergelijken, goedkoop boodschappen doen, albert heijn jumbo lidl vergelijking, supermarkt aanbiedingen 2026',
+  alternates: { canonical: 'https://www.dealhunter4u.nl/blog' },
   openGraph: {
     title: 'Blog — Bespaartips & Supermarkt Aanbiedingen',
     description: 'Tips om te besparen op boodschappen en supermarkt vergelijkingen.',
-    url: 'https://dealhunter4u.nl/blog',
+    url: 'https://www.dealhunter4u.nl/blog',
+    siteName: 'DealHunter',
+    locale: 'nl_NL',
     type: 'website',
   },
 }

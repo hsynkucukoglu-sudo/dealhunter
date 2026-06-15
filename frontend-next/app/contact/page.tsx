@@ -4,6 +4,7 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'Contact — DealHunter',
   description: 'Neem contact op met DealHunter4U.',
+  alternates: { canonical: 'https://www.dealhunter4u.nl/contact' },
 }
 
 export default function ContactPage() {

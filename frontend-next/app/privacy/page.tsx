@@ -4,6 +4,7 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'Privacybeleid — DealHunter',
   description: 'Lees ons privacybeleid en hoe wij omgaan met uw gegevens.',
+  alternates: { canonical: 'https://www.dealhunter4u.nl/privacy' },
 }
 
 export default function PrivacyPage() {
