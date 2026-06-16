@@ -9,6 +9,7 @@ import { FavoritesProvider } from '@/context/FavoritesContext'
 import { PriceHistoryProvider } from '@/context/PriceHistoryContext'
 import { SiteFooter } from '@/components/SiteFooter'
 import { InstallPrompt } from '@/components/InstallPrompt'
+import { AiBoodschappenAssistent } from '@/components/AiBoodschappenAssistent'
 import { SessionProvider } from 'next-auth/react'
 import { AuthEmailSync } from '@/components/AuthEmailSync'
 import './globals.css'
@@ -88,6 +89,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <CookieBanner />
                 <AdSenseScript />
                 <InstallPrompt />
+                <AiBoodschappenAssistent />
               </ShoppingListProvider>
             </FavoritesProvider>
             </PriceHistoryProvider>

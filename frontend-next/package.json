@@ -8,6 +8,7 @@
     "start": "next start -p $PORT"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.104.2",
     "@capacitor/android": "^8.4.0",
     "@capacitor/app": "^8.1.0",
     "@capacitor/browser": "^8.0.3",
