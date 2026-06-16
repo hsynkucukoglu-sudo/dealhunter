@@ -1,4 +1,9 @@
 import type { Product } from './types'
+import { MARKETS } from './types'
+
+const MARKET_SLUG: Record<string, string> = Object.fromEntries(
+  MARKETS.map(m => [m.name, m.slug])
+)
 
 const SITE_URL = 'https://www.dealhunter4u.nl'
 
@@ -106,6 +111,25 @@ export function buildProductListSchema(
       '@type': 'ListItem',
       position: i + 1,
       item: buildSingleProductSchema(p, marketSlug),
+    })),
+  }
+}
+
+export function buildHomeDealsSchema(products: Product[]) {
+  const week = getISOWeek(new Date())
+  const valid = products.filter(
+    p => p.originalPrice > p.discountedPrice && p.discountedPrice > 0 && p.originalPrice > 0
+  )
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `Beste supermarkt aanbiedingen week ${week} — Top deals Nederland`,
+    url: SITE_URL,
+    numberOfItems: Math.min(valid.length, 20),
+    itemListElement: valid.slice(0, 20).map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: buildSingleProductSchema(p, MARKET_SLUG[p.market] ?? p.market.toLowerCase().replace(/\s+/g, '-')),
     })),
   }
 }

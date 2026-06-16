@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { getProducts } from '@/lib/api'
-import { buildHomePageSchema, buildFaqSchema } from '@/lib/schema'
+import { buildHomePageSchema, buildFaqSchema, buildHomeDealsSchema } from '@/lib/schema'
 import { ProductsPage } from '@/components/ProductsPage'
 
 const HOME_FAQS = [
@@ -44,6 +44,9 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
     .sort((a, b) => ((b.originalPrice - b.discountedPrice) / b.originalPrice) - ((a.originalPrice - a.discountedPrice) / a.originalPrice))
     .slice(0, 60)
 
+  // Top 20 ürün — Google rich snippet (ItemList + Product + Offer)
+  const homeDealsSchema = buildHomeDealsSchema(initialProducts)
+
   return (
     <>
       <script
@@ -53,6 +56,10 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeDealsSchema) }}
       />
       <ProductsPage initialProducts={initialProducts} initialSearch={q ?? ''} />
     </>
