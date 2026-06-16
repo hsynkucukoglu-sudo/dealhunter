@@ -200,14 +200,6 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
     filteredProducts.reduce((sum, p) => sum + (p.originalPrice > p.discountedPrice ? p.originalPrice - p.discountedPrice : 0), 0)
   , [filteredProducts])
 
-  const expiringSoon = useMemo(() =>
-    products.filter(p => {
-      if (!p.expiresAt) return false
-      const diff = Math.ceil((new Date(p.expiresAt).getTime() - Date.now()) / 86400000)
-      return diff >= 0 && diff <= 2
-    }).slice(0, 8)
-  , [products])
-
   const topDeals = useMemo(() => {
     // Strip size/count tokens to get a base product name for dedup
     const baseName = (name: string) =>
@@ -255,10 +247,28 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
       }
     }
 
-    return [...byBase.values()]
-      .sort((a, b) => discPct(b) - discPct(a))
-      .slice(0, 5)
+    // Sort by discount %, then take max 1 per market for diversity
+    const sorted = [...byBase.values()].sort((a, b) => discPct(b) - discPct(a))
+    const seenMarkets = new Set<string>()
+    const result: typeof products[number][] = []
+    for (const p of sorted) {
+      if (seenMarkets.has(p.market)) continue
+      seenMarkets.add(p.market)
+      result.push(p)
+      if (result.length === 5) break
+    }
+    return result
   }, [products])
+
+  const expiringSoon = useMemo(() => {
+    const topIds = new Set(topDeals.map(p => p.id))
+    return products.filter(p => {
+      if (topIds.has(p.id)) return false
+      if (!p.expiresAt) return false
+      const diff = Math.ceil((new Date(p.expiresAt).getTime() - Date.now()) / 86400000)
+      return diff >= 0 && diff <= 2
+    }).slice(0, 8)
+  }, [products, topDeals])
 
   const comparisonGroups = useMemo(() => buildComparisonGroups(products), [products])
 
@@ -487,7 +497,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             </div>
             <div className="w-px h-5 flex-none" style={{ background: '#C9C1B6' }} />
             {comparisonGroups.map((group, gi) => {
-              const cheapest = group.cheapest
+              const cheapest = group.products.reduce((a, b) => a.discountedPrice < b.discountedPrice ? a : b)
               const mostExpensive = group.products.reduce((a, b) => a.discountedPrice > b.discountedPrice ? a : b)
               const saving = mostExpensive.discountedPrice - cheapest.discountedPrice
               return (
