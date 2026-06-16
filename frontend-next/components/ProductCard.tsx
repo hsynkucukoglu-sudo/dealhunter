@@ -100,7 +100,7 @@ export function ProductCard({ product }: { product: Product }) {
         )}
         <button
           onClick={(e) => { e.stopPropagation(); addToCart(product) }}
-          className="basket-slide"
+          className="basket-slide hidden md:flex"
           aria-label={`${product.name} winkelmandje toevoegen`}
         >
           <span className="material-symbols-outlined material-filled" aria-hidden="true">shopping_basket</span>

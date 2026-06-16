@@ -6,8 +6,8 @@ export type Lang = 'nl' | 'en' | 'tr'
 export const translations = {
   nl: {
     weeklyDeals: 'Wekelijkse Aanbiedingen',
-    heroTitle1: "NEDERLAND'S",
-    heroTitle2: 'BESTE PRIJZEN',
+    heroTitle1: 'Supermarkt aanbiedingen',
+    heroTitle2: 'vergelijken',
     searchPlaceholder: 'Zoek product of supermarkt...',
     scanBtn: 'Ontdek Aanbiedingen',
     scanning: 'Bezig...',
@@ -56,8 +56,8 @@ export const translations = {
   },
   en: {
     weeklyDeals: 'Weekly Deals',
-    heroTitle1: "NETHERLANDS'",
-    heroTitle2: 'BEST PRICES',
+    heroTitle1: 'Compare supermarket',
+    heroTitle2: 'deals today',
     searchPlaceholder: 'Search product or supermarket...',
     scanBtn: 'Discover Deals',
     scanning: 'Scanning...',
@@ -106,8 +106,8 @@ export const translations = {
   },
   tr: {
     weeklyDeals: 'Haftalık Fırsatlar',
-    heroTitle1: "HOLLANDA'NIN",
-    heroTitle2: 'EN İYİ FİYATLARI',
+    heroTitle1: 'Süpermarket fırsatlarını',
+    heroTitle2: 'karşılaştır',
     searchPlaceholder: 'Ürün veya market ara...',
     scanBtn: 'Fırsatları Keşfet',
     scanning: 'Taranıyor…',

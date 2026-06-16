@@ -647,7 +647,6 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
               </h1>
               <div className="flex flex-wrap items-center gap-2 mt-2">
                 {[
-                  { icon: 'storefront', text: '8 supermarkten' },
                   { icon: 'update', text: 'Dagelijks bijgewerkt' },
                   { icon: 'euro', text: 'Tot 70% besparen' },
                 ].map(b => (
@@ -655,6 +654,19 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                     <span className="material-symbols-outlined text-sm" style={{ color: '#E33D26' }}>{b.icon}</span>
                     {b.text}
                   </div>
+                ))}
+              </div>
+              <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                {(['Albert Heijn', 'Jumbo', 'Lidl', 'Aldi', 'Dirk', 'Hoogvliet', 'Vomar', 'DekaMarkt'] as const).map(m => (
+                  <button
+                    key={m}
+                    onClick={() => startTransition(() => { setSelectedMarket(m); setShowCampaignsOnly(false); setSelectedCategory('all') })}
+                    className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold transition-all hover:opacity-80"
+                    style={{ background: 'rgba(255,255,255,0.7)', border: `1.5px solid ${MARKET_COLORS[m] || '#C9C1B6'}`, color: '#1A1A1A' }}
+                  >
+                    <div className="w-2 h-2 rounded-full flex-none" style={{ background: MARKET_COLORS[m] || '#8C8478' }} />
+                    {m}
+                  </button>
                 ))}
               </div>
             </div>
