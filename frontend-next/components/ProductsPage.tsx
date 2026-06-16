@@ -40,7 +40,9 @@ export function ProductsPage({ initialProducts, initialSearch = '' }: { initialP
   const [watchlistToast, setWatchlistToast] = useState<string | null>(null)
   const [canInstall, setCanInstall] = useState(false)
   const [showSearchOverlay, setShowSearchOverlay] = useState(false)
+  const [showSuggestions, setShowSuggestions] = useState(false)
 const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promise<{ outcome: string }> } | null>(null)
+  const heroSearchRef = useRef<HTMLDivElement>(null)
 
   const [isPending, startTransition] = useTransition()
 
@@ -61,6 +63,16 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
     const handleScroll = () => setNavScrolled(window.scrollY > 60)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  useEffect(() => {
+    const handleOutside = (e: MouseEvent) => {
+      if (heroSearchRef.current && !heroSearchRef.current.contains(e.target as Node)) {
+        setShowSuggestions(false)
+      }
+    }
+    document.addEventListener('mousedown', handleOutside)
+    return () => document.removeEventListener('mousedown', handleOutside)
   }, [])
 
   // SSR'da sadece top 60 ürün gelir; mount sonrası tüm ürünleri çek
@@ -110,6 +122,11 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
     ignoreLocation: true,
     minMatchCharLength: 2,
   }), [products])
+
+  const autocompleteSuggestions = useMemo(() => {
+    if (searchTerm.length < 2) return []
+    return fuse.search(searchTerm).slice(0, 5).map(r => r.item)
+  }, [searchTerm, fuse])
 
   const handleInstallPWA = async () => {
     const prompt = deferredPromptRef.current
@@ -670,23 +687,60 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                 ))}
               </div>
             </div>
-            <div className="relative max-w-xs w-full sm:w-72 flex-none">
+            <div ref={heroSearchRef} className="relative max-w-xs w-full sm:w-72 flex-none">
               <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-lg" style={{ color: '#8C8478' }}>search</span>
               <input
                 type="text"
                 placeholder={t.searchPlaceholder}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                onFocus={() => setShowSuggestions(true)}
                 className="w-full pl-9 pr-8 py-2.5 rounded-full text-sm border focus:outline-none focus:ring-2 focus:ring-[#E33D26]"
                 style={{ background: 'rgba(255,255,255,0.9)', border: '1px solid rgba(201,193,182,0.6)', color: '#1A1A1A' }}
               />
               {searchTerm && (
                 <button
-                  onClick={() => setSearchTerm('')}
+                  onClick={() => { setSearchTerm(''); setShowSuggestions(false) }}
                   className="absolute right-3 top-1/2 -translate-y-1/2"
                 >
                   <span className="material-symbols-outlined text-base" style={{ color: '#8C8478' }}>close</span>
                 </button>
+              )}
+
+              {/* AUTOCOMPLETE DROPDOWN — desktop only, mobile uses overlay */}
+              {showSuggestions && autocompleteSuggestions.length > 0 && (
+                <div
+                  className="absolute top-full left-0 right-0 mt-2 rounded-2xl overflow-hidden z-50 hidden md:block"
+                  style={{ background: 'white', border: '1px solid rgba(201,193,182,0.4)', boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}
+                >
+                  {autocompleteSuggestions.map((p, i) => (
+                    <button
+                      key={p.id}
+                      onMouseDown={() => { setSearchTerm(p.name); setShowSuggestions(false) }}
+                      className="w-full flex items-center gap-3 px-4 py-3 text-left transition-colors"
+                      style={{
+                        borderTop: i > 0 ? '1px solid rgba(201,193,182,0.25)' : undefined,
+                        background: 'white',
+                      }}
+                      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = '#FAF6F0' }}
+                      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'white' }}
+                    >
+                      <div
+                        className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[9px] font-bold flex-none"
+                        style={{ background: MARKET_COLORS[p.market] || '#6B6259' }}
+                      >
+                        {getMarketInitial(p.market)}
+                      </div>
+                      <span className="flex-1 text-sm font-medium truncate" style={{ color: '#1A1A1A' }}>{p.name}</span>
+                      <div className="text-right flex-none">
+                        <div className="text-sm font-bold" style={{ color: '#1B9E4B' }}>€{p.discountedPrice.toFixed(2)}</div>
+                        {p.discount > 0 && (
+                          <div className="text-[10px] font-bold" style={{ color: '#E33D26' }}>-{p.discount}%</div>
+                        )}
+                      </div>
+                    </button>
+                  ))}
+                </div>
               )}
             </div>
           </div>
