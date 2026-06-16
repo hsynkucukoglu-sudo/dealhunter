@@ -63,6 +63,12 @@ export function buildComparisonGroups(products: Product[]): ComparisonGroup[] {
       if (seedUnitType === 'stuks' && seedMeta.unitSize != null) {
         if (pMeta.unitType !== 'stuks' || pMeta.unitSize !== seedMeta.unitSize) return false
       }
+      // For liquid/weight (ml, g, l, kg): require near-equal pack size — 1L ≠ 2L
+      // Without this, "savings" mix up absolute price across different volumes (e.g. 1L vs 2L milk)
+      if (seedUnitType && seedUnitType !== 'stuks' && seedMeta.unitSize != null && pMeta.unitSize != null) {
+        const ratio = Math.max(seedMeta.unitSize, pMeta.unitSize) / Math.min(seedMeta.unitSize, pMeta.unitSize)
+        if (ratio > 1.15) return false
+      }
       return true
     })
 
@@ -99,6 +105,14 @@ export function buildComparisonGroups(products: Product[]): ComparisonGroup[] {
     const priceDiff = score(mostExpensive) - score(cheapest)
     const diffPercent = (priceDiff / score(mostExpensive)) * 100
     if (diffPercent < 5) continue
+
+    // When the group is NOT unit-normalized (at least one product has no parseable
+    // size, e.g. "Ariel of Lenor" or "Campina Melk"), the score falls back to raw
+    // price. A large raw gap then almost always reflects different pack sizes
+    // (1L vs 2L) rather than a genuine cross-market deal — skip it to avoid the
+    // nonsensical "-11.91" / "-0.96" savings the compare bar showed before.
+    const unitNormalized = group.every(p => metaMap.get(p.id)!.unitPrice != null)
+    if (!unitNormalized && diffPercent > 40) continue
 
     groups.push({ name: product.name, products: group, cheapest, unitType: groupUnitType ?? null })
   }

@@ -103,6 +103,14 @@ export const MARKET_FAQS: Record<string, FAQ[]> = {
       question: 'Heeft Dirk van den Broek de laagste vleesprijzen?',
       answer: 'Ja, Dirk van den Broek staat bekend om structureel de laagste vleesprijzen van alle grote Nederlandse supermarkten. Met name rund-, varkens- en kipvlees zijn bij Dirk regelmatig goedkoper dan bij AH, Jumbo of Lidl. DealHunter vergelijkt wekelijks de vlees-aanbiedingen zodat je altijd de beste deal vindt.',
     },
+    {
+      question: 'Hoe werkt de Dirk van den Broek folder?',
+      answer: 'De Dirk van den Broek folder wisselt elke zondag en is geldig t/m zaterdag. Je kunt de folder bekijken via de Dirk-app of website — maar op DealHunter zijn alle aanbiedingen Dirk van den Broek direct doorzoekbaar zonder de app te openen. Zoek op productnaam of filter op categorie (vlees, dranken, diepvries) voor de snelste resultaten.',
+    },
+    {
+      question: 'Welke dranken zijn bij Dirk in de aanbieding?',
+      answer: 'Dirk van den Broek heeft wekelijks scherpe aanbiedingen op bier (Heineken, Grolsch), frisdrank (Coca-Cola, Fanta) en sappen. Bier 24-pack is bij Dirk gemiddeld €2-4 goedkoper dan bij AH of Jumbo. In de zomer en rond feestdagen zijn de dranken-aanbiedingen bij Dirk de scherpste van alle Nederlandse supermarkten.',
+    },
   ],
   'aldi': [
     {
@@ -178,6 +186,14 @@ export const MARKET_FAQS: Record<string, FAQ[]> = {
     {
       question: 'Hoe bespaar ik het meest bij DekaMarkt?',
       answer: 'Bespaar bij DekaMarkt door wekelijks de actuele acties te checken op DealHunter, te profiteren van combi-aanbiedingen en verse producten in de aanbieding te kopen. Let ook op 1+1 gratis en ACTIE!-prijzen voor de grootste kortingen op je boodschappen.',
+    },
+    {
+      question: 'Heeft DekaMarkt bier en dranken aanbiedingen?',
+      answer: 'Ja, DekaMarkt heeft wekelijks sterke bier- en dranken-aanbiedingen. Grolsch, Heineken en lokale bieren verschijnen regelmatig met 20-40% korting, vaak als combi-deal met frisdrank. Ook koffie (Douwe Egberts, Nespresso) staat frequent in de aanbieding. DealHunter toont alle actuele DekaMarkt bier- en dranken-deals direct.',
+    },
+    {
+      question: 'Wat is het verschil tussen DekaMarkt en andere supermarkten?',
+      answer: 'DekaMarkt onderscheidt zich door unieke combi-deals: koop twee of drie producten tegelijk voor een lagere totaalprijs. Dit type aanbieding is zeldzaam bij AH, Jumbo of Lidl. Bovendien heeft DekaMarkt een breed versassortiment met scherpe weekprijzen op vlees, groente en zuivel. Voor gezinnen die grotere boodschappen doen, bespaar je wekelijks €10-20 vergeleken met alleen bij AH of Jumbo shoppen.',
     },
   ],
 }

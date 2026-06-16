@@ -152,7 +152,7 @@ export const POSTS: BlogPost[] = [
     relatedMarkets: ['albert-heijn', 'jumbo', 'lidl'],
     title: 'Is Jumbo Goedkoper dan AH? Jumbo vs Albert Heijn & Lidl Vergelijking 2026',
     description: 'Is jumbo goedkoper dan AH? Jumbo wint op basisprijs, maar AH slaat terug met bonusacties. Is Lidl goedkoper dan Jumbo en AH? Ja — Lidl is structureel 15-25% goedkoper. Vergelijking van 200+ producten.',
-    date: '2026-05-05',
+    date: '2026-06-16',
     readTime: 7,
     category: 'Vergelijking',
     faqs: [
@@ -176,9 +176,50 @@ export const POSTS: BlogPost[] = [
         question: 'Hoeveel kan ik besparen door supermarkten te vergelijken?',
         answer: 'Door strategisch te winkelen bij meerdere supermarkten kun je €100–200 per jaar besparen. Koop vlees bij Lidl, zuivel tijdens de AH Bonus en droge kruidenierswaren bij Aldi of Jumbo voor de beste combinatie.',
       },
+      {
+        question: 'Is Jumbo of Albert Heijn goedkoper voor een gezin?',
+        answer: 'Voor een gezin met een weekbudget van €150–200 is Jumbo gemiddeld €8–15 per week goedkoper dan Albert Heijn op basisprijzen. Maar als je de AH Bonus actief gebruikt (1+1 gratis, persoonlijke kortingen), dan kan Albert Heijn goedkoper uitpakken — zeker op grotere hoeveelheden houdbare producten.',
+      },
+      {
+        question: 'Welke supermarkt heeft de goedkoopste groenten en fruit?',
+        answer: 'Lidl heeft structureel de goedkoopste groenten en fruit — gemiddeld 20–30% onder de prijs van Albert Heijn en 15–20% onder Jumbo. Aldi is ook scherp geprijsd op seizoensgroenten. Bij AH en Jumbo zijn groenten en fruit duurder, maar die supermarkten hebben meer keuze in biologische en speciale rassen.',
+      },
     ],
     content: `
 <p class="lead">Wie is goedkoper: Albert Heijn of Jumbo? Dit is de meest gestelde vraag onder Nederlandse boodschappers. Het korte antwoord: <strong>Jumbo is gemiddeld 2–5% goedkoper op basisprijzen</strong>, maar Albert Heijn biedt diepere bonusaanbiedingen. In dit artikel vergelijken we beide supermarkten op prijs, aanbiedingen en huismerken — zodat jij de slimste keuze maakt.</p>
+
+<h2>Snel antwoord: wie is goedkoopst in 2026?</h2>
+<table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
+  <thead>
+    <tr style="background:#f5f5f5;">
+      <th style="padding:10px; text-align:left; border:1px solid #ddd;">Supermarkt</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Basisprijzen</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Aanbiedingen</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Beste voor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;"><strong>Lidl</strong></td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🥇 Goedkoopst</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">★★★★</td>
+      <td style="padding:10px; border:1px solid #ddd;">Budget boodschappen, vlees, zuivel</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;"><strong>Jumbo</strong></td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🥈 2e goedkoopst</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">★★★★</td>
+      <td style="padding:10px; border:1px solid #ddd;">Dagelijkse boodschappen, vers</td>
+    </tr>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;"><strong>Albert Heijn</strong></td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🥉 Duurste basis</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">★★★★★</td>
+      <td style="padding:10px; border:1px solid #ddd;">Bonusacties, 1+1 gratis deals</td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Rangschikking van goedkoopst naar duurste:</strong> Lidl → Jumbo → Albert Heijn. Maar met actief gebruik van de AH Bonus kan Albert Heijn tijdelijk goedkoper uitpakken dan Jumbo.</p>
 
 <h2>Wie is goedkoper: AH of Jumbo op basisprijzen?</h2>
 <p>Op basisprijzen (zonder kortingen) is <strong>Jumbo gemiddeld 2–5% goedkoper</strong> dan Albert Heijn. Dat klinkt klein, maar bij een gemiddeld boodschappenbudget van €150 per week scheelt dat al snel <strong>€3–8 per week</strong> — ruim €150 per jaar.</p>
@@ -262,6 +303,57 @@ export const POSTS: BlogPost[] = [
 <p><strong>Ja, Lidl is goedkoper dan Albert Heijn</strong> — gemiddeld 15–25% op basisprijzen. Op vers vlees, groenten en zuivel is het verschil het grootst. Waar AH voor kipfilet €5,49 rekent, betaal je bij Lidl vaak €3,99–€4,49. Het enige nadeel: Lidl heeft een kleiner assortiment en voert minder A-merken dan AH. Maar op de producten die Lidl wél heeft, is <strong>Lidl goedkoper dan AH</strong> in bijna alle categorieën.</p>
 <h2>Is Lidl goedkoper dan Jumbo?</h2>
 <p>Ook hier wint Lidl: <strong>Lidl is goedkoper dan Jumbo</strong> op vers, groenten en huismerken — gemiddeld 10–20%. Jumbo heeft hogere basisprijzen dan Lidl, maar biedt meer A-merken en een bredere keuze. De vergelijking <strong>Lidl Jumbo</strong> hangt af van wat je koopt: op basisproducten wint Lidl, op A-merken en weekaanbiedingen is Jumbo concurrerend.</p>
+
+<h3>Jumbo vs Lidl: prijsvergelijking op veelgekochte producten</h3>
+<table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
+  <thead>
+    <tr style="background:#f5f5f5;">
+      <th style="padding:10px; text-align:left; border:1px solid #ddd;">Product</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Jumbo</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Lidl</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Winnaar</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;">Kipfilet (500g)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€4,29</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€3,79</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Lidl</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;">Halfvolle melk (1L)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€0,95</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€0,89</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Lidl</td>
+    </tr>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;">Volkoren brood</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€1,79</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€1,49</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Lidl</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;">Rundergehakt (500g)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€3,99</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€3,49</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Lidl</td>
+    </tr>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;">Coca-Cola 6x1,5L</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€6,29</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€5,99</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Lidl</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;">Weekaanbiedingen diepte</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">★★★★</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">★★★★</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">Gelijk</td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Conclusie Jumbo vs Lidl:</strong> Lidl is op basisproducten structureel €0,30–0,80 goedkoper per product. Bij een volle boodschappenkar van 50 producten bespaar je bij Lidl gemiddeld €10–25 ten opzichte van Jumbo.</p>
 <h2>Lidl vs Albert Heijn vs Jumbo: de ranglijst</h2>
 <p>Van goedkoopst naar duurste op basisprijzen: <strong>Lidl → Jumbo → Albert Heijn</strong>. Maar de beste deal hangt af van de weekaanbiedingen. Albert Heijn wint soms met diepe 1+1 acties, Jumbo met weekdeals. Vergelijk alle actuele deals op DealHunter voor de slimste keuze deze week.</p>
 
@@ -1130,8 +1222,8 @@ export const POSTS: BlogPost[] = [
   {
     slug: 'dranken-aanbieding-supermarkt-2026',
     relatedMarkets: ['albert-heijn', 'jumbo', 'dirk', 'aldi', 'lidl'],
-    title: 'Dranken in de aanbieding: cola, bier, sap en water goedkoop in 2026',
-    description: 'Wanneer zijn Coca-Cola, Heineken, Grolsch en fruitsap het goedkoopst? Ontdek de beste dranken-aanbiedingen bij AH, Jumbo, Dirk, Aldi en Lidl.',
+    title: 'Dranken Aanbieding 2026: Cola, Bier & Sap Goedkoop bij AH, Jumbo & Lidl',
+    description: 'Beste dranken-aanbiedingen deze week: Coca-Cola, Heineken, Grolsch en fruitsap bij AH, Jumbo, Dirk, Aldi en Lidl. Wanneer zijn ze het goedkoopst? Complete vergelijking.',
     date: '2026-06-06',
     readTime: 6,
     category: 'Aanbiedingen',

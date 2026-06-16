@@ -42,14 +42,24 @@ export const MARKET_CONTENT: Record<string, string> = {
 `,
 
   'dirk': `
-<h2>Over Aanbiedingen Dirk van den Broek</h2>
+<h2>Aanbiedingen Dirk van den Broek — Complete Gids</h2>
 <p><strong>Aanbiedingen Dirk van den Broek</strong> vind je elke week op DealHunter — actueel bijgewerkt, zonder dat je de folder hoeft te bladeren. Dirk van den Broek is een van de <strong>goedkoopste supermarkten van Nederland</strong>, met meer dan 120 filialen voornamelijk in de Randstad. Dirk staat al decennia bekend om de laagste vleesprijzen en scherpe bieraanbiedingen — structureel lager dan AH, Jumbo en Lidl.</p>
 <h3>Wanneer beginnen de Dirk van den Broek aanbiedingen?</h3>
 <p>De <strong>dirk van den broek aanbiedingen</strong> starten elke <strong>zondag</strong> en zijn geldig tot en met zaterdag. De Dirkvandenbroek folder verschijnt online op zaterdag. DealHunter werkt alle <strong>aanbieding Dirk van den Broek</strong> wekelijks bij zodat je altijd de actuele kortingen in één overzicht ziet — ook aanbiedingen van Dirk van de Broek deze week worden direct getoond.</p>
-<h3>Waar is Dirk het goedkoopst?</h3>
-<p>De <strong>dirk acties</strong> zijn structureel het sterkst op <strong>vlees, dranken (bier, frisdrank) en diepvries</strong>. Een 24-pack Heineken of een kilo rundergehakt is bij Dirk gemiddeld €1-3 goedkoper dan bij AH of Jumbo. Voor dagelijkse boodschappen is Dirk minder compleet dan een full-service supermarkt, maar voor vlees en dranken is geen enkel ander ketensupermarkt goedkoper.</p>
-<h3>Dirk versus AH en Jumbo</h3>
-<p>Op vleesproducten en dranken zijn <strong>aanbiedingen Dirk</strong> structureel €0,50-2,00 goedkoper dan AH en Jumbo. Combineer de Dirk-deals met aanbiedingen van andere supermarkten op DealHunter voor maximale besparing.</p>
+<h3>Dirk vlees aanbiedingen: structureel de laagste vleesprijzen</h3>
+<p>De <strong>dirk vlees aanbieding</strong> is het paradepaardje van de keten. Rundergehakt, kipfilet, varkenshaas en riblappen zijn bij Dirk van den Broek wekelijks in de aanbieding — gemiddeld <strong>€1-3 goedkoper</strong> per kilo dan bij Albert Heijn of Jumbo. Enkele vaste patronen:</p>
+<ul>
+<li><strong>Rundergehakt:</strong> regelmatig ≤ €5/kg (vs. €7+ bij AH)</li>
+<li><strong>Kipfilet:</strong> vaak 2 voor 1 of met 30-40% korting</li>
+<li><strong>Procureur en riblappen:</strong> Dirk heeft structureel de scherpste weekprijzen</li>
+</ul>
+<p>Geen enkel ander Nederlands supermarktketensupermarkt biedt zo consistent lage vleesprijzen als Dirk van den Broek. DealHunter toont de actuele <strong>dirk acties</strong> op vlees direct — zonder folder bladeren.</p>
+<h3>Dranken en bier bij Dirk</h3>
+<p>Naast vlees zijn de <strong>Dirk aanbiedingen</strong> op dranken bijzonder sterk. Heineken 24-pack, Grolsch 12-pack en grote frisdrankverpakkingen (Coca-Cola 6x1,5L) verschijnen regelmatig met kortingen van 20-40%. In de zomer en rond feestdagen zijn de bierprijzen bij Dirk structureel de laagste van alle Nederlandse supermarkten.</p>
+<h3>Dirk van den Broek folder: zo werkt het</h3>
+<p>De officiële Dirk van den Broek folder wisselt wekelijks op zondag. Via DealHunter hoef je de papieren folder of de Dirk-app niet te openen: alle <strong>dirk van den broek aanbiedingen deze week</strong> staan direct doorzoekbaar op deze pagina. Filter op categorie (vlees, dranken, diepvries) of zoek op productnaam voor snelle resultaten.</p>
+<h3>Dirk versus AH, Jumbo en Lidl</h3>
+<p>Op vleesproducten en dranken zijn <strong>aanbiedingen Dirk</strong> structureel €0,50-2,00 goedkoper dan AH en Jumbo. Vergeleken met Lidl en Aldi scoort Dirk vergelijkbaar op huismerken, maar beter op A-merk bier en vers vlees. Combineer Dirk-deals met aanbiedingen van andere supermarkten op DealHunter voor maximale besparing elke week.</p>
 `,
 
   'hoogvliet': `
@@ -60,11 +70,28 @@ export const MARKET_CONTENT: Record<string, string> = {
 `,
 
   'dekamarkt': `
-<h2>Over Aanbiedingen DekaMarkt</h2>
+<h2>Aanbiedingen DekaMarkt — Complete Gids</h2>
 <p><strong>Aanbiedingen DekaMarkt</strong> vind je hier dagelijks bijgewerkt. DekaMarkt is een Nederlandse supermarktketen met filialen in Noord-Holland, Utrecht en omgeving. De keten staat bekend om een breed versassortiment, combi-deals en scherpe weekprijzen — ideaal voor gezinnen die zowel vers als dagelijkse boodschappen zoeken.</p>
 <h3>Wanneer wisselt de aanbieding DekaMarkt?</h3>
 <p>De <strong>aanbieding DekaMarkt</strong> wisselt wekelijks. Populaire actietypes zijn kortingsacties (ACTIE!-prijzen), <strong>combi-deals</strong> en 1+1 gratis. <strong>DekaMarkt aanbiedingen deze week</strong> worden op DealHunter dagelijks bijgewerkt zodat je zonder folder bladeren de beste deals vindt.</p>
-<h3>Combi-deals bij DekaMarkt</h3>
-<p>DekaMarkt is de enige Nederlandse supermarkt die structureel inzet op combi-deals: koop twee of drie producten tegelijk voor een lagere totaalprijs. Deze <strong>dekamarkt aanbiedingen</strong> zijn vooral interessant voor grotere huishoudens. DealHunter toont automatisch welke producten onderdeel zijn van een combi-deal.</p>
+<h3>DekaMarkt combi-deals: uniek in Nederland</h3>
+<p>DekaMarkt is de enige Nederlandse supermarkt die structureel inzet op combi-deals: koop twee of drie producten tegelijk voor een lagere totaalprijs. Voorbeelden van populaire combi-aanbiedingen:</p>
+<ul>
+<li><strong>Vlees + bijgerecht:</strong> kipfilet + pasta of rijst in één deal</li>
+<li><strong>Dranken + snacks:</strong> frisdrank 6-pack + chips of noten</li>
+<li><strong>Ontbijt combos:</strong> brood + beleg + jus d'orange als weekpakket</li>
+</ul>
+<p>DealHunter toont automatisch welke producten onderdeel zijn van een <strong>DekaMarkt combi-deal</strong>, zodat je direct ziet hoeveel je kunt besparen.</p>
+<h3>DekaMarkt bier en dranken aanbiedingen</h3>
+<p>De <strong>DekaMarkt bier aanbieding</strong> is een van de sterkste in de regio. Grolsch, Heineken en lokale bieren verschijnen wekelijks met kortingen van 20-40%, vaak als combi-deal met frisdrank of sap. Populaire dranken-deals bij DekaMarkt:</p>
+<ul>
+<li><strong>Bier 24-pack:</strong> regelmatig €2-4 onder de normale prijs</li>
+<li><strong>Frisdrank grootverpakking:</strong> Coca-Cola en Fanta structureel scherp geprijsd</li>
+<li><strong>Koffie aanbiedingen:</strong> A-merken als Douwe Egberts en Nespresso capsules bij de wekelijkse DekaMarkt acties</li>
+</ul>
+<h3>DekaMarkt versus Albert Heijn, Jumbo en Dirk</h3>
+<p>Vergeleken met AH en Jumbo is DekaMarkt op combi-deals en dranken structureel voordeliger. Ten opzichte van Dirk scoort DekaMarkt beter op een volledig versassortiment en A-merk koffie. Voor gezinnen die wekelijks grotere boodschappen doen, bespaar je bij DekaMarkt gemiddeld <strong>€10-20 per week</strong> dankzij de combi-deals.</p>
+<h3>DekaMarkt klantenkaart en extra kortingen</h3>
+<p>Met de DekaMarkt klantenkaart ontvang je extra kortingen op geselecteerde producten en kun je spaarpunten verdienen. Combineer de klantenkaartvoordelen met de <strong>DekaMarkt aanbiedingen deze week</strong> op DealHunter voor maximale besparing zonder folder bladeren.</p>
 `,
 }

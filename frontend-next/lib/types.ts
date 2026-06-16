@@ -91,8 +91,8 @@ export const MARKETS = [
     slug: 'hoogvliet',
     name: 'Hoogvliet',
     color: '#E30613',
-    ctaTitle: 'Hoogvliet Aanbiedingen & Acties Deze Week | Kortingen tot 40%',
-    description: 'Alle Hoogvliet aanbiedingen en acties van deze week — verse producten, vlees en weekdeals met kortingen tot 40%. Dagelijks bijgewerkt voor Randstad-bewoners. Direct vergelijken zonder folder.',
+    ctaTitle: 'Hoogvliet Acties & Weekdeals | Aanbiedingen Deze Week Bijgewerkt',
+    description: 'Alle Hoogvliet acties en aanbiedingen van deze week — weekdeals op vlees, zuivel en verse producten. Dagelijks bijgewerkt, direct vergelijken zonder folder. Bespaar tot 40%.',
     keywords: 'hoogvliet acties, hoogvliet aanbiedingen, hoogvliet aanbieding deze week, hoogvliet folder, hoogvliet deals, hoogvliet korting, hoogvliet actie, hoogvliet supermarkt aanbieding',
   },
   {
@@ -110,8 +110,8 @@ export const MARKETS = [
     slug: 'dekamarkt',
     name: 'DekaMarkt',
     color: '#006633',
-    ctaTitle: 'Aanbiedingen DekaMarkt | Actuele Aanbieding DekaMarkt & Combi-deals Deze Week',
-    description: 'Aanbiedingen DekaMarkt en actuele aanbieding deka deze week — combi-deals, 1+1 gratis en verse producten tot 40% korting. DekaMarkt aanbiedingen dagelijks bijgewerkt, direct vergelijken zonder folder.',
+    ctaTitle: 'DekaMarkt Aanbiedingen Deze Week | Combi-Deals & Kortingen tot 40%',
+    description: 'Alle DekaMarkt aanbiedingen van deze week — combi-deals, 1+1 gratis en verse producten. Dagelijks bijgewerkt, direct vergelijken zonder folder. Bespaar tot 40%.',
     keywords: 'aanbiedingen dekamarkt, aanbieding dekamarkt, dekamarkt aanbiedingen, dekamarkt aanbieding, dekamarkt aanbiedingen deze week, dekamarkt folder, dekamarkt deals, dekamarkt actie, dekamarkt aanbieding deze week, dekamarkt korting, dekamarkt weekaanbieding',
   },
   {

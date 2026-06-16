@@ -629,9 +629,13 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             </div>
             <div className="w-px h-5 flex-none" style={{ background: '#C9C1B6' }} />
             {comparisonGroups.map((group, gi) => {
-              const cheapest = group.products.reduce((a, b) => a.discountedPrice < b.discountedPrice ? a : b)
+              // Use the canonical cheapest from buildComparisonGroups (unit-price aware)
+              const cheapest = group.cheapest
               const mostExpensive = group.products.reduce((a, b) => a.discountedPrice > b.discountedPrice ? a : b)
-              const saving = mostExpensive.discountedPrice - cheapest.discountedPrice
+              const rawSaving = mostExpensive.discountedPrice - cheapest.discountedPrice
+              // Defense-in-depth: a "saving" that meets/exceeds the cheapest price means
+              // mismatched pack sizes slipped through — don't render a misleading badge.
+              const saving = rawSaving < cheapest.discountedPrice ? rawSaving : 0
               return (
                 <div
                   key={gi}
