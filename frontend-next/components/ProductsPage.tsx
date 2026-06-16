@@ -39,6 +39,7 @@ export function ProductsPage({ initialProducts, initialSearch = '' }: { initialP
   const [selectedCampaign, setSelectedCampaign] = useState<CampaignType | 'all'>('all')
   const [watchlistToast, setWatchlistToast] = useState<string | null>(null)
   const [canInstall, setCanInstall] = useState(false)
+  const [showSearchOverlay, setShowSearchOverlay] = useState(false)
 const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promise<{ outcome: string }> } | null>(null)
 
   const [isPending, startTransition] = useTransition()
@@ -285,6 +286,120 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             style={{ background: '#FF8C00', color: 'white', whiteSpace: 'nowrap' }}
           >
             🔔 {watchlistToast} — {lang === 'tr' ? 'hâlâ satışta!' : lang === 'en' ? 'still on sale!' : 'nog steeds in aanbieding!'}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* MOBILE SEARCH OVERLAY */}
+      <AnimatePresence>
+        {showSearchOverlay && (
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 24 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[250] flex flex-col md:hidden"
+            style={{ background: '#F5EDE3' }}
+          >
+            {/* Overlay header */}
+            <div
+              className="flex items-center gap-3 px-4 pb-3 pt-14"
+              style={{ borderBottom: '1px solid rgba(201,193,182,0.4)' }}
+            >
+              <div
+                className="flex-1 flex items-center gap-2 px-4 py-2.5 rounded-full"
+                style={{ background: 'rgba(255,255,255,0.9)', border: '1px solid rgba(201,193,182,0.6)' }}
+              >
+                <span className="material-symbols-outlined text-base" style={{ color: '#8C8478' }}>search</span>
+                <input
+                  type="text"
+                  autoFocus
+                  placeholder={lang === 'nl' ? 'Zoek een product...' : lang === 'en' ? 'Search products...' : 'Ürün ara...'}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="flex-1 bg-transparent border-none focus:ring-0 focus:outline-none text-sm"
+                  style={{ color: '#1A1A1A' }}
+                />
+                {searchTerm && (
+                  <button onClick={() => setSearchTerm('')}>
+                    <span className="material-symbols-outlined text-base" style={{ color: '#8C8478' }}>close</span>
+                  </button>
+                )}
+              </div>
+              <button
+                onClick={() => setShowSearchOverlay(false)}
+                className="text-sm font-bold flex-none"
+                style={{ color: '#E33D26' }}
+              >
+                {lang === 'nl' ? 'Sluiten' : lang === 'en' ? 'Close' : 'Kapat'}
+              </button>
+            </div>
+
+            {/* Results */}
+            <div className="flex-1 overflow-y-auto px-4 py-4">
+              {debouncedSearch.length < 2 ? (
+                <div className="flex flex-col items-center justify-center pt-16 gap-3">
+                  <span className="material-symbols-outlined text-5xl" style={{ color: '#C9C1B6' }}>search</span>
+                  <p className="text-sm text-center" style={{ color: '#8C8478' }}>
+                    {lang === 'nl' ? 'Typ minimaal 2 letters...' : lang === 'en' ? 'Type at least 2 letters...' : 'En az 2 harf yazın...'}
+                  </p>
+                </div>
+              ) : filteredProducts.length === 0 ? (
+                <div className="flex flex-col items-center justify-center pt-16 gap-2">
+                  <span className="material-symbols-outlined text-5xl" style={{ color: '#C9C1B6' }}>search_off</span>
+                  <p className="text-sm font-medium text-center" style={{ color: '#6B6259' }}>
+                    <span style={{ color: '#E33D26' }}>"{debouncedSearch}"</span>{' '}
+                    {lang === 'nl' ? 'niet gevonden' : lang === 'en' ? 'not found' : 'bulunamadı'}
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <p className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: '#8C8478' }}>
+                    {filteredProducts.length} {lang === 'nl' ? 'resultaten' : lang === 'en' ? 'results' : 'sonuç'}
+                  </p>
+                  <div className="space-y-2">
+                    {filteredProducts.slice(0, 14).map(p => (
+                      <button
+                        key={p.id}
+                        onClick={() => setShowSearchOverlay(false)}
+                        className="w-full flex items-center gap-3 p-3 rounded-2xl text-left"
+                        style={{ background: 'rgba(255,255,255,0.85)', border: '1px solid rgba(201,193,182,0.3)' }}
+                      >
+                        <div
+                          className="w-8 h-8 rounded-full flex items-center justify-center text-white text-[10px] font-bold flex-none"
+                          style={{ background: MARKET_COLORS[p.market] || '#6B6259' }}
+                        >
+                          {getMarketInitial(p.market)}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-semibold truncate" style={{ color: '#1A1A1A' }}>{p.name}</p>
+                          <p className="text-xs" style={{ color: '#8C8478' }}>{p.market}</p>
+                        </div>
+                        <div className="text-right flex-none">
+                          <p className="text-sm font-bold" style={{ color: '#1B9E4B' }}>€{p.discountedPrice.toFixed(2)}</p>
+                          {p.discount > 0 && (
+                            <p className="text-[10px] font-bold" style={{ color: '#E33D26' }}>-{p.discount}%</p>
+                          )}
+                        </div>
+                      </button>
+                    ))}
+                    {filteredProducts.length > 14 && (
+                      <button
+                        onClick={() => setShowSearchOverlay(false)}
+                        className="w-full py-3 rounded-2xl text-sm font-bold"
+                        style={{ background: '#1A1A1A', color: 'white' }}
+                      >
+                        {lang === 'nl'
+                          ? `Alle ${filteredProducts.length} resultaten bekijken →`
+                          : lang === 'en'
+                          ? `View all ${filteredProducts.length} results →`
+                          : `Tüm ${filteredProducts.length} sonucu gör →`}
+                      </button>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -789,13 +904,13 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           )}
         </button>
         <button
-          onClick={handleFetchFlyers}
+          onClick={() => setShowSearchOverlay(true)}
           className="flex flex-col items-center justify-center p-2 cursor-pointer"
           style={{ color: '#6B6259' }}
         >
-          <span className="material-symbols-outlined">refresh</span>
+          <span className="material-symbols-outlined">search</span>
           <span className="font-headline text-[10px] font-bold uppercase">
-            {lang === 'tr' ? 'Tara' : lang === 'en' ? 'Scan' : 'Scannen'}
+            {lang === 'tr' ? 'Ara' : lang === 'en' ? 'Search' : 'Zoeken'}
           </span>
         </button>
         <button
