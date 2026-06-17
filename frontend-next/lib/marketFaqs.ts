@@ -133,6 +133,10 @@ export const MARKET_FAQS: Record<string, FAQ[]> = {
       question: 'Wat zijn de populairste Aldi aanbiedingen?',
       answer: 'Populaire Aldi deals zijn weekaanbiedingen op groente en fruit (vaak 20-40% korting), vlees, zuivel en dranken. Aldi staat bekend om scherp geprijsde huismerken en verrassende non-food acties. Op DealHunter vind je alle actuele Aldi food-aanbiedingen inclusief kortingspercentages overzichtelijk weergegeven.',
     },
+    {
+      question: 'Heeft Aldi 50% korting acties?',
+      answer: 'Ja, Aldi heeft regelmatig kortingsacties tot 50% op geselecteerde food- en non-foodartikelen, vaak rond feestdagen of bij het opruimen van seizoensvoorraad. Deze Aldi acties zijn op = op en starten meestal op maandag. Op DealHunter zie je alle actuele Aldi aanbiedingen met kortingspercentage in één overzicht, zodat je de beste deals niet mist.',
+    },
   ],
   'hoogvliet': [
     {

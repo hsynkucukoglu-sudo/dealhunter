@@ -19,6 +19,15 @@ export const MARKET_CONTENT: Record<string, string> = {
 <p>Naast dagelijkse boodschappen heeft Aldi wekelijks non-food <strong>Aldi acties</strong>: kleding, elektronica, tuinartikelen (zoals een <strong>Aldi waterbaan</strong> in de zomer), keukenapparatuur en fitness-artikelen. Deze <strong>aldi actie</strong> is beschikbaar <strong>zolang de voorraad strekt</strong> — populaire artikelen zijn snel uitverkocht. Nieuwe non-food acties verschijnen elke donderdag online op aldi.nl.</p>
 <h3>Aldi versus andere discounters</h3>
 <p><strong>Aldi aanbiedingen deze week</strong> en Lidl zijn vergelijkbaar geprijsd en beide structureel goedkoper dan AH, Jumbo of Dirk. Het verschil zit in assortiment: Lidl heeft meer A-merken in het schap, Aldi focust purer op huismerken. Vergelijk de actuele <strong>aanbieding Aldi</strong> van beide discounters direct op DealHunter.</p>
+<h3>Aldi prijzen: voorbeelden uit de schappen</h3>
+<p>Benieuwd naar de <strong>Aldi prijzen</strong>? Een greep uit veelgekochte producten waarop Aldi structureel goedkoper is dan de grote supermarkten:</p>
+<ul>
+<li><strong>Kipfilet (per kg):</strong> vaak onder €6,50 — bij AH of Jumbo €8-10</li>
+<li><strong>Halfvolle melk (1L):</strong> circa €0,89 met het Milbona huismerk</li>
+<li><strong>Rundergehakt (500g):</strong> regelmatig €2,99-3,49</li>
+<li><strong>Verse groente & fruit:</strong> wekelijkse seizoensdeals met 20-40% korting</li>
+</ul>
+<p>Rond feestdagen en bij het opruimen van seizoensvoorraad zien we soms een <strong>Aldi 50% korting</strong> op geselecteerde artikelen. Die deals verschijnen direct in dit overzicht zodra ze live staan — op = op, dus wees er snel bij.</p>
 `,
 
   'jumbo': `
