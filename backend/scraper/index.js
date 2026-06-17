@@ -323,76 +323,121 @@ function decodeHtmlEntities(str) {
     .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'")
 }
 
-// ─── HOOGVLIET — embedded JSON ───────────────────────────────────────────────
+// ─── HOOGVLIET — HTML scraper with LoadMore AJAX fallback ────────────────────
+// Hoogvliet typically lists 15-20 deals per week in `product-all-info` blocks on
+// the main /aanbiedingen page. The Intershop "LoadMore" AJAX button is only active
+// when additional products exist; for most weeks the initial HTML contains all deals.
 async function scrapeHoogvliet() {
-  console.log('🏪 [Hoogvliet] hoogvliet.com/aanbiedingen...')
+  console.log('🏪 [Hoogvliet] hoogvliet.com/aanbiedingen (session+PromotionRange)...')
   try {
-    const res = await fetch('https://www.hoogvliet.com/aanbiedingen', { headers: HEADERS, signal: AbortSignal.timeout(15000) })
+    const res = await fetch('https://www.hoogvliet.com/aanbiedingen', {
+      headers: HEADERS,
+      signal: AbortSignal.timeout(20000),
+    })
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
+
+    // Capture session cookies for AJAX calls that must be in the same session
+    const rawCookies = res.headers.getSetCookie?.() ?? [res.headers.get('set-cookie') ?? '']
+    const sessionCookie = rawCookies
+      .flatMap(h => h.split(/,\s*(?=[A-Za-z_][A-Za-z0-9_-]*=)/).map(s => s.split(';')[0].trim()))
+      .filter(Boolean)
+      .join('; ')
+
     const html = await res.text()
 
-    // Each promo card's data lives in a `product-all-info` block (name, price,
-    // promo, was-price). Split on it — the product image sits in the preceding
-    // chunk's <img data-image-src>. The old `data-image-src` split missed ~1/3
-    // of cards because images are lazy-loaded (only the first ~15 carry the attr).
-    const chunks = html.split('product-all-info')
     const seen = new Set()
     const results = []
 
-    for (let i = 1; i < chunks.length; i++) {
-      const card = chunks[i].slice(0, 2500)
-      const prev = chunks[i - 1]
+    // Shared parser: extract deal cards from any Hoogvliet HTML fragment.
+    // Each promo card lives inside a `product-all-info` block; image may be in
+    // the preceding chunk (lazy-loaded — only ~15/44 have data-image-src).
+    function parseProductChunks(rawHtml) {
+      const chunks = rawHtml.split('product-all-info')
+      for (let i = 1; i < chunks.length; i++) {
+        const card = chunks[i].slice(0, 2500)
+        const prev = chunks[i - 1]
 
-      // Name: <h3> inside the product-title anchor, enriched with the short description
-      const nameM = card.match(/<h3[^>]*>\s*([^<]+?)\s*<\/h3>/)
-      if (!nameM) continue
-      let name = decodeHtmlEntities(nameM[1].trim())
-      const descM = card.match(/Short-Description"[^>]*>\s*([^<]+?)\s*</)
-      if (descM) {
-        const d = decodeHtmlEntities(descM[1].trim())
-        if (d && !/^alle\b/i.test(d)) name = `${name} ${d}`
+        const nameM = card.match(/<h3[^>]*>\s*([^<]+?)\s*<\/h3>/)
+        if (!nameM) continue
+        let name = decodeHtmlEntities(nameM[1].trim())
+        const descM = card.match(/Short-Description"[^>]*>\s*([^<]+?)\s*</)
+        if (descM) {
+          const d = decodeHtmlEntities(descM[1].trim())
+          if (d && !/^alle\b/i.test(d)) name = `${name} ${d}`
+        }
+        if (!name || seen.has(name.toLowerCase())) continue
+        if (/^bij\s/i.test(name)) continue
+
+        const promoM = card.match(/promotion-short-title[^>]*>\s*([^<]+?)\s*</)
+        const promoLabel = promoM ? promoM[1].trim() : null
+        if (promoLabel && /bezorg/i.test(promoLabel)) continue
+
+        const eurosM = card.match(/price-euros[^>]*>\s*<span[^>]*>([\d]+)<\/span>/)
+        const centsM = card.match(/price-cents[^>]*><sup>([\d]+)<\/sup>/)
+        let discountedPrice = eurosM ? parseFloat(`${eurosM[1]}.${centsM ? centsM[1] : '00'}`) : null
+        if (discountedPrice == null && promoLabel) {
+          const pm = promoLabel.match(/(\d+[.,]\d{2})/)
+          if (pm) discountedPrice = parseFloat(pm[1].replace(',', '.'))
+        }
+        if (!discountedPrice) continue
+
+        const strikeM = card.match(/strikethrough"[^>]*>\s*<div>([\d.]+)</)
+        const wasPrice = strikeM ? parseFloat(strikeM[1]) : 0
+        const originalPrice = (wasPrice && wasPrice > discountedPrice) ? wasPrice : discountedPrice
+
+        const imgs = [...prev.matchAll(/data-image-src="([^"]+\.(?:jpg|png|webp))"/g)]
+        const imgRaw = imgs.length ? imgs[imgs.length - 1][1] : null
+        const imageUrl = imgRaw ? `https://www.hoogvliet.com${imgRaw.replace(/&#47;/g, '/')}` : null
+
+        seen.add(name.toLowerCase())
+        results.push({
+          name,
+          market: 'Hoogvliet',
+          originalPrice,
+          discountedPrice,
+          imageUrl,
+          isCampaign: true,
+          source: 'hoogvliet.com/aanbiedingen',
+          expiresAt: EXPIRES_AT,
+          campaignType: toCampaignType(promoLabel || name),
+        })
       }
-      if (!name || seen.has(name.toLowerCase())) continue
-      // Skip spend-threshold / delivery promos ("Bij 12,00 aan ... gratis bezorging")
-      if (/^bij\s/i.test(name)) continue
+    }
 
-      // Promo label (e.g. "1+1 gratis", "per pak 2.79", "3 voor 9.00")
-      const promoM = card.match(/promotion-short-title[^>]*>\s*([^<]+?)\s*</)
-      const promoLabel = promoM ? promoM[1].trim() : null
-      if (promoLabel && /bezorg/i.test(promoLabel)) continue
+    // Parse featured products on the main page
+    parseProductChunks(html)
+    console.log(`  [Hoogvliet] Başlangıç sayfası: ${results.length} ürün`)
 
-      // Deal price: euros + cents spans; fall back to a price inside the promo label
-      const eurosM = card.match(/price-euros[^>]*>\s*<span[^>]*>([\d]+)<\/span>/)
-      const centsM = card.match(/price-cents[^>]*><sup>([\d]+)<\/sup>/)
-      let discountedPrice = eurosM ? parseFloat(`${eurosM[1]}.${centsM ? centsM[1] : '00'}`) : null
-      if (discountedPrice == null && promoLabel) {
-        const pm = promoLabel.match(/(\d+[.,]\d{2})/)
-        if (pm) discountedPrice = parseFloat(pm[1].replace(',', '.'))
-      }
-      if (!discountedPrice) continue
-
-      // Was price: first number in strikethrough (may be a range "4.50 - 4.69", take first)
-      const strikeM = card.match(/strikethrough"[^>]*>\s*<div>([\d.]+)</)
-      const wasPrice = strikeM ? parseFloat(strikeM[1]) : 0
-      const originalPrice = (wasPrice && wasPrice > discountedPrice) ? wasPrice : discountedPrice
-
-      // Image: last data-image-src in the preceding chunk (the product <img>)
-      const imgs = [...prev.matchAll(/data-image-src="([^"]+\.(?:jpg|png|webp))"/g)]
-      const imgRaw = imgs.length ? imgs[imgs.length - 1][1] : null
-      const imageUrl = imgRaw ? `https://www.hoogvliet.com${imgRaw.replace(/&#47;/g, '/')}` : null
-
-      seen.add(name.toLowerCase())
-      results.push({
-        name,
-        market: 'Hoogvliet',
-        originalPrice,
-        discountedPrice,
-        imageUrl,
-        isCampaign: true,
-        source: 'hoogvliet.com/aanbiedingen',
-        expiresAt: EXPIRES_AT,
-        campaignType: toCampaignType(promoLabel || name),
-      })
+    // Intershop embeds a "load more" button with session IDs in the path (pgid/sid).
+    // Use the URL verbatim — already correctly encoded. Only fires when more products
+    // exist beyond the initial page render (most weeks have ≤ 20 products total).
+    const loadMoreM = html.match(
+      /href="(https:\/\/www\.hoogvliet\.com\/INTERSHOP[^"]*LoadMoreProducts[^"]+)"/
+    )
+    if (loadMoreM) {
+      const loadMoreUrl = loadMoreM[1]
+        .replace(/PageSize=\d+/, 'PageSize=100')
+        .replace(/PageNumber=\d+/, 'PageNumber=1')
+      try {
+        await new Promise(r => setTimeout(r, 400))
+        const lmRes = await fetch(loadMoreUrl, {
+          headers: {
+            ...HEADERS,
+            'Accept': 'text/html, */*; q=0.01',
+            'X-Requested-With': 'XMLHttpRequest',
+            'Referer': 'https://www.hoogvliet.com/aanbiedingen',
+          },
+          signal: AbortSignal.timeout(12000),
+        })
+        if (lmRes.ok) {
+          const lmHtml = await lmRes.text()
+          const before = results.length
+          parseProductChunks(lmHtml)
+          if (results.length > before) {
+            console.log(`  [Hoogvliet] LoadMore: +${results.length - before} extra ürün`)
+          }
+        }
+      } catch {}
     }
 
     const withSavings = results.filter(r => r.originalPrice > r.discountedPrice)
