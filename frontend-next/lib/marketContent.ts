@@ -64,6 +64,10 @@ export const MARKET_CONTENT: Record<string, string> = {
 <p>Lidl heeft twee wisselingsmomenten per week: <strong>maandag</strong> starten de nieuwe weekaanbiedingen en <strong>donderdag</strong> komen er "Vers van de Week" deals bij op groente, fruit en vlees. Via de Lidl Plus-app ontvang je aanvullende kortingscoupons en cashback.</p>
 <h3>Lidl Plus app</h3>
 <p>De Lidl Plus-app biedt wekelijks gratis producten, digitale kortingscoupons en cashback op geselecteerde artikelen. Combineer de Lidl Plus-voordelen met de weekdeals op DealHunter voor maximale besparing — tot 40% extra korting bovenop de normale weekprijzen.</p>
+<h3>Lidl Deal van de Dag & dagaanbiedingen</h3>
+<p>Veel shoppers zoeken naar de <strong>Lidl deal van de dag</strong>. Lidl werkt niet met één vaste dagdeal zoals een webshop, maar heeft wel <strong>dagelijks wisselende aanbiedingen</strong>: de weekdeals starten op maandag en op donderdag komen de "Vers van de Week"-deals erbij op groente, fruit en vlees — vaak maar enkele dagen geldig. Daardoor is er praktisch elke dag een nieuwe scherpe <strong>deal van de dag bij Lidl</strong>. Op DealHunter zie je alle actuele Lidl dagaanbiedingen op één plek, met kortingspercentage en vervaldatum.</p>
+<h3>Is Lidl goedkoper dan Jumbo en Albert Heijn?</h3>
+<p><strong>Lidl is goedkoper dan Jumbo</strong> op basisprijzen — gemiddeld 10-20% op huismerken, vers vlees en groente. Vergeleken met Albert Heijn is het verschil nog groter: <strong>15-25% goedkoper</strong>. Jumbo en AH winnen wel op assortiment en diepe bonusacties (1+1 gratis), maar voor budgetboodschappen is Lidl bijna altijd de voordeligste keuze. Vergelijk de actuele <strong>Lidl deals</strong> direct met Jumbo en AH op DealHunter.</p>
 `,
 
   'dirk': `

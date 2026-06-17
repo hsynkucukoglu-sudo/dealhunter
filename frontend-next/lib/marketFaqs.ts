@@ -81,6 +81,10 @@ export const MARKET_FAQS: Record<string, FAQ[]> = {
       question: 'Heeft Lidl een deal van de dag?',
       answer: 'Lidl biedt geen vaste "deal van de dag" zoals webshops, maar heeft wel dagelijks wisselende aanbiedingen. Nieuwe weekdeals starten op maandag en donderdag komen er verse "Vers van de Week" aanbiedingen bij op vlees, groente en fruit — die soms maar een paar dagen geldig zijn. Op DealHunter vind je elke dag de actuele Lidl deals overzichtelijk bij elkaar.',
     },
+    {
+      question: 'Is Lidl goedkoper dan Jumbo?',
+      answer: 'Ja, Lidl is op basisprijzen gemiddeld 10-20% goedkoper dan Jumbo, vooral op huismerken, vers vlees en groente. Jumbo heeft een breder assortiment en meer A-merken, maar voor budgetboodschappen is Lidl bijna altijd voordeliger. Op DealHunter vergelijk je de actuele Lidl en Jumbo aanbiedingen direct naast elkaar.',
+    },
   ],
   'dirk': [
     {
