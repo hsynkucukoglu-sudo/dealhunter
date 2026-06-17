@@ -82,6 +82,14 @@ export async function initDatabase() {
       created_at TIMESTAMPTZ DEFAULT NOW()
     )
   `)
+  
+  // Performance Indexes
+  await pool.query(`CREATE INDEX IF NOT EXISTS idx_products_expiresAt ON products ("expiresAt")`)
+  await pool.query(`CREATE INDEX IF NOT EXISTS idx_products_lower_name_market ON products (lower(name), market)`)
+  await pool.query(`CREATE INDEX IF NOT EXISTS idx_products_category ON products (category)`)
+  await pool.query(`CREATE INDEX IF NOT EXISTS idx_products_market ON products (market)`)
+  await pool.query(`CREATE INDEX IF NOT EXISTS idx_price_history_recorded_week ON price_history (recorded_week)`)
+
   console.log('✅ PostgreSQL veritabanı başlatıldı')
 }
 
@@ -189,18 +197,22 @@ function currentWeekMonday() {
 export async function recordPriceHistory(products) {
   if (!products?.length) return
   const week = currentWeekMonday()
-  await Promise.all(products.map(p =>
-    pool.query(
-      `INSERT INTO price_history (product_name, product_market, discounted_price, original_price, recorded_week, unit_size, unit_type)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
-       ON CONFLICT (product_name, product_market, recorded_week)
-       DO UPDATE SET discounted_price = LEAST(EXCLUDED.discounted_price, price_history.discounted_price),
-                     original_price = EXCLUDED.original_price,
-                     unit_size = COALESCE(EXCLUDED.unit_size, price_history.unit_size),
-                     unit_type = COALESCE(EXCLUDED.unit_type, price_history.unit_type)`,
-      [p.name, p.market, p.discountedPrice, p.originalPrice, week, p.unitSize ?? null, p.unitType ?? null]
-    ).catch(() => {})
-  ))
+  const BATCH_SIZE = 50
+  for (let i = 0; i < products.length; i += BATCH_SIZE) {
+    const batch = products.slice(i, i + BATCH_SIZE)
+    await Promise.all(batch.map(p =>
+      pool.query(
+        `INSERT INTO price_history (product_name, product_market, discounted_price, original_price, recorded_week, unit_size, unit_type)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)
+         ON CONFLICT (product_name, product_market, recorded_week)
+         DO UPDATE SET discounted_price = LEAST(EXCLUDED.discounted_price, price_history.discounted_price),
+                       original_price = EXCLUDED.original_price,
+                       unit_size = COALESCE(EXCLUDED.unit_size, price_history.unit_size),
+                       unit_type = COALESCE(EXCLUDED.unit_type, price_history.unit_type)`,
+        [p.name, p.market, p.discountedPrice, p.originalPrice, week, p.unitSize ?? null, p.unitType ?? null]
+      ).catch(() => {})
+    ))
+  }
 }
 
 export async function getMinPriceMap() {
@@ -301,19 +313,42 @@ export async function getComparisonGroups() {
   return rows
 }
 
-export async function getProducts() {
-  const { rows } = await pool.query(`
+export async function getProducts(options = {}) {
+  const { market, category } = options
+  let query = `
     SELECT * FROM products
     WHERE "expiresAt" >= TO_CHAR(CURRENT_DATE, 'YYYY-MM-DD')
-    ORDER BY ("imageUrl" IS NOT NULL AND "imageUrl" != '') DESC, discount DESC
-  `)
-  return rows.map(r => ({ ...r, isCampaign: Boolean(r.isCampaign) }))
+  `
+  const params = []
+  
+  if (market) {
+    params.push(market)
+    query += ` AND market = $${params.length}`
+  }
+  
+  if (category) {
+    params.push(category)
+    query += ` AND category = $${params.length}`
+  }
+  
+  query += ` ORDER BY ("imageUrl" IS NOT NULL AND "imageUrl" != '') DESC, discount DESC`
+  
+  const { rows } = await pool.query(query, params)
+  return rows.map(r => ({
+    ...r,
+    isCampaign: Boolean(r.isCampaign),
+    affiliateUrl: r.affiliate_url ?? null
+  }))
 }
 
 export async function getProduct(id) {
   const { rows } = await pool.query('SELECT * FROM products WHERE id = $1', [id])
   if (!rows[0]) return null
-  return { ...rows[0], isCampaign: Boolean(rows[0].isCampaign) }
+  return {
+    ...rows[0],
+    isCampaign: Boolean(rows[0].isCampaign),
+    affiliateUrl: rows[0].affiliate_url ?? null
+  }
 }
 
 export async function createProduct(product) {

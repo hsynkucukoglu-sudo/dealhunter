@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { getProducts } from '@/lib/api'
+import { getProductsByMarket } from '@/lib/api'
 import { MARKETS, VISIBLE_MARKETS } from '@/lib/types'
 import { buildBreadcrumbSchema, buildFaqSchema, buildProductListSchema, getISOWeek } from '@/lib/schema'
 import { MarketPage } from '@/components/MarketPage'
@@ -50,8 +50,7 @@ export default async function SupermarktPage({ params }: Props) {
   const market = MARKETS.find(m => m.slug === slug)
   if (!market || (market as { hidden?: boolean }).hidden) notFound()
 
-  const allProducts = await getProducts()
-  const products = allProducts.filter(p => p.market === market.name)
+  const products = await getProductsByMarket(market.name)
   const relatedPosts = getPostsByMarket(slug)
 
   const breadcrumb = buildBreadcrumbSchema([

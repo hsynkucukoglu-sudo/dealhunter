@@ -32,8 +32,53 @@ export async function getProducts(): Promise<Product[]> {
 }
 
 export async function getProductsByCategory(category: string): Promise<Product[]> {
-  const all = await getProducts()
-  return all.filter(p => p.category === category)
+  try {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 15000)
+
+    const res = await fetch(`${API_BASE}/api/products?category=${encodeURIComponent(category)}`, {
+      next: { revalidate: 900 },
+      signal: controller.signal,
+    })
+    
+    clearTimeout(timeoutId)
+
+    if (!res.ok) {
+      console.error(`API Error: ${res.status} ${res.statusText}`)
+      return []
+    }
+    
+    const data = await res.json()
+    return Array.isArray(data) ? data : []
+  } catch (error: any) {
+    console.error('Fetch category error:', error)
+    return []
+  }
+}
+
+export async function getProductsByMarket(market: string): Promise<Product[]> {
+  try {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 15000)
+
+    const res = await fetch(`${API_BASE}/api/products?market=${encodeURIComponent(market)}`, {
+      next: { revalidate: 900 },
+      signal: controller.signal,
+    })
+    
+    clearTimeout(timeoutId)
+
+    if (!res.ok) {
+      console.error(`API Error: ${res.status} ${res.statusText}`)
+      return []
+    }
+    
+    const data = await res.json()
+    return Array.isArray(data) ? data : []
+  } catch (error: any) {
+    console.error('Fetch market error:', error)
+    return []
+  }
 }
 
 export { API_BASE }

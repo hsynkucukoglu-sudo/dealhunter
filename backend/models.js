@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from 'uuid'
 import * as db from './db.js'
 
-export async function getProducts() {
-  return db.getProducts()
+export async function getProducts(options = {}) {
+  return db.getProducts(options)
 }
 
 export async function getProduct(id) {

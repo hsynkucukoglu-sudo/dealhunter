@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { getProducts } from '@/lib/api'
+import { getProductsByCategory } from '@/lib/api'
 import { CATEGORIES } from '@/lib/types'
 import { buildBreadcrumbSchema } from '@/lib/schema'
 import { CategoryPage } from '@/components/CategoryPage'
@@ -45,8 +45,7 @@ export default async function CategoriePageRoute({ params }: Props) {
   const cat = CATEGORIES.find(c => c.id === slug)
   if (!cat) notFound()
 
-  const allProducts = await getProducts()
-  const products = allProducts.filter(p => p.category === slug)
+  const products = await getProductsByCategory(slug)
   const relatedPosts = getPostsByCategory(slug)
 
   const breadcrumb = buildBreadcrumbSchema([

@@ -154,9 +154,10 @@ app.get('/api/ah-image/:id', imageProxyLimit, asyncHandler(async (req, res) => {
 
 let scraperRunning = false
 
-// GET /api/products - Tüm ürünleri getir
+// GET /api/products - Tüm veya filtrelenmiş ürünleri getir
 app.get('/api/products', asyncHandler(async (req, res) => {
-  const products = await getProducts()
+  const { market, category } = req.query
+  const products = await getProducts({ market, category })
   res.json(products || [])
 }))
 

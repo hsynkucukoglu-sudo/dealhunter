@@ -1269,17 +1269,16 @@ export async function scrapeFlyerProducts() {
 
   console.log(`🔍 Fetch-only scraper başlatılıyor... (Varsayılan bitiş: ${EXPIRES_AT})`)
 
-  const [dirk, jumbo, hoogvliet, lidl, ah, aldi, vomar, deka, coop] = await Promise.all([
-    scrapeDirk(),
-    scrapeJumbo(),
-    scrapeHoogvliet(),
-    scrapeLidl(),
-    scrapeAlbertHeijn(),
-    scrapeAldi(),
-    scrapeVomar(),
-    scrapeDekaMarkt(),
-    scrapeCoop(),
-  ])
+  // Run scrapers sequentially to prevent memory/CPU spikes and network bottlenecks on small server tiers
+  const dirk = await scrapeDirk()
+  const jumbo = await scrapeJumbo()
+  const hoogvliet = await scrapeHoogvliet()
+  const lidl = await scrapeLidl()
+  const ah = await scrapeAlbertHeijn()
+  const aldi = await scrapeAldi()
+  const vomar = await scrapeVomar()
+  const deka = await scrapeDekaMarkt()
+  const coop = await scrapeCoop()
 
   let all = [...dirk, ...jumbo, ...hoogvliet, ...lidl, ...ah, ...aldi, ...vomar, ...deka, ...coop]
 
