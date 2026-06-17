@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Product } from '@/lib/types'
 import { MARKET_COLORS } from '@/lib/types'
-import { useShoppingList } from '@/context/ShoppingListContext'
 import { useLanguage } from '@/context/LanguageContext'
 import { getAffiliateLink, getMarketDestination, isAllowedAffiliateUrl } from '@/lib/affiliate'
 import { useFavorites } from '@/context/FavoritesContext'
@@ -13,7 +12,6 @@ import { usePriceHistory } from '@/context/PriceHistoryContext'
 import { trackDealClick, trackAddFavorite, trackAddWatchlist } from '@/lib/analytics'
 
 export function ProductCard({ product }: { product: Product }) {
-  const { addToCart } = useShoppingList()
   const { t } = useLanguage()
 
   const affiliateLink = getAffiliateLink(product.market)
@@ -98,13 +96,6 @@ export function ProductCard({ product }: { product: Product }) {
             <span className="material-symbols-outlined" style={{ fontSize: 56, color: '#C9C1B6' }}>nutrition</span>
           </div>
         )}
-        <button
-          onClick={(e) => { e.stopPropagation(); addToCart(product) }}
-          className="basket-slide hidden md:flex"
-          aria-label={`${product.name} winkelmandje toevoegen`}
-        >
-          <span className="material-symbols-outlined material-filled" aria-hidden="true">shopping_basket</span>
-        </button>
         <div className="absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           <button
             onClick={(e) => { e.stopPropagation(); toggleFavorite(product); if (!isFavorite(product)) trackAddFavorite(product.name, product.market) }}
@@ -216,8 +207,8 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
       </div>
 
-      <div className="px-4 pb-4">
-        {affiliateLink ? (
+      {affiliateLink && (
+        <div className="px-4 pb-4">
           <a
             href={affiliateLink.url}
             target="_blank"
@@ -250,17 +241,8 @@ export function ProductCard({ product }: { product: Product }) {
             Naar {product.market}
             <span className="material-symbols-outlined text-sm leading-none" aria-hidden="true">open_in_new</span>
           </a>
-        ) : (
-          <button
-            onClick={() => addToCart(product)}
-            className="flex items-center justify-center gap-1.5 w-full py-2.5 px-3 rounded-xl text-sm font-bold transition-all duration-200"
-            style={{ background: '#1A1A1A', color: 'white' }}
-            aria-label={`${product.name} aan winkelmandje toevoegen`}
-          >
-            {t.addToCart}
-          </button>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }
