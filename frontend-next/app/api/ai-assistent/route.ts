@@ -68,7 +68,18 @@ Instructies:
     const text = message.content[0]?.type === 'text' ? message.content[0].text : 'Geen antwoord beschikbaar.'
     return Response.json({ answer: text })
   } catch (err) {
-    console.error('[ai-assistent]', err)
+    // Log the real cause server-side (visible in Railway logs) for diagnosis,
+    // but always show users a friendly message — never leak error internals.
+    if (err instanceof Anthropic.APIError) {
+      console.error('[ai-assistent] Anthropic API error', {
+        status: err.status,
+        type: (err as { type?: string }).type,
+        message: err.message,
+        requestId: (err as { request_id?: string }).request_id,
+      })
+    } else {
+      console.error('[ai-assistent] Unexpected error', err)
+    }
     return Response.json({ error: 'Even geduld, probeer het opnieuw.' }, { status: 500 })
   }
 }
