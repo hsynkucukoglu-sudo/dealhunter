@@ -331,40 +331,55 @@ async function scrapeHoogvliet() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const html = await res.text()
 
-    // Split by product card anchor (each card has a data-image-src for the product image)
-    const cards = html.split('data-image-src=')
+    // Each promo card's data lives in a `product-all-info` block (name, price,
+    // promo, was-price). Split on it — the product image sits in the preceding
+    // chunk's <img data-image-src>. The old `data-image-src` split missed ~1/3
+    // of cards because images are lazy-loaded (only the first ~15 carry the attr).
+    const chunks = html.split('product-all-info')
     const seen = new Set()
     const results = []
 
-    for (let i = 1; i < cards.length; i++) {
-      const card = cards[i]
+    for (let i = 1; i < chunks.length; i++) {
+      const card = chunks[i].slice(0, 2500)
+      const prev = chunks[i - 1]
 
-      // Image URL (encoded as &#47; = /)
-      const imgM = card.match(/^"(&#47;INTERSHOP&#47;[^"]+\.(?:jpg|png|webp))"/)
-      const imageUrl = imgM ? `https://www.hoogvliet.com${imgM[1].replace(/&#47;/g, '/')}` : null
-
-      // Product name from <h3> inside product-title anchor
+      // Name: <h3> inside the product-title anchor, enriched with the short description
       const nameM = card.match(/<h3[^>]*>\s*([^<]+?)\s*<\/h3>/)
       if (!nameM) continue
-      const name = decodeHtmlEntities(nameM[1].trim())
+      let name = decodeHtmlEntities(nameM[1].trim())
+      const descM = card.match(/Short-Description"[^>]*>\s*([^<]+?)\s*</)
+      if (descM) {
+        const d = decodeHtmlEntities(descM[1].trim())
+        if (d && !/^alle\b/i.test(d)) name = `${name} ${d}`
+      }
       if (!name || seen.has(name.toLowerCase())) continue
+      // Skip spend-threshold / delivery promos ("Bij 12,00 aan ... gratis bezorging")
+      if (/^bij\s/i.test(name)) continue
 
-      // Was price: first number in strikethrough div (may be a range "3.98 - 10.96", take first)
-      const strikeM = card.match(/class="strikethrough"[^>]*>\s*<div>([\d.]+)</)
-      const wasPrice = strikeM ? parseFloat(strikeM[1]) : 0
+      // Promo label (e.g. "1+1 gratis", "per pak 2.79", "3 voor 9.00")
+      const promoM = card.match(/promotion-short-title[^>]*>\s*([^<]+?)\s*</)
+      const promoLabel = promoM ? promoM[1].trim() : null
+      if (promoLabel && /bezorg/i.test(promoLabel)) continue
 
-      // Deal price: first non-strikethrough euros + cents
-      const eurosM = card.match(/class="non-strikethrough"[^>]*>.*?price-euros[^>]*>.*?<span[^>]*>([\d]+)<\/span>/s)
-      const centsM = card.match(/class="non-strikethrough"[^>]*>.*?price-cents[^>]*><sup>([\d]+)<\/sup>/s)
-      if (!eurosM) continue
-      const discountedPrice = parseFloat(`${eurosM[1]}.${centsM ? centsM[1] : '00'}`)
+      // Deal price: euros + cents spans; fall back to a price inside the promo label
+      const eurosM = card.match(/price-euros[^>]*>\s*<span[^>]*>([\d]+)<\/span>/)
+      const centsM = card.match(/price-cents[^>]*><sup>([\d]+)<\/sup>/)
+      let discountedPrice = eurosM ? parseFloat(`${eurosM[1]}.${centsM ? centsM[1] : '00'}`) : null
+      if (discountedPrice == null && promoLabel) {
+        const pm = promoLabel.match(/(\d+[.,]\d{2})/)
+        if (pm) discountedPrice = parseFloat(pm[1].replace(',', '.'))
+      }
       if (!discountedPrice) continue
 
+      // Was price: first number in strikethrough (may be a range "4.50 - 4.69", take first)
+      const strikeM = card.match(/strikethrough"[^>]*>\s*<div>([\d.]+)</)
+      const wasPrice = strikeM ? parseFloat(strikeM[1]) : 0
       const originalPrice = (wasPrice && wasPrice > discountedPrice) ? wasPrice : discountedPrice
 
-      // Promo label
-      const promoM = card.match(/promotion-short-title[^>]*>([^<]+)</)
-      const promoLabel = promoM ? promoM[1].trim() : null
+      // Image: last data-image-src in the preceding chunk (the product <img>)
+      const imgs = [...prev.matchAll(/data-image-src="([^"]+\.(?:jpg|png|webp))"/g)]
+      const imgRaw = imgs.length ? imgs[imgs.length - 1][1] : null
+      const imageUrl = imgRaw ? `https://www.hoogvliet.com${imgRaw.replace(/&#47;/g, '/')}` : null
 
       seen.add(name.toLowerCase())
       results.push({
