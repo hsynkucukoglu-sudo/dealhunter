@@ -9,7 +9,7 @@ const MARKET_COLORS: Record<string, string> = {
   'Lidl':         '#0050AA',
   'Dirk':         '#C8102E',
   'Aldi':         '#00205B',
-  'Hoogvliet':    '#E30613',
+  'Hoogvliet':    '#164194',
   'Vomar':        '#FF6600',
   'DekaMarkt':    '#006633',
   'Coop':         '#007B5E',

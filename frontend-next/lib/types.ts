@@ -90,7 +90,7 @@ export const MARKETS = [
   {
     slug: 'hoogvliet',
     name: 'Hoogvliet',
-    color: '#E30613',
+    color: '#164194',
     ctaTitle: 'Hoogvliet Acties & Weekdeals | Aanbiedingen Deze Week Bijgewerkt',
     description: 'Alle Hoogvliet acties en aanbiedingen van deze week — weekdeals op vlees, zuivel en verse producten. Dagelijks bijgewerkt, direct vergelijken zonder folder. Bespaar tot 40%.',
     keywords: 'hoogvliet acties, hoogvliet aanbiedingen, hoogvliet aanbieding deze week, hoogvliet folder, hoogvliet deals, hoogvliet korting, hoogvliet actie, hoogvliet supermarkt aanbieding',
