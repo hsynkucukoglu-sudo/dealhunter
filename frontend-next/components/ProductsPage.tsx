@@ -112,21 +112,37 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
 
   const fuse = useMemo(() => new Fuse(products, {
     keys: [
-      { name: 'name', weight: 0.6 },
-      { name: 'brand', weight: 0.2 },
-      { name: 'market', weight: 0.1 },
-      { name: 'category', weight: 0.1 },
+      { name: 'name', weight: 0.65 },
+      { name: 'brand', weight: 0.25 },
+      { name: 'category', weight: 0.07 },
+      { name: 'market', weight: 0.03 },
     ],
-    threshold: 0.35,
+    threshold: 0.3,
     includeScore: true,
     ignoreLocation: true,
     minMatchCharLength: 2,
   }), [products])
 
-  const autocompleteSuggestions = useMemo(() => {
-    if (searchTerm.length < 2) return []
-    return fuse.search(searchTerm).slice(0, 5).map(r => r.item)
-  }, [searchTerm, fuse])
+  // Zoekrelevantie: producten waarvan de naam of het merk de zoekterm letterlijk
+  // bevat komen eerst, daarna de fuzzy-treffers op score. Voorkomt dat een korte
+  // term als "kip" losse fuzzy-matches (chips, sap) bovenaan zet.
+  const searchProducts = useCallback((term: string): Product[] => {
+    const q = term.trim().toLowerCase()
+    if (q.length < 2) return []
+    return fuse.search(term)
+      .sort((a, b) => {
+        const aHit = `${a.item.name} ${a.item.brand ?? ''}`.toLowerCase().includes(q) ? 0 : 1
+        const bHit = `${b.item.name} ${b.item.brand ?? ''}`.toLowerCase().includes(q) ? 0 : 1
+        if (aHit !== bHit) return aHit - bHit
+        return (a.score ?? 1) - (b.score ?? 1)
+      })
+      .map(r => r.item)
+  }, [fuse])
+
+  const autocompleteSuggestions = useMemo(
+    () => searchProducts(searchTerm).slice(0, 5),
+    [searchTerm, searchProducts]
+  )
 
   const handleInstallPWA = async () => {
     const prompt = deferredPromptRef.current
@@ -187,7 +203,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
   const filteredProducts = useMemo(() => {
     // Use deferred values so filter button clicks feel instant
     const searchPool = deferredSearch
-      ? fuse.search(deferredSearch).map(r => r.item)
+      ? searchProducts(deferredSearch)
       : products
 
     return searchPool.filter((p) => {
@@ -212,7 +228,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         : 0
       return pctB - pctA
     })
-  }, [products, deferredSearch, fuse, deferredCampaignsOnly, deferredMarket, deferredCategory, deferredFavoritesOnly, favorites, deferredCampaign])
+  }, [products, deferredSearch, searchProducts, deferredCampaignsOnly, deferredMarket, deferredCategory, deferredFavoritesOnly, favorites, deferredCampaign])
 
   const potentialSavings = useMemo(() =>
     filteredProducts.reduce((sum, p) => sum + (p.originalPrice > p.discountedPrice ? p.originalPrice - p.discountedPrice : 0), 0)
