@@ -75,8 +75,8 @@ export const MARKETS = [
     slug: 'dirk',
     name: 'Dirk',
     color: '#C8102E',
-    ctaTitle: 'Aanbiedingen Dirk van den Broek | Dirk Folder & Deals Deze Week (Actueel)',
-    description: 'Aanbiedingen Dirk van den Broek en Dirk folder actueel deze week — laagste vleesprijzen van Nederland, scherpe dranken- en groentedeals. Elke aanbieding Dirk van den Broek dagelijks bijgewerkt zonder folder bladeren.',
+    ctaTitle: 'Dirk Aanbiedingen Deze Week | Laagste Vleesprijzen van NL',
+    description: 'Alle Dirk van den Broek aanbiedingen van deze week — vergelijk direct met AH en Jumbo. Laagste vleesprijzen van Nederland, scherpe dranken- en groentedeals. Dagelijks bijgewerkt.',
     keywords: 'aanbiedingen dirk van den broek, dirk van den broek aanbiedingen, aanbieding dirk van den broek, dirkvandenbroek folder, dirk van de broek aanbiedingen, aanbiedingen dirk van de broek, aanbiedingen dirk, dirk aanbiedingen, dirk folder, dirk deals, dirk aanbieding, dirk aanbieding deze week',
   },
   {

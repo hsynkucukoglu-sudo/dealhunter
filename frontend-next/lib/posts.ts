@@ -150,8 +150,8 @@ export const POSTS: BlogPost[] = [
   {
     slug: 'albert-heijn-vs-jumbo-vs-lidl-wie-is-goedkoper',
     relatedMarkets: ['albert-heijn', 'jumbo', 'lidl'],
-    title: 'Is Jumbo Goedkoper dan AH? Jumbo vs Albert Heijn & Lidl Vergelijking 2026',
-    description: 'Is jumbo goedkoper dan AH? Jumbo wint op basisprijs, maar AH slaat terug met bonusacties. Is Lidl goedkoper dan Jumbo en AH? Ja — Lidl is structureel 15-25% goedkoper. Vergelijking van 200+ producten.',
+    title: 'Jumbo vs Albert Heijn vs Lidl: Wie is Goedkoper? (2026)',
+    description: 'Jumbo is gemiddeld 3% goedkoper dan AH op basisprijzen — maar Lidl wint structureel met 15–25% lagere prijzen. Vergelijking van 200+ producten, wekelijks bijgewerkt met actuele aanbiedingen.',
     date: '2026-06-16',
     readTime: 7,
     category: 'Vergelijking',
