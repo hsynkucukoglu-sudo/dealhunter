@@ -8,6 +8,22 @@ export const MARKET_CONTENT: Record<string, string> = {
 <p>De beste deals verschijnen op <strong>woensdag</strong>, wanneer de nieuwe Bonus-week begint. Populaire producten (Coca-Cola, Ariel, Pampers) zijn in de eerste 1-2 dagen vaak uitverkocht. Check DealHunter dagelijks voor de meest actuele AH Bonus-deals, inclusief de exacte kortingspercentages en vervaldatums.</p>
 <h3>AH versus Jumbo en Lidl</h3>
 <p>Albert Heijn is gemiddeld <strong>2-5% duurder dan Jumbo</strong> op basisprijzen, maar compenseert met diepere promoties (1+1 gratis is effectief 50% korting). Vergeleken met Lidl ligt AH zo'n 15-20% hoger in prijs voor huismerken. Via DealHunter zie je direct wanneer AH goedkoper is dan de concurrentie.</p>
+<h3>Bonus aanbiedingen deze week: wat staat er in de Bonus?</h3>
+<p>De <strong>bonus aanbiedingen deze week</strong> bij Albert Heijn omvatten doorgaans 50-80 producten met kortingen van 20-50%. Vaste categorieën in de AH Bonus zijn:</p>
+<ul>
+<li><strong>Vlees & vis:</strong> kipfilet, gehakt en zalm regelmatig met 1+1 gratis of 35% korting</li>
+<li><strong>Zuivel:</strong> kaas, yoghurt en toetjes vaak 2e halve prijs</li>
+<li><strong>Dranken:</strong> frisdrank, bier en sap met diepe weekkortingen (in het BBQ-seizoen extra scherp)</li>
+<li><strong>Verzorging & huishoud:</strong> Ariel, Pampers en tandpasta met procentuele kortingen</li>
+</ul>
+<p>Alle <strong>bonus aanbiedingen</strong> worden hier dagelijks bijgewerkt met het exacte kortingspercentage en de vervaldatum — zo zie je in één overzicht welke AH Bonus deze week de moeite waard is.</p>
+<h3>AH Bonus prijsvoorbeelden</h3>
+<p>Een greep uit veelvoorkomende <strong>AH bonus</strong> deals (exacte prijzen variëren per week):</p>
+<ul>
+<li><strong>Coca-Cola 6x1,5L:</strong> van circa €8,99 voor ongeveer €5,49 in de Bonus</li>
+<li><strong>AH kipfilet (500g):</strong> regelmatig 1+1 gratis — effectief rond €2,25 per pak</li>
+<li><strong>Kaas (jong belegen, 500g):</strong> 2e halve prijs of 30% korting</li>
+</ul>
 `,
 
   'aldi': `

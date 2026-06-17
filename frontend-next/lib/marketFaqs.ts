@@ -29,6 +29,10 @@ export const MARKET_FAQS: Record<string, FAQ[]> = {
       question: 'Hoe lang zijn AH Bonus aanbiedingen geldig?',
       answer: 'Albert Heijn Bonus aanbiedingen zijn doorgaans één week geldig – van woensdag tot en met dinsdag. Sommige acties lopen meerdere weken, en incidenteel zijn er ook dagaanbiedingen. DealHunter toont altijd de vervaldatum per aanbieding, zodat je nooit een deal mist.',
     },
+    {
+      question: 'Wat zijn de bonus aanbiedingen deze week?',
+      answer: 'De bonus aanbiedingen deze week bij Albert Heijn bevatten 50-80 producten met kortingen tot 50% — denk aan 1+1 gratis op vlees, 2e halve prijs op zuivel en procentuele kortingen op dranken en verzorging. De AH Bonus wisselt elke woensdag. Op DealHunter zie je alle actuele bonus aanbiedingen overzichtelijk op één plek, met kortingspercentage en vervaldatum.',
+    },
   ],
   'jumbo': [
     {
