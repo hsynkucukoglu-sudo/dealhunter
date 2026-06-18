@@ -8,9 +8,9 @@
 // O ana kadar her market düz (tracking'siz) link olarak çalışır.
 
 // --- Publisher kimlikleri (onaydan sonra bir kez doldur) ---
-const DAISYCON_MEDIA_ID = '' // Daisycon "si" — media/publisher id'n
-const DAISYCON_WEBSITE_ID = '' // Daisycon "wi" — website id'n (opsiyonel)
-const AWIN_PUBLISHER_ID = '' // Awin "awinaffid" — publisher id'n
+const DAISYCON_MEDIA_ID   = '16070'  // Daisycon "si" — publisher id
+const DAISYCON_WEBSITE_ID = '420902' // Daisycon "wi" — website id
+const AWIN_PUBLISHER_ID   = ''       // Awin "awinaffid" — henüz kullanılmıyor
 
 export type AffiliateNetwork = 'daisycon' | 'awin' | 'direct'
 
@@ -72,7 +72,8 @@ export function getMarketDestination(market: string): string | null {
 
 // Open-redirect koruması: `u` parametresi yalnızca güvenilir host'lara izinli.
 const ALLOWED_AFFILIATE_HOSTS = [
-  'ds1.nl', // Daisycon
+  'ds1.nl',      // Daisycon tracking
+  'jf79.net',    // Daisycon short link (Flink vb.)
   'awin1.com',
   'www.awin1.com', // Awin
   ...Object.values(AFFILIATE_MAP).map((e) => {
