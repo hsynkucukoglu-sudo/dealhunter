@@ -766,6 +766,22 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           </div>
         </section>
 
+        {/* FLINK AFFILIATE BANNER */}
+        <a
+          href="https://jf79.net/c/?si=16070&li=1878997&wi=420902&ws="
+          target="_blank"
+          rel="noopener sponsored"
+          className="flex items-center gap-3 rounded-2xl px-4 py-3 mb-6 transition-opacity hover:opacity-90"
+          style={{ background: 'linear-gradient(90deg, #ff6b00 0%, #ff8c00 100%)', textDecoration: 'none' }}
+        >
+          <span className="text-2xl">🛒</span>
+          <div className="flex-1 min-w-0">
+            <p className="text-white font-bold text-sm leading-tight">Thuis laten bezorgen?</p>
+            <p className="text-orange-100 text-xs">Bestel via Flink — snel en makkelijk</p>
+          </div>
+          <span className="text-white text-xs font-semibold whitespace-nowrap bg-white/20 rounded-full px-3 py-1">Probeer Flink →</span>
+        </a>
+
         {/* TOP 5 DEALS — hemen görünür */}
         {topDeals.length > 0 && searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
           <section className="mb-10">
@@ -1149,7 +1165,9 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
   )
 }
 
-const AD_INTERVAL = 12
+const AD_INTERVAL   = 12
+const FLINK_INTERVAL = 24
+const FLINK_URL      = 'https://jf79.net/c/?si=16070&li=1878997&wi=420902&ws='
 
 function ProductGrid({ products, t, searchTerm = '', fetchError = false, onRetry }: { products: Product[]; t: { noProducts: string; noProductsDesc: string }; searchTerm?: string; fetchError?: boolean; onRetry?: () => void }) {
   if (fetchError) {
@@ -1214,6 +1232,26 @@ function ProductGrid({ products, t, searchTerm = '', fetchError = false, onRetry
       rows.push(
         <div key={`ad-${index}`} className="col-span-2 lg:col-span-3 xl:col-span-4">
           <AdBanner slot="6629568666" format="auto" className="my-2" minHeight={280} />
+        </div>
+      )
+    }
+    if ((index + 1) % FLINK_INTERVAL === 0 && index + 1 < products.length) {
+      rows.push(
+        <div key={`flink-${index}`} className="col-span-2 lg:col-span-3 xl:col-span-4">
+          <a
+            href={FLINK_URL}
+            target="_blank"
+            rel="noopener sponsored"
+            className="flex items-center gap-3 rounded-2xl px-4 py-3 my-2 transition-opacity hover:opacity-90"
+            style={{ background: 'linear-gradient(90deg, #ff6b00 0%, #ff8c00 100%)', textDecoration: 'none' }}
+          >
+            <span className="text-2xl">🛒</span>
+            <div className="flex-1 min-w-0">
+              <p className="text-white font-bold text-sm leading-tight">Wil je deze producten thuis laten bezorgen?</p>
+              <p className="text-orange-100 text-xs">Flink bezorgt boodschappen snel aan huis</p>
+            </div>
+            <span className="text-white text-xs font-semibold whitespace-nowrap bg-white/20 rounded-full px-3 py-1">Probeer Flink →</span>
+          </a>
         </div>
       )
     }
