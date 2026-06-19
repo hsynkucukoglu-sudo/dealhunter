@@ -43,6 +43,8 @@ export function ProductsPage({ initialProducts, initialSearch = '' }: { initialP
   const [showSearchOverlay, setShowSearchOverlay] = useState(false)
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [showFilterPanel, setShowFilterPanel] = useState(false)
+  const [meerBesparenOpen, setMeerBesparenOpen] = useState(false)
+  const [meerBesparenCategory, setMeerBesparenCategory] = useState<string | undefined>()
 const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promise<{ outcome: string }> } | null>(null)
   const heroSearchRef = useRef<HTMLDivElement>(null)
 
@@ -731,17 +733,18 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
               </div>
               <div className="flex flex-wrap items-center gap-1.5 mt-2">
                 {[
-                  { id: 'supermarkt', emoji: '🛒', label: 'Supermarkt', scrollTo: '' },
-                  { id: 'energie',    emoji: '⚡', label: 'Energie',    scrollTo: 'meer-besparen-energie' },
-                  { id: 'reizen',     emoji: '✈️', label: 'Reizen',     scrollTo: 'meer-besparen-reizen' },
-                  { id: 'wonen',      emoji: '🏠', label: 'Wonen',      scrollTo: 'meer-besparen-wonen' },
-                  { id: 'mode',       emoji: '🛍️', label: 'Mode',       scrollTo: 'meer-besparen-mode' },
+                  { id: 'supermarkt', emoji: '🛒', label: 'Supermarkt', category: '' },
+                  { id: 'energie',    emoji: '⚡', label: 'Energie',    category: 'energie' },
+                  { id: 'reizen',     emoji: '✈️', label: 'Reizen',     category: 'reizen' },
+                  { id: 'wonen',      emoji: '🏠', label: 'Wonen',      category: 'wonen' },
+                  { id: 'mode',       emoji: '🛍️', label: 'Mode',       category: 'mode' },
                 ].map(s => (
                   <button
                     key={s.id}
                     onClick={() => {
-                      if (s.scrollTo) {
-                        document.getElementById(s.scrollTo)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                      if (s.category) {
+                        setMeerBesparenCategory(s.category)
+                        setMeerBesparenOpen(true)
                       } else {
                         window.scrollTo({ top: 0, behavior: 'smooth' })
                       }
@@ -901,9 +904,13 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           <CombinatieDealsWidget products={products} />
         )}
 
-        {/* MEER BESPAREN — affiliate partner deals */}
+        {/* MEER BESPAREN — compact trigger + drawer */}
         {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
-          <MeerBesparenWidget />
+          <MeerBesparenWidget
+            open={meerBesparenOpen}
+            onClose={() => { setMeerBesparenOpen(false); setMeerBesparenCategory(undefined) }}
+            activeCategory={meerBesparenCategory}
+          />
         )}
 
         {/* AD — Hero altı */}
