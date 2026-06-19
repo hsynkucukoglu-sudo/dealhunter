@@ -22,6 +22,7 @@ import { NewsletterSignup } from './NewsletterSignup'
 import { trackMarketFilter, trackCategoryFilter, trackCampaignFilter, trackSearch, trackPwaInstall } from '@/lib/analytics'
 import { MarketIndexWidget } from './MarketIndexWidget'
 import { CombinatieDealsWidget } from './CombinatieDealsWidget'
+import { MeerBesparenWidget } from './MeerBesparenWidget'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
@@ -851,6 +852,11 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         {/* COMBINATIE DEALS WIDGET */}
         {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
           <CombinatieDealsWidget products={products} />
+        )}
+
+        {/* MEER BESPAREN — affiliate partner deals */}
+        {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
+          <MeerBesparenWidget />
         )}
 
         {/* AD — Hero altı */}
