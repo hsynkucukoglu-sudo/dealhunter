@@ -10,7 +10,7 @@
 // --- Publisher kimlikleri (onaydan sonra bir kez doldur) ---
 const DAISYCON_MEDIA_ID   = '16070'  // Daisycon "si" — publisher id
 const DAISYCON_WEBSITE_ID = '420902' // Daisycon "wi" — website id
-const AWIN_PUBLISHER_ID   = ''       // Awin "awinaffid" — henüz kullanılmıyor
+const AWIN_PUBLISHER_ID   = '2932569' // Awin "awinaffid"
 
 export type AffiliateNetwork = 'daisycon' | 'awin' | 'direct'
 

@@ -1,5 +1,8 @@
 'use client'
 
+const AW = (mid: number, dest: string) =>
+  `https://www.awin1.com/cread.php?awinmid=${mid}&awinaffid=2932569&ued=${encodeURIComponent(dest)}`
+
 // Daisycon affiliate deals — wi=420902 (website ID), si=advertiser, li=link
 const DEALS = [
   {
@@ -27,11 +30,11 @@ const DEALS = [
         url: 'https://lt45.net/c/?si=924&li=55221&wi=420902',
       },
       {
-        name: 'Oxxio',
-        tagline: 'Stroom & gas',
+        name: 'UnitedConsumers',
+        tagline: 'Energie coöperatie',
         cta: 'Bekijk tarief',
-        color: '#5A2D82',
-        url: 'https://ds1.nl/c/?si=2028&li=119834&wi=420902',
+        color: '#FF6600',
+        url: AW(8311, 'https://www.unitedconsumers.com/energie'),
       },
     ],
   },
@@ -65,6 +68,72 @@ const DEALS = [
         cta: 'Bekijk abonnementen',
         color: '#E4002B',
         url: 'https://lt45.net/c/?si=1174&li=73446&wi=420902',
+      },
+    ],
+  },
+  {
+    category: '🏠 Thuis & Wonen',
+    items: [
+      {
+        name: 'Lampen24',
+        tagline: 'Verlichting & interieur',
+        cta: 'Bekijk aanbod',
+        color: '#F5861B',
+        url: AW(8151, 'https://www.lampen24.nl/'),
+      },
+      {
+        name: 'Diamond Smile',
+        tagline: 'Tandverzorging',
+        cta: 'Bekijk producten',
+        color: '#00B4CC',
+        url: AW(28859, 'https://www.diamondsmile.nl/'),
+      },
+      {
+        name: 'Medpets',
+        tagline: 'Dierenbenodigdheden',
+        cta: 'Bekijk aanbod',
+        color: '#27AE60',
+        url: AW(81519, 'https://www.medpets.nl/'),
+      },
+      {
+        name: 'Refurbished.nl',
+        tagline: 'Refurbished elektronica',
+        cta: 'Bekijk deals',
+        color: '#3B82F6',
+        url: AW(112024, 'https://www.refurbished.nl/'),
+      },
+    ],
+  },
+  {
+    category: '🛍️ Mode & Lifestyle',
+    items: [
+      {
+        name: 'Street-One',
+        tagline: 'Damesmode',
+        cta: 'Bekijk collectie',
+        color: '#C4956A',
+        url: AW(16112, 'https://www.street-one.nl/'),
+      },
+      {
+        name: 'Finbike',
+        tagline: 'E-bikes & fietsen',
+        cta: 'Bekijk fietsen',
+        color: '#007AC2',
+        url: AW(120301, 'https://www.finbike.com/nl/'),
+      },
+      {
+        name: 'Babubas',
+        tagline: 'Babykleding & -spullen',
+        cta: 'Bekijk aanbod',
+        color: '#E879A0',
+        url: AW(119167, 'https://www.babubas.nl/'),
+      },
+      {
+        name: 'Bazta',
+        tagline: 'Schoenen & accessoires',
+        cta: 'Bekijk aanbod',
+        color: '#8B5CF6',
+        url: AW(38874, 'https://www.bazta.nl/'),
       },
     ],
   },
