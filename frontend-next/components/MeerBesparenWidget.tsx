@@ -141,7 +141,7 @@ const DEALS = [
 
 export function MeerBesparenWidget() {
   return (
-    <section className="mb-10">
+    <section id="meer-besparen" className="mb-10">
       <div className="flex items-center gap-2 mb-4">
         <span style={{ fontSize: 18 }}>💡</span>
         <h2
@@ -159,8 +159,14 @@ export function MeerBesparenWidget() {
       </div>
 
       <div className="flex flex-col gap-5">
-        {DEALS.map((group) => (
-          <div key={group.category}>
+        {DEALS.map((group) => {
+          const sectionId =
+            group.category.includes('Energie') ? 'meer-besparen-energie' :
+            group.category.includes('Reizen')  ? 'meer-besparen-reizen'  :
+            group.category.includes('Wonen')   ? 'meer-besparen-wonen'   :
+            group.category.includes('Mode')    ? 'meer-besparen-mode'    : undefined
+          return (
+          <div key={group.category} id={sectionId}>
             <p
               className="text-xs font-bold uppercase tracking-wider mb-2"
               style={{ color: '#9C9389' }}
@@ -207,7 +213,8 @@ export function MeerBesparenWidget() {
               ))}
             </div>
           </div>
-        ))}
+          )
+        })}
       </div>
     </section>
   )

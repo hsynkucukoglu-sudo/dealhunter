@@ -6,9 +6,9 @@ export type Lang = 'nl' | 'en' | 'tr'
 export const translations = {
   nl: {
     weeklyDeals: 'Wekelijkse Aanbiedingen',
-    heroTitle1: 'Supermarkt aanbiedingen',
-    heroTitle2: 'vergelijken',
-    searchPlaceholder: 'Zoek product of supermarkt...',
+    heroTitle1: 'Bespaar op',
+    heroTitle2: 'alles',
+    searchPlaceholder: 'Zoek deals, producten of merken...',
     scanBtn: 'Ontdek Aanbiedingen',
     scanning: 'Bezig...',
     activeProducts: 'actieve producten',
@@ -56,9 +56,9 @@ export const translations = {
   },
   en: {
     weeklyDeals: 'Weekly Deals',
-    heroTitle1: 'Compare supermarket',
-    heroTitle2: 'deals today',
-    searchPlaceholder: 'Search product or supermarket...',
+    heroTitle1: 'Save on',
+    heroTitle2: 'everything',
+    searchPlaceholder: 'Search deals, products or brands...',
     scanBtn: 'Discover Deals',
     scanning: 'Scanning...',
     activeProducts: 'active products',
@@ -106,9 +106,9 @@ export const translations = {
   },
   tr: {
     weeklyDeals: 'Haftalık Fırsatlar',
-    heroTitle1: 'Süpermarket fırsatlarını',
-    heroTitle2: 'karşılaştır',
-    searchPlaceholder: 'Ürün veya market ara...',
+    heroTitle1: 'Her şeyde',
+    heroTitle2: 'tasarruf et',
+    searchPlaceholder: 'Deal, ürün veya marka ara...',
     scanBtn: 'Fırsatları Keşfet',
     scanning: 'Taranıyor…',
     activeProducts: 'aktif ürün',

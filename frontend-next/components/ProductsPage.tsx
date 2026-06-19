@@ -695,15 +695,27 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                 ))}
               </div>
               <div className="flex flex-wrap items-center gap-1.5 mt-2">
-                {(['Albert Heijn', 'Jumbo', 'Lidl', 'Aldi', 'Dirk', 'Hoogvliet', 'Vomar', 'DekaMarkt'] as const).map(m => (
+                {[
+                  { id: 'supermarkt', emoji: '🛒', label: 'Supermarkt', scrollTo: '' },
+                  { id: 'energie',    emoji: '⚡', label: 'Energie',    scrollTo: 'meer-besparen-energie' },
+                  { id: 'reizen',     emoji: '✈️', label: 'Reizen',     scrollTo: 'meer-besparen-reizen' },
+                  { id: 'wonen',      emoji: '🏠', label: 'Wonen',      scrollTo: 'meer-besparen-wonen' },
+                  { id: 'mode',       emoji: '🛍️', label: 'Mode',       scrollTo: 'meer-besparen-mode' },
+                ].map(s => (
                   <button
-                    key={m}
-                    onClick={() => startTransition(() => { setSelectedMarket(m); setShowCampaignsOnly(false); setSelectedCategory('all') })}
-                    className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold transition-all hover:opacity-80"
-                    style={{ background: 'rgba(255,255,255,0.7)', border: `1.5px solid ${MARKET_COLORS[m] || '#C9C1B6'}`, color: '#1A1A1A' }}
+                    key={s.id}
+                    onClick={() => {
+                      if (s.scrollTo) {
+                        document.getElementById(s.scrollTo)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                      } else {
+                        window.scrollTo({ top: 0, behavior: 'smooth' })
+                      }
+                    }}
+                    className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold transition-all hover:scale-105 active:scale-95"
+                    style={{ background: 'rgba(255,255,255,0.8)', border: '1.5px solid rgba(201,193,182,0.5)', color: '#1A1A1A', boxShadow: '0 1px 0 #DDD0C4' }}
                   >
-                    <div className="w-2 h-2 rounded-full flex-none" style={{ background: MARKET_COLORS[m] || '#8C8478' }} />
-                    {m}
+                    <span>{s.emoji}</span>
+                    {s.label}
                   </button>
                 ))}
               </div>
