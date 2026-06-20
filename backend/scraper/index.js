@@ -1255,6 +1255,115 @@ async function scrapeCoop() {
   }
 }
 
+// ─── KRUIDVAT — Spartacus SSR (spartacus-app-state) + OCC product API ────────
+async function scrapeKruidvat() {
+  console.log('🏪 [Kruidvat] kruidvat.nl/aanbiedingen (Spartacus SSR)...')
+  try {
+    // Step 1: SSR HTML → Spartacus app state
+    const res = await fetch('https://www.kruidvat.nl/aanbiedingen', {
+      headers: { ...HEADERS, Accept: 'text/html,application/xhtml+xml,*/*' },
+      signal: AbortSignal.timeout(25000),
+    })
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    const html = await res.text()
+
+    const stateMatch = html.match(/<script id="spartacus-app-state" type="application\/json">([\s\S]*?)<\/script>/)
+    if (!stateMatch) throw new Error('spartacus-app-state bulunamadı')
+
+    const decoded = stateMatch[1]
+      .replace(/&quot;/g, '"')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&#(\d+);/g, (_, c) => String.fromCharCode(Number(c)))
+
+    const state = JSON.parse(decoded)
+    const promoTab = state['promo-tab-dezeweek']
+    if (!promoTab) throw new Error('promo-tab-dezeweek state bulunamadı')
+
+    // Step 2: Extract product tiles (/p/ URLs only — have individual pricing)
+    const allTiles = []
+    for (const tab of promoTab.tabs || []) {
+      for (const cat of tab.categories || []) {
+        allTiles.push(...(cat.promotionTiles || []))
+      }
+    }
+    const productTiles = allTiles.filter(
+      t => t.available && t.localizedURLLink?.includes('/p/')
+    )
+    console.log(`  [Kruidvat] ${allTiles.length} tile → ${productTiles.length} ürün tile'ı`)
+
+    // Step 3: Fetch product details concurrently (10 at a time)
+    const OCC = 'https://api.kruidvat.nl/api/v2/kvn-spa'
+    const kvH = {
+      'User-Agent': UA,
+      Accept: 'application/json',
+      'Accept-Language': 'nl-NL,nl;q=0.9',
+      Referer: 'https://www.kruidvat.nl/aanbiedingen',
+    }
+    const CONCURRENCY = 10
+    const results = []
+
+    for (let i = 0; i < productTiles.length; i += CONCURRENCY) {
+      const batch = productTiles.slice(i, i + CONCURRENCY)
+      const batchRes = await Promise.all(batch.map(async (tile) => {
+        const code = tile.localizedURLLink.match(/\/p\/(\d+)/)?.[1]
+        if (!code) return null
+        try {
+          const r = await fetch(
+            `${OCC}/products/${code}?lang=nl&curr=EUR&fields=FULL`,
+            { headers: kvH, signal: AbortSignal.timeout(10000) }
+          )
+          if (!r.ok) return null
+          const p = await r.json()
+
+          const discountedPrice = p.price?.value
+          if (!discountedPrice || discountedPrice <= 0) return null
+
+          const originalPrice = p.price?.oldValue ?? discountedPrice
+
+          // Image — prefer product API, fall back to SSR tile image
+          const rawImg = p.listImage?.url || p.thumbnailImage?.url || tile.image?.url || null
+          const imageUrl = rawImg
+            ? (rawImg.startsWith('http') ? rawImg : `https://media.kruidvat.nl${rawImg}`)
+            : null
+
+          // Expiry from topPromotion.endDate
+          const endDate = p.topPromotion?.endDate || null
+
+          // Campaign type from topPromotion description or URL slug
+          const promoText = [
+            p.topPromotion?.description || '',
+            p.topPromotion?.badge?.altText || '',
+            tile.title || '',
+            tile.localizedURLLink || '',
+          ].join(' ')
+
+          return {
+            name: p.name || tile.title,
+            discountedPrice,
+            originalPrice: originalPrice > discountedPrice ? originalPrice : discountedPrice,
+            imageUrl,
+            url: `https://www.kruidvat.nl${tile.localizedURLLink}`,
+            expiresAt: endDate ? new Date(endDate).toISOString().split('T')[0] : null,
+            category: null,
+            campaignType: toCampaignType(promoText),
+            isCampaign: true,
+            source: 'kruidvat.nl/aanbiedingen',
+          }
+        } catch { return null }
+      }))
+      results.push(...batchRes.filter(Boolean))
+    }
+
+    console.log(`  [Kruidvat] ✅ ${results.length} ürün`)
+    return results
+  } catch (e) {
+    console.error('[Kruidvat] Hata:', e.message)
+    return []
+  }
+}
+
 // ─── PLUS — OutSystems SPA (Imperva WAF bypass via Preload endpoint) ─────────
 async function scrapePlus() {
   console.log('🏪 [Plus] plus.nl/aanbiedingen (OutSystems API)...')
@@ -1437,8 +1546,9 @@ export async function scrapeFlyerProducts() {
   const deka = await scrapeDekaMarkt()
   const coop = await scrapeCoop()
   const plus = await scrapePlus()
+  const kruidvat = await scrapeKruidvat()
 
-  let all = [...dirk, ...jumbo, ...hoogvliet, ...lidl, ...ah, ...aldi, ...vomar, ...deka, ...coop, ...plus]
+  let all = [...dirk, ...jumbo, ...hoogvliet, ...lidl, ...ah, ...aldi, ...vomar, ...deka, ...coop, ...plus, ...kruidvat]
 
   // Duplicate temizliği
   const seen = new Set()
@@ -1458,10 +1568,10 @@ export async function scrapeFlyerProducts() {
     return { ...p, ...enrichProductMeta(p.name, p.discountedPrice) }
   })
 
-  console.log(`\n✅ Toplam ${all.length} ürün (${dirk.length} Dirk, ${jumbo.length} Jumbo, ${hoogvliet.length} Hoogvliet, ${lidl.length} Lidl, ${ah.length} AH, ${aldi.length} Aldi, ${vomar.length} Vomar, ${deka.length} DekaMarkt, ${coop.length} Coop, ${plus.length} Plus)`)
+  console.log(`\n✅ Toplam ${all.length} ürün (${dirk.length} Dirk, ${jumbo.length} Jumbo, ${hoogvliet.length} Hoogvliet, ${lidl.length} Lidl, ${ah.length} AH, ${aldi.length} Aldi, ${vomar.length} Vomar, ${deka.length} DekaMarkt, ${coop.length} Coop, ${plus.length} Plus, ${kruidvat.length} Kruidvat)`)
 
   // Besparing diagnostics
-  const markets = ['Albert Heijn', 'Aldi', 'Jumbo', 'Lidl', 'Dirk', 'Hoogvliet', 'Vomar', 'DekaMarkt', 'Coop', 'Plus']
+  const markets = ['Albert Heijn', 'Aldi', 'Jumbo', 'Lidl', 'Dirk', 'Hoogvliet', 'Vomar', 'DekaMarkt', 'Coop', 'Plus', 'Kruidvat']
   for (const m of markets) {
     const mAll = all.filter(p => p.market === m)
     const mDiscount = mAll.filter(p => p.originalPrice > p.discountedPrice)

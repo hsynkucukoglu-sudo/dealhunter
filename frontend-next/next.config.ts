@@ -24,6 +24,8 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'web-fileserver.dekamarkt.nl' },
       // Plus (Contentful CDN)
       { protocol: 'https', hostname: 'images.ctfassets.net' },
+      // Kruidvat
+      { protocol: 'https', hostname: 'media.kruidvat.nl' },
     ],
   },
   async redirects() {

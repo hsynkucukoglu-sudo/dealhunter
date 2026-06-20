@@ -131,6 +131,14 @@ export const MARKETS = [
     description: 'Alle PLUS supermarkt aanbiedingen van deze week — weekdeals, verse producten en huishouddeals. Vergelijk direct met AH en Jumbo. Dagelijks bijgewerkt.',
     keywords: 'plus aanbiedingen, plus supermarkt deals, plus aanbieding deze week, plus folder, plus actie, plus korting, plus supermarkt aanbieding, plus weekaanbieding, plus supermarkt',
   },
+  {
+    slug: 'kruidvat',
+    name: 'Kruidvat',
+    color: '#D50032',
+    ctaTitle: 'Kruidvat Aanbiedingen Deze Week | Actuele Kortingen op Drogisterij',
+    description: 'Alle Kruidvat aanbiedingen van deze week — kortingen op drogisterij, beauty, parfum en meer. Dagelijks bijgewerkt.',
+    keywords: 'kruidvat aanbiedingen, kruidvat deals, kruidvat aanbieding deze week, kruidvat folder, kruidvat actie, kruidvat korting, kruidvat drogisterij, kruidvat beauty aanbieding',
+  },
 ]
 
 // Markets shown in navigation, filters, footer and sitemap.
