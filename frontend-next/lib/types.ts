@@ -126,7 +126,7 @@ export const MARKETS = [
   {
     slug: 'plus',
     name: 'Plus',
-    color: '#E2001A',
+    color: '#2D8B35',
     ctaTitle: 'PLUS Aanbiedingen Deze Week | Actuele Deals & Kortingen',
     description: 'Alle PLUS supermarkt aanbiedingen van deze week — weekdeals, verse producten en huishouddeals. Vergelijk direct met AH en Jumbo. Dagelijks bijgewerkt.',
     keywords: 'plus aanbiedingen, plus supermarkt deals, plus aanbieding deze week, plus folder, plus actie, plus korting, plus supermarkt aanbieding, plus weekaanbieding, plus supermarkt',
