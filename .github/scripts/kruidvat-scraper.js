@@ -49,8 +49,15 @@ function toCampaignType(text) {
         allTiles.push(...(cat.promotionTiles || []))
       }
     }
-    const productTiles = allTiles.filter(t => t.available && t.localizedURLLink?.includes('/p/'))
-    console.log(`  ${allTiles.length} tile → ${productTiles.length} ürün tile`)
+    const seenCodes = new Set()
+    const productTiles = allTiles.filter(t => {
+      if (!t.available || !t.localizedURLLink?.includes('/p/')) return false
+      const code = t.localizedURLLink.match(/\/p\/(\d+)/)?.[1]
+      if (!code || seenCodes.has(code)) return false
+      seenCodes.add(code)
+      return true
+    })
+    console.log(`  ${allTiles.length} tile → ${productTiles.length} unieke ürün tile`)
 
     const OCC = 'https://api.kruidvat.nl/api/v2/kvn-spa'
     const kvH = { 'User-Agent': UA, Accept: 'application/json', 'Accept-Language': 'nl-NL,nl;q=0.9', Referer: 'https://www.kruidvat.nl/aanbiedingen' }

@@ -1288,10 +1288,15 @@ async function scrapeKruidvat() {
         allTiles.push(...(cat.promotionTiles || []))
       }
     }
-    const productTiles = allTiles.filter(
-      t => t.available && t.localizedURLLink?.includes('/p/')
-    )
-    console.log(`  [Kruidvat] ${allTiles.length} tile → ${productTiles.length} ürün tile'ı`)
+    const seenCodes = new Set()
+    const productTiles = allTiles.filter(t => {
+      if (!t.available || !t.localizedURLLink?.includes('/p/')) return false
+      const code = t.localizedURLLink.match(/\/p\/(\d+)/)?.[1]
+      if (!code || seenCodes.has(code)) return false
+      seenCodes.add(code)
+      return true
+    })
+    console.log(`  [Kruidvat] ${allTiles.length} tile → ${productTiles.length} unieke ürün tile'ı`)
 
     // Step 3: Fetch product details concurrently (10 at a time)
     const OCC = 'https://api.kruidvat.nl/api/v2/kvn-spa'
