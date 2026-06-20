@@ -1268,6 +1268,12 @@ async function scrapePlus() {
     }
 
     const jar = {}
+    // getSetCookie() Node 18.14+ — daha eski sürümler için raw header fallback
+    const getCookieHeaders = (res) => {
+      if (typeof res.headers.getSetCookie === 'function') return res.headers.getSetCookie()
+      const raw = res.headers.get('set-cookie')
+      return raw ? raw.split(/,(?=[^ ])/) : []
+    }
     const parseCookies = (hdrs) => {
       for (const hdr of hdrs) {
         const [kv] = hdr.split(';')
@@ -1285,10 +1291,11 @@ async function scrapePlus() {
     // Step 1: Preload → Imperva bypass cookies
     const r1 = await fetch(
       'https://www.plus.nl/ECOP_HotCache_Eng/rest/ResourceManagement/Preload?url=https%3A%2F%2Fwww.plus.nl%2Faanbiedingen',
-      { headers: { ...BASE, 'Accept': 'text/html' }, signal: AbortSignal.timeout(15000) }
+      { headers: { ...BASE, 'Accept': 'text/html' }, signal: AbortSignal.timeout(20000) }
     )
+    console.log(`  [Plus] Preload: ${r1.status}, cookies: ${getCookieHeaders(r1).length}`)
     if (!r1.ok) throw new Error(`Preload ${r1.status}`)
-    parseCookies(r1.headers.getSetCookie?.() || [])
+    parseCookies(getCookieHeaders(r1))
 
     // Step 2: AppReady → sets nr2Users cookie with CSRF token
     const r2 = await fetch(
@@ -1300,9 +1307,10 @@ async function scrapePlus() {
         signal: AbortSignal.timeout(15000),
       }
     )
-    parseCookies(r2.headers.getSetCookie?.() || [])
+    parseCookies(getCookieHeaders(r2))
     const csrf = extractCsrf()
-    if (!csrf) throw new Error('CSRF token alınamadı')
+    console.log(`  [Plus] AppReady: ${r2.status}, CSRF: ${csrf ? 'OK' : 'EKSIK'}, jar keys: ${Object.keys(jar).join(',')}`)
+    if (!csrf) throw new Error(`CSRF token alınamadı (AppReady: ${r2.status})`)
 
     // Step 3: Promotions API
     const r3 = await fetch(
