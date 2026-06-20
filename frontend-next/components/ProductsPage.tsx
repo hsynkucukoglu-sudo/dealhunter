@@ -23,6 +23,7 @@ import { trackMarketFilter, trackCategoryFilter, trackCampaignFilter, trackSearc
 import { MarketIndexWidget } from './MarketIndexWidget'
 import { CombinatieDealsWidget } from './CombinatieDealsWidget'
 import { MeerBesparenWidget } from './MeerBesparenWidget'
+import { MarktenShowcase } from './MarktenShowcase'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
@@ -568,11 +569,11 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
       {/* MAIN CONTENT */}
       <main className="max-w-7xl mx-auto px-4 md:px-8 pt-24 pb-32">
 
-        {/* FILTER ROW — markets + categories/campaigns achter "Filters" knop */}
+        {/* FILTER ROW — sadeleştirildi: markten showcase'e taşındı */}
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-2">
           <motion.button whileTap={{ scale: 0.95 }}
             onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setSelectedCampaign('all'); setSelectedCategory('all') })}
-            className={`market-pill flex-none ${selectedMarket === 'all' && !showCampaignsOnly ? 'market-pill-active' : ''}`}>
+            className={`market-pill flex-none ${selectedMarket === 'all' && !showCampaignsOnly && !showFavoritesOnly ? 'market-pill-active' : ''}`}>
             <span className="material-symbols-outlined text-base">bolt</span>
             {t.allMarkets}
           </motion.button>
@@ -591,18 +592,27 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
               {lang === 'tr' ? 'Favoriler' : lang === 'en' ? 'Favorites' : 'Favorieten'}
             </motion.button>
           )}
-          <div className="w-px h-6 flex-none" style={{ background: '#C9C1B6' }} />
-          {availableMarkets.map(market => (
-            <motion.button key={market} whileTap={{ scale: 0.95 }}
-              onClick={() => { trackMarketFilter(market); startTransition(() => { setSelectedMarket(market); setShowCampaignsOnly(false); setSelectedCategory('all') }) }}
-              className={`market-pill flex-none ${selectedMarket === market && !showCampaignsOnly ? 'market-pill-active' : ''}`}>
-              <div className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[9px] font-bold flex-none"
-                style={{ background: MARKET_COLORS[market] || '#6B6259' }}>
-                {getMarketInitial(market)}
+          {/* Seçili market varsa pill olarak göster + temizle butonu */}
+          {selectedMarket !== 'all' && (
+            <>
+              <div className="w-px h-6 flex-none" style={{ background: '#C9C1B6' }} />
+              <div
+                className="market-pill flex-none market-pill-active flex items-center gap-1.5"
+                style={{ background: MARKET_COLORS[selectedMarket] || '#1A1A1A', borderColor: 'transparent', color: 'white' }}
+              >
+                <div className="w-4 h-4 rounded-full flex items-center justify-center bg-white/20 text-[9px] font-bold">
+                  {getMarketInitial(selectedMarket)}
+                </div>
+                {selectedMarket}
+                <button
+                  onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(false) })}
+                  className="ml-0.5 opacity-80 hover:opacity-100"
+                >
+                  <span className="material-symbols-outlined text-sm">close</span>
+                </button>
               </div>
-              {market}
-            </motion.button>
-          ))}
+            </>
+          )}
           <div className="w-px h-6 flex-none" style={{ background: '#C9C1B6' }} />
           <motion.button
             whileTap={{ scale: 0.95 }}
@@ -832,6 +842,14 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           </div>
           <span className="text-white text-xs font-semibold whitespace-nowrap bg-white/20 rounded-full px-3 py-1">Probeer Flink →</span>
         </a>
+
+        {/* MARKTEN SHOWCASE — ana vitrin, sadece default view'da */}
+        {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && !showFavoritesOnly && (
+          <MarktenShowcase
+            products={products}
+            onSelectMarket={(m) => { trackMarketFilter(m); startTransition(() => { setSelectedMarket(m); setShowCampaignsOnly(false); setSelectedCategory('all') }) }}
+          />
+        )}
 
         {/* TOP 5 DEALS — hemen görünür */}
         {topDeals.length > 0 && searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
@@ -1082,19 +1100,20 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         >
           <span className="material-symbols-outlined">local_fire_department</span>
           <span className="font-headline text-[10px] font-bold uppercase">
-            {lang === 'tr' ? 'Kampanya' : lang === 'en' ? 'Deals' : 'Actie'}
+            {lang === 'tr' ? 'Aksiyon' : lang === 'en' ? 'Deals' : 'Actie'}
           </span>
         </button>
         <button
-          onClick={() => setLang(lang === 'nl' ? 'en' : lang === 'en' ? 'tr' : 'nl')}
+          onClick={() => {
+            startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setSelectedCategory('all') })
+            window.scrollTo({ top: 400, behavior: 'smooth' })
+          }}
           className="flex flex-col items-center justify-center p-2 cursor-pointer"
-          style={{ color: '#6B6259' }}
+          style={{ color: selectedMarket !== 'all' ? '#E33D26' : '#6B6259' }}
         >
-          <span style={{ fontSize: 22, lineHeight: 1 }}>
-            {lang === 'nl' ? '🇳🇱' : lang === 'en' ? '🇬🇧' : '🇹🇷'}
-          </span>
-          <span className="font-headline text-[10px] font-bold uppercase mt-0.5">
-            {lang.toUpperCase()}
+          <span className="material-symbols-outlined">store</span>
+          <span className="font-headline text-[10px] font-bold uppercase">
+            {lang === 'tr' ? 'Markten' : lang === 'en' ? 'Stores' : 'Markten'}
           </span>
         </button>
       </nav>
@@ -1116,10 +1135,10 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           </h2>
           <p className="mb-4 leading-relaxed" style={{ color: '#5A534B' }}>
             DealHunter4U verzamelt elke dag automatisch de actuele aanbiedingen van de grootste Nederlandse
-            supermarkten — <strong>Albert Heijn, Jumbo, Lidl, Aldi, Dirk van den Broek, Hoogvliet, Vomar en
-            DekaMarkt</strong> — en zet ze overzichtelijk naast elkaar. Zo zie je in één oogopslag waar jouw
-            boodschappen deze week het goedkoopst zijn, zonder eindeloos folders door te bladeren of tussen apps
-            te wisselen.
+            supermarkten en drogisterijen — <strong>Albert Heijn, Jumbo, Lidl, Aldi, Dirk van den Broek,
+            Hoogvliet, Vomar, DekaMarkt, Coop, Plus en Kruidvat</strong> — en zet ze overzichtelijk naast
+            elkaar. Zo zie je in één oogopslag waar jouw boodschappen en drogisterijaankopen deze week het
+            goedkoopst zijn, zonder eindeloos folders door te bladeren of tussen apps te wisselen.
           </p>
 
           <h3 className="font-headline font-bold mt-8 mb-3" style={{ fontSize: '1.25rem', color: '#1A1A1A' }}>
@@ -1168,8 +1187,8 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             <div>
               <p className="font-bold mb-1" style={{ color: '#1A1A1A' }}>Welke supermarkten staan op DealHunter4U?</p>
               <p className="leading-relaxed" style={{ color: '#5A534B' }}>
-                Op dit moment vergelijken we de aanbiedingen van acht supermarkten: Albert Heijn, Jumbo, Lidl,
-                Aldi, Dirk van den Broek, Hoogvliet, Vomar en DekaMarkt. We breiden het aanbod regelmatig uit.
+                Op dit moment vergelijken we de aanbiedingen van elf winkels: Albert Heijn, Jumbo, Lidl,
+                Aldi, Dirk van den Broek, Hoogvliet, Vomar, DekaMarkt, Coop, Plus en Kruidvat. We breiden het aanbod regelmatig uit.
               </p>
             </div>
             <div>

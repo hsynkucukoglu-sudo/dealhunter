@@ -9,8 +9,8 @@ const HOME_FAQS = [
     answer: 'Ja, DealHunter4U is volledig gratis. Je kunt alle aanbiedingen bekijken, vergelijken en filteren zonder account. Een gratis account geeft je toegang tot favorieten en prijsmeldingen.',
   },
   {
-    question: 'Welke supermarkten staan op DealHunter4U?',
-    answer: 'Op dit moment vergelijken we de aanbiedingen van acht supermarkten: Albert Heijn, Jumbo, Lidl, Aldi, Dirk van den Broek, Hoogvliet, Vomar en DekaMarkt. We breiden het aanbod regelmatig uit.',
+    question: 'Welke supermarkten en winkels staan op DealHunter4U?',
+    answer: 'Op dit moment vergelijken we de aanbiedingen van elf winkels: Albert Heijn, Jumbo, Lidl, Aldi, Dirk van den Broek, Hoogvliet, Vomar, DekaMarkt, Coop, Plus en Kruidvat. We breiden het aanbod regelmatig uit.',
   },
   {
     question: 'Hoe vaak worden de aanbiedingen bijgewerkt?',
