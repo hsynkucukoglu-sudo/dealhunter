@@ -177,14 +177,16 @@ async function postToBackend(products) {
   console.log(`✅ Backend: ${json.count} ürün eklendi`)
 }
 
-try {
-  const products = await scrapePlus()
-  if (products.length === 0) {
-    console.error('❌ Hiç ürün bulunamadı')
+;(async () => {
+  try {
+    const products = await scrapePlus()
+    if (products.length === 0) {
+      console.error('❌ Hiç ürün bulunamadı')
+      process.exit(1)
+    }
+    await postToBackend(products)
+  } catch (e) {
+    console.error('❌ Hata:', e.message)
     process.exit(1)
   }
-  await postToBackend(products)
-} catch (e) {
-  console.error('❌ Hata:', e.message)
-  process.exit(1)
-}
+})()
