@@ -1,0 +1,23 @@
+name: Plus Scraper
+
+on:
+  schedule:
+    # Pazartesi 07:45 UTC (Railway scraper 08:00'den önce)
+    - cron: '45 7 * * 1'
+  workflow_dispatch: # Manuel tetikleme için
+
+jobs:
+  scrape-plus:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Plus scraper
+        env:
+          BACKEND_URL: ${{ secrets.BACKEND_URL }}
+          ADMIN_TOKEN: ${{ secrets.ADMIN_TOKEN }}
+        run: node .github/scripts/plus-scraper.js

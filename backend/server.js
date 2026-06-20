@@ -497,6 +497,41 @@ app.get('/api/compare', asyncHandler(async (req, res) => {
   res.json(rows)
 }))
 
+// POST /api/products/bulk-replace - Belirli bir market'in ürünlerini tamamen değiştirir
+// GitHub Actions gibi harici scraperlar tarafından kullanılır
+app.post('/api/products/bulk-replace', requireAdmin, asyncHandler(async (req, res) => {
+  const { market, products } = req.body
+  if (!market || !Array.isArray(products)) {
+    return res.status(400).json({ error: 'market ve products[] gerekli' })
+  }
+  await clearProductsByMarket(market)
+  const created = []
+  for (const p of products) {
+    if (!p.name || !p.discountedPrice) continue
+    const orig = p.originalPrice || p.discountedPrice
+    const disc = p.discountedPrice
+    const product = await createProduct({
+      id: crypto.randomUUID(),
+      name: p.name,
+      market,
+      originalPrice: orig,
+      discountedPrice: disc,
+      discount: orig > disc ? Math.round((1 - disc / orig) * 100) : 0,
+      imageUrl: p.imageUrl || null,
+      isCampaign: p.isCampaign ?? true,
+      source: p.source || `${market.toLowerCase()}.nl/aanbiedingen`,
+      expiresAt: p.expiresAt || new Date(Date.now() + 7 * 86400000).toISOString().split('T')[0],
+      createdAt: new Date().toISOString(),
+      campaignType: p.campaignType || null,
+      category: p.category || 'overig',
+      brand: p.brand || null,
+    })
+    created.push(product)
+  }
+  console.log(`📦 bulk-replace: ${market} → ${created.length} ürün eklendi`)
+  res.json({ success: true, market, count: created.length })
+}))
+
 // POST /api/scraper/run - Manuel olarak scraper çalıştırır (Arayüzden tetiklendiğinde)
 app.post('/api/scraper/run', requireAdmin, scraperLimit, (req, res) => {
   if (scraperRunning) {
