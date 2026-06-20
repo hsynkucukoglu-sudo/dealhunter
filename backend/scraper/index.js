@@ -1288,12 +1288,29 @@ async function scrapePlus() {
       return m ? m[1] : ''
     }
 
-    // Step 1: Preload → Imperva bypass cookies
+    // Step 1: Imperva bypass cookies — GetCSS ve Preload ikisini de dene
+    const BROWSER_HEADERS = {
+      ...BASE,
+      'sec-ch-ua': '"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',
+      'sec-ch-ua-mobile': '?0',
+      'sec-ch-ua-platform': '"Windows"',
+      'sec-fetch-dest': 'document',
+      'sec-fetch-mode': 'navigate',
+      'sec-fetch-site': 'none',
+      'upgrade-insecure-requests': '1',
+    }
+    const r1css = await fetch(
+      'https://www.plus.nl/ECOP_HotCache_Eng/rest/ResourceManagement/GetCSS',
+      { headers: { ...BROWSER_HEADERS, 'Accept': 'text/plain,*/*' }, signal: AbortSignal.timeout(15000) }
+    ).catch(() => null)
+    if (r1css) parseCookies(getCookieHeaders(r1css))
+    console.log(`  [Plus] GetCSS: ${r1css?.status ?? 'fail'}, cookies: ${Object.keys(jar).length}`)
+
     const r1 = await fetch(
       'https://www.plus.nl/ECOP_HotCache_Eng/rest/ResourceManagement/Preload?url=https%3A%2F%2Fwww.plus.nl%2Faanbiedingen',
-      { headers: { ...BASE, 'Accept': 'text/html' }, signal: AbortSignal.timeout(20000) }
+      { headers: { ...BROWSER_HEADERS, 'Accept': 'text/html,application/xhtml+xml,*/*', 'Cookie': cookieStr() }, signal: AbortSignal.timeout(20000) }
     )
-    console.log(`  [Plus] Preload: ${r1.status}, cookies: ${getCookieHeaders(r1).length}`)
+    console.log(`  [Plus] Preload: ${r1.status}, cookies: ${Object.keys(jar).length}`)
     if (!r1.ok) throw new Error(`Preload ${r1.status}`)
     parseCookies(getCookieHeaders(r1))
 
