@@ -9,8 +9,9 @@ interface Props {
 export function MarketLogo({ market, size = 56, className = '' }: Props) {
   const r = Math.round(size * 0.22)
 
-  const logo = LOGOS[market]
+  const logo = market ? LOGOS[market] : null
   if (!logo) {
+    const label = market ? market.slice(0, 2).toUpperCase() : '?'
     return (
       <div
         className={className}
@@ -21,7 +22,7 @@ export function MarketLogo({ market, size = 56, className = '' }: Props) {
         }}
       >
         <span style={{ color: 'white', fontWeight: 900, fontSize: size * 0.35 }}>
-          {market.slice(0, 2).toUpperCase()}
+          {label}
         </span>
       </div>
     )

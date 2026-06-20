@@ -24,7 +24,7 @@ export function CategoryPage({ category, initialProducts, relatedPosts = [] }: {
   const { itemCount, setIsCartOpen } = useShoppingList()
 
   const { lang } = useLanguage()
-  const markets = useMemo(() => Array.from(new Set(initialProducts.map(p => p.market))).sort(), [initialProducts])
+  const markets = useMemo(() => Array.from(new Set(initialProducts.map(p => p.market).filter(Boolean))).sort(), [initialProducts])
 
   const catLabel = CATEGORY_LABELS[category.id]?.[lang] ?? category.label
 
