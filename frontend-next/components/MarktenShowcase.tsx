@@ -2,6 +2,7 @@
 import React, { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { Product, VISIBLE_MARKETS } from '@/lib/types'
+import { MarketLogo } from './MarketLogo'
 
 interface Props {
   products: Product[]
@@ -53,16 +54,13 @@ export function MarktenShowcase({ products, onSelectMarket }: Props) {
               border: '1.5px solid rgba(201,193,182,0.35)',
             }}
           >
-            {/* Market avatar */}
-            <div
-              className="w-12 h-12 rounded-2xl flex items-center justify-center text-white font-black text-lg shadow-sm group-hover:scale-105 transition-transform"
-              style={{ background: m.color }}
-            >
-              {m.name.slice(0, 2).toUpperCase()}
+            {/* Market logo */}
+            <div className="group-hover:scale-105 transition-transform shadow-sm rounded-2xl overflow-hidden">
+              <MarketLogo market={m.name} size={52} />
             </div>
 
             {/* Market name */}
-            <span className="font-bold text-sm text-center leading-tight" style={{ color: '#1A1A1A' }}>
+            <span className="font-semibold text-xs text-center leading-tight" style={{ color: '#1A1A1A' }}>
               {m.name}
             </span>
 

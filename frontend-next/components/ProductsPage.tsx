@@ -2,7 +2,7 @@
 import React, { useState, useMemo, useEffect, useRef, useCallback, useTransition, useDeferredValue } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Fuse from 'fuse.js'
-import { Product, CATEGORIES, CATEGORY_LABELS, MARKET_COLORS, getMarketInitial } from '@/lib/types'
+import { Product, CATEGORIES, CATEGORY_LABELS, MARKET_COLORS } from '@/lib/types'
 import { ProductCard } from './ProductCard'
 import { ShoppingListSidebar } from './ShoppingListSidebar'
 import { AddProductForm } from './AddProductForm'
@@ -24,6 +24,7 @@ import { MarketIndexWidget } from './MarketIndexWidget'
 import { CombinatieDealsWidget } from './CombinatieDealsWidget'
 import { MeerBesparenWidget } from './MeerBesparenWidget'
 import { MarktenShowcase } from './MarktenShowcase'
+import { MarketLogo } from './MarketLogo'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
@@ -405,12 +406,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                         className="w-full flex items-center gap-3 p-3 rounded-2xl text-left"
                         style={{ background: 'rgba(255,255,255,0.85)', border: '1px solid rgba(201,193,182,0.3)' }}
                       >
-                        <div
-                          className="w-8 h-8 rounded-full flex items-center justify-center text-white text-[10px] font-bold flex-none"
-                          style={{ background: MARKET_COLORS[p.market] || '#6B6259' }}
-                        >
-                          {getMarketInitial(p.market)}
-                        </div>
+                        <MarketLogo market={p.market} size={32} className="flex-none" />
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-semibold truncate" style={{ color: '#1A1A1A' }}>{p.name}</p>
                           <p className="text-xs" style={{ color: '#8C8478' }}>{p.market}</p>
@@ -600,9 +596,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                 className="market-pill flex-none market-pill-active flex items-center gap-1.5"
                 style={{ background: MARKET_COLORS[selectedMarket] || '#1A1A1A', borderColor: 'transparent', color: 'white' }}
               >
-                <div className="w-4 h-4 rounded-full flex items-center justify-center bg-white/20 text-[9px] font-bold">
-                  {getMarketInitial(selectedMarket)}
-                </div>
+                <MarketLogo market={selectedMarket} size={20} />
                 {selectedMarket}
                 <button
                   onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(false) })}
@@ -806,12 +800,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                       onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = '#FAF6F0' }}
                       onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'white' }}
                     >
-                      <div
-                        className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[9px] font-bold flex-none"
-                        style={{ background: MARKET_COLORS[p.market] || '#6B6259' }}
-                      >
-                        {getMarketInitial(p.market)}
-                      </div>
+                      <MarketLogo market={p.market} size={28} className="flex-none" />
                       <span className="flex-1 text-sm font-medium truncate" style={{ color: '#1A1A1A' }}>{p.name}</span>
                       <div className="text-right flex-none">
                         <div className="text-sm font-bold" style={{ color: '#1B9E4B' }}>€{p.discountedPrice.toFixed(2)}</div>
@@ -978,10 +967,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                       onClick={() => setSelectedMarket(market)}
                       className={`market-pill ${selectedMarket === market ? 'market-pill-active' : ''}`}
                     >
-                      <div className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[9px] font-bold flex-none"
-                        style={{ background: MARKET_COLORS[market] || '#6B6259' }}>
-                        {getMarketInitial(market)}
-                      </div>
+                      <MarketLogo market={market} size={22} className="flex-none" />
                       {market}
                     </motion.button>
                   ))}

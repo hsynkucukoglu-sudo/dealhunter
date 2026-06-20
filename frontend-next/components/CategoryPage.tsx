@@ -2,7 +2,8 @@
 import React, { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { Product, CATEGORIES, CATEGORY_LABELS, MARKET_COLORS, getMarketInitial } from '@/lib/types'
+import { Product, CATEGORIES, CATEGORY_LABELS } from '@/lib/types'
+import { MarketLogo } from './MarketLogo'
 import { ProductCard } from './ProductCard'
 import { ShoppingListSidebar } from './ShoppingListSidebar'
 import { LanguageSwitcher } from './LanguageSwitcher'
@@ -118,10 +119,7 @@ export function CategoryPage({ category, initialProducts, relatedPosts = [] }: {
               <motion.button key={m} whileTap={{ scale: 0.95 }}
                 onClick={() => setSelectedMarket(m)}
                 className={`market-pill ${selectedMarket === m ? 'market-pill-active' : ''}`}>
-                <div className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[9px] font-bold flex-none"
-                  style={{ background: MARKET_COLORS[m] || '#6B6259' }}>
-                  {getMarketInitial(m)}
-                </div>
+                <MarketLogo market={m} size={22} className="flex-none" />
                 {m}
               </motion.button>
             ))}
