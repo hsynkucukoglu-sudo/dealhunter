@@ -129,7 +129,7 @@ export function buildHomeDealsSchema(products: Product[]) {
     itemListElement: valid.slice(0, 20).map((p, i) => ({
       '@type': 'ListItem',
       position: i + 1,
-      item: buildSingleProductSchema(p, MARKET_SLUG[p.market] ?? p.market.toLowerCase().replace(/\s+/g, '-')),
+      item: buildSingleProductSchema(p, p.market ? (MARKET_SLUG[p.market] ?? p.market.toLowerCase().replace(/\s+/g, '-')) : 'onbekend'),
     })),
   }
 }
