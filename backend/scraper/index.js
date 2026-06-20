@@ -1411,7 +1411,8 @@ export async function scrapeFlyerProducts() {
   const vomar = await scrapeVomar()
   const deka = await scrapeDekaMarkt()
   const coop = await scrapeCoop()
-  const plus = await scrapePlus()
+  // const plus = await scrapePlus() // TEMPORARILY DISABLED — Imperva WAF 403 on Preload endpoint
+  const plus = []
 
   let all = [...dirk, ...jumbo, ...hoogvliet, ...lidl, ...ah, ...aldi, ...vomar, ...deka, ...coop, ...plus]
 
