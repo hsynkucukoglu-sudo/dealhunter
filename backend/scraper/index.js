@@ -703,10 +703,10 @@ async function scrapeAlbertHeijn() {
     const seenIds = new Set()
     const candidates = []
 
-    // Strateji 1: bonus=true — tüm bonus ürünleri çek (sortOn=DISCOUNT API'den kaldırıldı)
-    for (let page = 0; page < 50; page++) {
+    // Strateji 1: bonus=true — tüm bonus ürünleri çek
+    for (let page = 0; page < 30; page++) {
       const r = await fetch(
-        `https://api.ah.nl/mobile-services/product/search/v2?bonus=true&page=${page}&size=30`,
+        `https://api.ah.nl/mobile-services/product/search/v2?bonus=true&page=${page}&size=50`,
         { headers: h, signal: AbortSignal.timeout(12000) }
       )
       if (!r.ok) { console.log(`  [AH] S1 p${page} HTTP ${r.status}`); break }
@@ -731,18 +731,16 @@ async function scrapeAlbertHeijn() {
         if (!promo) continue
         const imageUrl = p.images?.find(i => i.width === 400)?.url ?? p.images?.[0]?.url ?? null
         const unitInfo = parseAhUnitInfo(p, promo.discountedPrice)
-        
-        // Real expiry date from AH API if available
+
         let expiresAt = EXPIRES_AT
-        if (p.bonus?.endDate) {
-          expiresAt = p.bonus.endDate
-        }
+        if (p.bonus?.endDate) expiresAt = p.bonus.endDate
 
         candidates.push({ ...promo, name: p.title, imageUrl, ...unitInfo, expiresAt })
       }
 
-      // 150 ürün bulduktan sonra dur
-      if (candidates.length >= 150) break
+      // Tüm ürünleri gördüysek dur
+      const totalPages = json.page?.totalPages ?? 999
+      if (page + 1 >= totalPages) break
     }
 
     console.log(`  [AH] S1 (bonus=true): ${seenIds.size} tarandı, ${candidates.length} promosyon`)
@@ -789,13 +787,12 @@ async function scrapeAlbertHeijn() {
     }
 
     candidates.sort((a, b) => (a.discountedPrice / a.originalPrice) - (b.discountedPrice / b.originalPrice))
-    const top = candidates.slice(0, 150)
-    const ahWithDiscount = top.filter(p => p.originalPrice > p.discountedPrice)
+    const ahWithDiscount = candidates.filter(p => p.originalPrice > p.discountedPrice)
     const ahTotalSaving = ahWithDiscount.reduce((s, p) => s + (p.originalPrice - p.discountedPrice), 0)
-    console.log(`  ✅ Albert Heijn: ${top.length} ürün (${top.filter(p => p.imageUrl).length} görsel)`)
-    console.log(`  [AH] 💰 ${ahWithDiscount.length}/${top.length} met korting, totaal €${ahTotalSaving.toFixed(2)} besparing`)
+    console.log(`  ✅ Albert Heijn: ${candidates.length} ürün (${candidates.filter(p => p.imageUrl).length} görsel)`)
+    console.log(`  [AH] 💰 ${ahWithDiscount.length}/${candidates.length} met korting, totaal €${ahTotalSaving.toFixed(2)} besparing`)
 
-    return top.map(p => ({
+    return candidates.map(p => ({
       name: p.name,
       market: 'Albert Heijn',
       originalPrice: p.originalPrice,
