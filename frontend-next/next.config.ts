@@ -22,15 +22,12 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'd3vricquk1sjgf.cloudfront.net' },
       // DekaMarkt
       { protocol: 'https', hostname: 'web-fileserver.dekamarkt.nl' },
+      // Plus (Contentful CDN)
+      { protocol: 'https', hostname: 'images.ctfassets.net' },
     ],
   },
   async redirects() {
     return [
-      {
-        source: '/supermarkt/plus',
-        destination: '/',
-        permanent: true,
-      },
       {
         // Oude platte URL-structuur (404'te) → nieuwe geneste route
         // bv. /blog/beste-deals-week-24-2026 → /blog/beste-deals/week-24-2026
