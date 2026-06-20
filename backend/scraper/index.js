@@ -1255,6 +1255,141 @@ async function scrapeCoop() {
   }
 }
 
+// ─── PLUS — OutSystems SPA (Imperva WAF bypass via Preload endpoint) ─────────
+async function scrapePlus() {
+  console.log('🏪 [Plus] plus.nl/aanbiedingen (OutSystems API)...')
+  try {
+    const UA_PLUS = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
+    const BASE = {
+      'User-Agent': UA_PLUS,
+      'Accept-Language': 'nl-NL,nl;q=0.9',
+      'Origin': 'https://www.plus.nl',
+      'Referer': 'https://www.plus.nl/aanbiedingen',
+    }
+
+    const jar = {}
+    const parseCookies = (hdrs) => {
+      for (const hdr of hdrs) {
+        const [kv] = hdr.split(';')
+        const eq = kv.indexOf('=')
+        if (eq === -1) continue
+        jar[kv.slice(0, eq).trim()] = kv.slice(eq + 1).trim()
+      }
+    }
+    const cookieStr = () => Object.entries(jar).map(([k, v]) => `${k}=${v}`).join('; ')
+    const extractCsrf = () => {
+      const m = decodeURIComponent(jar['nr2Users'] || '').match(/crf=([^;]+)/)
+      return m ? m[1] : ''
+    }
+
+    // Step 1: Preload → Imperva bypass cookies
+    const r1 = await fetch(
+      'https://www.plus.nl/ECOP_HotCache_Eng/rest/ResourceManagement/Preload?url=https%3A%2F%2Fwww.plus.nl%2Faanbiedingen',
+      { headers: { ...BASE, 'Accept': 'text/html' }, signal: AbortSignal.timeout(15000) }
+    )
+    if (!r1.ok) throw new Error(`Preload ${r1.status}`)
+    parseCookies(r1.headers.getSetCookie?.() || [])
+
+    // Step 2: AppReady → sets nr2Users cookie with CSRF token
+    const r2 = await fetch(
+      'https://www.plus.nl/screenservices/ECOP/ActionOnApplicationReady_Server',
+      {
+        method: 'POST',
+        headers: { ...BASE, 'Content-Type': 'application/json; charset=UTF-8', 'OutSystems-locale': 'nl-NL', 'Accept': 'application/json', 'Cookie': cookieStr() },
+        body: JSON.stringify({ versionInfo: { moduleVersion: 'R7vDI3CkqI68dsNzB22EmQ', apiVersion: 'bN+60jDM7pDC4My+lkJRIQ' }, viewName: 'MainFlow.Promotions', screenData: { variables: {} } }),
+        signal: AbortSignal.timeout(15000),
+      }
+    )
+    parseCookies(r2.headers.getSetCookie?.() || [])
+    const csrf = extractCsrf()
+    if (!csrf) throw new Error('CSRF token alınamadı')
+
+    // Step 3: Promotions API
+    const r3 = await fetch(
+      'https://www.plus.nl/screenservices/ECP_Composition_CW/Promotions/Promotion_LP_Content_TF_Optimization/DataActionGetPromotionList_Optimization',
+      {
+        method: 'POST',
+        headers: { ...BASE, 'Content-Type': 'application/json; charset=UTF-8', 'OutSystems-locale': 'nl-NL', 'Accept': 'application/json', 'Cookie': cookieStr(), 'X-CSRFToken': csrf },
+        body: JSON.stringify({
+          versionInfo: { moduleVersion: 'R7vDI3CkqI68dsNzB22EmQ', apiVersion: 'bN+60jDM7pDC4My+lkJRIQ' },
+          viewName: 'MainFlow.Promotions',
+          screenData: {
+            variables: {
+              IsShowData: false, IsPreloadedHTMLActive: false, StoreNumber: 0, StoreChannel: '',
+              PromotionPeriodId: 1, LocalPromotionList: { List: [], EmptyListItem: {} },
+              IsUnderAge: false, ClickDelayValue: 0, ProductCategories: '', PromotionCategories: '',
+              Priority: 0, IsAppendingRecords: false, StartIndex: 0, MaxRecords: 500,
+              IsDesktop: true, IsNextWeekPromotions: false,
+            }
+          },
+        }),
+        signal: AbortSignal.timeout(20000),
+      }
+    )
+    if (!r3.ok) throw new Error(`Promotions API ${r3.status}`)
+
+    const json = await r3.json()
+    if (json.versionInfo?.hasModuleVersionChanged) {
+      console.warn('  ⚠️  Plus: module version değişti — versionInfo güncellenmeli')
+    }
+    const list = json.data?.PromotionOfferList?.List || []
+
+    const results = []
+    const seen = new Set()
+
+    for (const item of list) {
+      const cat = item.Category
+      if (!cat?.Offers?.List) continue
+      const catLabel = cat.CategoryLabel || ''
+
+      for (const offer of cat.Offers.List) {
+        if (offer.IsFreeDeliveryOffer) continue
+
+        const name = (offer.Name?.trim() || offer.Brand?.split(',')[0]?.trim() || '').trim()
+        if (!name) continue
+
+        const newPrice = parseFloat(offer.NewPrice) || 0
+        if (newPrice === 0) continue  // skip bundles/combos without unit price
+
+        const key = `${offer.PromotionID}-${offer.Offer_Id}`
+        if (seen.has(key)) continue
+        seen.add(key)
+
+        const origPrice = parseFloat(offer.PriceOriginal_Highest) || parseFloat(offer.PriceOriginal_Lowest) || 0
+        const label = offer.DisplayInfo_Label || ''
+        const promoLabel = offer.DisplayInfo_PromotionBasedLabel || ''
+        const campaignType = toCampaignType(label) || toCampaignType(promoLabel) || toCampaignType(name)
+
+        let imgUrl = offer.ImageURL || ''
+        if (imgUrl.startsWith('//')) imgUrl = 'https:' + imgUrl
+
+        const slug = offer.Slug || `${offer.PromotionID}-${offer.Offer_Id}`
+
+        results.push({
+          name,
+          brand: offer.Brand?.split(',')[0]?.trim() || undefined,
+          discountedPrice: newPrice,
+          originalPrice: origPrice > newPrice ? origPrice : newPrice,
+          market: 'Plus',
+          imageUrl: imgUrl || null,
+          url: `https://www.plus.nl/aanbiedingen/${slug}`,
+          expiresAt: offer.EndDate || EXPIRES_AT,
+          category: catLabel,
+          campaignType,
+          isCampaign: true,
+          source: 'plus.nl/aanbiedingen',
+        })
+      }
+    }
+
+    console.log(`  ✅ Plus: ${results.length} ürün`)
+    return results
+  } catch (e) {
+    console.error('  ❌ Plus:', e.message)
+    return []
+  }
+}
+
 // ─── ANA FONKSİYON ────────────────────────────────────────────────────────────
 export async function scrapeFlyerProducts() {
   // Hollanda'da çoğu indirim Pazar günü biter. Varsayılan olarak en yakın Pazar'ı bul.
@@ -1276,8 +1411,9 @@ export async function scrapeFlyerProducts() {
   const vomar = await scrapeVomar()
   const deka = await scrapeDekaMarkt()
   const coop = await scrapeCoop()
+  const plus = await scrapePlus()
 
-  let all = [...dirk, ...jumbo, ...hoogvliet, ...lidl, ...ah, ...aldi, ...vomar, ...deka, ...coop]
+  let all = [...dirk, ...jumbo, ...hoogvliet, ...lidl, ...ah, ...aldi, ...vomar, ...deka, ...coop, ...plus]
 
   // Duplicate temizliği
   const seen = new Set()
@@ -1297,10 +1433,10 @@ export async function scrapeFlyerProducts() {
     return { ...p, ...enrichProductMeta(p.name, p.discountedPrice) }
   })
 
-  console.log(`\n✅ Toplam ${all.length} ürün (${dirk.length} Dirk, ${jumbo.length} Jumbo, ${hoogvliet.length} Hoogvliet, ${lidl.length} Lidl, ${ah.length} AH, ${aldi.length} Aldi, ${vomar.length} Vomar, ${deka.length} DekaMarkt, ${coop.length} Coop)`)
+  console.log(`\n✅ Toplam ${all.length} ürün (${dirk.length} Dirk, ${jumbo.length} Jumbo, ${hoogvliet.length} Hoogvliet, ${lidl.length} Lidl, ${ah.length} AH, ${aldi.length} Aldi, ${vomar.length} Vomar, ${deka.length} DekaMarkt, ${coop.length} Coop, ${plus.length} Plus)`)
 
   // Besparing diagnostics
-  const markets = ['Albert Heijn', 'Aldi', 'Jumbo', 'Lidl', 'Dirk', 'Hoogvliet', 'Vomar', 'DekaMarkt', 'Coop']
+  const markets = ['Albert Heijn', 'Aldi', 'Jumbo', 'Lidl', 'Dirk', 'Hoogvliet', 'Vomar', 'DekaMarkt', 'Coop', 'Plus']
   for (const m of markets) {
     const mAll = all.filter(p => p.market === m)
     const mDiscount = mAll.filter(p => p.originalPrice > p.discountedPrice)

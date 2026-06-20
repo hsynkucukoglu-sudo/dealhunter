@@ -42,6 +42,7 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   Vomar: { destinationUrl: 'https://www.vomar.nl/aanbiedingen', network: 'direct', rel: REL },
   DekaMarkt: { destinationUrl: 'https://www.dekamarkt.nl/aanbiedingen', network: 'direct', rel: REL },
   Coop: { destinationUrl: 'https://www.coop.nl/aanbiedingen', network: 'direct', rel: REL },
+  Plus: { destinationUrl: 'https://www.plus.nl/aanbiedingen', network: 'direct', rel: REL },
 }
 
 /** Hedef URL'i yapılandırılmış ağın tracking deeplink'ine sarar. */

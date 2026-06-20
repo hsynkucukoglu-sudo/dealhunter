@@ -121,8 +121,15 @@ export const MARKETS = [
     ctaTitle: 'Coop Aanbiedingen Deze Week | Actuele Deals & Kortingen',
     description: 'Alle Coop supermarkt aanbiedingen van deze week — weekdeals, verse producten en huishouddeals. Dagelijks bijgewerkt zonder app.',
     keywords: 'coop aanbiedingen, coop folder, coop supermarkt deals, coop actie, coop aanbieding deze week, coop korting, coop weekaanbieding',
-    // Coop gebruikt OutSystems SPA — geen server-side data beschikbaar zonder headless browser.
     hidden: true,
+  },
+  {
+    slug: 'plus',
+    name: 'Plus',
+    color: '#E2001A',
+    ctaTitle: 'PLUS Aanbiedingen Deze Week | Actuele Deals & Kortingen',
+    description: 'Alle PLUS supermarkt aanbiedingen van deze week — weekdeals, verse producten en huishouddeals. Vergelijk direct met AH en Jumbo. Dagelijks bijgewerkt.',
+    keywords: 'plus aanbiedingen, plus supermarkt deals, plus aanbieding deze week, plus folder, plus actie, plus korting, plus supermarkt aanbieding, plus weekaanbieding, plus supermarkt',
   },
 ]
 
