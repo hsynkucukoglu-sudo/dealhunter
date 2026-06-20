@@ -73,11 +73,14 @@ export function getMarketDestination(market: string): string | null {
 // Open-redirect koruması: `u` parametresi yalnızca güvenilir host'lara izinli.
 const ALLOWED_AFFILIATE_HOSTS = [
   'ds1.nl',      // Daisycon tracking
-  'lt45.net',    // Daisycon tracking (energie, telecom)
-  'jf79.net',    // Daisycon short link (Flink vb.)
+  'lt45.net',    // Daisycon tracking
+  'jf79.net',    // Daisycon tracking
   'fr135.net',   // Daisycon tracking
   'jdt8.net',    // Daisycon tracking
   'rkn3.net',    // Daisycon tracking
+  'glp8.net',    // Daisycon tracking
+  'bdt9.net',    // Daisycon tracking
+  'dc.budgetthuis.nl', // Budget Thuis direct
   'awin1.com',
   'www.awin1.com', // Awin
   ...Object.values(AFFILIATE_MAP).map((e) => {
