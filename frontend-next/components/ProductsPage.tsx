@@ -212,7 +212,9 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
       ? searchProducts(deferredSearch)
       : products
 
+    const today = new Date(); today.setHours(0, 0, 0, 0)
     return searchPool.filter((p) => {
+      const notExpired = !p.expiresAt || new Date(p.expiresAt) >= today
       const matchesCampaign = deferredCampaignsOnly ? p.isCampaign : true
       const matchesMarket = deferredMarket === 'all' || p.market === deferredMarket
       const matchesCategory = deferredCategory === 'all' || p.category === deferredCategory
@@ -224,7 +226,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           : 0
         return detectCampaignType(p.name, discountPct, p.campaignType).type === deferredCampaign
       })()
-      return matchesCampaign && matchesMarket && matchesCategory && matchesFavorites && matchesCampaignType
+      return notExpired && matchesCampaign && matchesMarket && matchesCategory && matchesFavorites && matchesCampaignType
     }).sort((a, b) => {
       const pctA = a.originalPrice > a.discountedPrice && a.originalPrice > 0
         ? (a.discount || Math.round(((a.originalPrice - a.discountedPrice) / a.originalPrice) * 100))
