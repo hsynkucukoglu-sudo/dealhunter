@@ -511,7 +511,7 @@ app.get('/api/compare', asyncHandler(async (req, res) => {
 // GitHub Actions gibi harici scraperlar tarafından kullanılır
 app.post('/api/products/bulk-replace', requireAdmin, asyncHandler(async (req, res) => {
   const { market, products } = req.body
-  if (!market || !Array.isArray(products)) {
+  if (market === undefined || market === null || !Array.isArray(products)) {
     return res.status(400).json({ error: 'market ve products[] gerekli' })
   }
   // Name-based dedup before insert (prevents race-condition duplicates)
