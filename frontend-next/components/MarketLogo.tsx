@@ -11,13 +11,13 @@ const FILL_LOGOS: Record<string, string> = {
   'Albert Heijn': '/logo-ah.png',
   'Aldi':         '/logo-aldi.png',
   'Kruidvat':     '/logo-kruidvat.png',
+  'Plus':         '/logo-plus.png',
 }
 
 // Yatay / geniş logolar — beyaz arka plan + contain + padding
 const CONTAIN_LOGOS: Record<string, string> = {
   'Lidl':      '/logo-lidl.png',
   'Dirk':      '/logo-dirk.png',
-  'Plus':      '/logo-plus.png',
   'Jumbo':     '/logo-jumbo.png',
   'DekaMarkt': '/logo-deka.png',
   'Hoogvliet': '/Hoogvliet_logo.png',
