@@ -102,9 +102,7 @@ export const MARKETS = [
     ctaTitle: 'Vomar Aanbiedingen Deze Week | Actuele Deals & Folder',
     description: 'Alle Vomar aanbiedingen van deze week — weekacties, verse producten en huishouddeals. Direct van de website, dagelijks bijgewerkt.',
     keywords: 'vomar aanbiedingen, vomar folder, vomar deals, vomar supermarkt, vomar aanbieding deze week, vomar korting, vomar actie, vomar weekaanbieding',
-    // Vomar publiceert weekaanbiedingen alleen als afbeelding (Publitas-folder),
-    // geen gestructureerde prijsdata beschikbaar → verborgen tot er een bron is.
-    hidden: true,
+    // Vomar weekaanbiedingen via Publitas-folder OCR (Publitas search API).
   },
   {
     slug: 'dekamarkt',
