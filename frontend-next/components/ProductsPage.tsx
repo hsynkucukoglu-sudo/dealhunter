@@ -1234,7 +1234,11 @@ const AD_INTERVAL   = 12
 const FLINK_INTERVAL = 24
 const FLINK_URL      = 'https://jf79.net/c/?si=16070&li=1878997&wi=420902&ws='
 
+const PAGE_SIZE = 48
+
 function ProductGrid({ products, t, searchTerm = '', fetchError = false, onRetry }: { products: Product[]; t: { noProducts: string; noProductsDesc: string }; searchTerm?: string; fetchError?: boolean; onRetry?: () => void }) {
+  const [visibleCount, setVisibleCount] = React.useState(PAGE_SIZE)
+  React.useEffect(() => { setVisibleCount(PAGE_SIZE) }, [products])
   if (fetchError) {
     return (
       <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
@@ -1282,8 +1286,11 @@ function ProductGrid({ products, t, searchTerm = '', fetchError = false, onRetry
     )
   }
 
+  const visibleProducts = products.slice(0, visibleCount)
+  const hasMore = visibleCount < products.length
+
   const rows: React.ReactNode[] = []
-  products.forEach((product, index) => {
+  visibleProducts.forEach((product, index) => {
     rows.push(
       <motion.div key={product.id}
         initial={{ opacity: 0, y: index < 8 ? 20 : 0 }}
@@ -1323,8 +1330,21 @@ function ProductGrid({ products, t, searchTerm = '', fetchError = false, onRetry
   })
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-      {rows}
-    </motion.div>
+    <>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        {rows}
+      </motion.div>
+      {hasMore && (
+        <div className="flex justify-center mt-8">
+          <button
+            onClick={() => setVisibleCount(c => c + PAGE_SIZE)}
+            className="px-8 py-3 rounded-full font-bold text-sm transition-all hover:shadow-md active:scale-95"
+            style={{ background: '#1A1A1A', color: 'white' }}
+          >
+            Meer laden ({products.length - visibleCount} resterend)
+          </button>
+        </div>
+      )}
+    </>
   )
 }
