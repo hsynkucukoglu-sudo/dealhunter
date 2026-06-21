@@ -1,5 +1,4 @@
 'use client'
-import Image from 'next/image'
 
 interface Props {
   market: string
@@ -7,14 +6,14 @@ interface Props {
   className?: string
 }
 
-// Kare logolar — beyaz bg yok, fill ile kaplar
+// Kare logolar — fill (cover)
 const FILL_LOGOS: Record<string, string> = {
   'Albert Heijn': '/logo-ah.png',
   'Aldi':         '/logo-aldi.png',
   'Kruidvat':     '/logo-kruidvat.png',
 }
 
-// Yatay / geniş logolar — beyaz arka plan + object-contain + padding
+// Yatay / geniş logolar — beyaz arka plan + contain + padding
 const CONTAIN_LOGOS: Record<string, string> = {
   'Lidl':      '/logo-lidl.png',
   'Dirk':      '/logo-dirk.png',
@@ -36,7 +35,7 @@ export function MarketLogo({ market, size = 56, className = '' }: Props) {
   const fillSrc    = market ? FILL_LOGOS[market]    : null
   const containSrc = market ? CONTAIN_LOGOS[market] : null
 
-  // ── Tam kare logo: kırpılmadan fill ──────────────────────────────────────
+  // ── Kare logo: kırpılmadan fill ──────────────────────────────────────
   if (fillSrc) {
     return (
       <div
@@ -46,16 +45,15 @@ export function MarketLogo({ market, size = 56, className = '' }: Props) {
           borderRadius: r,
           overflow: 'hidden',
           flexShrink: 0,
-          position: 'relative',
         }}
       >
-        <Image
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           src={fillSrc}
           alt={market}
-          fill
-          sizes={`${size}px`}
-          style={{ objectFit: 'cover' }}
-          priority={size >= 40}
+          width={size}
+          height={size}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
         />
       </div>
     )
@@ -63,7 +61,7 @@ export function MarketLogo({ market, size = 56, className = '' }: Props) {
 
   // ── Yatay logo: beyaz kart + padding + contain ────────────────────────────
   if (containSrc) {
-    const pad = Math.round(size * 0.1)
+    const pad = Math.round(size * 0.12)
     return (
       <div
         className={className}
@@ -80,16 +78,12 @@ export function MarketLogo({ market, size = 56, className = '' }: Props) {
           padding: pad,
         }}
       >
-        <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-          <Image
-            src={containSrc}
-            alt={market}
-            fill
-            sizes={`${size}px`}
-            style={{ objectFit: 'contain' }}
-            priority={size >= 40}
-          />
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={containSrc}
+          alt={market}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
+        />
       </div>
     )
   }
