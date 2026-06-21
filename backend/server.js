@@ -3,7 +3,7 @@ import cors from 'cors'
 import rateLimit from 'express-rate-limit'
 import { initDatabase } from './db.js'
 import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, updateProductCategory, clearAllProducts, clearProductsByMarket } from './models.js'
-import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, getMinPriceMap, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts, updateSubscriptionPreferences, getUnsegmentedSubscriptions, getSegmentedSubscriptions, clearOrphanProducts, getProductCount } from './db.js'
+import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, getMinPriceMap, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts, updateSubscriptionPreferences, getUnsegmentedSubscriptions, getSegmentedSubscriptions, clearOrphanProducts, getProductCount, clearExpiredProducts } from './db.js'
 import { sendWeeklyNewsletter, sendWatchlistAlert } from './email.js'
 import { sendPushToAll, sendPushToSubscriptions } from './push.js'
 import { scrapeFlyerProducts } from './scraper/index.js'
@@ -658,10 +658,12 @@ async function startServer() {
     })
     server.setTimeout(600000)
 
-    // Açılışta otomatik tarama — sadece DB boşsa çalıştır (deploy restart'larında birikim önlenir)
+    // Açılışta expired ürünleri temizle + orphan temizle
     setTimeout(async () => {
       try {
         await clearOrphanProducts()
+        const deleted = await clearExpiredProducts()
+        if (deleted > 0) console.log(`🧹 ${deleted} tarihi geçmiş ürün DB'den silindi.`)
         const count = await getProductCount()
         if (count > 100) {
           console.log(`🚀 DB'de ${count} ürün var, açılış taraması atlanıyor.`)

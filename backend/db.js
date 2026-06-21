@@ -400,6 +400,16 @@ export async function clearOrphanProducts() {
   await pool.query("DELETE FROM products WHERE market IS NULL OR market = ''")
 }
 
+export async function clearExpiredProducts() {
+  const res = await pool.query(`
+    DELETE FROM products
+    WHERE "expiresAt" IS NOT NULL
+      AND "expiresAt" != ''
+      AND "expiresAt"::TIMESTAMPTZ < NOW()
+  `)
+  return res.rowCount
+}
+
 export async function getProductCount() {
   const res = await pool.query('SELECT COUNT(*) as count FROM products')
   return parseInt(res.rows[0].count, 10)

@@ -1529,8 +1529,16 @@ async function scrapePlus() {
       }
     }
 
-    console.log(`  ✅ Plus: ${results.length} ürün`)
-    return results
+    // Name-based dedup (Plus API bazen aynı ürünü farklı tile'larda döndürür)
+    const seenNames = new Set()
+    const unique = results.filter(r => {
+      const key = r.name?.toLowerCase().trim()
+      if (!key || seenNames.has(key)) return false
+      seenNames.add(key)
+      return true
+    })
+    console.log(`  ✅ Plus: ${unique.length} ürün (${results.length - unique.length} duplicate elendi)`)
+    return unique
   } catch (e) {
     console.error('  ❌ Plus:', e.message)
     return []
