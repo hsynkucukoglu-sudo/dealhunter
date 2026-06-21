@@ -914,31 +914,50 @@ const VOMAR_PUBLITAS_BASE = 'https://view.publitas.com'
 const VOMAR_NAME_STOP = /\b(?:OP=OP|GRATIS|GIGA|GIGAGANTISCH|GIGAPACK|VOUCHER|BONUS|Prijsvoorbeeld)\b/i
 const VOMAR_LEADING_JUNK = /^(?:(?:Prijsvoorbeeld:|[A-Z0-9%]+)\s+){0,5}/
 
+function vomarCleanName(raw) {
+  let name = raw.replace(/\s+/g, ' ').trim()
+  name = name.replace(VOMAR_LEADING_JUNK, '').trim()
+  const stopIdx = name.search(VOMAR_NAME_STOP)
+  if (stopIdx >= 0) name = name.slice(0, stopIdx).trim()
+  name = name.replace(/\s+\d+[.,]\d{2}\s*[-–]?\s*$/, '').trim()
+  return name.slice(0, 70).trim()
+}
+
 function parseVomarPageText(text) {
   const results = []
-  // Matches: original(dd.dd) optional(OP=OP) discounted(ddd) . product_name
-  const RE = /(\d{1,2}[.,]\d{2})\s+(?:OP=OP\s+)?(\d{3,4})\s*\.\s*((?:(?!\d{1,2}[.,]\d{2}\s+(?:OP=OP\s+)?\d{3}).)+)/g
+
+  // Pattern 1: ORIG_PRICE [OP=OP] DISC_CENTS . product_name
+  // Example: "6.99 499 . G'woon Pindakaas" → orig=6.99 disc=4.99
+  const RE1 = /(\d{1,2}[.,]\d{2})\s+(?:OP=OP\s+)?(\d{3,4})\s*\.\s*((?:(?!\d{1,2}[.,]\d{2}\s+(?:OP=OP\s+)?\d{3}).)+)/g
   let m
-  while ((m = RE.exec(text)) !== null) {
+  while ((m = RE1.exec(text)) !== null) {
     const orig = parseFloat(m[1].replace(',', '.'))
     const disc = parseInt(m[2], 10) / 100
-    let raw = m[3].replace(/\s+/g, ' ').trim()
-    // Strip leading all-caps junk and "Prijsvoorbeeld:" prefix FIRST
-    let name = raw.replace(VOMAR_LEADING_JUNK, '').trim()
-    // Then truncate at promo keywords (now applied to cleaned name)
-    const stopIdx = name.search(VOMAR_NAME_STOP)
-    if (stopIdx >= 0) name = name.slice(0, stopIdx).trim()
-    // Strip trailing orphan prices like "9.69" or "4.99 -"
-    name = name.replace(/\s+\d+[.,]\d{2}\s*[-–]?\s*$/, '').trim()
-    if (!name || name.length < 5) continue
-    if (disc >= orig) continue                 // no real discount
-    if (orig > 50 || disc > 50) continue       // unrealistic grocery price
-    if (orig < 0.2 || disc < 0.1) continue    // too cheap to be real
-    // Must contain at least one lowercase letter (filters out all-caps OCR garbage)
-    if (!/[a-z]/.test(name)) continue
-    // Limit name to first 70 chars to avoid run-on descriptions
-    results.push({ name: name.slice(0, 70).trim(), orig, disc })
+    const name = vomarCleanName(m[3])
+    if (!name || name.length < 5 || !/[a-z]/.test(name)) continue
+    if (disc >= orig || orig > 50 || disc > 50 || orig < 0.2 || disc < 0.1) continue
+    results.push({ name, orig, disc })
   }
+
+  // Pattern 2: N+M GRATIS TOTAL product Per stuk van LOW tot HIGH
+  // Example: "1+1 GRATIS 3.46 Zuivelhoeve... Per stuk van 1.73 tot 2.99"
+  // Example: "2+3 GRATIS 14.95 Dove... Per stuk van 2.99 tot 6.79"
+  const RE2 = /(\d)\+(\d)\s+GRATIS\s+(\d+[.,]\d{2})\s+([\w][^\d]*?)Per\s+stuk\s+van\s+(\d+[.,]\d{2})\s+tot\s+(\d+[.,]\d{2})/g
+  while ((m = RE2.exec(text)) !== null) {
+    const buy = parseInt(m[1], 10)
+    const free = parseInt(m[2], 10)
+    const total = parseFloat(m[3].replace(',', '.'))
+    const rawName = m[4]
+    const priceLow = parseFloat(m[5].replace(',', '.'))
+    const priceHigh = parseFloat(m[6].replace(',', '.'))
+    const disc = Math.round((total / (buy + free)) * 100) / 100
+    const orig = priceHigh
+    const name = vomarCleanName(rawName)
+    if (!name || name.length < 5 || !/[a-z]/.test(name)) continue
+    if (disc >= orig || orig > 50 || disc > 50 || orig < 0.2 || disc < 0.1) continue
+    results.push({ name, orig, disc })
+  }
+
   return results
 }
 
