@@ -904,57 +904,98 @@ async function scrapeAldi() {
   }
 }
 
-// ─── VOMAR — CMS API discount deals endpoint ─────────────────────────────────
-const VOMAR_CDN = 'https://d3vricquk1sjgf.cloudfront.net/articles/'
+// ─── VOMAR — Publitas weekfolder scraper ────────────────────────────────────
+const VOMAR_PUBLITAS_GROUP = 'folder-deze-week'
+const VOMAR_PUBLITAS_BASE = 'https://view.publitas.com'
+
+// Parse discounted products from Publitas OCR page text.
+// Format in PDF pages: "ORIG_PRICE DISC_CENTS . Product name ..."
+// where DISC_CENTS is 3-4 digits without decimal (399 = €3.99, 1499 = €14.99)
+const VOMAR_NAME_STOP = /\b(?:OP=OP|GRATIS|GIGA|GIGAGANTISCH|GIGAPACK|VOUCHER|BONUS|Prijsvoorbeeld)\b/i
+const VOMAR_LEADING_JUNK = /^(?:(?:Prijsvoorbeeld:|[A-Z0-9%]+)\s+){0,5}/
+
+function parseVomarPageText(text) {
+  const results = []
+  // Matches: original(dd.dd) optional(OP=OP) discounted(ddd) . product_name
+  const RE = /(\d{1,2}[.,]\d{2})\s+(?:OP=OP\s+)?(\d{3,4})\s*\.\s*((?:(?!\d{1,2}[.,]\d{2}\s+(?:OP=OP\s+)?\d{3}).)+)/g
+  let m
+  while ((m = RE.exec(text)) !== null) {
+    const orig = parseFloat(m[1].replace(',', '.'))
+    const disc = parseInt(m[2], 10) / 100
+    let raw = m[3].replace(/\s+/g, ' ').trim()
+    // Strip leading all-caps junk and "Prijsvoorbeeld:" prefix FIRST
+    let name = raw.replace(VOMAR_LEADING_JUNK, '').trim()
+    // Then truncate at promo keywords (now applied to cleaned name)
+    const stopIdx = name.search(VOMAR_NAME_STOP)
+    if (stopIdx >= 0) name = name.slice(0, stopIdx).trim()
+    // Strip trailing orphan prices like "9.69" or "4.99 -"
+    name = name.replace(/\s+\d+[.,]\d{2}\s*[-–]?\s*$/, '').trim()
+    if (!name || name.length < 5) continue
+    if (disc >= orig) continue                 // no real discount
+    if (orig > 50 || disc > 50) continue       // unrealistic grocery price
+    if (orig < 0.2 || disc < 0.1) continue    // too cheap to be real
+    // Must contain at least one lowercase letter (filters out all-caps OCR garbage)
+    if (!/[a-z]/.test(name)) continue
+    // Limit name to first 70 chars to avoid run-on descriptions
+    results.push({ name: name.slice(0, 70).trim(), orig, disc })
+  }
+  return results
+}
 
 async function scrapeVomar() {
-  console.log('🏪 [Vomar] CMS discount deals API...')
+  console.log('🏪 [Vomar] Publitas weekfolder...')
   try {
-    const res = await fetch('https://api.vomar.nl/api/v1/article/getAllDiscountDealArticles', {
-      headers: {
-        ...HEADERS,
-        'Origin': 'https://www.vomar.nl',
-        'Referer': 'https://www.vomar.nl/discount-deals',
-      },
-      signal: AbortSignal.timeout(15000),
+    // Follow redirect to get current publication slug
+    const redirectRes = await fetch(`${VOMAR_PUBLITAS_BASE}/${VOMAR_PUBLITAS_GROUP}`, {
+      redirect: 'manual',
+      signal: AbortSignal.timeout(10000),
     })
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    const products = await res.json()
+    const location = redirectRes.headers.get('location') || ''
+    const parts = location.replace(/\/+$/, '').split('/')
+    const pubSlug = parts[parts.length - 1]
+    if (!pubSlug) throw new Error('Could not resolve current Publitas publication')
+    const pubBase = `${VOMAR_PUBLITAS_BASE}/${VOMAR_PUBLITAS_GROUP}/${pubSlug}`
+    console.log(`  📖 Vomar folder: ${pubSlug}`)
 
-    if (!Array.isArray(products) || products.length === 0) {
-      console.log('  ℹ️  Vomar: geen actieve discount deals')
-      return []
+    // Collect page text via search (multiple queries to maximize coverage)
+    const SEARCH_QUERIES = ['OP', 'de', 'van', 'gram', 'kilo', 'GRATIS', 'prijs', 'liter', 'stuks']
+    const pageTexts = {}
+    for (const q of SEARCH_QUERIES) {
+      const sRes = await fetch(
+        `${pubBase}/search?q=${encodeURIComponent(q)}&format=json&per_page=50`,
+        { headers: HEADERS, signal: AbortSignal.timeout(10000) }
+      )
+      if (!sRes.ok) continue
+      const sData = await sRes.json()
+      for (const hit of sData.hits || []) {
+        const pg = hit.fields?.page_number
+        if (pg && !pageTexts[pg]) pageTexts[pg] = hit.fields.contents || ''
+      }
     }
+    const pageCount = Object.keys(pageTexts).length
+    console.log(`  📄 ${pageCount} pagina's gevonden`)
 
-    const results = []
+    // Parse products from all pages
     const seen = new Set()
-
-    for (const p of products) {
-      const name = (p.description || '').trim()
-      if (!name || seen.has(name.toLowerCase())) continue
-      seen.add(name.toLowerCase())
-
-      const discountedPrice = parseFloat(p.price) || 0
-      if (!discountedPrice) continue
-
-      const rawDefault = parseFloat(p.priceDefaultAmount) || 0
-      const originalPrice = rawDefault > discountedPrice * 100
-        ? rawDefault / 1000
-        : rawDefault || discountedPrice
-
-      const imgFile = p.images?.[0]?.imageUrl || null
-      results.push({
-        name,
-        market: 'Vomar',
-        originalPrice: originalPrice > discountedPrice ? originalPrice : discountedPrice,
-        discountedPrice,
-        imageUrl: imgFile ? `${VOMAR_CDN}${imgFile}?width=400&height=400&mode=crop` : null,
-        isCampaign: true,
-        source: 'vomar.nl/discount-deals',
-        expiresAt: EXPIRES_AT,
-        campaignType: toCampaignType(name),
-        brand: p.brand || null,
-      })
+    const results = []
+    for (const text of Object.values(pageTexts)) {
+      for (const { name, orig, disc } of parseVomarPageText(text)) {
+        const key = name.toLowerCase().slice(0, 30)
+        if (seen.has(key)) continue
+        seen.add(key)
+        results.push({
+          name,
+          market: 'Vomar',
+          originalPrice: orig,
+          discountedPrice: disc,
+          imageUrl: null,
+          isCampaign: true,
+          source: `vomar.nl/weekfolder`,
+          expiresAt: EXPIRES_AT,
+          campaignType: toCampaignType(name),
+          brand: null,
+        })
+      }
     }
 
     const withSavings = results.filter(r => r.originalPrice > r.discountedPrice)
