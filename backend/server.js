@@ -261,11 +261,12 @@ async function runScraperJob() {
       await clearProductsByMarket(market)
     }
 
-    // Name-based dedup before insert (global scraper already deduped by name, but extra safety)
+    // Drop products without market name + name-based dedup per market
     const insertSeen = new Set()
     const insertProducts = newProducts.filter(p => {
-      const key = `${p.market}:${p.name?.toLowerCase().trim()}`
-      if (!key || insertSeen.has(key)) return false
+      if (!p.market || !p.name) return false
+      const key = `${p.market}:${p.name.toLowerCase().trim()}`
+      if (insertSeen.has(key)) return false
       insertSeen.add(key)
       return true
     })
