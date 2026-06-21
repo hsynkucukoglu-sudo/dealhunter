@@ -261,9 +261,18 @@ async function runScraperJob() {
       await clearProductsByMarket(market)
     }
 
+    // Name-based dedup before insert (global scraper already deduped by name, but extra safety)
+    const insertSeen = new Set()
+    const insertProducts = newProducts.filter(p => {
+      const key = `${p.market}:${p.name?.toLowerCase().trim()}`
+      if (!key || insertSeen.has(key)) return false
+      insertSeen.add(key)
+      return true
+    })
+
     // Bulunan ürünleri veritabanına ekle (NaN fiyatlıları atla)
     const createdProducts = []
-    for (const p of newProducts) {
+    for (const p of insertProducts) {
       const orig = parseFloat(p.originalPrice)
       const disc = parseFloat(p.discountedPrice)
       if (isNaN(orig) || isNaN(disc) || disc <= 0) continue
@@ -504,9 +513,17 @@ app.post('/api/products/bulk-replace', requireAdmin, asyncHandler(async (req, re
   if (!market || !Array.isArray(products)) {
     return res.status(400).json({ error: 'market ve products[] gerekli' })
   }
+  // Name-based dedup before insert (prevents race-condition duplicates)
+  const seenNames = new Set()
+  const uniqueProducts = products.filter(p => {
+    const key = p.name?.toLowerCase().trim()
+    if (!key || seenNames.has(key)) return false
+    seenNames.add(key)
+    return true
+  })
   await clearProductsByMarket(market)
   const created = []
-  for (const p of products) {
+  for (const p of uniqueProducts) {
     if (!p.name || !p.discountedPrice) continue
     const orig = p.originalPrice || p.discountedPrice
     const disc = p.discountedPrice
@@ -640,7 +657,7 @@ async function startServer() {
     })
     server.setTimeout(600000)
 
-    // Açılışta otomatik tarama — 5 sn bekle ki sunucu tam ayağa kalksın
+    // Açılışta otomatik tarama — 3 dk bekle (Railway rolling deploy tamamlansın, eski process kapansın)
     setTimeout(async () => {
       try {
         console.log('🚀 Açılış taraması başlatılıyor...')
@@ -648,7 +665,7 @@ async function startServer() {
       } catch (e) {
         console.error('❌ Açılış tarama hatası:', e.message)
       }
-    }, 5000)
+    }, 180000)
 
   } catch (error) {
     console.error('❌ Başlatma hatası:', error)
