@@ -3,7 +3,7 @@ import cors from 'cors'
 import rateLimit from 'express-rate-limit'
 import { initDatabase } from './db.js'
 import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, updateProductCategory, clearAllProducts, clearProductsByMarket } from './models.js'
-import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, getMinPriceMap, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts, updateSubscriptionPreferences, getUnsegmentedSubscriptions, getSegmentedSubscriptions } from './db.js'
+import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, getMinPriceMap, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts, updateSubscriptionPreferences, getUnsegmentedSubscriptions, getSegmentedSubscriptions, clearOrphanProducts, getProductCount } from './db.js'
 import { sendWeeklyNewsletter, sendWatchlistAlert } from './email.js'
 import { sendPushToAll, sendPushToSubscriptions } from './push.js'
 import { scrapeFlyerProducts } from './scraper/index.js'
@@ -658,15 +658,21 @@ async function startServer() {
     })
     server.setTimeout(600000)
 
-    // Açılışta otomatik tarama — 3 dk bekle (Railway rolling deploy tamamlansın, eski process kapansın)
+    // Açılışta otomatik tarama — sadece DB boşsa çalıştır (deploy restart'larında birikim önlenir)
     setTimeout(async () => {
       try {
-        console.log('🚀 Açılış taraması başlatılıyor...')
+        await clearOrphanProducts()
+        const count = await getProductCount()
+        if (count > 100) {
+          console.log(`🚀 DB'de ${count} ürün var, açılış taraması atlanıyor.`)
+          return
+        }
+        console.log('🚀 DB boş, açılış taraması başlatılıyor...')
         await runScraperJob()
       } catch (e) {
         console.error('❌ Açılış tarama hatası:', e.message)
       }
-    }, 180000)
+    }, 10000)
 
   } catch (error) {
     console.error('❌ Başlatma hatası:', error)

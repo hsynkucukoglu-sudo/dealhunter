@@ -396,6 +396,15 @@ export async function clearProductsByMarket(market) {
   await pool.query('DELETE FROM products WHERE market = $1', [market])
 }
 
+export async function clearOrphanProducts() {
+  await pool.query("DELETE FROM products WHERE market IS NULL OR market = ''")
+}
+
+export async function getProductCount() {
+  const res = await pool.query('SELECT COUNT(*) as count FROM products')
+  return parseInt(res.rows[0].count, 10)
+}
+
 export async function upsertUserEmail(userId, email) {
   await pool.query(
     `INSERT INTO user_emails (user_id, email)
