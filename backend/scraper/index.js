@@ -1017,6 +1017,23 @@ async function scrapeVomar() {
       }
     }
 
+    // Open Food Facts — product images by name (max 1 req/sec)
+    for (const p of results) {
+      try {
+        await new Promise(r => setTimeout(r, 600))
+        const q = p.name.replace(/[^a-zA-Z\s]/g, ' ').split(/\s+/).filter(w => w.length > 2).slice(0, 3).join(' ')
+        if (!q) continue
+        const offRes = await fetch(
+          `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(q)}&search_simple=1&action=process&json=1&page_size=3`,
+          { headers: { 'User-Agent': 'DealHunter4U/1.0 (hsyn.kucukoglu@gmail.com)', 'Accept': 'application/json' }, signal: AbortSignal.timeout(8000) }
+        )
+        if (!offRes.ok) continue
+        const offData = await offRes.json()
+        const img = offData.products?.[0]?.image_front_small_url || offData.products?.[0]?.image_small_url || null
+        if (img) p.imageUrl = img
+      } catch { /* geen afbeelding, geen probleem */ }
+    }
+
     const withSavings = results.filter(r => r.originalPrice > r.discountedPrice)
     console.log(`  ✅ Vomar: ${results.length} ürün (${withSavings.length} met besparing)`)
     return results

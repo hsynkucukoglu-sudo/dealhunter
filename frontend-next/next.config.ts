@@ -26,6 +26,9 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'images.ctfassets.net' },
       // Kruidvat
       { protocol: 'https', hostname: 'media.kruidvat.nl' },
+      // Open Food Facts
+      { protocol: 'https', hostname: 'images.openfoodfacts.org' },
+      { protocol: 'https', hostname: 'static.openfoodfacts.org' },
     ],
   },
   async redirects() {
