@@ -11,18 +11,21 @@ const FILL_LOGOS: Record<string, string> = {
   'Albert Heijn': '/logo-ah.png',
   'Aldi':         '/logo-aldi.png',
   'Kruidvat':     '/logo-kruidvat.png',
-  'Plus':         '/logo-plus.png',
 }
 
 // Yatay / geniş logolar — beyaz arka plan + contain + padding
 const CONTAIN_LOGOS: Record<string, string> = {
   'Lidl':      '/logo-lidl.png',
   'Dirk':      '/logo-dirk.png',
+  'Plus':      '/logo-plus.png',
   'Jumbo':     '/logo-jumbo.png',
   'DekaMarkt': '/logo-deka.png',
   'Hoogvliet': '/Hoogvliet_logo.png',
   'Vomar':     '/logo-vomar.png',
 }
+
+// Daha az padding isteyen logolar (varsayılan %12 yerine %4)
+const TIGHT_LOGOS = new Set(['Plus'])
 
 // Logo dosyası olmayan marketler için marka rengi
 const FALLBACK_COLOR: Record<string, string> = {
@@ -61,7 +64,7 @@ export function MarketLogo({ market, size = 56, className = '' }: Props) {
 
   // ── Yatay logo: beyaz kart + padding + contain ────────────────────────────
   if (containSrc) {
-    const pad = Math.round(size * 0.12)
+    const pad = Math.round(size * (TIGHT_LOGOS.has(market) ? 0.04 : 0.12))
     return (
       <div
         className={className}
