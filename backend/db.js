@@ -32,24 +32,15 @@ export async function initDatabase() {
   await pool.query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS "fullSizeLabel" TEXT`)
   await pool.query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS "campaignType" TEXT`)
   await pool.query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS "affiliate_url" TEXT`)
-  // Mevcut duplicate'leri temizle (unique index oluşturmadan önce)
+  // Mevcut duplicate'leri temizle (market+name bazlı, en yeni kaydı koru)
   await pool.query(`
-    DELETE FROM products WHERE id IN (
-      SELECT id FROM (
-        SELECT id, ROW_NUMBER() OVER (
-          PARTITION BY market, LOWER(TRIM(name))
-          ORDER BY "createdAt" DESC
-        ) AS rn
-        FROM products
-        WHERE market IS NOT NULL AND name IS NOT NULL
-      ) t WHERE rn > 1
-    )
-  `)
-  // DB-level duplicate prevention: (market, lowercase name) unique index
-  await pool.query(`
-    CREATE UNIQUE INDEX IF NOT EXISTS idx_products_market_name
-    ON products (market, LOWER(TRIM(name)))
-    WHERE market IS NOT NULL AND name IS NOT NULL
+    DELETE FROM products a
+    USING products b
+    WHERE a.ctid < b.ctid
+      AND a.market = b.market
+      AND LOWER(TRIM(a.name)) = LOWER(TRIM(b.name))
+      AND a.market IS NOT NULL
+      AND a.name IS NOT NULL
   `)
   await pool.query(`
     CREATE TABLE IF NOT EXISTS push_subscriptions (
@@ -373,8 +364,7 @@ export async function getProduct(id) {
 export async function createProduct(product) {
   await pool.query(
     `INSERT INTO products (id, name, market, "originalPrice", "discountedPrice", discount, "imageUrl", "isCampaign", source, "expiresAt", "createdAt", category, brand, "unitSize", "unitType", "unitPrice", "fullSizeLabel", "campaignType", "affiliate_url")
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
-     ON CONFLICT DO NOTHING`,
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)`,
     [
       product.id, product.name, product.market,
       product.originalPrice, product.discountedPrice, product.discount,
