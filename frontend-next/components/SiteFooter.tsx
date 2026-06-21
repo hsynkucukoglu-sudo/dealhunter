@@ -87,6 +87,11 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
+                <Link href="/over-ons" className="text-sm hover:text-white transition-colors" style={{ color: '#9C9389' }}>
+                  Over ons
+                </Link>
+              </li>
+              <li>
                 <Link href="/contact" className="text-sm hover:text-white transition-colors" style={{ color: '#9C9389' }}>
                   Contact
                 </Link>
