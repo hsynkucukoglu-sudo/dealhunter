@@ -7,18 +7,18 @@ interface Props {
   className?: string
 }
 
-// Tam dolu (kare/kareye yakın) logolar — beyaz kenarlık olmadan fill edilir
+// Kare logolar — beyaz bg yok, fill ile kaplar
 const FILL_LOGOS: Record<string, string> = {
   'Albert Heijn': '/logo-ah.png',
   'Aldi':         '/logo-aldi.png',
-  'Lidl':         '/logo-lidl.png',
-  'Dirk':         '/logo-dirk.png',
-  'Plus':         '/logo-plus.png',
   'Kruidvat':     '/logo-kruidvat.png',
 }
 
 // Yatay / geniş logolar — beyaz arka plan + object-contain + padding
 const CONTAIN_LOGOS: Record<string, string> = {
+  'Lidl':      '/logo-lidl.png',
+  'Dirk':      '/logo-dirk.png',
+  'Plus':      '/logo-plus.png',
   'Jumbo':     '/logo-jumbo.png',
   'DekaMarkt': '/logo-deka.png',
   'Hoogvliet': '/Hoogvliet_logo.png',

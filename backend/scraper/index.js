@@ -1361,8 +1361,16 @@ async function scrapeKruidvat() {
       results.push(...batchRes.filter(Boolean))
     }
 
-    console.log(`  [Kruidvat] ✅ ${results.length} ürün`)
-    return results
+    // Name-based dedup — different codes can resolve to the same product name
+    const seenNames = new Set()
+    const unique = results.filter(r => {
+      const key = r.name?.toLowerCase().trim()
+      if (!key || seenNames.has(key)) return false
+      seenNames.add(key)
+      return true
+    })
+    console.log(`  [Kruidvat] ✅ ${results.length} ürün → ${unique.length} uniek na naam-dedup`)
+    return unique
   } catch (e) {
     console.error('[Kruidvat] Hata:', e.message)
     return []

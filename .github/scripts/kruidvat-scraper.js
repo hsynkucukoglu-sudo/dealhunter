@@ -96,13 +96,21 @@ function toCampaignType(text) {
       products.push(...valid)
       process.stdout.write(`\r  Batch ${Math.floor(i/CONCURRENCY)+1}/${Math.ceil(productTiles.length/CONCURRENCY)}: ${products.length} ürün`)
     }
-    console.log(`\n  ✅ ${products.length} ürün toplandı`)
+    // Name-based dedup — different codes can resolve to the same product name
+    const seenNames = new Set()
+    const unique = products.filter(p => {
+      const key = p.name?.toLowerCase().trim()
+      if (!key || seenNames.has(key)) return false
+      seenNames.add(key)
+      return true
+    })
+    console.log(`\n  ✅ ${products.length} ürün → ${unique.length} uniek na naam-dedup`)
 
     console.log(`\n📤 Railway'e gönderiliyor...`)
     const postRes = await fetch(`${BACKEND_URL}/api/products/bulk-replace`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${ADMIN_TOKEN}` },
-      body: JSON.stringify({ market: 'Kruidvat', products }),
+      body: JSON.stringify({ market: 'Kruidvat', products: unique }),
     })
     const json = await postRes.json()
     if (!postRes.ok) throw new Error(`Backend: ${JSON.stringify(json)}`)
