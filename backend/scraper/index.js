@@ -1550,8 +1550,8 @@ export async function scrapeFlyerProducts() {
   // Hollanda'da çoğu indirim Pazar günü biter. Varsayılan olarak en yakın Pazar'ı bul.
   const now = new Date()
   const sunday = new Date(now)
-  sunday.setDate(now.getDate() + (7 - now.getDay()) % 7)
-  if (now.getDay() === 0 && now.getHours() > 18) sunday.setDate(sunday.getDate() + 7) // Pazar akşamıysa gelecek Pazar
+  const daysUntilSunday = now.getDay() === 0 ? 7 : (7 - now.getDay()) % 7
+  sunday.setDate(now.getDate() + daysUntilSunday)
   EXPIRES_AT = sunday.toISOString().split('T')[0]
 
   console.log(`🔍 Fetch-only scraper başlatılıyor... (Varsayılan bitiş: ${EXPIRES_AT})`)
