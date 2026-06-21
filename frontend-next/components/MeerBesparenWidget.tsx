@@ -10,10 +10,20 @@ const DEALS = [
     id: 'energie',
     category: '⚡ Energie',
     items: [
-      { name: 'ENGIE',         tagline: 'Gas & stroom vergelijken', cta: 'Bekijk tarief', color: '#0064A8', url: 'https://ds1.nl/c/?si=365&li=20757&wi=420902' },
-      { name: 'Frank Energie', tagline: 'Goedkoop & transparant',   cta: 'Bekijk tarief', color: '#00C853', url: 'https://jf79.net/c/?si=16978&li=1731992&wi=420902' },
-      { name: 'Oxxio',         tagline: 'Vaste lage tarieven',      cta: 'Bekijk tarief', color: '#E4002B', url: 'https://ds1.nl/c/?si=2028&li=119834&wi=420902' },
-      { name: 'Budget Thuis',  tagline: 'Energie + internet bundel', cta: 'Bekijk tarief', color: '#0070B8', url: 'https://dc.budgetthuis.nl/c/?si=9946&li=1444680&wi=420902' },
+      { name: 'ENGIE',       tagline: 'Gas & stroom vergelijken', cta: 'Bekijk tarief', color: '#0064A8', url: 'https://ds1.nl/c/?si=365&li=20757&wi=420902' },
+      { name: 'Vattenfall',  tagline: 'Groen & betrouwbaar',      cta: 'Bekijk tarief', color: '#1B6B3A', url: 'https://lt45.net/c/?si=2036&li=119986&wi=420902' },
+      { name: 'Oxxio',       tagline: 'Vaste lage tarieven',      cta: 'Bekijk tarief', color: '#E4002B', url: 'https://ds1.nl/c/?si=2028&li=119834&wi=420902' },
+      { name: 'Pure Energie', tagline: 'Goedkoop & transparant',  cta: 'Bekijk tarief', color: '#F7941D', url: 'https://jdt8.net/c/?si=9321&li=1420973&wi=420902' },
+    ],
+  },
+  {
+    id: 'verzekering',
+    category: '🏥 Verzekering',
+    items: [
+      { name: 'ONVZ',                  tagline: 'Zorgverzekering vergelijken', cta: 'Bekijk premie',  color: '#E4002B', url: 'https://ds1.nl/c/?si=7185&li=1332385&wi=420902' },
+      { name: 'Nationale-Nederlanden', tagline: 'Zorg & aanvullend pakket',    cta: 'Bekijk premie',  color: '#FF6200', url: 'https://ds1.nl/c/?si=2340&li=1362622&wi=420902' },
+      { name: 'DELA',                  tagline: 'Uitvaartverzekering',         cta: 'Bekijk aanbod',  color: '#003087', url: 'https://lt45.net/c/?si=9087&li=1414707&wi=420902' },
+      { name: 'Monuta',                tagline: 'Uitvaartzorg geregeld',       cta: 'Bekijk aanbod',  color: '#2C5F8A', url: 'https://jdt8.net/c/?si=9073&li=1414357&wi=420902' },
     ],
   },
   {
