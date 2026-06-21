@@ -32,6 +32,19 @@ export async function initDatabase() {
   await pool.query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS "fullSizeLabel" TEXT`)
   await pool.query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS "campaignType" TEXT`)
   await pool.query(`ALTER TABLE products ADD COLUMN IF NOT EXISTS "affiliate_url" TEXT`)
+  // Mevcut duplicate'leri temizle (unique index oluşturmadan önce)
+  await pool.query(`
+    DELETE FROM products WHERE id IN (
+      SELECT id FROM (
+        SELECT id, ROW_NUMBER() OVER (
+          PARTITION BY market, LOWER(TRIM(name))
+          ORDER BY "createdAt" DESC
+        ) AS rn
+        FROM products
+        WHERE market IS NOT NULL AND name IS NOT NULL
+      ) t WHERE rn > 1
+    )
+  `)
   // DB-level duplicate prevention: (market, lowercase name) unique index
   await pool.query(`
     CREATE UNIQUE INDEX IF NOT EXISTS idx_products_market_name
