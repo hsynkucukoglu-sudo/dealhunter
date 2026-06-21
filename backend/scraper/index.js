@@ -1520,7 +1520,7 @@ async function scrapePlus() {
           market: 'Plus',
           imageUrl: imgUrl || null,
           url: `https://www.plus.nl/aanbiedingen/${slug}`,
-          expiresAt: offer.EndDate || EXPIRES_AT,
+          expiresAt: (offer.EndDate && offer.EndDate > new Date().toISOString().split('T')[0]) ? offer.EndDate : EXPIRES_AT,
           category: catLabel,
           campaignType,
           isCampaign: true,
@@ -1529,7 +1529,8 @@ async function scrapePlus() {
       }
     }
 
-    // Name-based dedup (Plus API bazen aynı ürünü farklı tile'larda döndürür)
+    // Name-based dedup — önce expiresAt'e göre sırala (en geç tarihli ürün kazanır)
+    results.sort((a, b) => (b.expiresAt || '').localeCompare(a.expiresAt || ''))
     const seenNames = new Set()
     const unique = results.filter(r => {
       const key = r.name?.toLowerCase().trim()
