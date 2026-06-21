@@ -74,30 +74,68 @@ export const POSTS: BlogPost[] = [
     title: 'Wie is DealHunter4U? Ons verhaal en onze missie',
     description: 'DealHunter4U vergelijkt elke dag de aanbiedingen van alle grote Nederlandse supermarkten. Ontdek waarom we dit bouwen en hoe het werkt.',
     date: '2026-05-08',
-    readTime: 3,
+    readTime: 6,
     category: 'Over ons',
     content: `
-<p class="lead">Besparen op je dagelijkse boodschappen was nog nooit zo eenvoudig. De verste groenten, de beste merken — maar dan voor de scherpste prijs. Dat is precies wat DealHunter4U voor je doet.</p>
+<p class="lead">Besparen op je dagelijkse boodschappen was nog nooit zo eenvoudig. De versste groenten, de beste merken — maar dan voor de scherpste prijs. Dat is precies wat DealHunter4U voor je doet.</p>
 
 <h2>De slimme keuze voor jouw boodschappen</h2>
 <p>We hebben alle supermarktaanbiedingen van Nederland verzameld op één overzichtelijk platform. Jij kiest wat je wilt eten, wij vinden de beste deal voor jouw budget. Geen folders meer doorzoeken, geen apps per supermarkt afzonderlijk — alles staat op één plek.</p>
+<p>DealHunter4U vergelijkt elke week de aanbiedingen van meer dan tien supermarkten: Albert Heijn, Jumbo, Lidl, Aldi, Dirk, Hoogvliet, Vomar, DekaMarkt, Kruidvat en meer. Samen vertegenwoordigen deze ketens het overgrote deel van de Nederlandse supermarktmarkt. Jij hoeft er niet meer zelf achteraan te gaan.</p>
 
 <h2>Waarom kiezen voor DealHunter4U?</h2>
 <ul>
-  <li><strong>Vergelijk direct:</strong> alle kortingen van Albert Heijn, Jumbo, Lidl, Aldi, Dirk, Hoogvliet, Vomar en DekaMarkt op één plek, naast elkaar.</li>
-  <li><strong>Behoud kwaliteit:</strong> je bespaart op de prijs, niet op de versheid of kwaliteit van je boodschappen.</li>
-  <li><strong>Bespaar tijd én geld:</strong> nooit meer folders bladeren — vind direct de beste prijs en ga gericht winkelen.</li>
+  <li><strong>Vergelijk direct:</strong> alle kortingen van alle grote supermarkten op één plek, naast elkaar — zodat jij in één oogopslag ziet waar je de beste deal vindt.</li>
+  <li><strong>Behoud kwaliteit:</strong> je bespaart op de prijs, niet op de versheid of kwaliteit van je boodschappen. Wij laten uitsluitend officiële supermarktaanbiedingen zien.</li>
+  <li><strong>Bespaar tijd én geld:</strong> nooit meer folders bladeren of meerdere supermarkt-apps openen — vind direct de beste prijs en ga gericht winkelen.</li>
+  <li><strong>Altijd actueel:</strong> onze technologie werkt 24 uur per dag, 7 dagen per week. Zodra een nieuwe aanbieding gepubliceerd wordt, staat hij op DealHunter4U.</li>
+  <li><strong>Slimme filters:</strong> filter op supermarkt, productcategorie, type aanbieding of postcode. Jij bepaalt wat je ziet.</li>
 </ul>
 
 <h2>Hoe het werkt</h2>
 <p>Elke dag halen we automatisch de actuele weekaanbiedingen op van de grote supermarkten. We berekenen het kortingspercentage, tonen de eenheidsprijs per 100g of liter, en vergelijken populaire producten direct met elkaar. Zo zie jij in één oogopslag waar je het goedkoopst uitkomt — zonder er moeite voor te hoeven doen.</p>
+<p>Onze technologie scant dagelijks de officiële websites van elke supermarkt. De data wordt automatisch gestructureerd en verrijkt: we voegen categorieën toe, berekenen kortingen en signaleren de beste deals. Jij krijgt altijd een compleet en up-to-date overzicht, zonder handmatig werk.</p>
+
+<h2>Hoeveel kun je besparen?</h2>
+<p>Een gemiddeld Nederlands huishouden besteedt <strong>€3.200 tot €4.000 per jaar</strong> aan boodschappen. Onderzoek van het Nibud toont aan dat supermarktkortingen — mits slim ingezet — tot 15–20% besparing kunnen opleveren. Dat is <strong>€480 tot €800 per jaar</strong>.</p>
+<p>Concreet: wie elke week de beste vlees-, zuivel- en drankendeals combineert over twee of drie supermarkten, bespaart al snel €10–20 per week. Over een jaar loopt dat op tot meer dan €600. DealHunter4U geeft je het overzicht om die keuzes snel en makkelijk te maken.</p>
+
+<h2>Voor wie is DealHunter4U?</h2>
+<p>DealHunter4U is voor iedereen die slim met geld omgaat:</p>
+<ul>
+  <li><strong>Gezinnen:</strong> boodschappenbudget verlagen zonder in te leveren op variatie of kwaliteit</li>
+  <li><strong>Studenten:</strong> maximaal besparen met een beperkt budget</li>
+  <li><strong>Senioren:</strong> duidelijk overzicht zonder meerdere apps of folders</li>
+  <li><strong>Drukke professionals:</strong> in twee minuten plannen welke supermarkt die week de beste deals heeft</li>
+  <li><strong>Bewuste consumenten:</strong> bewust kiezen op prijs én kwaliteit</li>
+</ul>
+
+<h2>Wat maakt DealHunter4U anders?</h2>
+<p>Er zijn meerdere websites die supermarktaanbiedingen tonen, maar DealHunter4U onderscheidt zich op een aantal punten:</p>
+<ul>
+  <li><strong>Alle grote supermarkten:</strong> niet alleen AH en Jumbo, maar ook Aldi, Lidl, Dirk, Vomar, Hoogvliet, DekaMarkt en Kruidvat</li>
+  <li><strong>Eenheidsprijzen:</strong> we tonen niet alleen de aanbiedingsprijs, maar ook de prijs per 100g, per liter of per stuk — zodat je echt kunt vergelijken</li>
+  <li><strong>Geen reclame-trucjes:</strong> wij filteren geen aanbiedingen op basis van commerciële afspraken. Je ziet alles, ongeacht welke supermarkt</li>
+  <li><strong>Mobiel vriendelijk:</strong> DealHunter4U is volledig geoptimaliseerd voor smartphones. Snel plannen terwijl je onderweg bent.</li>
+  <li><strong>Favorieten en meldingen:</strong> sla producten op als favoriet en ontvang een melding zodra ze in de aanbieding zijn</li>
+</ul>
 
 <h2>Gratis, eerlijk en transparant</h2>
-<p>DealHunter4U is en blijft gratis. Alle prijzen komen rechtstreeks van de supermarkten zelf — we tonen geen nep-kortingen of misleidende vergelijkingen. We verdienen een kleine commissie als je via onze site doorklikt naar een supermarkt, zodat we de service draaiende kunnen houden zonder kosten door te berekenen.</p>
+<p>DealHunter4U is en blijft gratis. Alle prijzen komen rechtstreeks van de supermarkten zelf — we tonen geen nep-kortingen of misleidende vergelijkingen. We verdienen een kleine commissie als je via onze site doorklikt naar een supermarkt of partner, zodat we de service draaiende kunnen houden zonder kosten door te berekenen.</p>
+<p>We werken samen met affiliate netwerken zoals Daisycon en Awin. Dit betekent dat wij soms een kleine vergoeding ontvangen als je een aankoop doet via een link op onze site. Dit heeft <strong>geen invloed</strong> op welke aanbiedingen wij tonen of hoe we ze rangschikken — we laten altijd alle deals zien, ongeacht of er een affiliate relatie is.</p>
 
-<p>Heb je vragen of ideeën? Laat het ons weten via de <a href="/contact">contactpagina</a>.</p>
+<h2>Wat staat er nog te komen?</h2>
+<p>We werken continu aan verbeteringen voor DealHunter4U. Op de agenda staan onder meer:</p>
+<ul>
+  <li>Meer supermarkten en speciaalzaken toevoegen</li>
+  <li>Persoonlijke boodschappenplanner op basis van jouw favorieten</li>
+  <li>Historische prijsdata: zie of een "aanbieding" echt een aanbieding is</li>
+  <li>Wekelijkse bespaarnewsletter met de beste deals van de week</li>
+</ul>
 
-<p><strong>Ontdek het nu zelf op <a href="https://www.dealhunter4u.nl">DealHunter4U.nl</a></strong></p>
+<p>Heb je vragen of ideeën? We horen het graag via de <a href="/contact">contactpagina</a>. Jouw feedback helpt ons DealHunter4U beter te maken voor iedereen.</p>
+
+<p><strong>Ontdek het nu zelf op <a href="https://www.dealhunter4u.nl">DealHunter4U.nl</a></strong> — en bespaar al vanaf je eerste bezoek.</p>
     `.trim(),
   },
   {
@@ -368,13 +406,14 @@ export const POSTS: BlogPost[] = [
     title: 'Aldi aanbiedingen: complete gids voor de beste deals',
     description: 'Alles wat je moet weten over Aldi aanbiedingen in Nederland. Wanneer zijn de beste deals, hoe werkt het bonussysteem en wat zijn de populairste Aldi producten in de aanbieding?',
     date: '2026-05-14',
-    readTime: 4,
+    readTime: 7,
     category: 'Supermarkt gids',
     content: `
 <p class="lead">Aldi is één van de goedkoopste supermarkten van Nederland. Met slimme weekaanbiedingen en vaste lage prijzen bespaar je hier structureel op je boodschappen. Maar hoe haal je het maximale uit de <strong>Aldi aanbiedingen</strong>?</p>
 
 <h2>Wanneer start de Aldi aanbieding?</h2>
 <p>Aldi vernieuwt haar aanbiedingen elke <strong>maandag</strong>. In tegenstelling tot Albert Heijn en Jumbo, die op woensdag beginnen, start Aldi al aan het begin van de week. Dit betekent dat je op maandagochtend als eerste kunt profiteren van de nieuwe deals — voordat populaire producten uitverkopen.</p>
+<p>De aanbiedingen lopen van maandag tot en met zondag — een volledige week. Bij populaire producten zoals kipfilet of biefstuk geldt: wacht niet te lang. Op vrijdag- en zaterdagmiddag zijn de beste vleesaanbiedingen vaak al uitverkocht.</p>
 
 <h2>Wat maakt Aldi aanbiedingen uniek?</h2>
 <ul>
@@ -384,6 +423,16 @@ export const POSTS: BlogPost[] = [
   <li><strong>Geen loyaliteitsprogramma nodig:</strong> Bij Aldi gelden de aanbiedingen voor iedereen, zonder app of pas.</li>
 </ul>
 
+<h2>Aldi's eigen merken: wat zijn ze waard?</h2>
+<p>Aldi werkt vrijwel uitsluitend met eigen huismerken. Dat klinkt als een nadeel, maar in de praktijk is de kwaliteit van Aldi-producten verrassend hoog. Een aantal bekende Aldi-merken:</p>
+<ul>
+  <li><strong>Milbona:</strong> Aldi's zuivellabel voor melk, yoghurt, kwark en kaas. Vergelijkbaar met A-merken in onafhankelijke smaaktests.</li>
+  <li><strong>Cucina:</strong> Italiaanse levensmiddelen — pasta, sauzen, olijfolie — goedkoper dan veel supermarktmerken.</li>
+  <li><strong>Almare:</strong> Visproducten, inclusief zalm en tonijn.</li>
+  <li><strong>Nature's Finest:</strong> Biologische producten, steeds meer beschikbaar bij Aldi.</li>
+</ul>
+<p>Doordat Aldi direct inkoopt bij producenten (zonder tussenhandel), kunnen ze scherpe prijzen hanteren. Bij blindproefsessies scoren Aldi-producten regelmatig even hoog als vergelijkbare A-merken.</p>
+
 <h2>Populaire Aldi producten in de aanbieding</h2>
 <p>De producten die het vaakst in de aanbieding zijn bij Aldi:</p>
 <ul>
@@ -392,6 +441,8 @@ export const POSTS: BlogPost[] = [
   <li>Aldi Cucina pasta en sauzen</li>
   <li>Verse groenten en fruit (wisselend aanbod)</li>
   <li>Chocolade en koekjes van eigen merk</li>
+  <li>Wijn en bier (met name in aanbiedingsperiodes)</li>
+  <li>Seizoensgebonden verse producten (aardbeien, asperges, etc.)</li>
 </ul>
 
 <h2>Aldi vs. andere supermarkten op prijs</h2>
@@ -401,7 +452,26 @@ export const POSTS: BlogPost[] = [
   <li>Zuivelproducten</li>
   <li>Houdbare producten (rijst, pasta, blikgroenten)</li>
 </ul>
-<p>Op A-merkproducten is het verschil kleiner, omdat Aldi weinig A-merken voert.</p>
+<p>Op A-merkproducten is het verschil kleiner, omdat Aldi weinig A-merken voert. Wil je specifieke A-merken, dan ben je beter af bij AH of Jumbo. Maar voor het merendeel van je boodschappen — basisproducten, vers, zuivel — is Aldi lastig te verslaan op prijs.</p>
+
+<h2>Aldi vs. Lidl: wie is goedkoper?</h2>
+<p>Aldi en Lidl zijn allebei discountsupermarkten, maar ze richten zich iets anders:</p>
+<ul>
+  <li><strong>Aldi</strong> heeft een smaller assortiment maar consistent lage basisprijzen. Minder keuze, maar structureel goedkoop.</li>
+  <li><strong>Lidl</strong> heeft een breder assortiment, meer internationale producten en een grotere winkelervaring — maar is iets duurder dan Aldi op basisproducten.</li>
+</ul>
+<p>Op vlees en zuivel zijn ze vergelijkbaar. Voor basisproducten en grote gezinnen wint Aldi op prijs; voor assortiment en beleving wint Lidl.</p>
+
+<h2>Hoeveel bespaar je bij Aldi?</h2>
+<p>Laten we een concreet voorbeeld bekijken. Stel je koopt wekelijks:</p>
+<ul>
+  <li>1 kg kipfilet</li>
+  <li>1 liter melk</li>
+  <li>500g pasta</li>
+  <li>1 kg gehakt</li>
+  <li>500g kaas</li>
+</ul>
+<p>Bij Albert Heijn kost dit pakket gemiddeld €22–26. Bij Aldi betaal je voor vergelijkbare kwaliteit €15–18. Dat is een besparing van <strong>€7–8 per week</strong>, of <strong>€350–400 per jaar</strong> — alleen al op deze vijf producten.</p>
 
 <h2>Tips om maximaal te besparen bij Aldi</h2>
 <ol>
@@ -409,12 +479,14 @@ export const POSTS: BlogPost[] = [
   <li><strong>Koop vlees in bulk</strong> en vries in — bespaar tot 40% per kg</li>
   <li><strong>Combineer met andere supermarkten</strong> voor A-merken en speciale producten</li>
   <li><strong>Check DealHunter4U</strong> voor de actuele Aldi aanbiedingen naast die van andere supermarkten</li>
+  <li><strong>Wacht niet tot het weekend</strong> — populaire vleesaanbiedingen zijn dan vaak op</li>
+  <li><strong>Vergelijk de eenheidsprijzen</strong> — soms is een grotere verpakking goedkoper per gram</li>
 </ol>
 
 <h2>Conclusie</h2>
-<p>Aldi is ideaal voor basisproducten en verse producten. Met de wekelijkse aanbiedingen en structureel lage prijzen bespaar je als gezin gemakkelijk <strong>€15–30 per week</strong> vergeleken met grote supermarkten.</p>
+<p>Aldi is ideaal voor basisproducten en verse producten. Met de wekelijkse aanbiedingen en structureel lage prijzen bespaar je als gezin gemakkelijk <strong>€15–30 per week</strong> vergeleken met grote supermarkten. Het geheim: maandagochtend vroeg, bulkinkoopgedrag en slim combineren met andere winkels.</p>
 
-<p>Bekijk de actuele <a href="/supermarkt/aldi">Aldi aanbiedingen op DealHunter4U</a> en vergelijk direct met de deals van andere supermarkten.</p>
+<p>Bekijk de actuele <a href="/supermarkt/aldi">Aldi aanbiedingen op DealHunter4U</a> en vergelijk direct met de deals van andere supermarkten. Zo weet je altijd zeker dat je de beste keuze maakt.</p>
     `.trim(),
   },
   {
@@ -423,7 +495,7 @@ export const POSTS: BlogPost[] = [
     title: 'Albert Heijn Bonus Week: zo haal je het meeste eruit',
     description: 'Alles over de Albert Heijn Bonus Week aanbiedingen. Wanneer beginnen ze, hoe werkt de AH Bonus app, en welke producten zijn het vaakst in de aanbieding?',
     date: '2026-05-12',
-    readTime: 5,
+    readTime: 7,
     category: 'Supermarkt gids',
     content: `
 <p class="lead">Albert Heijn is de grootste supermarkt van Nederland. De <strong>AH Bonus</strong> is het bekendste aanbiedingssysteem in het land. Maar weet je echt hoe je er maximaal van profiteert?</p>
@@ -439,6 +511,16 @@ export const POSTS: BlogPost[] = [
   <li><strong>Persoonlijke bonus:</strong> Speciale kortingen op producten die jij vaak koopt, via de AH-app. Deze zijn vaak 10–15% extra bovenop de reguliere aanbieding.</li>
 </ul>
 <p>Voor de persoonlijke bonus heb je een AH-account en bonuskaart nodig. Dit is gratis en loont: gemiddeld bespaar je <strong>€3–8 per bezoek</strong> extra met persoonlijke aanbiedingen.</p>
+
+<h2>De AH Bonus App: zo gebruik je hem slim</h2>
+<p>De AH-app is meer dan alleen een digitale folder. Hier zijn de functies die echt geld besparen:</p>
+<ul>
+  <li><strong>Persoonlijke bonussen activeren:</strong> Elke week krijg je nieuwe persoonlijke kortingen aangeboden. Je moet ze actief "toevoegen" aan je bonuskaart via de app — ze worden niet automatisch verwerkt.</li>
+  <li><strong>Boodschappenlijst:</strong> Voeg aanbiedingsproducten direct toe aan je digitale boodschappenlijst in de app.</li>
+  <li><strong>Meldingen:</strong> Activeer pushmeldingen om als eerste te horen wanneer nieuwe bonussen beschikbaar zijn.</li>
+  <li><strong>Spaarzegels:</strong> Periodiek lanceert AH spaaracties voor gratis producten of kortingen. Via de app zie je altijd hoeveel zegels je al hebt.</li>
+  <li><strong>Statiegeld:</strong> Via de app kun je statiegeldbewijzen digitaal scannen, zonder de machine in de winkel te gebruiken.</li>
+</ul>
 
 <h2>De populairste Albert Heijn Bonus categorieën</h2>
 <p>AH heeft wekelijks aanbiedingen in alle categorieën. Het vaakst in de aanbieding:</p>
@@ -456,8 +538,28 @@ export const POSTS: BlogPost[] = [
   <li><strong>1+1 gratis</strong> → effectief 50% korting</li>
   <li><strong>2e halve prijs</strong> → effectief 25% korting</li>
   <li><strong>X voor €Y</strong> → vaste prijs, variabele korting</li>
-  <li><strong>%  korting</strong> → directe prijskorting</li>
+  <li><strong>% korting</strong> → directe prijskorting</li>
 </ul>
+<p>Let op: de "1+1 gratis" actie lijkt heel aantrekkelijk, maar betekent dat je twee producten moet kopen. Als je dat tweede product toch al wilde kopen — ideaal. Als niet, overweeg of je het kunt opslaan of invriezen.</p>
+
+<h2>AH Huismerk vs. A-merken: wat kies je?</h2>
+<p>Albert Heijn heeft een uitgebreid assortiment eigen merken die vaak veel goedkoper zijn dan A-merken:</p>
+<ul>
+  <li><strong>AH Basic:</strong> Meest betaalbare lijn, geschikt voor basisproducten</li>
+  <li><strong>AH (huismerk):</strong> Middenklasse, vergelijkbaar met gemiddelde A-merken</li>
+  <li><strong>AH Excellent:</strong> Premium lijn voor wie meer kwaliteit wil</li>
+  <li><strong>AH Biologisch:</strong> Biologische producten, vaak goedkoper dan biologische A-merken</li>
+</ul>
+<p>Tip: AH Basic producten zijn gemiddeld <strong>30–40% goedkoper</strong> dan vergelijkbare A-merken. Voor basisproducten als rijst, pasta en blikgroenten is AH Basic een slimme keuze — ook als er geen aanbieding is.</p>
+
+<h2>Albert Heijn online bestellen: loont het?</h2>
+<p>Albert Heijn biedt thuisbezorging en afhalen aan. De voordelen:</p>
+<ul>
+  <li>Alle bonusaanbiedingen gelden ook online — je mist geen deals</li>
+  <li>Geen impulsaankopen in de winkel: je koopt precies wat op je lijstje staat</li>
+  <li>Eenvoudig jouw favorieten opslaan voor de volgende bestelling</li>
+</ul>
+<p>Bezorgkosten bedragen €3,95–€6,95 per bestelling, maar zijn gratis boven €100. Met een AH Bezorgpas (€8,99/maand) bezorg je onbeperkt gratis. Loont als je structureel meer dan €60–70 per week uitgeeft en reistijd wil besparen.</p>
 
 <h2>Slim besparen met de AH Bonus: 5 tips</h2>
 <ol>
@@ -469,7 +571,7 @@ export const POSTS: BlogPost[] = [
 </ol>
 
 <h2>Conclusie</h2>
-<p>De Albert Heijn Bonus is een van de meest waardevolle spaarsystemen in Nederland. Met de juiste strategie bespaar je gemakkelijk <strong>€10–20 per week</strong> op je boodschappen.</p>
+<p>De Albert Heijn Bonus is een van de meest waardevolle spaarsystemen in Nederland. Met de juiste strategie — persoonlijke bonussen activeren, op woensdag kopen, inslaan bij 1+1 — bespaar je gemakkelijk <strong>€10–20 per week</strong> op je boodschappen.</p>
 
 <p>Bekijk alle actuele <a href="/supermarkt/albert-heijn">Albert Heijn aanbiedingen op DealHunter4U</a> en vergelijk direct met Jumbo, Lidl en Aldi.</p>
     `.trim(),
@@ -480,16 +582,27 @@ export const POSTS: BlogPost[] = [
     title: 'Jumbo aanbiedingen: alles over de Jumbo Bonus en beste deals',
     description: 'Ontdek hoe je maximaal profiteert van Jumbo aanbiedingen. Van de Jumbo Bonus Card tot de beste producten in de aanbieding — alles op een rij.',
     date: '2026-05-10',
-    readTime: 4,
+    readTime: 7,
     category: 'Supermarkt gids',
     content: `
 <p class="lead">Jumbo is de tweede grootste supermarkt van Nederland en staat bekend om haar "Altijd de laagste prijs"-belofte. Maar hoe haal je echt het meeste uit de <strong>Jumbo aanbiedingen</strong>?</p>
 
 <h2>Wanneer beginnen de Jumbo aanbiedingen?</h2>
 <p>Jumbo vernieuwt haar aanbiedingen elke <strong>woensdag</strong>, tegelijk met Albert Heijn. De aanbiedingen gelden van woensdag t/m dinsdag. Sommige speciale acties lopen langer, zoals de Jumbo Spaaracties die meerdere weken duren.</p>
+<p>Handig om te weten: op <strong>dinsdagavond laat</strong> kun je via de Jumbo-app al een preview zien van de nieuwe aanbiedingen voor woensdag. Zo kun je alvast je boodschappenlijst plannen.</p>
 
 <h2>De Jumbo Prijsbelofte</h2>
 <p>Jumbo garandeert de laagste prijs. Als je hetzelfde product goedkoper vindt bij een andere supermarkt, betaal je bij Jumbo de lagere prijs — en krijg je het verschil terug. In de praktijk zijn Jumbo-basisprijzen vergelijkbaar met AH, maar iets lager dan premium supermarkten.</p>
+<p>Let op: de prijsbelofte geldt alleen voor <em>identieke</em> producten (zelfde merk, maat en verpakking). Huismerkproducten vallen hier niet onder.</p>
+
+<h2>De Jumbo Bonus Card: alles wat je moet weten</h2>
+<p>De Jumbo Bonus Card is gratis aan te vragen en geeft toegang tot:</p>
+<ul>
+  <li><strong>Persoonlijke kortingen:</strong> Op basis van jouw aankoophistorie krijg je speciale aanbiedingen op producten die je regelmatig koopt</li>
+  <li><strong>Spaarpunten:</strong> Voor elke euro die je uitgeeft, spaar je punten voor gratis producten of kortingen</li>
+  <li><strong>Spaaracties:</strong> Periodieke acties waarbij je punten kunt inwisselen voor kookgerei, speelgoed of andere producten</li>
+  <li><strong>Meldingen:</strong> Ontvang een melding als jouw favoriete producten in de aanbieding zijn</li>
+</ul>
 
 <h2>Populaire Jumbo aanbiedingen categorieën</h2>
 <ul>
@@ -499,13 +612,15 @@ export const POSTS: BlogPost[] = [
   <li><strong>A-merken:</strong> Heinz, Douwe Egberts, Kellogg's — regelmatig met 30–40% korting</li>
 </ul>
 
-<h2>Jumbo Bonus Card: loont het?</h2>
-<p>De Jumbo Bonus Card (gratis) geeft toegang tot persoonlijke aanbiedingen en spaarpunten. Vergelijkbaar met de AH Bonus app. Voordelen:</p>
+<h2>Jumbo Foodmarkt: de premium variant</h2>
+<p>Jumbo heeft een aantal grote "Foodmarkt"-vestigingen in Nederland. Dit zijn uitgebreidere supermarkten met:</p>
 <ul>
-  <li>Persoonlijke kortingen op producten die je regelmatig koopt</li>
-  <li>Spaarpunten voor gratis producten</li>
-  <li>Meldingen bij nieuwe aanbiedingen</li>
+  <li>Versmarkt met ruim assortiment vlees, vis en kaas</li>
+  <li>Uitgebreide bakkerij met dagverse broden</li>
+  <li>Ruim aanbod internationale en speciaalkwekerijproducten</li>
+  <li>Café-ruimte om te eten en te verblijven</li>
 </ul>
+<p>De Foodmarkt-vestigingen zijn met name populair in grote steden. Voor boodschappers die kwaliteit én prijs willen combineren, is dit een goede optie.</p>
 
 <h2>Jumbo vs. Albert Heijn: wie is goedkoper?</h2>
 <p>Uit onze vergelijkingen op DealHunter4U blijkt:</p>
@@ -515,6 +630,18 @@ export const POSTS: BlogPost[] = [
   <li><strong>Huismerken:</strong> Beide vergelijkbaar in prijs en kwaliteit</li>
   <li><strong>Service:</strong> Jumbo scoort hoger in klanttevredenheidsonderzoeken</li>
 </ul>
+
+<h2>Jumbo huismerk vs. A-merken</h2>
+<p>Net als AH heeft Jumbo een uitgebreide huismerklijn. Jumbo huismerkproducten zijn gemiddeld <strong>20–35% goedkoper</strong> dan vergelijkbare A-merken. Voor producten als rijst, pasta, blikgroenten en zuivel een slimme keuze. Jumbo biedt ook een "Goed &amp; Goedkoop"-lijn voor de allerlaagste prijzen op basisproducten.</p>
+
+<h2>Thuisbezorging bij Jumbo</h2>
+<p>Jumbo biedt thuisbezorging aan in grote delen van Nederland:</p>
+<ul>
+  <li>Bezorgkosten: €3,95–€5,95 per bestelling</li>
+  <li>Gratis boven €75 bestelling</li>
+  <li>Abonnement: €6,99/maand voor onbeperkt gratis bezorgen</li>
+</ul>
+<p>Alle bonusaanbiedingen gelden ook bij thuisbezorging — je mist geen deals als je online bestelt.</p>
 
 <h2>5 tips voor de beste Jumbo deals</h2>
 <ol>
@@ -526,7 +653,7 @@ export const POSTS: BlogPost[] = [
 </ol>
 
 <h2>Conclusie</h2>
-<p>Jumbo biedt een sterke combinatie van lage basisprijzen en wekelijkse aanbiedingen. Met de Bonus Card en een slimme boodschappenstrategie bespaar je gemakkelijk <strong>€8–15 per week</strong>.</p>
+<p>Jumbo biedt een sterke combinatie van lage basisprijzen en wekelijkse aanbiedingen. Met de Bonus Card, persoonlijke kortingen en een slimme boodschappenstrategie bespaar je gemakkelijk <strong>€8–15 per week</strong>. Vergelijk de Jumbo-deals altijd met andere supermarkten voor de beste combinatie.</p>
 
 <p>Bekijk alle actuele <a href="/supermarkt/jumbo">Jumbo aanbiedingen op DealHunter4U</a> naast die van andere supermarkten.</p>
     `.trim(),
@@ -537,7 +664,7 @@ export const POSTS: BlogPost[] = [
     title: 'Lidl aanbiedingen: de complete gids voor slimme Lidl-shoppers',
     description: 'Alles over Lidl aanbiedingen in Nederland. Wanneer beginnen de deals, welke producten zijn het vaakst in de aanbieding en hoe bespaar je het meest bij Lidl?',
     date: '2026-05-09',
-    readTime: 4,
+    readTime: 7,
     category: 'Supermarkt gids',
     content: `
 <p class="lead">Lidl is de snelst groeiende supermarkt van Nederland. Met structureel lage prijzen en sterke weekaanbiedingen trekt Lidl steeds meer boodschappers. Maar wanneer zijn de beste <strong>Lidl aanbiedingen</strong> en hoe profiteer je optimaal?</p>
@@ -548,7 +675,7 @@ export const POSTS: BlogPost[] = [
   <li><strong>Maandag:</strong> Nieuwe weekdeals op supermarktproducten (vers, zuivel, vlees)</li>
   <li><strong>Donderdag:</strong> Lidl Plus aanbiedingen en speciale actieproducten (Lidl Actieweek)</li>
 </ul>
-<p>De Actieweek-producten (kleding, elektronica, tuin) zijn alleen beschikbaar zolang de voorraad strekt — vaak zijn ze al op donderdag uitverkocht.</p>
+<p>De Actieweek-producten (kleding, elektronica, tuin) zijn alleen beschikbaar zolang de voorraad strekt — vaak zijn ze al op donderdagochtend uitverkocht.</p>
 
 <h2>Lidl Plus App: onmisbaar</h2>
 <p>De <strong>Lidl Plus app</strong> is gratis en geeft toegang tot exclusieve kortingen die niet beschikbaar zijn voor niet-app-gebruikers. Voordelen:</p>
@@ -557,7 +684,20 @@ export const POSTS: BlogPost[] = [
   <li>Digitale bonnen die je inlaadt vóór het winkelen</li>
   <li>Overzicht van de komende week aanbiedingen (preview)</li>
   <li>Spaarpunten voor gratis producten</li>
+  <li>Exclusieve Lidl Plus-only aanbiedingen die niet in de folder staan</li>
 </ul>
+<p>Tip: activeer de bonnen in de app <em>voordat</em> je gaat winkelen. Ze worden niet automatisch verwerkt — je moet ze zelf toevoegen. Dit vergeten kost je direct geld.</p>
+
+<h2>De Lidl Actieweek: non-food in de supermarkt</h2>
+<p>Elke week heeft Lidl naast de reguliere supermarktaanbiedingen ook een speciale Actieweek voor non-food producten. Dit wisselt wekelijks en omvat categorieën zoals:</p>
+<ul>
+  <li>Kleding en schoenen (seizoensgebonden collecties)</li>
+  <li>Gereedschap en doe-het-zelf</li>
+  <li>Tuinartikelen en buitenmeubelen</li>
+  <li>Elektronica en keukenartikelen</li>
+  <li>Sport en outdoor</li>
+</ul>
+<p>Deze producten zijn <strong>beperkt beschikbaar</strong>. Op populaire items (zoals barbecues in de zomer of kerstartikelen in december) kan de voorraad al op donderdagochtend uitverkocht zijn. Wil je zeker zijn van een product, kom dan vroeg op de openingsdag.</p>
 
 <h2>Lidl's sterkste categorieën</h2>
 <p>Lidl blinkt uit op specifieke gebieden:</p>
@@ -569,13 +709,33 @@ export const POSTS: BlogPost[] = [
   <li><strong>Biologisch:</strong> Lidl heeft een groeiend biologisch assortiment onder het "Bio"-label</li>
 </ul>
 
-<h2>Lidl vs. Aldi: wie is goedkoper?</h2>
-<p>Beide zijn discount supermarkten, maar er zijn verschillen:</p>
+<h2>Lidl internationale weken: verborgen pareltjes</h2>
+<p>Één van Lidl's sterkste punten is het internationale assortiment. Wekelijks zijn er thematische "Lidl-weken" met producten uit een specifiek land of regio:</p>
 <ul>
-  <li><strong>Lidl:</strong> Groter assortiment, meer merkproducten, betere presentatie</li>
-  <li><strong>Aldi:</strong> Iets goedkoper op basisproducten, minder keuze</li>
-  <li><strong>Winst:</strong> Op vers vlees en zuivel zijn ze vergelijkbaar; Lidl wint op assortiment</li>
+  <li><strong>Italiaans:</strong> Authentieke pasta, ricotta, buffelkaas en Napolitaanse pizza's</li>
+  <li><strong>Spaans:</strong> Serrano ham, manchego, olijfolie en pata negra</li>
+  <li><strong>Frans:</strong> Brie, camembert, wijn en pâtisserie</li>
+  <li><strong>Grieks:</strong> Feta, olijven, tzatziki en halloumi</li>
 </ul>
+<p>Deze internationale weken zijn populair en de producten zijn zelden te vinden bij andere Nederlandse supermarkten voor dezelfde prijs. Markeer de datum in je agenda als jij fan bent van een bepaald land.</p>
+
+<h2>Lidl vs. Aldi: wie is goedkoper?</h2>
+<p>Beide zijn discountsupermarkten, maar ze richten zich iets anders:</p>
+<ul>
+  <li><strong>Lidl:</strong> Groter assortiment, meer internationale producten, betere winkelervaring</li>
+  <li><strong>Aldi:</strong> Iets goedkoper op basisproducten, minder keuze maar scherper geprijsd</li>
+  <li><strong>Conclusie:</strong> Op vers vlees en zuivel zijn ze vergelijkbaar; Lidl wint op assortiment en beleving</li>
+</ul>
+
+<h2>Hoeveel bespaar je bij Lidl?</h2>
+<p>Vergelijk je Lidl met Albert Heijn op typische weekboodschappen, dan bespaar je gemiddeld:</p>
+<ul>
+  <li>Vlees: 20–35% goedkoper bij Lidl</li>
+  <li>Kaas: 15–25% goedkoper</li>
+  <li>Bakkerijproducten: 10–20% goedkoper</li>
+  <li>Wijn: 20–40% goedkoper bij vergelijkbare kwaliteit</li>
+</ul>
+<p>Een gezin dat wekelijks €60 uitgeeft aan boodschappen, kan bij Lidl voor dezelfde producten <strong>€8–15 besparen</strong>. Per jaar loopt dat op tot €400–750.</p>
 
 <h2>5 tips voor de beste Lidl deals</h2>
 <ol>
@@ -587,7 +747,7 @@ export const POSTS: BlogPost[] = [
 </ol>
 
 <h2>Conclusie</h2>
-<p>Lidl combineert lage prijzen met een verrassend breed en kwalitatief assortiment. Met de Lidl Plus app en een slimme timing bespaar je <strong>€12–20 per week</strong> vergeleken met een gemiddeld AH-bezoek.</p>
+<p>Lidl combineert lage prijzen met een verrassend breed en kwalitatief assortiment. Met de Lidl Plus app, slimme timing en gebruik van de internationale weken bespaar je <strong>€12–20 per week</strong> vergeleken met een gemiddeld AH-bezoek.</p>
 
 <p>Bekijk de actuele <a href="/supermarkt/lidl">Lidl aanbiedingen op DealHunter4U</a> en vergelijk direct met alle andere supermarkten.</p>
     `.trim(),
@@ -717,7 +877,7 @@ export const POSTS: BlogPost[] = [
     title: 'Welke dag moet je boodschappen doen voor de laagste prijs?',
     description: 'De dag waarop je boodschappen doet maakt een groot verschil voor je portemonnee. Ontdek wanneer elke supermarkt nieuwe aanbiedingen start en wanneer je de meeste keuze hebt.',
     date: '2026-05-17',
-    readTime: 3,
+    readTime: 6,
     category: 'Bespaartips',
     content: `
 <p class="lead">Wist je dat de dag waarop je naar de supermarkt gaat een verschil kan maken van <strong>€5–15 per boodschappenronde</strong>? De timing van je supermarktbezoek bepaalt welke aanbiedingen beschikbaar zijn — en of populaire producten nog op voorraad liggen.</p>
@@ -744,7 +904,10 @@ export const POSTS: BlogPost[] = [
 <p>De AH Bonus Week start op woensdag. Op woensdagochtend is de voorraad volledig aangevuld. Donderdag is ook goed — de nieuwe aanbiedingen zijn dan bevestigd en de drukte is minder dan op woensdag.</p>
 
 <h3>Jumbo: ga op woensdag</h3>
-<p>Gelijk met AH start Jumbo haar weekaanbiedingen op woensdag. De winkels zijn vaak rustiger dan AH op dezelfde dag.</p>
+<p>Gelijk met AH start Jumbo haar weekaanbiedingen op woensdag. De winkels zijn vaak rustiger dan AH op dezelfde dag, wat prettig winkelen maakt.</p>
+
+<h3>Dirk, Vomar en Hoogvliet: ga op woensdag</h3>
+<p>Deze regionale supermarkten vernieuwen hun aanbiedingen ook op woensdag. Ze zijn minder druk dan AH en Jumbo op dezelfde dag, wat handig is als je wilt winkelen zonder wachtrijen.</p>
 
 <h2>Wanneer juist NIET te gaan</h2>
 <ul>
@@ -753,16 +916,38 @@ export const POSTS: BlogPost[] = [
   <li><strong>Vrijdagmiddag:</strong> Na-schooltijd-drukte, lange rijen, mindere keuze bij vers</li>
 </ul>
 
+<h2>Tijdstip van de dag: ook dat maakt verschil</h2>
+<p>Niet alleen de dag, maar ook het tijdstip is van belang:</p>
+<ul>
+  <li><strong>Vroeg in de ochtend (08:00–10:00):</strong> Winkel is rustig, vers-afdeling net aangevuld, alle aanbiedingen nog op voorraad</li>
+  <li><strong>Lunchpauze (12:00–13:00):</strong> Drukker in de meeste supermarkten, maar verse producten nog beschikbaar</li>
+  <li><strong>Avond (17:00–19:00):</strong> Drukste moment van de dag. Vers en populaire aanbiedingen zijn soms al op.</li>
+  <li><strong>Laat avond (19:00–20:30):</strong> Rustiger, maar beperkter aanbod bij vers — soms wel kortingsacties op producten die bijna verlopen</li>
+</ul>
+
 <h2>De slimste strategie: split je boodschappen</h2>
-<p>In plaats van één grote boodschappenronde, probeer dit:</p>
+<p>In plaats van één grote boodschappenronde per week, combineer je twee korte bezoeken:</p>
 <ol>
-  <li><strong>Maandag:</strong> Aldi of Lidl voor vlees en basis</li>
-  <li><strong>Woensdag:</strong> AH voor persoonlijke bonusproducten en aanvulling</li>
-  <li><strong>Gebruik DealHunter4U</strong> op zondag om te plannen welke supermarkt die week de beste deals heeft</li>
+  <li><strong>Zondagavond:</strong> Check DealHunter4U voor de deals van de komende week — welke supermarkt heeft de beste vlees- en zuiveldeal?</li>
+  <li><strong>Maandagochtend:</strong> Aldi of Lidl voor vers vlees, zuivel en basis</li>
+  <li><strong>Woensdagochtend of -avond:</strong> AH of Jumbo voor persoonlijke bonusproducten, A-merken en aanvulling</li>
 </ol>
+<p>Dit split-boodschappenstrategie kost je iets meer tijd, maar levert gemiddeld <strong>€10–20 besparing per week</strong> op. Over een jaar is dat €500–1.000 euro extra in je portemonnee.</p>
+
+<h2>Hoeveel bespaar je met de juiste timing?</h2>
+<p>Laten we het concreet maken. Stel je koopt elke week:</p>
+<ul>
+  <li>1 kg kipfilet — bij Aldi maandag: €5,79 vs. AH dinsdag (oud aanbod uitverkocht): volle prijs €9,99</li>
+  <li>1 liter sinaasappelsap — bij AH Bonus woensdag: €1,29 vs. normaal: €2,49</li>
+  <li>500g kaas — bij Lidl maandag: €3,49 vs. Jumbo zaterdag: €4,99</li>
+</ul>
+<p>Alleen op deze drie producten scheelt de juiste timing al <strong>€4–5 per week</strong>. Over een jaar is dat meer dan €200 extra besparing.</p>
+
+<h2>DealHunter4U als weekplanner</h2>
+<p>Op DealHunter4U kun je alle actuele aanbiedingen van alle supermarkten in één overzicht bekijken. Filter op categorie, supermarkt of type aanbieding. Zo plan je in minder dan vijf minuten je boodschappenweek — en weet je precies waar en wanneer je het goedkoopst uitkomt. Bekijk ook de "Top 5 Deals van de week" voor de beste aanbiedingen over alle supermarkten heen.</p>
 
 <h2>Conclusie</h2>
-<p>De beste dagen zijn <strong>maandag</strong> (Aldi/Lidl) en <strong>woensdag</strong> (AH/Jumbo). Vermijd weekenden voor aanbiedingsproducten. Combineer supermarkten op basis van de actuele deals op <a href="https://www.dealhunter4u.nl">DealHunter4U</a>.</p>
+<p>De beste dagen zijn <strong>maandag</strong> (Aldi/Lidl) en <strong>woensdag</strong> (AH/Jumbo). Ga vroeg in de ochtend voor de volledige voorraad. Vermijd weekenden voor aanbiedingsproducten. Combineer supermarkten slim op basis van de actuele deals op <a href="https://www.dealhunter4u.nl">DealHunter4U</a> voor de maximale besparing.</p>
     `.trim(),
   },
   {
