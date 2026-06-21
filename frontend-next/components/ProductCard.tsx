@@ -48,10 +48,13 @@ export function ProductCard({ product }: { product: Product }) {
 
   const [imgError, setImgError] = useState(false)
 
+  const CDN_PROXY = ['static.ah.nl', 'media.kruidvat.nl']
   const imgSrc = product.imageUrl
     ? product.imageUrl.startsWith('ah-product-id:')
       ? `/api/ah-image/${product.imageUrl.replace('ah-product-id:', '')}`
-      : product.imageUrl
+      : CDN_PROXY.some(h => product.imageUrl!.includes(h))
+        ? `/api/img-proxy?u=${encodeURIComponent(product.imageUrl)}`
+        : product.imageUrl
     : null
 
   return (
