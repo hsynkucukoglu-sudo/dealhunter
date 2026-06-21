@@ -21,12 +21,12 @@ const CONTAIN_LOGOS: Record<string, string> = {
   'Jumbo':     '/logo-jumbo.png',
   'DekaMarkt': '/logo-deka.png',
   'Hoogvliet': '/Hoogvliet_logo.png',
+  'Vomar':     '/logo-vomar.png',
 }
 
 // Logo dosyası olmayan marketler için marka rengi
 const FALLBACK_COLOR: Record<string, string> = {
-  'Vomar': '#00843D',
-  'Coop':  '#003FA5',
+  'Coop': '#003FA5',
 }
 
 export function MarketLogo({ market, size = 56, className = '' }: Props) {
