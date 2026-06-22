@@ -63,6 +63,18 @@
   --shadow-card-hover: 0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
   --shadow-elevated: 0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
   --shadow-navbar: 0 2px 20px rgba(0,0,0,0.06);
+  --shadow-level-1: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-level-2: 0 8px 20px rgba(0, 0, 0, 0.12);
+
+  /* — V9 Design System Aliases — */
+  --color-deal-urgent: #E33D26;
+  --color-savings-success: #1B9E4B;
+  --color-ink-primary: #1A1A1A;
+  --color-ink-secondary: #6B6259;
+  --color-surface-base: #ffffff;
+  --color-surface-container: #f5ede3;
+  --color-outline-variant: #e4beb7;
+  --color-on-primary: #ffffff;
 }
 
 /* ============================================
@@ -79,13 +91,17 @@
   }
 
   body {
-    font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+    font-family: 'Hanken Grotesk', 'Space Grotesk', system-ui, -apple-system, sans-serif;
     background: var(--color-background);
     color: var(--color-on-background);
   }
 
   h1, h2, h3, h4, .font-headline {
     font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .font-mono-label {
+    font-family: 'JetBrains Mono', monospace;
   }
 
   ::selection {
@@ -123,12 +139,12 @@
   }
 
   .card-product {
-    @apply bg-white rounded-3xl relative flex flex-col transition-all duration-300 overflow-hidden;
-    box-shadow: var(--shadow-card);
+    @apply bg-white rounded-xl relative flex flex-col transition-all duration-300 overflow-hidden;
+    box-shadow: var(--shadow-level-1);
+    border: 1px solid rgba(228, 190, 183, 0.2);
   }
   .card-product:hover {
-    box-shadow: var(--shadow-card-hover);
-    transform: translateY(-4px);
+    box-shadow: var(--shadow-level-2);
   }
 
   .basket-slide {

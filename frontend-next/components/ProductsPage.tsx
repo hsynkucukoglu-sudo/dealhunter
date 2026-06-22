@@ -537,114 +537,121 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         )}
       </AnimatePresence>
 
-      {/* FLOATING PILL NAVBAR */}
+      {/* STICKY FULL-WIDTH NAVBAR — V9 Style */}
       <motion.nav
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        className={`fixed top-4 left-4 right-4 z-50 flex justify-between items-center px-4 md:px-6 h-14 rounded-full transition-all duration-300 ${navScrolled ? 'navbar-pill' : 'bg-transparent'}`}
-        style={navScrolled ? {} : { border: 'none', boxShadow: 'none' }}
+        transition={{ duration: 0.4, delay: 0.05 }}
+        className="fixed top-0 left-0 right-0 z-50 bg-white transition-all duration-300"
+        style={{
+          borderBottom: navScrolled ? '1px solid rgba(228,190,183,0.4)' : '1px solid transparent',
+          boxShadow: navScrolled ? '0 2px 20px rgba(0,0,0,0.06)' : 'none',
+        }}
       >
-        <div className="flex items-center gap-6">
-          <DealHunterLogo height={36} />
+        <div className="flex justify-between items-center max-w-[1280px] mx-auto px-4 md:px-16 h-16 w-full">
+          {/* Left: logo + nav links */}
+          <div className="flex items-center gap-8">
+            <DealHunterLogo height={34} />
 
-          <div className="hidden md:flex gap-1 items-center">
-            <button
-              onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setSelectedCategory('all'); setSelectedCampaign('all') })}
-              className="px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-all hover:bg-black/5"
-              style={{ color: '#1A1A1A' }}
-            >
-              {t.scanBtn}
-            </button>
-            <button
-              onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(true); setSelectedCategory('all'); setSelectedCampaign('all') })}
-              className="px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-all hover:bg-black/5"
-              style={{ color: '#6B6259' }}
-            >
-              {t.campaignsOnly}
-            </button>
+            <div className="hidden md:flex items-center gap-1">
+              <button
+                onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setSelectedCategory('all'); setSelectedCampaign('all') })}
+                className="px-3 py-1.5 rounded-full text-[13px] font-medium cursor-pointer transition-all hover:bg-black/5"
+                style={{ color: '#1A1A1A', fontFamily: 'JetBrains Mono' }}
+              >
+                {t.scanBtn}
+              </button>
+              <button
+                onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(true); setSelectedCategory('all'); setSelectedCampaign('all') })}
+                className="px-3 py-1.5 rounded-full text-[13px] font-medium cursor-pointer transition-all hover:bg-black/5"
+                style={{ color: '#6B6259', fontFamily: 'JetBrains Mono' }}
+              >
+                {t.campaignsOnly}
+              </button>
+            </div>
           </div>
-        </div>
 
-        <div className="flex items-center gap-2">
-          <AnimatePresence>
-            {navScrolled && (
-              <motion.div
-                initial={{ width: 0, opacity: 0 }}
-                animate={{ width: 200, opacity: 1 }}
-                exit={{ width: 0, opacity: 0 }}
-                className="hidden sm:flex items-center overflow-hidden"
-              >
-                <div className="flex items-center bg-black/5 rounded-full px-3 py-1.5 gap-2 w-full">
-                  <span className="material-symbols-outlined text-sm" style={{ color: '#8C8478' }}>search</span>
-                  <input
-                    type="text" placeholder="Ara..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="bg-transparent border-none focus:ring-0 focus:outline-none text-sm w-full"
-                    style={{ color: '#1A1A1A' }}
-                  />
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <PushNotificationButton />
-          <AuthButton />
-
-          <AnimatePresence>
-            {canInstall && (
-              <motion.button
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0, opacity: 0 }}
-                whileTap={{ scale: 0.92 }}
-                onClick={handleInstallPWA}
-                className="hidden md:flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-bold cursor-pointer"
-                style={{ background: '#E33D26', color: 'white', fontFamily: 'Space Grotesk' }}
-              >
-                <span className="material-symbols-outlined text-base">install_mobile</span>
-                Yükle
-              </motion.button>
-            )}
-          </AnimatePresence>
-
-          <motion.button
-            whileTap={{ scale: 0.92 }}
-            onClick={handleFetchFlyers}
-            disabled={isScraping}
-            className="hidden md:flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-bold cursor-pointer transition-all disabled:opacity-50"
-            style={{ background: '#1A1A1A', color: 'white', fontFamily: 'Space Grotesk' }}
-          >
-            {isScraping
-              ? <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              : <span className="material-symbols-outlined text-base">refresh</span>}
-            {isScraping ? t.scanning : t.scanBtn}
-          </motion.button>
-
-          <div className="hidden sm:block"><LanguageSwitcher /></div>
-
-          <motion.button
-            whileTap={{ scale: 0.9 }}
-            onClick={() => setIsCartOpen(true)}
-            className="relative cursor-pointer p-2 rounded-full transition-all hover:bg-black/5"
-          >
-            <span className="material-symbols-outlined" style={{ color: '#1A1A1A' }}>shopping_bag</span>
+          {/* Right: search (on scroll) + actions */}
+          <div className="flex items-center gap-2">
             <AnimatePresence>
-              {itemCount > 0 && (
-                <motion.span
-                  key="cart-count"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  exit={{ scale: 0 }}
-                  className="absolute -top-0.5 -right-0.5 text-[10px] font-bold px-1.5 rounded-full"
-                  style={{ background: '#E33D26', color: 'white' }}
+              {navScrolled && (
+                <motion.div
+                  initial={{ width: 0, opacity: 0 }}
+                  animate={{ width: 180, opacity: 1 }}
+                  exit={{ width: 0, opacity: 0 }}
+                  className="hidden sm:flex items-center overflow-hidden"
                 >
-                  {itemCount}
-                </motion.span>
+                  <div className="flex items-center rounded-full px-3 py-1.5 gap-2 w-full" style={{ background: '#f5ede3', border: '1px solid rgba(228,190,183,0.5)' }}>
+                    <span className="material-symbols-outlined text-sm" style={{ color: '#8C8478' }}>search</span>
+                    <input
+                      type="text" placeholder="Ara..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="bg-transparent border-none focus:ring-0 focus:outline-none text-sm w-full"
+                      style={{ color: '#1A1A1A' }}
+                    />
+                  </div>
+                </motion.div>
               )}
             </AnimatePresence>
-          </motion.button>
+
+            <PushNotificationButton />
+            <AuthButton />
+
+            <AnimatePresence>
+              {canInstall && (
+                <motion.button
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0, opacity: 0 }}
+                  whileTap={{ scale: 0.92 }}
+                  onClick={handleInstallPWA}
+                  className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold cursor-pointer"
+                  style={{ background: '#E33D26', color: 'white', fontFamily: 'Space Grotesk' }}
+                >
+                  <span className="material-symbols-outlined text-base">install_mobile</span>
+                  Yükle
+                </motion.button>
+              )}
+            </AnimatePresence>
+
+            <motion.button
+              whileTap={{ scale: 0.92 }}
+              onClick={handleFetchFlyers}
+              disabled={isScraping}
+              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold cursor-pointer transition-all disabled:opacity-50"
+              style={{ background: '#1A1A1A', color: 'white', fontFamily: 'Space Grotesk' }}
+            >
+              {isScraping
+                ? <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                : <span className="material-symbols-outlined text-base">refresh</span>}
+              {isScraping ? t.scanning : t.scanBtn}
+            </motion.button>
+
+            <div className="hidden sm:block"><LanguageSwitcher /></div>
+
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setIsCartOpen(true)}
+              className="relative cursor-pointer p-2 rounded-full transition-all hover:bg-black/5"
+            >
+              <span className="material-symbols-outlined" style={{ color: '#1A1A1A' }}>shopping_bag</span>
+              <AnimatePresence>
+                {itemCount > 0 && (
+                  <motion.span
+                    key="cart-count"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    exit={{ scale: 0 }}
+                    className="absolute -top-0.5 -right-0.5 text-[10px] font-bold px-1.5 rounded-full"
+                    style={{ background: '#E33D26', color: 'white' }}
+                  >
+                    {itemCount}
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </motion.button>
+          </div>
         </div>
       </motion.nav>
 
@@ -660,7 +667,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
       />
 
       {/* MAIN CONTENT */}
-      <main className="max-w-7xl mx-auto px-4 md:px-8 pt-20 md:pt-24 pb-32">
+      <main className="max-w-[1280px] mx-auto px-4 md:px-16 pt-16 pb-32">
 
         {/* FILTER ROW — sadeleştirildi: markten showcase'e taşındı */}
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-2">
@@ -811,107 +818,141 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           </div>
         )}
 
-        {/* HERO — kompakt, ürün kartları görünür kalsın */}
-        <section className="pb-3 pt-1 sm:pb-6 sm:pt-2">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
-            <div>
-              <h1
-                className="font-headline font-bold leading-tight tracking-tight"
-                style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', color: '#1A1A1A' }}
+        {/* HERO — V9 Centered Style */}
+        <section className="flex flex-col items-center text-center pt-10 pb-8 md:pt-16 md:pb-10 -mx-4 md:-mx-16 px-4 md:px-16">
+          {/* Live Scanning Badge */}
+          <div className="inline-flex items-center gap-2 bg-white px-4 py-1.5 rounded-full mb-6 md:mb-8" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.08)', border: '1px solid rgba(228,190,183,0.3)' }}>
+            <div className="relative flex h-3 w-3 flex-none">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: '#E33D26' }}></span>
+              <span className="relative inline-flex rounded-full h-3 w-3" style={{ background: '#E33D26' }}></span>
+            </div>
+            <span className="text-xs font-medium uppercase tracking-widest" style={{ fontFamily: 'JetBrains Mono', color: '#E33D26' }}>
+              Live Aanbiedingen Scannen
+            </span>
+          </div>
+
+          {/* Big headline */}
+          <h1
+            className="font-headline font-bold tracking-tight mb-4 md:mb-6 max-w-3xl"
+            style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', color: '#1A1A1A', letterSpacing: '-0.02em', lineHeight: '1.15', fontFamily: 'Space Grotesk' }}
+          >
+            {t.heroTitle1} <span style={{ color: '#E33D26' }}>{t.heroTitle2}</span>
+          </h1>
+
+          {/* Subtitle */}
+          <p className="mb-8 md:mb-10 max-w-2xl" style={{ fontSize: '1.0625rem', lineHeight: '1.7', color: '#6B6259', fontFamily: 'Hanken Grotesk, sans-serif' }}>
+            {lang === 'nl'
+              ? 'Vergelijk dagelijks bijgewerkte aanbiedingen van 11 winkels. Stop met bladeren, begin met besparen.'
+              : lang === 'en'
+              ? 'Compare daily updated deals from 11 stores. Stop browsing, start saving.'
+              : 'Her gün güncellenen 11 mağazadan fırsatları karşılaştırın.'}
+          </p>
+
+          {/* Hero search bar */}
+          <div ref={heroSearchRef} className="w-full max-w-2xl relative">
+            <input
+              type="text"
+              placeholder={t.searchPlaceholder}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onFocus={() => setShowSuggestions(true)}
+              className="w-full pl-6 pr-16 rounded-full text-base md:text-lg focus:outline-none focus:ring-2 focus:ring-[#E33D26]"
+              style={{ height: '60px', background: 'white', boxShadow: '0 4px 12px rgba(0,0,0,0.08)', border: 'none', color: '#1A1A1A', fontFamily: 'Space Grotesk, sans-serif' }}
+            />
+            {searchTerm && (
+              <button onClick={() => { setSearchTerm(''); setShowSuggestions(false) }} className="absolute right-16 top-1/2 -translate-y-1/2">
+                <span className="material-symbols-outlined text-base" style={{ color: '#8C8478' }}>close</span>
+              </button>
+            )}
+            <button
+              onClick={() => setShowSearchOverlay(true)}
+              className="absolute right-2 top-2 bottom-2 w-12 rounded-full flex items-center justify-center md:hidden"
+              style={{ background: '#E33D26', color: 'white' }}
+            >
+              <span className="material-symbols-outlined">search</span>
+            </button>
+            <div className="absolute right-2 top-2 bottom-2 w-12 rounded-full hidden md:flex items-center justify-center pointer-events-none" style={{ background: '#E33D26', color: 'white' }}>
+              <span className="material-symbols-outlined">search</span>
+            </div>
+
+            {/* AUTOCOMPLETE DROPDOWN */}
+            {showSuggestions && autocompleteSuggestions.length > 0 && (
+              <div
+                className="absolute top-full left-0 right-0 mt-2 rounded-2xl overflow-hidden z-50 hidden md:block text-left"
+                style={{ background: 'white', border: '1px solid rgba(201,193,182,0.4)', boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}
               >
-                {t.heroTitle1} <span style={{ color: '#E33D26' }}>{t.heroTitle2}</span>
-              </h1>
-              <div className="flex flex-wrap items-center gap-2 mt-2">
-                {[
-                  { icon: 'update', text: 'Dagelijks bijgewerkt' },
-                  { icon: 'euro', text: 'Tot 70% besparen' },
-                ].map(b => (
-                  <div key={b.icon} className="flex items-center gap-1 text-[11px] font-medium" style={{ color: '#8C8478' }}>
-                    <span className="material-symbols-outlined text-sm" style={{ color: '#E33D26' }}>{b.icon}</span>
-                    {b.text}
-                  </div>
-                ))}
-              </div>
-              <div className="hidden sm:flex flex-wrap items-center gap-1.5 mt-2">
-                {[
-                  { id: 'supermarkt', emoji: '🛒', label: 'Supermarkt', category: '' },
-                  { id: 'energie',    emoji: '⚡', label: 'Energie',    category: 'energie' },
-                  { id: 'reizen',     emoji: '✈️', label: 'Reizen',     category: 'reizen' },
-                  { id: 'wonen',      emoji: '🏠', label: 'Wonen',      category: 'wonen' },
-                  { id: 'mode',       emoji: '🛍️', label: 'Mode',       category: 'mode' },
-                ].map(s => (
+                {autocompleteSuggestions.map((p, i) => (
                   <button
-                    key={s.id}
-                    onClick={() => {
-                      if (s.category) {
-                        setMeerBesparenCategory(s.category)
-                        setMeerBesparenOpen(true)
-                      } else {
-                        window.scrollTo({ top: 0, behavior: 'smooth' })
-                      }
-                    }}
-                    className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold transition-all hover:scale-105 active:scale-95"
-                    style={{ background: 'rgba(255,255,255,0.8)', border: '1.5px solid rgba(201,193,182,0.5)', color: '#1A1A1A', boxShadow: '0 1px 0 #DDD0C4' }}
+                    key={p.id}
+                    onMouseDown={() => { setSearchTerm(p.name); setShowSuggestions(false) }}
+                    className="w-full flex items-center gap-3 px-4 py-3 text-left transition-colors"
+                    style={{ borderTop: i > 0 ? '1px solid rgba(201,193,182,0.25)' : undefined, background: 'white' }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = '#FAF6F0' }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'white' }}
                   >
-                    <span>{s.emoji}</span>
-                    {s.label}
+                    <MarketLogo market={p.market} size={28} className="flex-none" />
+                    <span className="flex-1 text-sm font-medium truncate" style={{ color: '#1A1A1A' }}>{p.name}</span>
+                    <div className="text-right flex-none">
+                      <div className="text-sm font-bold" style={{ color: '#1B9E4B' }}>€{p.discountedPrice.toFixed(2)}</div>
+                      {p.discount > 0 && (
+                        <div className="text-[10px] font-bold" style={{ color: '#E33D26' }}>-{p.discount}%</div>
+                      )}
+                    </div>
                   </button>
                 ))}
               </div>
-            </div>
-            <div ref={heroSearchRef} className="relative max-w-xs hidden sm:block w-full sm:w-72 flex-none">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-lg" style={{ color: '#8C8478' }}>search</span>
-              <input
-                type="text"
-                placeholder={t.searchPlaceholder}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onFocus={() => setShowSuggestions(true)}
-                className="w-full pl-9 pr-8 py-2.5 rounded-full text-sm border focus:outline-none focus:ring-2 focus:ring-[#E33D26]"
-                style={{ background: 'rgba(255,255,255,0.9)', border: '1px solid rgba(201,193,182,0.6)', color: '#1A1A1A' }}
-              />
-              {searchTerm && (
-                <button
-                  onClick={() => { setSearchTerm(''); setShowSuggestions(false) }}
-                  className="absolute right-3 top-1/2 -translate-y-1/2"
-                >
-                  <span className="material-symbols-outlined text-base" style={{ color: '#8C8478' }}>close</span>
-                </button>
-              )}
+            )}
+          </div>
 
-              {/* AUTOCOMPLETE DROPDOWN — desktop only, mobile uses overlay */}
-              {showSuggestions && autocompleteSuggestions.length > 0 && (
-                <div
-                  className="absolute top-full left-0 right-0 mt-2 rounded-2xl overflow-hidden z-50 hidden md:block"
-                  style={{ background: 'white', border: '1px solid rgba(201,193,182,0.4)', boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}
-                >
-                  {autocompleteSuggestions.map((p, i) => (
-                    <button
-                      key={p.id}
-                      onMouseDown={() => { setSearchTerm(p.name); setShowSuggestions(false) }}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-left transition-colors"
-                      style={{
-                        borderTop: i > 0 ? '1px solid rgba(201,193,182,0.25)' : undefined,
-                        background: 'white',
-                      }}
-                      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = '#FAF6F0' }}
-                      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'white' }}
-                    >
-                      <MarketLogo market={p.market} size={28} className="flex-none" />
-                      <span className="flex-1 text-sm font-medium truncate" style={{ color: '#1A1A1A' }}>{p.name}</span>
-                      <div className="text-right flex-none">
-                        <div className="text-sm font-bold" style={{ color: '#1B9E4B' }}>€{p.discountedPrice.toFixed(2)}</div>
-                        {p.discount > 0 && (
-                          <div className="text-[10px] font-bold" style={{ color: '#E33D26' }}>-{p.discount}%</div>
-                        )}
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+          {/* Category shortcut chips */}
+          <div className="hidden sm:flex flex-wrap justify-center items-center gap-2 mt-6">
+            {[
+              { id: 'supermarkt', emoji: '🛒', label: 'Supermarkt', category: '' },
+              { id: 'energie',    emoji: '⚡', label: 'Energie',    category: 'energie' },
+              { id: 'reizen',     emoji: '✈️', label: 'Reizen',     category: 'reizen' },
+              { id: 'wonen',      emoji: '🏠', label: 'Wonen',      category: 'wonen' },
+              { id: 'mode',       emoji: '🛍️', label: 'Mode',       category: 'mode' },
+            ].map(s => (
+              <button
+                key={s.id}
+                onClick={() => {
+                  if (s.category) { setMeerBesparenCategory(s.category); setMeerBesparenOpen(true) }
+                  else { window.scrollTo({ top: 0, behavior: 'smooth' }) }
+                }}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium transition-all hover:shadow-md active:scale-95"
+                style={{ background: 'white', border: '1px solid rgba(228,190,183,0.4)', color: '#1A1A1A', fontFamily: 'Space Grotesk', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}
+              >
+                <span>{s.emoji}</span>
+                {s.label}
+              </button>
+            ))}
           </div>
         </section>
+
+        {/* STATS SECTION — V9 Style */}
+        {products.length > 0 && searchTerm === '' && selectedMarket === 'all' && !showCampaignsOnly && (
+          <section className="-mx-4 md:-mx-16 border-y relative overflow-hidden mb-4" style={{ borderColor: 'rgba(228,190,183,0.3)', background: 'white' }}>
+            <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#E33D26 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
+            <div className="grid grid-cols-2 gap-0 max-w-[1280px] mx-auto px-4 md:px-16 py-8 md:py-12 relative z-10">
+              <div className="flex flex-col items-center justify-center text-center">
+                <span className="font-headline font-bold mb-1" style={{ fontSize: 'clamp(1.75rem, 4vw, 2.75rem)', color: '#1A1A1A', fontFamily: 'Space Grotesk' }}>
+                  {products.length.toLocaleString('nl-NL')}
+                </span>
+                <span className="text-xs font-medium uppercase tracking-widest" style={{ color: '#9C9389', fontFamily: 'Hanken Grotesk' }}>
+                  {lang === 'nl' ? 'Aanbiedingen Vandaag' : lang === 'en' ? 'Deals Found Today' : 'Bugün Fırsatlar'}
+                </span>
+              </div>
+              <div className="flex flex-col items-center justify-center text-center" style={{ borderLeft: '1px solid rgba(228,190,183,0.3)' }}>
+                <span className="font-headline font-bold mb-1" style={{ fontSize: 'clamp(1.75rem, 4vw, 2.75rem)', color: '#1B9E4B', fontFamily: 'Space Grotesk' }}>
+                  €{potentialSavings >= 1000 ? `${(potentialSavings / 1000).toFixed(1)}K` : potentialSavings.toFixed(0)}+
+                </span>
+                <span className="text-xs font-medium uppercase tracking-widest" style={{ color: '#9C9389', fontFamily: 'Hanken Grotesk' }}>
+                  {lang === 'nl' ? 'Mogelijke Besparing' : lang === 'en' ? 'Potential Savings' : 'Potansiyel Tasarruf'}
+                </span>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* FLINK AFFILIATE BANNER */}
         <a

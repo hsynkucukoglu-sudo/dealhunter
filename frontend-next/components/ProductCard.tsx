@@ -62,27 +62,28 @@ export function ProductCard({ product }: { product: Product }) {
       {hasValidDiscount && discountPercent > 0 && (
         <div className="absolute top-3 right-3 z-10 flex flex-col items-end gap-1">
           <span
-            className="badge-deal"
+            className="font-headline font-bold px-2.5 py-1 rounded-lg text-sm"
             style={{
-              background: discountPercent >= 40 ? '#E33D26' : '#1A1A1A',
+              background: '#E33D26',
               color: 'white',
-              boxShadow: discountPercent >= 40 ? '0 3px 10px rgba(227,61,38,0.3)' : '0 3px 10px rgba(0,0,0,0.15)',
+              fontFamily: 'Space Grotesk',
+              boxShadow: '0 3px 10px rgba(227,61,38,0.3)',
             }}
           >
             -{discountPercent}%
           </span>
           {lowestEver && (
             <span
-              className="text-[9px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap"
-              style={{ background: '#1B9E4B', color: 'white', boxShadow: '0 2px 6px rgba(27,158,75,0.3)' }}
+              className="text-[9px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap flex items-center gap-0.5"
+              style={{ background: '#1B9E4B', color: 'white', fontFamily: 'JetBrains Mono' }}
             >
-              🏆 Laagste prijs!
+              ✓ Laagste prijs
             </span>
           )}
         </div>
       )}
 
-      <div className="aspect-square overflow-hidden relative" style={{ background: '#FAF6F0' }}>
+      <div className="h-36 overflow-hidden relative" style={{ background: '#f5ede3' }}>
         {imgSrc && !imgError ? (
           /* eslint-disable-next-line @next/next/no-img-element */
           <img
@@ -131,30 +132,30 @@ export function ProductCard({ product }: { product: Product }) {
             className="w-2 h-2 rounded-full flex-none"
             style={{ background: MARKET_COLORS[product.market] || '#8C8478' }}
           />
-          <p className="text-xs font-headline uppercase tracking-widest" style={{ color: '#8C8478' }}>
+          <p className="text-[11px] font-medium uppercase tracking-wider" style={{ color: '#9C9389', fontFamily: 'JetBrains Mono' }}>
             {product.market}
           </p>
           {campaign.type && (
             <span
               className="text-[9px] font-bold px-1.5 py-0.5 rounded-full ml-auto whitespace-nowrap"
-              style={{ background: campaign.bg, color: campaign.color }}
+              style={{ background: campaign.bg, color: campaign.color, fontFamily: 'JetBrains Mono' }}
             >
               {campaign.label}
             </span>
           )}
         </div>
 
-        <h4 className="text-base font-headline font-bold leading-tight mb-3 line-clamp-2" style={{ color: '#1A1A1A' }}>
+        <h4 className="text-base font-headline font-semibold leading-tight mb-3 line-clamp-2" style={{ color: '#1A1A1A', fontFamily: 'Space Grotesk' }}>
           {product.name}
         </h4>
 
         <div className="mt-auto">
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-headline font-black" style={{ color: '#E33D26' }}>
+            <span className="font-bold" style={{ fontSize: '22px', lineHeight: '28px', color: '#E33D26', fontFamily: 'Space Grotesk' }}>
               €{product.discountedPrice.toFixed(2)}
             </span>
             {hasValidDiscount && (
-              <span className="text-sm line-through" style={{ color: '#C9C1B6' }}>
+              <span className="text-sm line-through" style={{ color: '#C9C1B6', fontFamily: 'Hanken Grotesk' }}>
                 €{product.originalPrice.toFixed(2)}
               </span>
             )}
@@ -182,27 +183,26 @@ export function ProductCard({ product }: { product: Product }) {
         <div className="flex items-center justify-between mt-1.5">
           {expiryStatus ? (
             expiryStatus.expired ? (
-              <p className="text-[11px] flex items-center gap-1 font-medium" style={{ color: '#C9C1B6' }}>
+              <p className="text-[11px] flex items-center gap-1 font-medium" style={{ color: '#C9C1B6', fontFamily: 'JetBrains Mono' }}>
                 <span className="material-symbols-outlined text-sm" aria-hidden="true">schedule</span>
                 {expiryStatus.label}
               </p>
             ) : expiryStatus.pulse ? (
-              // Vandaag / Morgen — agresif FOMO badge
               <span
-                className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-black animate-pulse"
-                style={{ background: expiryStatus.color, color: 'white' }}
+                className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-bold animate-pulse"
+                style={{ background: expiryStatus.color, color: 'white', fontFamily: 'JetBrains Mono' }}
               >
                 <span className="material-symbols-outlined text-sm" aria-hidden="true">alarm</span>
                 {expiryStatus.label}
               </span>
             ) : (
-              <p className={`text-[11px] flex items-center gap-1 font-medium`} style={{ color: expiryStatus.color }}>
+              <p className="text-[11px] flex items-center gap-1 font-medium" style={{ color: expiryStatus.color, fontFamily: 'JetBrains Mono' }}>
                 <span className="material-symbols-outlined text-sm" aria-hidden="true">schedule</span>
                 {expiryStatus.label}
               </p>
             )
           ) : (
-            <p className="text-[11px] flex items-center gap-1" style={{ color: '#9C9389' }}>
+            <p className="text-[11px] flex items-center gap-1" style={{ color: '#9C9389', fontFamily: 'JetBrains Mono' }}>
               <span className="material-symbols-outlined text-sm" aria-hidden="true">schedule</span>
               {t.validUntil}
             </p>
