@@ -44,6 +44,10 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   Coop: { destinationUrl: 'https://www.coop.nl/aanbiedingen', network: 'direct', rel: REL },
   Plus: { destinationUrl: 'https://www.plus.nl/aanbiedingen', network: 'direct', rel: REL },
   Kruidvat: { destinationUrl: 'https://www.kruidvat.nl/aanbiedingen', network: 'direct', rel: REL },
+  // Flink App (NL) — Daisycon onaylı, deeplink ad ID 1691645 (program si=16070, tracking: jf79.net)
+  Flink: { destinationUrl: 'https://www.goflink.com/', network: 'daisycon', programId: '1691645', rel: REL },
+  // Holland & Barrett NL — Awin onaylı 2026-06-22 (merchant ID 8108)
+  'Holland & Barrett': { destinationUrl: 'https://www.hollandandbarrett.nl/aanbiedingen', network: 'awin', programId: '8108', rel: REL },
 }
 
 /** Hedef URL'i yapılandırılmış ağın tracking deeplink'ine sarar. */
