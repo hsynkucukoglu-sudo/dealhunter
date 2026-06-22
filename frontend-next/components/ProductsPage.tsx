@@ -565,7 +565,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
       />
 
       {/* MAIN CONTENT */}
-      <main className="max-w-7xl mx-auto px-4 md:px-8 pt-24 pb-32">
+      <main className="max-w-7xl mx-auto px-4 md:px-8 pt-20 md:pt-24 pb-32">
 
         {/* FILTER ROW — sadeleştirildi: markten showcase'e taşındı */}
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-2">
@@ -717,7 +717,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         )}
 
         {/* HERO — kompakt, ürün kartları görünür kalsın */}
-        <section className="pb-6 pt-2">
+        <section className="pb-3 pt-1 sm:pb-6 sm:pt-2">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
             <div>
               <h1
@@ -737,7 +737,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                   </div>
                 ))}
               </div>
-              <div className="flex flex-wrap items-center gap-1.5 mt-2">
+              <div className="hidden sm:flex flex-wrap items-center gap-1.5 mt-2">
                 {[
                   { id: 'supermarkt', emoji: '🛒', label: 'Supermarkt', category: '' },
                   { id: 'energie',    emoji: '⚡', label: 'Energie',    category: 'energie' },
@@ -764,7 +764,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                 ))}
               </div>
             </div>
-            <div ref={heroSearchRef} className="relative max-w-xs w-full sm:w-72 flex-none">
+            <div ref={heroSearchRef} className="relative max-w-xs hidden sm:block w-full sm:w-72 flex-none">
               <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-lg" style={{ color: '#8C8478' }}>search</span>
               <input
                 type="text"
@@ -823,7 +823,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           href="https://jf79.net/c/?si=16070&li=1878997&wi=420902&ws="
           target="_blank"
           rel="noopener sponsored"
-          className="flex items-center gap-3 rounded-2xl px-4 py-3 mb-6 transition-opacity hover:opacity-90"
+          className="hidden sm:flex items-center gap-3 rounded-2xl px-4 py-3 mb-6 transition-opacity hover:opacity-90"
           style={{ background: 'linear-gradient(90deg, #ff6b00 0%, #ff8c00 100%)', textDecoration: 'none' }}
         >
           <span className="text-2xl">🛒</span>
@@ -834,15 +834,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           <span className="text-white text-xs font-semibold whitespace-nowrap bg-white/20 rounded-full px-3 py-1">Probeer Flink →</span>
         </a>
 
-        {/* MARKTEN SHOWCASE — ana vitrin, sadece default view'da */}
-        {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && !showFavoritesOnly && (
-          <MarktenShowcase
-            products={products}
-            onSelectMarket={(m) => { trackMarketFilter(m); startTransition(() => { setSelectedMarket(m); setShowCampaignsOnly(false); setSelectedCategory('all') }) }}
-          />
-        )}
-
-        {/* TOP 5 DEALS — hemen görünür */}
+        {/* TOP 5 DEALS — hemen görünür, MarktenShowcase'den önce */}
         {topDeals.length > 0 && searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
           <section className="mb-10">
             <div className="flex items-center gap-2 mb-4">
@@ -864,6 +856,14 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
               ))}
             </div>
           </section>
+        )}
+
+        {/* MARKTEN SHOWCASE — ana vitrin, sadece default view'da, Top 5'ten sonra */}
+        {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && !showFavoritesOnly && (
+          <MarktenShowcase
+            products={products}
+            onSelectMarket={(m) => { trackMarketFilter(m); startTransition(() => { setSelectedMarket(m); setShowCampaignsOnly(false); setSelectedCategory('all') }) }}
+          />
         )}
 
         {/* SON GEÇERLİLİK TARİHİ UYARISI */}
