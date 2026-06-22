@@ -1,6 +1,17 @@
 'use client'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MARKET_COLORS, CATEGORIES, CATEGORY_LABELS } from '@/lib/types'
+import { MarketLogo } from './MarketLogo'
+
+const SHORT_NAMES: Record<string, string> = {
+  'Albert Heijn': 'AH',
+  'DekaMarkt':    'Deka',
+  'Hoogvliet':    'Hoog',
+  'Kruidvat':     'Krdt',
+}
+function shortName(market: string): string {
+  return SHORT_NAMES[market] ?? market
+}
 
 interface Props {
   show: boolean
@@ -35,7 +46,7 @@ export function StickyFilterBar({
           transition={{ duration: 0.22, ease: 'easeOut' }}
           className="fixed left-0 right-0 z-40 md:hidden"
           style={{
-            top: 68,
+            top: 72,
             background: 'rgba(245, 237, 227, 0.94)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
@@ -59,7 +70,7 @@ export function StickyFilterBar({
               <button
                 key={market}
                 onClick={() => onMarket(selectedMarket === market ? 'all' : market)}
-                className="flex-none flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all"
+                className="flex-none flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold transition-all"
                 style={{
                   background: selectedMarket === market
                     ? (MARKET_COLORS[market] || '#1A1A1A')
@@ -67,7 +78,8 @@ export function StickyFilterBar({
                   color: selectedMarket === market ? 'white' : '#6B6259',
                 }}
               >
-                {market}
+                <MarketLogo market={market} size={18} />
+                {shortName(market)}
               </button>
             ))}
           </div>

@@ -66,7 +66,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
   const { favorites, watchlist } = useFavorites()
 
   useEffect(() => {
-    const handleScroll = () => setNavScrolled(window.scrollY > 60)
+    const handleScroll = () => setNavScrolled(window.scrollY > 20)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
