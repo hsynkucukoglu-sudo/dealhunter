@@ -159,6 +159,18 @@ export const MARKET_FAQS: Record<string, FAQ[]> = {
       question: 'In welke regio\'s is Hoogvliet te vinden?',
       answer: 'Hoogvliet supermarkten zijn voornamelijk gevestigd in Zuid-Holland, Noord-Holland en Utrecht. De keten telt meer dan 70 filialen in de Randstad. Via de Hoogvliet-website kun je je dichtstbijzijnde winkel vinden. Op DealHunter vind je alle actuele Hoogvliet aanbiedingen, ongeacht welk filiaal je bezoekt.',
     },
+    {
+      question: 'Is Hoogvliet goedkoper dan Albert Heijn?',
+      answer: 'Hoogvliet is op weekaanbiedingen gemiddeld 10-20% goedkoper dan Albert Heijn, met name op versproducten (vlees, groente, zuivel). Hoogvliet richt zich sterk op de regio en biedt soms exclusieve regionale aanbiedingen die je bij AH of Jumbo niet vindt. Vergelijk de actuele kortingen van beide supermarkten direct op DealHunter.',
+    },
+    {
+      question: 'Welke producten zijn bij Hoogvliet in de aanbieding?',
+      answer: 'Bij Hoogvliet vind je elke week aanbiedingen op vlees, zuivel, groente & fruit, dranken en huishoudproducten. Populaire acties zijn 1+1 gratis, 2e halve prijs en procentuele kortingen tot 40%. DealHunter toont alle actuele Hoogvliet weekdeals overzichtelijk, inclusief kortingspercentage en vervaldatum.',
+    },
+    {
+      question: 'Hoe bespaar ik het meest bij Hoogvliet?',
+      answer: 'Bespaar maximaal bij Hoogvliet door: de klantenkaart te gebruiken voor extra spaarpunten, de weekaanbiedingen (woensdag t/m dinsdag) te combineren, en verse producten in de aanbieding te kopen. DealHunter vergelijkt alle Hoogvliet deals met die van AH, Jumbo en Lidl zodat je weet of de aanbieding écht voordelig is.',
+    },
   ],
   'vomar': [
     {
@@ -172,6 +184,18 @@ export const MARKET_FAQS: Record<string, FAQ[]> = {
     {
       question: 'In welke regio\'s heeft Vomar winkels?',
       answer: 'Vomar heeft filialen voornamelijk in Noord-Holland en Flevoland. De keten staat bekend als een betaalbare supermarkt met een goed aanbod aan lokale producten. Alle actuele Vomar weekaanbiedingen en deals zijn te vinden op DealHunter.',
+    },
+    {
+      question: 'Is Vomar goedkoper dan andere supermarkten?',
+      answer: 'Vomar biedt scherpe weekprijzen die vaak vergelijkbaar zijn met Dirk en Aldi. Vomar is gemiddeld 10-15% goedkoper dan Albert Heijn op basisboodschappen. De supermarkt staat bekend om een goed prijs-kwaliteitaanbod en heeft wekelijks opvallende kortingen op vlees, dranken en zuivel.',
+    },
+    {
+      question: 'Welke producten zijn bij Vomar in de aanbieding?',
+      answer: 'Bij Vomar vind je elke week aanbiedingen op vlees, dranken (bier, frisdrank, wijn), zuivel, groente & fruit en huishoudproducten. Speciale Vomar-acties bevatten regelmatig N+M GRATIS deals, zoals 2+1 gratis of 3 halen 2 betalen. Alle actuele Vomar deals staan op DealHunter.',
+    },
+    {
+      question: 'Hoe werkt de Vomar folder?',
+      answer: 'De Vomar weekfolder wisselt elke woensdag en is geldig t/m dinsdag. Je kunt de folder bekijken via de Vomar-website of app. Op DealHunter zijn alle Vomar aanbiedingen direct doorzoekbaar — zoek op productnaam of filter op categorie voor de snelste resultaten zonder de folder te bladeren.',
     },
   ],
   'dekamarkt': [
@@ -206,6 +230,58 @@ export const MARKET_FAQS: Record<string, FAQ[]> = {
     {
       question: 'Wat is het verschil tussen DekaMarkt en andere supermarkten?',
       answer: 'DekaMarkt onderscheidt zich door unieke combi-deals: koop twee of drie producten tegelijk voor een lagere totaalprijs. Dit type aanbieding is zeldzaam bij AH, Jumbo of Lidl. Bovendien heeft DekaMarkt een breed versassortiment met scherpe weekprijzen op vlees, groente en zuivel. Voor gezinnen die grotere boodschappen doen, bespaar je wekelijks €10-20 vergeleken met alleen bij AH of Jumbo shoppen.',
+    },
+  ],
+  'plus': [
+    {
+      question: 'Wanneer worden de PLUS aanbiedingen bijgewerkt?',
+      answer: 'De PLUS weekaanbiedingen wisselen elke woensdag en zijn geldig t/m dinsdag. DealHunter werkt de actuele PLUS deals dagelijks bij zodat je altijd de nieuwste kortingen in één overzicht ziet, zonder de folder te bladeren.',
+    },
+    {
+      question: 'Heeft PLUS een klantenkaart of spaarprogramma?',
+      answer: 'Ja, PLUS heeft de PLUS klantenkaart en het bijbehorende spaarprogramma. Met de kaart spaar je punten bij aankopen en profiteer je van extra kortingen op geselecteerde aanbiedingen. De kaart is gratis aan te vragen via de PLUS-app of in de winkel.',
+    },
+    {
+      question: 'Is PLUS supermarkt goedkoper dan Albert Heijn?',
+      answer: 'PLUS en Albert Heijn hebben vergelijkbare prijsniveaus; op weekaanbiedingen kan PLUS soms 10-15% voordeliger zijn. PLUS onderscheidt zich door een brede keuze aan biologische en regionale producten. Vergelijk de actuele aanbiedingen van PLUS en AH direct op DealHunter om te zien waar je het meest bespaart.',
+    },
+    {
+      question: 'Welke producten zijn bij PLUS in de aanbieding?',
+      answer: 'Bij PLUS vind je elke week aanbiedingen op vlees, zuivel, groente & fruit, dranken, bakkerij en huishoudproducten. PLUS staat bekend om een breed biologisch assortiment dat ook regelmatig met korting wordt aangeboden. Bekijk alle actuele PLUS deals op DealHunter inclusief kortingspercentage.',
+    },
+    {
+      question: 'Waar vind ik de PLUS folder online?',
+      answer: 'De PLUS folder is online te bekijken via de PLUS-website en de PLUS-app. Op DealHunter zijn alle actuele PLUS aanbiedingen direct doorzoekbaar — zoek op product of filter op categorie voor de snelste vergelijking met AH, Jumbo en Lidl.',
+    },
+    {
+      question: 'Hoe bespaar ik het meest bij PLUS?',
+      answer: 'Bespaar maximaal bij PLUS door: de klantenkaart te combineren met de weekaanbiedingen (woensdag t/m dinsdag), biologische huismerken te kiezen die regelmatig in de aanbieding zijn, en de actuele deals te vergelijken via DealHunter. Zo weet je altijd of de PLUS aanbieding de beste prijs is.',
+    },
+  ],
+  'kruidvat': [
+    {
+      question: 'Wanneer worden de Kruidvat aanbiedingen bijgewerkt?',
+      answer: 'Kruidvat heeft elke week nieuwe aanbiedingen op drogisterij, beauty en verzorging. Nieuwe weekdeals starten doorgaans op maandag. DealHunter werkt alle actuele Kruidvat aanbiedingen dagelijks bij zodat je nooit een korting mist.',
+    },
+    {
+      question: 'Wat voor producten zijn bij Kruidvat in de aanbieding?',
+      answer: 'Kruidvat biedt wekelijks kortingen op verzorgingsproducten (shampoo, douchegel, tandpasta), beauty (make-up, huidverzorging, parfum), baby & kind, huishoudproducten en vrij verkrijgbare medicijnen. Kortingen variëren van 20% tot 50%, soms met 2e halve prijs of gratis extra.',
+    },
+    {
+      question: 'Heeft Kruidvat een klantenkaart of loyaliteitsprogramma?',
+      answer: 'Ja, Kruidvat heeft de Kruidvat klantenkaart. Met deze kaart profiteer je van extra kortingen, spaarpunten en exclusieve ledenaanbiedingen. De kaart is gratis aan te vragen via de Kruidvat-app of in de winkel. Combineer klantenkaartvoordelen met de actuele aanbiedingen op DealHunter voor maximale besparing.',
+    },
+    {
+      question: 'Is Kruidvat goedkoper dan Etos?',
+      answer: 'Kruidvat en Etos zijn directe concurrenten op de Nederlandse drogisterijmarkt. Kruidvat biedt over het algemeen iets scherpere weekaanbiedingen en heeft een breder assortiment eigen merken die goedkoper zijn dan A-merken. Op DealHunter vind je alle actuele Kruidvat aanbiedingen met kortingspercentage, zodat je de beste deal vindt.',
+    },
+    {
+      question: 'Hoe laat opent Kruidvat?',
+      answer: 'De meeste Kruidvat winkels zijn geopend van maandag t/m zaterdag van 09:00 tot 18:00 uur, met koopavond op donderdag tot 21:00. Op zondag zijn een deel van de filialen open van 12:00 tot 17:00. Exacte openingstijden per filiaal vind je op de Kruidvat-website. Op DealHunter vind je alle actuele Kruidvat aanbiedingen, zodat je altijd goed voorbereid de winkel in gaat.',
+    },
+    {
+      question: 'Heeft Kruidvat aanbiedingen op parfum en beauty?',
+      answer: 'Ja, Kruidvat heeft regelmatig scherpe aanbiedingen op parfum, make-up en huidverzorging. Populaire acties zijn 2e halve prijs op parfums, 20-40% korting op mascara en foundation, en speciale beauty-sets met extra inhoud. Rond feestdagen (Valentijn, moederdag, kerst) zijn de beauty-deals bij Kruidvat extra aantrekkelijk. DealHunter toont alle actuele Kruidvat beauty-aanbiedingen overzichtelijk.',
     },
   ],
 }

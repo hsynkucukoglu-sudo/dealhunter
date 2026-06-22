@@ -125,17 +125,17 @@ export const MARKETS = [
     slug: 'plus',
     name: 'Plus',
     color: '#2D8B35',
-    ctaTitle: 'PLUS Aanbiedingen Deze Week | Actuele Deals & Kortingen',
-    description: 'Alle PLUS supermarkt aanbiedingen van deze week — weekdeals, verse producten en huishouddeals. Vergelijk direct met AH en Jumbo. Dagelijks bijgewerkt.',
-    keywords: 'plus aanbiedingen, plus supermarkt deals, plus aanbieding deze week, plus folder, plus actie, plus korting, plus supermarkt aanbieding, plus weekaanbieding, plus supermarkt',
+    ctaTitle: 'PLUS Aanbiedingen Deze Week | 1+1 Gratis & Weekdeals Bijgewerkt',
+    description: 'Alle PLUS supermarkt aanbiedingen van deze week — 1+1 gratis, 2e halve prijs en weekdeals op vlees, zuivel en biologisch. Vergelijk direct met AH en Jumbo. Bespaar tot 40%, dagelijks bijgewerkt.',
+    keywords: 'plus aanbiedingen, plus supermarkt aanbiedingen, plus aanbieding deze week, plus folder, plus actie, plus korting, plus supermarkt aanbieding, plus weekaanbieding, plus supermarkt, aanbiedingen plus supermarkt',
   },
   {
     slug: 'kruidvat',
     name: 'Kruidvat',
     color: '#D50032',
-    ctaTitle: 'Kruidvat Aanbiedingen Deze Week | Actuele Kortingen op Drogisterij',
-    description: 'Alle Kruidvat aanbiedingen van deze week — kortingen op drogisterij, beauty, parfum en meer. Dagelijks bijgewerkt.',
-    keywords: 'kruidvat aanbiedingen, kruidvat deals, kruidvat aanbieding deze week, kruidvat folder, kruidvat actie, kruidvat korting, kruidvat drogisterij, kruidvat beauty aanbieding',
+    ctaTitle: 'Kruidvat Aanbiedingen Deze Week | Tot 50% op Beauty & Drogisterij',
+    description: 'Alle Kruidvat aanbiedingen van deze week — tot 50% korting op drogisterij, beauty, parfum, huidverzorging en make-up. 2e halve prijs deals dagelijks bijgewerkt. Vergelijk met Etos.',
+    keywords: 'kruidvat aanbiedingen, kruidvat deals, kruidvat aanbieding deze week, kruidvat folder, kruidvat actie, kruidvat korting, kruidvat drogisterij, kruidvat beauty aanbieding, aanbiedingen kruidvat, kruidvat parfum aanbieding',
   },
 ]
 
