@@ -28,6 +28,92 @@ import { MarketLogo } from './MarketLogo'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
+function b64ToUint8(b64: string) {
+  const pad = '='.repeat((4 - (b64.length % 4)) % 4)
+  const raw = atob((b64 + pad).replace(/-/g, '+').replace(/_/g, '/'))
+  return Uint8Array.from([...raw].map(c => c.charCodeAt(0)))
+}
+
+function PushPromptBanner() {
+  const [show, setShow] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return
+    if (sessionStorage.getItem('push_prompt_dismissed')) return
+    let timer: ReturnType<typeof setTimeout>
+    navigator.serviceWorker.register('/sw.js').then(async reg => {
+      const existing = await reg.pushManager.getSubscription()
+      if (!existing) timer = setTimeout(() => setShow(true), 30000)
+    }).catch(() => {})
+    return () => clearTimeout(timer)
+  }, [])
+
+  async function handleSubscribe() {
+    setLoading(true)
+    try {
+      const reg = await navigator.serviceWorker.ready
+      const { publicKey } = await fetch(`${API_BASE}/api/push/vapid-public-key`).then(r => r.json())
+      const sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: b64ToUint8(publicKey),
+      })
+      const json = sub.toJSON()
+      await fetch(`${API_BASE}/api/push/subscribe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ endpoint: json.endpoint, keys: json.keys }),
+      })
+    } catch { /* user denied or error — dismiss silently */ } finally {
+      sessionStorage.setItem('push_prompt_dismissed', '1')
+      setLoading(false)
+      setShow(false)
+    }
+  }
+
+  function dismiss() {
+    sessionStorage.setItem('push_prompt_dismissed', '1')
+    setShow(false)
+  }
+
+  return (
+    <AnimatePresence>
+      {show && (
+        <motion.div
+          initial={{ y: 100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 100, opacity: 0 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          className="fixed left-0 right-0 z-40 md:hidden px-3"
+          style={{ bottom: 82 }}
+        >
+          <div
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl shadow-xl"
+            style={{ background: '#1A1A1A' }}
+          >
+            <span className="text-xl flex-none">🔔</span>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold leading-snug" style={{ color: 'white' }}>Mis geen deal meer</p>
+              <p className="text-[11px] leading-snug" style={{ color: 'rgba(255,255,255,0.55)' }}>Gratis meldingen bij grote kortingen</p>
+            </div>
+            <button
+              onClick={handleSubscribe}
+              disabled={loading}
+              className="flex-none text-xs font-bold px-3 py-1.5 rounded-full"
+              style={{ background: '#E33D26', color: 'white' }}
+            >
+              {loading ? '...' : 'Activeer'}
+            </button>
+            <button onClick={dismiss} className="flex-none p-1" aria-label="Sluiten" style={{ color: 'rgba(255,255,255,0.35)' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 18 }}>close</span>
+            </button>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  )
+}
+
 export function ProductsPage({ initialProducts, initialSearch = '' }: { initialProducts: Product[], initialSearch?: string }) {
   const [products, setProducts] = useState<Product[]>(initialProducts)
   const [fetchError, setFetchError] = useState(false)
@@ -47,6 +133,7 @@ export function ProductsPage({ initialProducts, initialSearch = '' }: { initialP
   const [showFilterPanel, setShowFilterPanel] = useState(false)
   const [meerBesparenOpen, setMeerBesparenOpen] = useState(false)
   const [meerBesparenCategory, setMeerBesparenCategory] = useState<string | undefined>()
+  const [visibleCount, setVisibleCount] = useState(36)
 const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promise<{ outcome: string }> } | null>(null)
   const heroSearchRef = useRef<HTMLDivElement>(null)
 
@@ -60,6 +147,11 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
   const deferredFavoritesOnly = useDeferredValue(showFavoritesOnly)
   const deferredCampaign = useDeferredValue(selectedCampaign)
   const deferredSearch = useDeferredValue(debouncedSearch)
+
+  // Reset pagination when any filter changes
+  useEffect(() => {
+    setVisibleCount(36)
+  }, [deferredMarket, deferredCategory, deferredCampaignsOnly, deferredFavoritesOnly, deferredCampaign, deferredSearch])
 
   const { itemCount, setIsCartOpen } = useShoppingList()
   const { t, lang, setLang } = useLanguage()
@@ -237,6 +329,9 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
       return pctB - pctA
     })
   }, [products, deferredSearch, searchProducts, deferredCampaignsOnly, deferredMarket, deferredCategory, deferredFavoritesOnly, favorites, deferredCampaign])
+
+  const displayedProducts = useMemo(() => filteredProducts.slice(0, visibleCount), [filteredProducts, visibleCount])
+  const hasMore = filteredProducts.length > visibleCount
 
   const potentialSavings = useMemo(() =>
     filteredProducts.reduce((sum, p) => sum + (p.originalPrice > p.discountedPrice ? p.originalPrice - p.discountedPrice : 0), 0)
@@ -977,8 +1072,19 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
               )}
 
               <div style={{ opacity: isPending ? 0.6 : 1, transition: 'opacity 0.15s' }}>
-                <ProductGrid products={filteredProducts} t={t} searchTerm={debouncedSearch} fetchError={fetchError} onRetry={refreshProducts} />
+                <ProductGrid products={displayedProducts} t={t} searchTerm={debouncedSearch} fetchError={fetchError} onRetry={refreshProducts} />
               </div>
+              {hasMore && (
+                <div className="flex justify-center mt-8">
+                  <button
+                    onClick={() => setVisibleCount(c => c + 36)}
+                    className="px-6 py-3 rounded-2xl font-bold text-sm transition-all hover:shadow-md active:scale-95"
+                    style={{ background: 'rgba(255,255,255,0.85)', border: '1.5px solid rgba(201,193,182,0.5)', color: '#1A1A1A' }}
+                  >
+                    Toon meer ({filteredProducts.length - visibleCount} aanbiedingen) ↓
+                  </button>
+                </div>
+              )}
             </motion.div>
           ) : (
             <motion.div key="home" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
@@ -1023,8 +1129,19 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                   </motion.button>
                 </div>
                 <div style={{ opacity: isPending ? 0.6 : 1, transition: 'opacity 0.15s' }}>
-                  <ProductGrid products={filteredProducts} t={t} searchTerm={debouncedSearch} fetchError={fetchError} onRetry={refreshProducts} />
+                  <ProductGrid products={displayedProducts} t={t} searchTerm={debouncedSearch} fetchError={fetchError} onRetry={refreshProducts} />
                 </div>
+                {hasMore && (
+                  <div className="flex justify-center mt-8">
+                    <button
+                      onClick={() => setVisibleCount(c => c + 36)}
+                      className="px-6 py-3 rounded-2xl font-bold text-sm transition-all hover:shadow-md active:scale-95"
+                      style={{ background: 'rgba(255,255,255,0.85)', border: '1.5px solid rgba(201,193,182,0.5)', color: '#1A1A1A' }}
+                    >
+                      Toon meer ({filteredProducts.length - visibleCount} aanbiedingen) ↓
+                    </button>
+                  </div>
+                )}
               </section>
 
               {/* BLOG TEASERS — reduce bounce by surfacing relevant articles */}
@@ -1141,6 +1258,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         </button>
       </nav>
 
+      <PushPromptBanner />
       <ShoppingListSidebar />
       <AddProductForm onAdded={refreshProducts} />
 
