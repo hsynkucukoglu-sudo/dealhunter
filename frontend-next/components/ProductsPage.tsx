@@ -1027,6 +1027,41 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                 </div>
               </section>
 
+              {/* BLOG TEASERS — reduce bounce by surfacing relevant articles */}
+              {searchTerm === '' && selectedMarket === 'all' && !showCampaignsOnly && (
+                <section className="mt-12 mb-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-lg font-headline font-bold" style={{ color: '#1A1A1A' }}>
+                      📖 Bespaartips &amp; gidsen
+                    </h2>
+                    <a href="/blog" className="text-sm font-bold" style={{ color: '#E33D26' }}>
+                      Alle artikelen →
+                    </a>
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    {[
+                      { slug: '10-tips-goedkoper-boodschappen-doen-2026', title: '10 tips om goedkoper boodschappen te doen', emoji: '💡' },
+                      { slug: 'albert-heijn-vs-jumbo-vs-lidl-wie-is-goedkoper', title: 'AH vs Jumbo vs Lidl: wie is goedkoper?', emoji: '🔍' },
+                      { slug: 'beste-dag-boodschappen-doen', title: 'Beste dag om boodschappen te doen', emoji: '📅' },
+                      { slug: 'goedkoopste-supermarkt-nederland-2026', title: 'Goedkoopste supermarkt van Nederland', emoji: '🏆' },
+                    ].map(post => (
+                      <a
+                        key={post.slug}
+                        href={`/blog/${post.slug}`}
+                        className="flex flex-col gap-2 p-3 rounded-2xl transition-all hover:shadow-sm"
+                        style={{ background: 'rgba(255,255,255,0.85)', border: '1px solid rgba(201,193,182,0.35)', textDecoration: 'none' }}
+                      >
+                        <span className="text-2xl">{post.emoji}</span>
+                        <p className="text-xs font-semibold leading-snug line-clamp-3" style={{ color: '#1A1A1A' }}>
+                          {post.title}
+                        </p>
+                        <span className="text-[11px] font-bold mt-auto" style={{ color: '#E33D26' }}>Lees meer →</span>
+                      </a>
+                    ))}
+                  </div>
+                </section>
+              )}
+
               <NewsletterSignup />
 
             </motion.div>
@@ -1094,7 +1129,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         <button
           onClick={() => {
             startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setSelectedCategory('all') })
-            window.scrollTo({ top: 400, behavior: 'smooth' })
+            window.scrollTo({ top: 700, behavior: 'smooth' })
           }}
           className="flex flex-col items-center justify-center p-2 cursor-pointer"
           style={{ color: selectedMarket !== 'all' ? '#E33D26' : '#6B6259' }}

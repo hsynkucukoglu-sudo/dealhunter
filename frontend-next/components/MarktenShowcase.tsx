@@ -1,6 +1,7 @@
 'use client'
 import React, { useMemo } from 'react'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import { Product, VISIBLE_MARKETS } from '@/lib/types'
 import { MarketLogo } from './MarketLogo'
 
@@ -41,44 +42,53 @@ export function MarktenShowcase({ products, onSelectMarket }: Props) {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
         {marketStats.map((m, i) => (
-          <motion.button
+          <motion.div
             key={m.name}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.25, delay: i * 0.03 }}
-            whileTap={{ scale: 0.96 }}
-            onClick={() => onSelectMarket(m.name)}
-            className="flex flex-col items-center gap-2 p-4 rounded-2xl text-left cursor-pointer transition-all hover:shadow-md group"
-            style={{
-              background: 'rgba(255,255,255,0.85)',
-              border: '1.5px solid rgba(201,193,182,0.35)',
-            }}
+            className="group"
           >
-            {/* Market logo */}
-            <div className="group-hover:scale-105 transition-transform shadow-sm rounded-2xl overflow-hidden">
-              <MarketLogo market={m.name} size={52} />
-            </div>
+            <Link
+              href={`/supermarkt/${m.slug}`}
+              className="flex flex-col items-center gap-2 p-4 rounded-2xl cursor-pointer transition-all hover:shadow-md"
+              style={{
+                background: 'rgba(255,255,255,0.85)',
+                border: '1.5px solid rgba(201,193,182,0.35)',
+                textDecoration: 'none',
+                display: 'flex',
+              }}
+            >
+              {/* Market logo */}
+              <div className="group-hover:scale-105 transition-transform shadow-sm rounded-2xl overflow-hidden">
+                <MarketLogo market={m.name} size={52} />
+              </div>
 
-            {/* Market name */}
-            <span className="font-semibold text-xs text-center leading-tight" style={{ color: '#1A1A1A' }}>
-              {m.name}
-            </span>
-
-            {/* Stats */}
-            <div className="flex flex-col items-center gap-0.5">
-              <span className="text-[11px] font-medium" style={{ color: '#8C8478' }}>
-                {m.count} aanbiedingen
+              {/* Market name */}
+              <span className="font-semibold text-xs text-center leading-tight" style={{ color: '#1A1A1A' }}>
+                {m.name}
               </span>
-              {m.bestDeal && (
-                <span
-                  className="text-[11px] font-black px-2 py-0.5 rounded-full"
-                  style={{ background: '#E8F5EC', color: '#1B9E4B' }}
-                >
-                  tot -{m.bestDeal.discount}%
+
+              {/* Stats */}
+              <div className="flex flex-col items-center gap-0.5">
+                <span className="text-[11px] font-medium" style={{ color: '#8C8478' }}>
+                  {m.count} aanbiedingen
                 </span>
-              )}
-            </div>
-          </motion.button>
+                {m.bestDeal && (
+                  <span
+                    className="text-[11px] font-black px-2 py-0.5 rounded-full"
+                    style={{ background: '#E8F5EC', color: '#1B9E4B' }}
+                  >
+                    tot -{m.bestDeal.discount}%
+                  </span>
+                )}
+              </div>
+
+              <span className="text-[10px] font-bold" style={{ color: '#E33D26' }}>
+                Bekijk alle →
+              </span>
+            </Link>
+          </motion.div>
         ))}
       </div>
     </section>
