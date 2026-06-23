@@ -10,6 +10,7 @@ import { LanguageSwitcher } from './LanguageSwitcher'
 import { DealHunterLogo } from './DealHunterLogo'
 import { useShoppingList } from '@/context/ShoppingListContext'
 import { MarketFAQ } from './MarketFAQ'
+import { MarketLogo } from './MarketLogo'
 import { MARKET_FAQS, FAQ } from '@/lib/marketFaqs'
 import { MARKET_CONTENT } from '@/lib/marketContent'
 import { BlogPost } from '@/lib/posts'
@@ -48,60 +49,69 @@ export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
   return (
     <div className="min-h-screen" style={{ background: '#F5EDE3' }}>
 
-      {/* Navbar */}
-      <nav className="fixed top-4 left-4 right-4 z-50 flex justify-between items-center px-4 md:px-6 h-14 rounded-full navbar-pill">
-        <div className="flex items-center gap-4">
-          <Link href="/">
-            <DealHunterLogo height={36} />
-          </Link>
-          <span className="hidden md:block text-sm" style={{ color: '#8C8478' }}>›</span>
-          <span className="hidden md:block text-sm font-bold" style={{ color: '#1A1A1A' }}>{market.name}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <LanguageSwitcher />
-          <motion.button
-            whileTap={{ scale: 0.9 }}
-            onClick={() => setIsCartOpen(true)}
-            className="relative cursor-pointer p-2 rounded-full transition-all hover:bg-black/5"
-          >
-            <span className="material-symbols-outlined" style={{ color: '#1A1A1A' }}>shopping_bag</span>
-            {itemCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 text-[10px] font-bold px-1.5 rounded-full" style={{ background: '#E33D26', color: 'white' }}>
-                {itemCount}
-              </span>
-            )}
-          </motion.button>
+      {/* Navbar — V9 sticky full-width */}
+      <nav
+        className="fixed top-0 left-0 right-0 z-50 bg-white"
+        style={{ borderBottom: '1px solid rgba(228,190,183,0.4)', boxShadow: '0 2px 20px rgba(0,0,0,0.06)' }}
+      >
+        <div className="flex justify-between items-center max-w-[1280px] mx-auto px-4 md:px-16 h-16 w-full">
+          <div className="flex items-center gap-3">
+            <Link href="/">
+              <DealHunterLogo height={32} />
+            </Link>
+            <span className="text-sm" style={{ color: '#C9C1B6', fontFamily: 'JetBrains Mono' }}>›</span>
+            <span className="hidden md:block text-sm font-medium" style={{ color: '#6B6259', fontFamily: 'JetBrains Mono' }}>{market.name}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher />
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setIsCartOpen(true)}
+              className="relative cursor-pointer p-2 rounded-full transition-all hover:bg-black/5"
+            >
+              <span className="material-symbols-outlined" style={{ color: '#1A1A1A' }}>shopping_bag</span>
+              {itemCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 text-[10px] font-bold px-1.5 rounded-full" style={{ background: '#E33D26', color: 'white' }}>
+                  {itemCount}
+                </span>
+              )}
+            </motion.button>
+          </div>
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto px-4 md:px-8 pt-28 pb-20">
+      <main className="max-w-[1280px] mx-auto px-4 md:px-16 pt-20 pb-20">
 
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-sm mb-8" style={{ color: '#8C8478' }}>
-          <Link href="/" className="hover:underline">DealHunter</Link>
-          <span>›</span>
-          <Link href="/" className="hover:underline">Supermarkten</Link>
-          <span>›</span>
+        <nav className="flex items-center gap-2 text-xs mb-8" style={{ color: '#9C9389', fontFamily: 'JetBrains Mono' }}>
+          <Link href="/" className="hover:text-primary transition-colors">DealHunter4U</Link>
+          <span style={{ color: '#C9C1B6' }}>›</span>
+          <Link href="/" className="hover:text-primary transition-colors">Supermarkten</Link>
+          <span style={{ color: '#C9C1B6' }}>›</span>
           <span style={{ color: '#1A1A1A' }}>{market.name}</span>
         </nav>
 
         {/* Header */}
         <div className="mb-10">
           <div className="flex items-center gap-4 mb-4">
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-black text-lg"
-              style={{ background: market.color }}>
-              {market.name === 'Albert Heijn' ? 'AH' : market.name.substring(0, 2).toUpperCase()}
+            <div className="rounded-2xl overflow-hidden shadow-sm flex-none">
+              <MarketLogo market={market.name} size={56} />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-headline font-bold" style={{ color: '#1A1A1A' }}>
+              <h1
+                className="font-headline font-bold leading-tight"
+                style={{ fontSize: 'clamp(1.6rem, 4vw, 2.4rem)', color: '#1A1A1A', fontFamily: 'Space Grotesk', letterSpacing: '-0.02em' }}
+              >
                 {market.ctaTitle
                   ? market.ctaTitle.split(' | ')[0].replace(' Deze Week', '')
                   : `${market.name} Aanbiedingen`}
               </h1>
-              <p className="text-sm mt-1" style={{ color: '#8C8478' }}>Deze week · {filtered.length} aanbiedingen</p>
+              <p className="text-sm mt-1" style={{ color: '#9C9389', fontFamily: 'JetBrains Mono' }}>
+                Deze week · {filtered.length} aanbiedingen
+              </p>
             </div>
           </div>
-          <p className="text-base max-w-2xl" style={{ color: '#6B6259' }}>{market.description}</p>
+          <p className="text-base max-w-2xl" style={{ color: '#6B6259', fontFamily: 'Hanken Grotesk' }}>{market.description}</p>
         </div>
 
         {/* Filters */}

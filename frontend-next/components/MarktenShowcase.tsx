@@ -31,11 +31,11 @@ export function MarktenShowcase({ products, onSelectMarket }: Props) {
 
   return (
     <section className="mb-10">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-headline font-bold" style={{ color: '#1A1A1A' }}>
-          🏪 Supermarkten &amp; Drogisterijen
+      <div className="flex items-center justify-between mb-5">
+        <h2 className="text-xl font-headline font-bold" style={{ color: '#1A1A1A', fontFamily: 'Space Grotesk' }}>
+          Supermarkten &amp; Drogisterijen
         </h2>
-        <span className="text-xs font-medium" style={{ color: '#8C8478' }}>
+        <span className="text-[11px] font-medium" style={{ color: '#9C9389', fontFamily: 'JetBrains Mono' }}>
           {marketStats.length} winkels
         </span>
       </div>
@@ -51,42 +51,41 @@ export function MarktenShowcase({ products, onSelectMarket }: Props) {
           >
             <Link
               href={`/supermarkt/${m.slug}`}
-              className="flex flex-col items-center gap-2 p-4 rounded-2xl cursor-pointer transition-all hover:shadow-md"
+              className="flex flex-col items-center gap-2.5 p-4 rounded-xl cursor-pointer transition-all"
               style={{
-                background: 'rgba(255,255,255,0.85)',
-                border: '1.5px solid rgba(201,193,182,0.35)',
+                background: 'white',
+                border: '1px solid rgba(228,190,183,0.3)',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
                 textDecoration: 'none',
                 display: 'flex',
               }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)' }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)' }}
             >
               {/* Market logo */}
-              <div className="group-hover:scale-105 transition-transform shadow-sm rounded-2xl overflow-hidden">
+              <div className="group-hover:scale-105 transition-transform rounded-xl overflow-hidden">
                 <MarketLogo market={m.name} size={52} />
               </div>
 
               {/* Market name */}
-              <span className="font-semibold text-xs text-center leading-tight" style={{ color: '#1A1A1A' }}>
+              <span className="font-semibold text-[12px] text-center leading-tight" style={{ color: '#1A1A1A', fontFamily: 'Space Grotesk' }}>
                 {m.name}
               </span>
 
               {/* Stats */}
-              <div className="flex flex-col items-center gap-0.5">
-                <span className="text-[11px] font-medium" style={{ color: '#8C8478' }}>
-                  {m.count} aanbiedingen
+              <div className="flex flex-col items-center gap-1">
+                <span className="text-[10px] font-medium" style={{ color: '#9C9389', fontFamily: 'JetBrains Mono' }}>
+                  {m.count} deals
                 </span>
                 {m.bestDeal && (
                   <span
-                    className="text-[11px] font-black px-2 py-0.5 rounded-full"
-                    style={{ background: '#E8F5EC', color: '#1B9E4B' }}
+                    className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                    style={{ background: 'rgba(27,158,75,0.1)', color: '#1B9E4B', fontFamily: 'JetBrains Mono' }}
                   >
-                    tot -{m.bestDeal.discount}%
+                    -{m.bestDeal.discount}%
                   </span>
                 )}
               </div>
-
-              <span className="text-[10px] font-bold" style={{ color: '#E33D26' }}>
-                Bekijk alle →
-              </span>
             </Link>
           </motion.div>
         ))}
