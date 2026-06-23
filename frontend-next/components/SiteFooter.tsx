@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link'
 import { VISIBLE_MARKETS as MARKETS, CATEGORIES } from '@/lib/types'
 import { LanguageSwitcher } from './LanguageSwitcher'
