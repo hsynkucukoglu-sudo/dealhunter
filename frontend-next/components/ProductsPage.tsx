@@ -628,7 +628,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
               {isScraping ? t.scanning : t.scanBtn}
             </motion.button>
 
-            <div className="hidden sm:block"><LanguageSwitcher /></div>
+            <LanguageSwitcher />
 
             <motion.button
               whileTap={{ scale: 0.9 }}
