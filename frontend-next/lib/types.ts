@@ -83,8 +83,8 @@ export const MARKETS = [
     slug: 'aldi',
     name: 'Aldi',
     color: '#00205B',
-    ctaTitle: 'Aldi Aanbiedingen & Acties Deze Week | Tot 30% Goedkoper',
-    description: 'Alle Aldi aanbiedingen & acties van deze week — elke maandag nieuw. Vlees, groente en zuivel tot 30% goedkoper dan AH en Jumbo. Dagelijks bijgewerkt, geen folder nodig.',
+    ctaTitle: 'Aldi Aanbiedingen Deze Week — Kortingen Tot 50% | Geen Folder Nodig',
+    description: 'Aldi weekaanbiedingen met kortingspercentages — tot 50% op vlees, groente en zuivel. Elke maandag bijgewerkt, geen folder nodig. Vergelijk direct met AH en Jumbo.',
     keywords: 'aldi deals, aanbiedingen aldi, aldi aanbiedingen, aldi actie, aldi acties, aldi aanbiedingen deze week, aldi korting, aldi folder, aldi nederland, aldi aanbieding deze week',
   },
   {
