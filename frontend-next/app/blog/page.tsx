@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getAllPosts } from '@/lib/posts'
-import BlogCard from './BlogCard'
+import BlogListClient from './BlogListClient'
 import { buildBreadcrumbSchema } from '@/lib/schema'
 import { currentWeekSlug } from '@/lib/weeklyDeals'
 import { getISOWeek } from '@/lib/schema'
@@ -77,19 +77,14 @@ export default function BlogPage() {
           </div>
         </Link>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 24 }}>
-          {posts.map(post => (
-            <BlogCard
-              key={post.slug}
-              slug={post.slug}
-              category={post.category}
-              date={post.date}
-              readTime={post.readTime}
-              title={post.title}
-              description={post.description}
-            />
-          ))}
-        </div>
+        <BlogListClient posts={posts.map(p => ({
+          slug: p.slug,
+          title: p.title,
+          description: p.description,
+          date: p.date,
+          readTime: p.readTime,
+          category: p.category,
+        }))} />
 
         <div style={{ marginTop: 48, padding: '28px 32px', background: '#1A1A1A', borderRadius: 20, textAlign: 'center' }}>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 15, marginBottom: 16 }}>

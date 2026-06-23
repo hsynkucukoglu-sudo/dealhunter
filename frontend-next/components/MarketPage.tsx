@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { Product } from '@/lib/types'
@@ -28,16 +28,35 @@ export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
   initialProducts: Product[]
   relatedPosts?: BlogPost[]
 }) {
+  const PAGE_SIZE = 48
   const [search, setSearch] = useState('')
   const [campaignsOnly, setCampaignsOnly] = useState(false)
+  const [page, setPage] = useState(1)
   const { itemCount, setIsCartOpen } = useShoppingList()
   const faqs: FAQ[] = MARKET_FAQS[market.slug] ?? []
 
-  const filtered = useMemo(() => initialProducts.filter(p => {
-    const matchSearch = p.name.toLowerCase().includes(search.toLowerCase())
-    const matchCampaign = campaignsOnly ? p.isCampaign : true
-    return matchSearch && matchCampaign
-  }), [initialProducts, search, campaignsOnly])
+  const filtered = useMemo(() => {
+    const result = initialProducts.filter(p => {
+      const matchSearch = p.name.toLowerCase().includes(search.toLowerCase())
+      const matchCampaign = campaignsOnly ? p.isCampaign : true
+      return matchSearch && matchCampaign
+    })
+    // Highest discount first
+    return result.sort((a, b) => (b.discount ?? 0) - (a.discount ?? 0))
+  }, [initialProducts, search, campaignsOnly])
+
+  const displayed = useMemo(() => filtered.slice(0, page * PAGE_SIZE), [filtered, page])
+  const hasMore = displayed.length < filtered.length
+
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value)
+    setPage(1)
+  }, [])
+
+  const handleCampaignToggle = useCallback(() => {
+    setCampaignsOnly(v => !v)
+    setPage(1)
+  }, [])
 
   const avgDiscount = useMemo(() => {
     const withDiscount = filtered.filter(p => p.originalPrice > p.discountedPrice)
@@ -122,14 +141,14 @@ export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
               type="text"
               placeholder={`Zoek in ${market.name}...`}
               value={search}
-              onChange={e => setSearch(e.target.value)}
+              onChange={handleSearchChange}
               className="w-full pl-11 pr-4 py-3 rounded-full text-sm focus:outline-none focus:ring-2 transition-all"
               style={{ background: 'white', border: '1.5px solid #E0D8CE', color: '#1A1A1A' }}
             />
           </div>
           <motion.button
             whileTap={{ scale: 0.95 }}
-            onClick={() => setCampaignsOnly(!campaignsOnly)}
+            onClick={handleCampaignToggle}
             className="flex items-center gap-2 px-5 py-3 rounded-full text-sm font-bold transition-all cursor-pointer"
             style={{
               background: campaignsOnly ? '#E33D26' : 'white',
@@ -159,17 +178,33 @@ export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
             <p className="text-xl font-headline font-bold" style={{ color: '#1A1A1A' }}>Geen aanbiedingen gevonden</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {filtered.map((product, i) => (
-              <motion.div key={product.id}
-                initial={{ opacity: 0, y: i < 8 ? 20 : 0 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '0px 0px -40px 0px' }}
-                transition={{ duration: 0.3, delay: i < 8 ? i * 0.04 : 0 }}>
-                <ProductCard product={product} />
-              </motion.div>
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+              {displayed.map((product, i) => (
+                <motion.div key={product.id}
+                  initial={{ opacity: 0, y: i < 8 ? 20 : 0 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '0px 0px -40px 0px' }}
+                  transition={{ duration: 0.3, delay: i < 8 ? i * 0.04 : 0 }}>
+                  <ProductCard product={product} />
+                </motion.div>
+              ))}
+            </div>
+
+            {hasMore && (
+              <div className="flex justify-center mt-10">
+                <motion.button
+                  whileTap={{ scale: 0.96 }}
+                  onClick={() => setPage(p => p + 1)}
+                  className="flex items-center gap-2 px-8 py-3 rounded-full font-bold text-sm cursor-pointer transition-all"
+                  style={{ background: '#1A1A1A', color: 'white', fontFamily: 'Space Grotesk' }}
+                >
+                  <span className="material-symbols-outlined text-base">expand_more</span>
+                  Toon meer ({filtered.length - displayed.length} aanbiedingen)
+                </motion.button>
+              </div>
+            )}
+          </>
         )}
 
         {/* Reklam — ürün gridi ile SEO içeriği arasında doğal mola */}
