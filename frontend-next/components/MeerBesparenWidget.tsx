@@ -43,17 +43,17 @@ const DEALS = [
       { name: 'Kwantum',        tagline: 'Gordijnen, vloeren & meer',   cta: 'Bekijk aanbod',   color: '#E2001A', url: 'https://ds1.nl/c/?si=7762&li=1360074&wi=420902' },
       { name: 'Witgoedhuis',   tagline: 'Witgoed & huishoudapparaten', cta: 'Bekijk aanbod',   color: '#005BAC', url: 'https://ds1.nl/c/?si=6570&li=1307850&wi=420902' },
       { name: 'Dille&Kamille', tagline: 'Wonen, koken & tuin',         cta: 'Bekijk collectie', color: '#5C8A3C', url: 'https://lt45.net/c/?si=7059&li=1325903&wi=420902' },
-      { name: 'LampenTotaal',  tagline: 'Verlichting voor elk huis',   cta: 'Bekijk lampen',   color: '#F5861B', url: 'https://ds1.nl/c/?si=1723&li=102648&wi=420902' },
+      { name: 'Miss Towels',   tagline: 'Handdoeken & badtextiel NL',  cta: 'Bekijk aanbod',   color: '#E91E8C', url: `https://ds1.nl/c/?si=16070&li=21226&wi=420902&dl=${encodeURIComponent('https://www.misstowels.nl/')}` },
     ],
   },
   {
     id: 'mode',
     category: '👟 Schoenen & Sport',
     items: [
-      { name: 'Van Mourik',    tagline: 'Schoenen voor iedereen',   cta: 'Bekijk schoenen', color: '#8B4513', url: 'https://lt45.net/c/?si=5613&li=1258864&wi=420902' },
-      { name: 'Durlinger',     tagline: 'Kwaliteitsschoenen online', cta: 'Bekijk schoenen', color: '#2C2C2C', url: 'https://ds1.nl/c/?si=6261&li=1290549&wi=420902' },
-      { name: 'Sinner',        tagline: 'Sport & outdoorkleding',   cta: 'Bekijk collectie', color: '#D40000', url: 'https://lt45.net/c/?si=1281&li=79935&wi=420902' },
-      { name: 'Vitaminstore',  tagline: 'Vitamines & supplementen', cta: 'Bekijk aanbod',   color: '#00A651', url: 'https://ds1.nl/c/?si=5676&li=1266442&wi=420902' },
+      { name: 'Direct Running', tagline: 'Hardloopschoenen & kleding', cta: 'Bekijk aanbod',  color: '#E63329', url: AW(71531,  'https://www.direct-running.nl/') },
+      { name: 'Direct Volley',  tagline: 'Volleybal gear & kleding',   cta: 'Bekijk aanbod',  color: '#F4A300', url: AW(103041, 'https://www.direct-volley.nl/') },
+      { name: 'Sinner',         tagline: 'Sport & outdoorkleding',     cta: 'Bekijk collectie', color: '#D40000', url: 'https://lt45.net/c/?si=1281&li=79935&wi=420902' },
+      { name: 'Vitaminstore',   tagline: 'Vitamines & supplementen',   cta: 'Bekijk aanbod',  color: '#00A651', url: 'https://ds1.nl/c/?si=5676&li=1266442&wi=420902' },
     ],
   },
 ]
