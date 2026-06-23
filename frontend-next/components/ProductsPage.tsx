@@ -782,38 +782,50 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           )}
         </AnimatePresence>
 
-        {/* VERGELIJK BAR — compact, alleen op home view */}
+        {/* VERGELIJK BAR — zelfde product, laagste prijs per winkel */}
         {comparisonGroups.length > 0 && searchTerm === '' && selectedMarket === 'all' && !showCampaignsOnly && (
-          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-2 mb-6">
-            <div className="flex items-center gap-1 flex-none">
+          <div className="mb-6 p-3 rounded-2xl" style={{ background: 'rgba(255,255,255,0.6)', border: '1px solid rgba(201,193,182,0.3)' }}>
+            <div className="flex items-center gap-1.5 mb-2.5">
               <span className="material-symbols-outlined text-sm" style={{ color: '#1B9E4B' }}>compare_arrows</span>
-              <span className="text-[11px] font-bold uppercase tracking-wide" style={{ color: '#8C8478' }}>
-                {lang === 'tr' ? 'Karşılaştır' : lang === 'en' ? 'Compare' : 'Vergelijk'}
+              <span className="text-[11px] font-bold uppercase tracking-widest" style={{ color: '#1A1A1A', fontFamily: 'JetBrains Mono' }}>
+                {lang === 'tr' ? 'Karşılaştır' : lang === 'en' ? 'Compare prices' : 'Prijsvergelijking'}
+              </span>
+              <span className="text-[11px]" style={{ color: '#9C9389', fontFamily: 'Hanken Grotesk' }}>
+                — {lang === 'tr' ? 'Aynı ürün, en düşük fiyat hangi markette?' : lang === 'en' ? 'Same product, lowest price per store' : 'Zelfde product, laagste prijs per winkel'}
               </span>
             </div>
-            <div className="w-px h-4 flex-none" style={{ background: '#C9C1B6' }} />
-            {comparisonGroups.slice(0, 8).map((group, gi) => {
-              const cheapest = group.cheapest
-              const mostExpensive = group.products.reduce((a, b) => a.discountedPrice > b.discountedPrice ? a : b)
-              const rawSaving = mostExpensive.discountedPrice - cheapest.discountedPrice
-              const saving = rawSaving < cheapest.discountedPrice ? rawSaving : 0
-              return (
-                <div
-                  key={gi}
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl flex-none cursor-default"
-                  style={{ background: 'rgba(255,255,255,0.75)', border: '1px solid rgba(201,193,182,0.4)' }}
-                >
-                  <div className="w-1.5 h-1.5 rounded-full flex-none" style={{ background: MARKET_COLORS[cheapest.market] || '#1B9E4B' }} />
-                  <span className="text-xs font-semibold max-w-[100px] truncate" style={{ color: '#1A1A1A' }}>{group.name}</span>
-                  <span className="text-xs font-black" style={{ color: '#1B9E4B' }}>€{cheapest.discountedPrice.toFixed(2)}</span>
-                  {saving > 0.01 && (
-                    <span className="text-[10px] font-bold px-1 py-0.5 rounded-full flex-none" style={{ background: '#E8F5EC', color: '#1B9E4B' }}>
-                      -{saving.toFixed(2)}
-                    </span>
-                  )}
-                </div>
-              )
-            })}
+            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
+              {comparisonGroups.slice(0, 10).map((group, gi) => {
+                const cheapest = group.cheapest
+                const mostExpensive = group.products.reduce((a, b) => a.discountedPrice > b.discountedPrice ? a : b)
+                const rawSaving = mostExpensive.discountedPrice - cheapest.discountedPrice
+                const saving = rawSaving < cheapest.discountedPrice ? rawSaving : 0
+                return (
+                  <button
+                    key={gi}
+                    onClick={() => setSearchTerm(group.name)}
+                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl flex-none transition-all hover:scale-[1.02] active:scale-[0.97]"
+                    style={{
+                      background: 'white',
+                      border: `1.5px solid ${MARKET_COLORS[cheapest.market] || '#1B9E4B'}22`,
+                      cursor: 'pointer',
+                      boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+                    }}
+                    title={`Bekijk alle ${group.products.length} winkels voor "${group.name}"`}
+                  >
+                    <div className="w-2 h-2 rounded-full flex-none" style={{ background: MARKET_COLORS[cheapest.market] || '#1B9E4B' }} />
+                    <span className="text-xs font-semibold max-w-[90px] truncate" style={{ color: '#1A1A1A' }}>{group.name}</span>
+                    <span className="text-xs font-black" style={{ color: '#1B9E4B' }}>€{cheapest.discountedPrice.toFixed(2)}</span>
+                    {saving > 0.01 && (
+                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full flex-none" style={{ background: '#E8F5EC', color: '#1B9E4B' }}>
+                        -{saving.toFixed(2)}
+                      </span>
+                    )}
+                    <span className="material-symbols-outlined text-[12px] flex-none" style={{ color: '#C9C1B6' }}>arrow_forward</span>
+                  </button>
+                )
+              })}
+            </div>
           </div>
         )}
 
