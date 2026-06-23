@@ -5,7 +5,6 @@ import Fuse from 'fuse.js'
 import { Product, CATEGORIES, CATEGORY_LABELS, MARKET_COLORS } from '@/lib/types'
 import { ProductCard } from './ProductCard'
 import { ShoppingListSidebar } from './ShoppingListSidebar'
-import { AddProductForm } from './AddProductForm'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { useShoppingList } from '@/context/ShoppingListContext'
 import { useLanguage } from '@/context/LanguageContext'
@@ -1301,7 +1300,6 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
 
       <PushPromptBanner />
       <ShoppingListSidebar />
-      <AddProductForm onAdded={refreshProducts} />
 
       {/* SEO / editorial content — unieke inhoud onderaan de homepage */}
       <section
