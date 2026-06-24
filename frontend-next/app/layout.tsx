@@ -102,6 +102,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </PriceHistoryProvider>
           </LanguageProvider>
         </SessionProvider>
+        {/* Prevent Google OAuth (accounts.google.com) from being counted as referral.
+            Runs before GA4 loads so gtag('config') sees an empty referrer. */}
+        <Script
+          id="fix-oauth-referral"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `try{if(document.referrer&&document.referrer.indexOf('accounts.google.com')!==-1){Object.defineProperty(document,'referrer',{get:function(){return ''}})}}catch(e){}`
+          }}
+        />
         {enableAnalytics && <GoogleAnalytics gaId="G-Y253QH18ZH" />}
         {enableAnalytics && (
           <Script
