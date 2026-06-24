@@ -51,6 +51,7 @@ const DEALS = [
       { name: 'Tuinmeubelwereld',  tagline: 'Tuinmeubelen & accessoires',   cta: 'Bekijk aanbod',    color: '#2E7D32', url: `https://ds1.nl/c/?si=16070&li=19167&wi=420902&dl=${encodeURIComponent('https://www.tuinmeubelwereld.nl/aanbiedingen')}` },
       { name: 'Dille&Kamille',     tagline: 'Wonen, koken & tuin',          cta: 'Bekijk collectie', color: '#5C8A3C', url: 'https://lt45.net/c/?si=7059&li=1325903&wi=420902&dl=' + encodeURIComponent('https://www.dille-kamille.nl/sale') },
       { name: 'Miss Towels',       tagline: 'Handdoeken & badtextiel NL',   cta: 'Bekijk aanbod',    color: '#E91E8C', url: `https://ds1.nl/c/?si=16070&li=21226&wi=420902&dl=${encodeURIComponent('https://www.misstowels.nl/uitverkoop')}` },
+      { name: 'Florafy',           tagline: 'Verse bloemen bezorgd',        cta: 'Bestel bloemen',   color: '#E91E63', url: DS('16070', '21211',  'https://www.florafy.eu/nl/') },
     ],
   },
   {
@@ -58,7 +59,9 @@ const DEALS = [
     category: '👟 Schoenen & Sport',
     items: [
       { name: 'Holland & Barrett', tagline: 'Vitamines, sport & health',  cta: 'Bekijk aanbod',    color: '#007A3D', url: AW(8108,   'https://www.hollandandbarrett.nl/shop/aanbiedingen/') },
-      { name: 'Vitaepro NL',      tagline: 'Vitamines & gezondheid NL',  cta: 'Bekijk aanbod',    color: '#C8102E', url: AW(18520,  'https://www.vitaepro.nl/sale') },
+      { name: "Levi's",           tagline: 'Jeans & casualwear sale',    cta: 'Bekijk sale',      color: '#C8102E', url: DS('16070', '19949',  'https://www.levi.com/NL/nl_NL/c/sale') },
+      { name: 'Happy Mammoth',    tagline: 'Darmgezondheid & energie',   cta: 'Bekijk aanbod',    color: '#FF6B35', url: DS('16070', '19600',  'https://www.happymammoth.com/nl/') },
+      { name: 'Vitaepro NL',      tagline: 'Vitamines & gezondheid NL',  cta: 'Bekijk aanbod',    color: '#B71C1C', url: AW(18520,  'https://www.vitaepro.nl/sale') },
       { name: 'Direct Running',   tagline: 'Hardloopschoenen & kleding', cta: 'Bekijk sale',      color: '#E63329', url: AW(71531,  'https://www.direct-running.nl/sale') },
       { name: 'Direct Volley',    tagline: 'Volleybal gear & kleding',   cta: 'Bekijk sale',      color: '#F4A300', url: AW(103041, 'https://www.direct-volley.nl/sale') },
       { name: 'Sinner',           tagline: 'Sport & outdoorkleding',     cta: 'Bekijk collectie', color: '#D40000', url: 'https://lt45.net/c/?si=1281&li=79935&wi=420902&dl=' + encodeURIComponent('https://www.sinner.eu/sale') },

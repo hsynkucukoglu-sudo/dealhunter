@@ -27,15 +27,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const baseTitle = market.ctaTitle ?? `${market.name} Aanbiedingen Deze Week | DealHunter`
   const pageTitle = baseTitle.replace('Deze Week', `Week ${week} ${year}`)
 
+  const products = await getProductsByMarket(market.name)
+  const dealCount = products.length
+  const topDiscount = products.length > 0
+    ? Math.max(...products.map(p => p.discount || 0))
+    : 0
+  const dynamicDesc = dealCount > 0
+    ? `✓ ${dealCount} aanbiedingen bijgewerkt voor week ${week}. ${topDiscount > 0 ? `Tot ${topDiscount}% korting. ` : ''}${market.description}`
+    : market.description
+
   return {
     title: pageTitle,
-    description: market.description,
+    description: dynamicDesc,
     keywords: market.keywords,
     openGraph: {
       title: pageTitle,
-      description: market.description,
+      description: dynamicDesc,
       url: `https://www.dealhunter4u.nl/supermarkt/${slug}`,
-      siteName: 'DealHunter',
+      siteName: 'DealHunter4U',
       locale: 'nl_NL',
       type: 'website',
     },
