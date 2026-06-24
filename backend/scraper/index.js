@@ -239,7 +239,7 @@ async function scrapeJumbo() {
     const GQL_BATCH = 20
     for (let i = 0; i < skuDeals.length; i += GQL_BATCH) {
       const batch = skuDeals.slice(i, i + GQL_BATCH)
-      const aliases = batch.map((d, j) => `p${j}: product(sku: "${d.sku}") { price { price } }`).join(' ')
+      const aliases = batch.map((d, j) => `p${j}: product(sku: "${d.sku}") { price { price } image }`).join(' ')
       try {
         const r = await fetch(JUMBO_GQL_URL, {
           method: 'POST',
@@ -250,8 +250,10 @@ async function scrapeJumbo() {
         if (!r.ok) continue
         const data = await r.json()
         batch.forEach((d, j) => {
-          const cents = data.data?.[`p${j}`]?.price?.price
+          const prod = data.data?.[`p${j}`]
+          const cents = prod?.price?.price
           if (cents && cents > 0) d.regularPrice = cents / 100
+          if (prod?.image) d.imageUrl = prod.image
         })
       } catch {}
     }
@@ -266,13 +268,15 @@ async function scrapeJumbo() {
           const r = await fetch(JUMBO_GQL_URL, {
             method: 'POST',
             headers: JUMBO_GQL_HEADERS,
-            body: JSON.stringify({ query: `{ product(sku: "${deal.sku}") { price { price } } }` }),
+            body: JSON.stringify({ query: `{ product(sku: "${deal.sku}") { price { price } image } }` }),
             signal: AbortSignal.timeout(8000),
           })
           if (!r.ok) continue
           const data = await r.json()
-          const cents = data.data?.product?.price?.price
+          const prod = data.data?.product
+          const cents = prod?.price?.price
           if (cents && cents > 0) deal.regularPrice = cents / 100
+          if (prod?.image) deal.imageUrl = prod.image
         } catch {}
       }
     }
