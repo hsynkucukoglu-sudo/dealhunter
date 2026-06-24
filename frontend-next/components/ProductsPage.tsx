@@ -830,9 +830,9 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         )}
 
         {/* HERO — V9 Centered Style */}
-        <section className="flex flex-col items-center text-center pt-10 pb-8 md:pt-16 md:pb-10 -mx-4 md:-mx-16 px-4 md:px-16">
+        <section className="flex flex-col items-center text-center pt-4 pb-4 md:pt-10 md:pb-8 -mx-4 md:-mx-16 px-4 md:px-16">
           {/* Live Scanning Badge */}
-          <div className="inline-flex items-center gap-2 bg-white px-4 py-1.5 rounded-full mb-6 md:mb-8" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.08)', border: '1px solid rgba(228,190,183,0.3)' }}>
+          <div className="inline-flex items-center gap-2 bg-white px-4 py-1.5 rounded-full mb-3 md:mb-6" style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.08)', border: '1px solid rgba(228,190,183,0.3)' }}>
             <div className="relative flex h-3 w-3 flex-none">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: '#E33D26' }}></span>
               <span className="relative inline-flex rounded-full h-3 w-3" style={{ background: '#E33D26' }}></span>
@@ -844,14 +844,14 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
 
           {/* Big headline */}
           <h1
-            className="font-headline font-bold tracking-tight mb-4 md:mb-6 max-w-3xl"
+            className="font-headline font-bold tracking-tight mb-2 md:mb-5 max-w-3xl"
             style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', color: '#1A1A1A', letterSpacing: '-0.02em', lineHeight: '1.15', fontFamily: 'Space Grotesk' }}
           >
             {t.heroTitle1} <span style={{ color: '#E33D26' }}>{t.heroTitle2}</span>
           </h1>
 
           {/* Subtitle */}
-          <p className="mb-8 md:mb-10 max-w-2xl" style={{ fontSize: '1.0625rem', lineHeight: '1.7', color: '#6B6259', fontFamily: 'Hanken Grotesk, sans-serif' }}>
+          <p className="hidden sm:block mb-6 md:mb-8 max-w-2xl" style={{ fontSize: '1.0625rem', lineHeight: '1.7', color: '#6B6259', fontFamily: 'Hanken Grotesk, sans-serif' }}>
             {lang === 'nl'
               ? 'Vergelijk dagelijks bijgewerkte aanbiedingen van 11 winkels. Stop met bladeren, begin met besparen.'
               : lang === 'en'
@@ -940,6 +940,30 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           </div>
         </section>
 
+        {/* TOP 5 DEALS — fold'a yakın, Stats'tan önce */}
+        {topDeals.length > 0 && searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
+          <section className="mb-10">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="material-symbols-outlined material-filled" style={{ color: '#E33D26' }}>local_fire_department</span>
+              <h2 className="text-xl font-headline font-bold" style={{ color: '#1A1A1A' }}>
+                {lang === 'tr' ? 'En İyi 5 Fırsat' : lang === 'en' ? 'Top 5 Deals' : 'Top 5 Beste Deals'}
+              </h2>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+              {topDeals.map((product, i) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: i * 0.05 }}
+                >
+                  <ProductCard product={product} />
+                </motion.div>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* STATS SECTION — V9 Style */}
         {products.length > 0 && searchTerm === '' && selectedMarket === 'all' && !showCampaignsOnly && (
           <section className="-mx-4 md:-mx-16 border-y relative overflow-hidden mb-4" style={{ borderColor: 'rgba(228,190,183,0.3)', background: 'white' }}>
@@ -980,30 +1004,6 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           </div>
           <span className="text-white text-xs font-semibold whitespace-nowrap bg-white/20 rounded-full px-3 py-1">Probeer Flink →</span>
         </a>
-
-        {/* TOP 5 DEALS — hemen görünür, MarktenShowcase'den önce */}
-        {topDeals.length > 0 && searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
-          <section className="mb-10">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="material-symbols-outlined material-filled" style={{ color: '#E33D26' }}>local_fire_department</span>
-              <h2 className="text-xl font-headline font-bold" style={{ color: '#1A1A1A' }}>
-                {lang === 'tr' ? 'En İyi 5 Fırsat' : lang === 'en' ? 'Top 5 Deals' : 'Top 5 Beste Deals'}
-              </h2>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-              {topDeals.map((product, i) => (
-                <motion.div
-                  key={product.id}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: i * 0.05 }}
-                >
-                  <ProductCard product={product} />
-                </motion.div>
-              ))}
-            </div>
-          </section>
-        )}
 
         {/* MARKTEN SHOWCASE — ana vitrin, sadece default view'da, Top 5'ten sonra */}
         {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && !showFavoritesOnly && (
