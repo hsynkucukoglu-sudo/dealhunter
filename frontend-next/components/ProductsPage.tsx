@@ -1032,6 +1032,16 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           <span className="text-white text-xs font-semibold whitespace-nowrap bg-white/20 rounded-full px-3 py-1">Probeer Flink →</span>
         </a>
 
+        {/* MEER BESPAREN — compact trigger + drawer */}
+        {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
+          <MeerBesparenWidget
+            open={meerBesparenOpen}
+            onClose={() => { setMeerBesparenOpen(false); setMeerBesparenCategory(undefined) }}
+            onOpen={(cat) => { setMeerBesparenCategory(cat); setMeerBesparenOpen(true) }}
+            activeCategory={meerBesparenCategory}
+          />
+        )}
+
         {/* MARKTEN SHOWCASE — ana vitrin, sadece default view'da, Top 5'ten sonra */}
         {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && !showFavoritesOnly && (
           <MarktenShowcase
@@ -1085,16 +1095,6 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         {/* COMBINATIE DEALS WIDGET */}
         {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
           <CombinatieDealsWidget products={products} />
-        )}
-
-        {/* MEER BESPAREN — compact trigger + drawer */}
-        {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
-          <MeerBesparenWidget
-            open={meerBesparenOpen}
-            onClose={() => { setMeerBesparenOpen(false); setMeerBesparenCategory(undefined) }}
-            onOpen={(cat) => { setMeerBesparenCategory(cat); setMeerBesparenOpen(true) }}
-            activeCategory={meerBesparenCategory}
-          />
         )}
 
         {/* AD — Hero altı */}
