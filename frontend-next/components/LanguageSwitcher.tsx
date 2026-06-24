@@ -19,7 +19,7 @@ export function LanguageSwitcher() {
           key={code}
           onClick={() => setLang(code)}
           whileTap={{ scale: 0.88 }}
-          className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-black cursor-pointer transition-all"
+          className="flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-full text-xs font-black cursor-pointer transition-all"
           style={{
             background: lang === code ? '#E33D26' : 'transparent',
             color: '#FFFFFF',
@@ -28,7 +28,7 @@ export function LanguageSwitcher() {
           }}
         >
           <span style={{ fontSize: '14px' }}>{flag}</span>
-          <span>{label}</span>
+          <span className="hidden sm:inline">{label}</span>
         </motion.button>
       ))}
     </div>
