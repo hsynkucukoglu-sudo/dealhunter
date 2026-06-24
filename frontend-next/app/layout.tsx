@@ -1,6 +1,10 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
 import { GoogleAnalytics } from '@next/third-parties/google'
+import { headers } from 'next/headers'
+
+// Countries producing only scraper/bot traffic — no analytics needed
+const BOT_COUNTRIES = new Set(['US', 'CN', 'RU', 'SG', 'JP', 'AU', 'BR', 'IN'])
 import { ShoppingListProvider } from '@/context/ShoppingListContext'
 import { LanguageProvider } from '@/context/LanguageContext'
 import { CookieBanner } from '@/components/CookieBanner'
@@ -52,7 +56,12 @@ const organizationSchema = {
 }
 
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const headersList = await headers()
+  const country = headersList.get('cf-ipcountry') ?? ''
+  // No CF header = dev/staging, always track. Otherwise skip known bot countries.
+  const enableAnalytics = !country || !BOT_COUNTRIES.has(country)
+
   return (
     <html lang="nl" suppressHydrationWarning>
       <head>
@@ -93,14 +102,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </PriceHistoryProvider>
           </LanguageProvider>
         </SessionProvider>
-        <GoogleAnalytics gaId="G-Y253QH18ZH" />
-        <Script
-          id="clarity"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","wq9ux76fx9");`,
-          }}
-        />
+        {enableAnalytics && <GoogleAnalytics gaId="G-Y253QH18ZH" />}
+        {enableAnalytics && (
+          <Script
+            id="clarity"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","wq9ux76fx9");`,
+            }}
+          />
+        )}
       </body>
     </html>
   )
