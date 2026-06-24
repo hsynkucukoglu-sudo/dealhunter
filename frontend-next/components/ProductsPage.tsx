@@ -24,6 +24,7 @@ import { CombinatieDealsWidget } from './CombinatieDealsWidget'
 import { MeerBesparenWidget } from './MeerBesparenWidget'
 import { MarktenShowcase } from './MarktenShowcase'
 import { MarketLogo } from './MarketLogo'
+import Link from 'next/link'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
@@ -593,6 +594,32 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                 </motion.div>
               )}
             </AnimatePresence>
+
+            {/* Favorites heart button */}
+            <Link
+              href="/profiel"
+              className="relative cursor-pointer p-2 rounded-full transition-all hover:bg-black/5"
+              title="Favorieten"
+            >
+              <span
+                className="material-symbols-outlined"
+                style={{
+                  fontSize: '20px',
+                  color: (favorites.length + watchlist.length) > 0 ? '#E33D26' : '#1A1A1A',
+                  fontVariationSettings: (favorites.length + watchlist.length) > 0 ? '"FILL" 1' : '"FILL" 0',
+                }}
+              >
+                favorite
+              </span>
+              {(favorites.length + watchlist.length) > 0 && (
+                <span
+                  className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-black"
+                  style={{ background: '#E33D26', color: 'white' }}
+                >
+                  {favorites.length + watchlist.length > 9 ? '9+' : favorites.length + watchlist.length}
+                </span>
+              )}
+            </Link>
 
             <PushNotificationButton />
             <AuthButton />

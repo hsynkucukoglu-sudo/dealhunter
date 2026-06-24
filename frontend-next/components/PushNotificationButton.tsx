@@ -170,24 +170,18 @@ export function PushNotificationButton() {
         }}
         disabled={loading}
         title={subscribed ? 'Meldingsinstellingen' : 'Ontvang meldingen bij nieuwe deals'}
+        className="flex items-center gap-1.5 cursor-pointer transition-all"
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px',
-          padding: '8px 14px',
-          borderRadius: '20px',
-          border: subscribed ? '1.5px solid #C41230' : '1.5px solid rgba(255,255,255,0.25)',
-          background: subscribed ? 'rgba(196,18,48,0.12)' : 'transparent',
-          color: subscribed ? '#C41230' : 'inherit',
+          padding: '7px',
+          borderRadius: '50%',
+          border: subscribed ? '1.5px solid #C41230' : '1.5px solid rgba(26,26,26,0.15)',
+          background: subscribed ? 'rgba(196,18,48,0.08)' : 'transparent',
           cursor: loading ? 'wait' : 'pointer',
-          fontSize: '13px',
-          fontWeight: 600,
-          transition: 'all 0.2s',
-          whiteSpace: 'nowrap',
         }}
       >
-        <span style={{ fontSize: '16px' }}>{subscribed ? '🔔' : '🔕'}</span>
-        {loading ? '...' : subscribed ? 'Meldingen aan' : 'Meldingen'}
+        <span className="material-symbols-outlined" style={{ fontSize: '20px', color: subscribed ? '#C41230' : '#1A1A1A', fontVariationSettings: subscribed ? '"FILL" 1' : '"FILL" 0' }}>
+          {loading ? 'hourglass_empty' : 'notifications'}
+        </span>
       </button>
 
       {showPrefs && (
