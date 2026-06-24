@@ -5,61 +5,64 @@ import { motion, AnimatePresence } from 'framer-motion'
 const AW = (mid: number, dest: string) =>
   `https://www.awin1.com/cread.php?awinmid=${mid}&awinaffid=2932569&ued=${encodeURIComponent(dest)}`
 
+const DS = (si: string, li: string, dl: string) =>
+  `https://ds1.nl/c/?si=${si}&li=${li}&wi=420902&dl=${encodeURIComponent(dl)}`
+
 const DEALS = [
   {
     id: 'energie',
     category: '⚡ Energie',
     items: [
-      { name: 'ENGIE',       tagline: 'Gas & stroom vergelijken', cta: 'Bekijk tarief', color: '#0064A8', url: 'https://ds1.nl/c/?si=365&li=20757&wi=420902' },
-      { name: 'Vattenfall',  tagline: 'Groen & betrouwbaar',      cta: 'Bekijk tarief', color: '#1B6B3A', url: 'https://lt45.net/c/?si=2036&li=119986&wi=420902' },
-      { name: 'Oxxio',       tagline: 'Vaste lage tarieven',      cta: 'Bekijk tarief', color: '#E4002B', url: 'https://ds1.nl/c/?si=2028&li=119834&wi=420902' },
-      { name: 'Pure Energie', tagline: 'Goedkoop & transparant',  cta: 'Bekijk tarief', color: '#F7941D', url: 'https://jdt8.net/c/?si=9321&li=1420973&wi=420902' },
+      { name: 'ENGIE',       tagline: 'Gas & stroom vergelijken', cta: 'Vergelijk tarief', color: '#0064A8', url: DS('365',  '20757',   'https://www.engie.nl/energie-vergelijken') },
+      { name: 'Vattenfall',  tagline: 'Groen & betrouwbaar',      cta: 'Vergelijk tarief', color: '#1B6B3A', url: 'https://lt45.net/c/?si=2036&li=119986&wi=420902&dl=' + encodeURIComponent('https://www.vattenfall.nl/energie/stroom-en-gas/') },
+      { name: 'Oxxio',       tagline: 'Vaste lage tarieven',      cta: 'Vergelijk tarief', color: '#E4002B', url: DS('2028', '119834',   'https://www.oxxio.nl/energie/alles-in-1') },
+      { name: 'Pure Energie', tagline: 'Goedkoop & transparant',  cta: 'Vergelijk tarief', color: '#F7941D', url: 'https://jdt8.net/c/?si=9321&li=1420973&wi=420902&dl=' + encodeURIComponent('https://www.pure-energie.nl/energie-vergelijken') },
     ],
   },
   {
     id: 'verzekering',
     category: '🏥 Verzekering',
     items: [
-      { name: 'ONVZ',                  tagline: 'Zorgverzekering vergelijken', cta: 'Bekijk premie',  color: '#E4002B', url: 'https://ds1.nl/c/?si=7185&li=1332385&wi=420902' },
-      { name: 'Nationale-Nederlanden', tagline: 'Zorg & aanvullend pakket',    cta: 'Bekijk premie',  color: '#FF6200', url: 'https://ds1.nl/c/?si=2340&li=1362622&wi=420902' },
-      { name: 'DELA',                  tagline: 'Uitvaartverzekering',         cta: 'Bekijk aanbod',  color: '#003087', url: 'https://lt45.net/c/?si=9087&li=1414707&wi=420902' },
-      { name: 'Monuta',                tagline: 'Uitvaartzorg geregeld',       cta: 'Bekijk aanbod',  color: '#2C5F8A', url: 'https://jdt8.net/c/?si=9073&li=1414357&wi=420902' },
+      { name: 'ONVZ',                  tagline: 'Zorgverzekering vergelijken', cta: 'Bereken premie',  color: '#E4002B', url: DS('7185', '1332385', 'https://www.onvz.nl/zorgverzekering') },
+      { name: 'Nationale-Nederlanden', tagline: 'Zorg & aanvullend pakket',    cta: 'Bereken premie',  color: '#FF6200', url: DS('2340', '1362622', 'https://www.nn.nl/Particulier/Zorgverzekering.htm') },
+      { name: 'DELA',                  tagline: 'Uitvaartverzekering',         cta: 'Bekijk aanbod',   color: '#003087', url: 'https://lt45.net/c/?si=9087&li=1414707&wi=420902&dl=' + encodeURIComponent('https://www.dela.nl/uitvaartverzekering') },
+      { name: 'Monuta',                tagline: 'Uitvaartzorg geregeld',       cta: 'Bekijk aanbod',   color: '#2C5F8A', url: 'https://jdt8.net/c/?si=9073&li=1414357&wi=420902&dl=' + encodeURIComponent('https://www.monuta.nl/uitvaartverzekering') },
     ],
   },
   {
     id: 'reizen',
     category: '✈️ Reizen',
     items: [
-      { name: 'CheapTickets',       tagline: 'Goedkope vluchten',         cta: 'Zoek vlucht',   color: '#D9251D', url: 'https://ds1.nl/c/?si=1096&li=70202&wi=420902' },
-      { name: 'Vakantiediscounter', tagline: 'Last minute vakanties',      cta: 'Bekijk deals',  color: '#006FB9', url: 'https://ds1.nl/c/?si=7805&li=1362777&wi=420902' },
-      { name: 'Smartbox & Bongo',   tagline: 'Belevenis cadeaus & uitjes', cta: 'Bekijk cadeaus', color: '#E10065', url: `https://ds1.nl/c/?si=16070&li=21185&wi=420902&dl=${encodeURIComponent('https://www.smartbox.com/nl-nl/')}` },
-      { name: 'Prijsvrij',          tagline: 'Vluchten & hotels',          cta: 'Bekijk deals',  color: '#FF6B00', url: 'https://ds1.nl/c/?si=2916&li=168050&wi=420902' },
-      { name: 'Oad',                tagline: 'Georganiseerde reizen',      cta: 'Bekijk reizen', color: '#003B7A', url: 'https://ds1.nl/c/?si=7562&li=1352504&wi=420902' },
+      { name: 'CheapTickets',       tagline: 'Goedkope vluchten',         cta: 'Zoek vlucht',    color: '#D9251D', url: DS('1096',  '70202',   'https://www.cheaptickets.nl/vluchten') },
+      { name: 'Vakantiediscounter', tagline: 'Last minute vakanties',      cta: 'Bekijk deals',   color: '#006FB9', url: DS('7805',  '1362777', 'https://www.vakantiediscounter.nl/last-minute/') },
+      { name: 'Smartbox & Bongo',   tagline: 'Belevenis cadeaus & uitjes', cta: 'Bekijk cadeaus', color: '#E10065', url: `https://ds1.nl/c/?si=16070&li=21185&wi=420902&dl=${encodeURIComponent('https://www.smartbox.com/nl-nl/cadeaubon')}` },
+      { name: 'Prijsvrij',          tagline: 'Vluchten & hotels',          cta: 'Zoek vakantie',  color: '#FF6B00', url: DS('2916',  '168050',  'https://www.prijsvrij.nl/last-minute') },
+      { name: 'Oad',                tagline: 'Georganiseerde reizen',      cta: 'Bekijk reizen',  color: '#003B7A', url: DS('7562',  '1352504', 'https://www.oad.nl/aanbiedingen') },
     ],
   },
   {
     id: 'wonen',
     category: '🏠 Thuis & Wonen',
     items: [
-      { name: 'Bol.com',           tagline: 'Miljoen producten, snel thuis', cta: 'Bekijk aanbod',    color: '#0000A4', url: `https://partner.bol.com/click/click?p=2&t=url&s=1527078&url=${encodeURIComponent('https://www.bol.com/')}` },
-      { name: '999Games',          tagline: 'Bordspellen, puzzels & meer',   cta: 'Bekijk aanbod',    color: '#FF5500', url: `https://ds1.nl/c/?si=16070&li=13450&wi=420902&dl=${encodeURIComponent('https://www.999games.nl/')}` },
-      { name: 'Kwantum',           tagline: 'Gordijnen, vloeren & meer',     cta: 'Bekijk aanbod',    color: '#E2001A', url: 'https://ds1.nl/c/?si=7762&li=1360074&wi=420902' },
-      { name: 'Witgoedhuis',       tagline: 'Witgoed & huishoudapparaten',   cta: 'Bekijk aanbod',    color: '#005BAC', url: 'https://ds1.nl/c/?si=6570&li=1307850&wi=420902' },
-      { name: 'Tuinmeubelwereld',  tagline: 'Tuinmeubelen & accessoires',    cta: 'Bekijk aanbod',    color: '#2E7D32', url: `https://ds1.nl/c/?si=16070&li=19167&wi=420902&dl=${encodeURIComponent('https://www.tuinmeubelwereld.nl/')}` },
-      { name: 'Dille&Kamille',     tagline: 'Wonen, koken & tuin',           cta: 'Bekijk collectie', color: '#5C8A3C', url: 'https://lt45.net/c/?si=7059&li=1325903&wi=420902' },
-      { name: 'Miss Towels',       tagline: 'Handdoeken & badtextiel NL',    cta: 'Bekijk aanbod',    color: '#E91E8C', url: `https://ds1.nl/c/?si=16070&li=21226&wi=420902&dl=${encodeURIComponent('https://www.misstowels.nl/')}` },
+      { name: 'Bol.com',           tagline: 'Dagelijks nieuwe topdeals',    cta: 'Bekijk topdeals',  color: '#0000A4', url: `https://partner.bol.com/click/click?p=2&t=url&s=1527078&url=${encodeURIComponent('https://www.bol.com/nl/l/topdeals/')}` },
+      { name: '999Games',          tagline: 'Bordspellen, puzzels & meer',  cta: 'Bekijk aanbod',    color: '#FF5500', url: `https://ds1.nl/c/?si=16070&li=13450&wi=420902&dl=${encodeURIComponent('https://www.999games.nl/sale')}` },
+      { name: 'Kwantum',           tagline: 'Gordijnen, vloeren & meer',    cta: 'Bekijk sale',      color: '#E2001A', url: DS('7762',  '1360074', 'https://www.kwantum.nl/sale') },
+      { name: 'Witgoedhuis',       tagline: 'Witgoed & huishoudapparaten',  cta: 'Bekijk aanbod',    color: '#005BAC', url: DS('6570',  '1307850', 'https://www.witgoedhuis.nl/aanbiedingen') },
+      { name: 'Tuinmeubelwereld',  tagline: 'Tuinmeubelen & accessoires',   cta: 'Bekijk aanbod',    color: '#2E7D32', url: `https://ds1.nl/c/?si=16070&li=19167&wi=420902&dl=${encodeURIComponent('https://www.tuinmeubelwereld.nl/aanbiedingen')}` },
+      { name: 'Dille&Kamille',     tagline: 'Wonen, koken & tuin',          cta: 'Bekijk collectie', color: '#5C8A3C', url: 'https://lt45.net/c/?si=7059&li=1325903&wi=420902&dl=' + encodeURIComponent('https://www.dille-kamille.nl/sale') },
+      { name: 'Miss Towels',       tagline: 'Handdoeken & badtextiel NL',   cta: 'Bekijk aanbod',    color: '#E91E8C', url: `https://ds1.nl/c/?si=16070&li=21226&wi=420902&dl=${encodeURIComponent('https://www.misstowels.nl/uitverkoop')}` },
     ],
   },
   {
     id: 'mode',
     category: '👟 Schoenen & Sport',
     items: [
-      { name: 'Holland & Barrett', tagline: 'Vitamines, sport & health',  cta: 'Bekijk aanbod',    color: '#007A3D', url: AW(8108,   'https://www.hollandandbarrett.nl/') },
-      { name: 'Vitaepro NL',      tagline: 'Vitamines & gezondheid NL',  cta: 'Bekijk aanbod',    color: '#C8102E', url: AW(18520,  'https://www.vitaepro.nl/') },
-      { name: 'Direct Running',   tagline: 'Hardloopschoenen & kleding', cta: 'Bekijk aanbod',    color: '#E63329', url: AW(71531,  'https://www.direct-running.nl/') },
-      { name: 'Direct Volley',    tagline: 'Volleybal gear & kleding',   cta: 'Bekijk aanbod',    color: '#F4A300', url: AW(103041, 'https://www.direct-volley.nl/') },
-      { name: 'Sinner',           tagline: 'Sport & outdoorkleding',     cta: 'Bekijk collectie', color: '#D40000', url: 'https://lt45.net/c/?si=1281&li=79935&wi=420902' },
-      { name: 'Vitaminstore',     tagline: 'Vitamines & supplementen',   cta: 'Bekijk aanbod',    color: '#00A651', url: 'https://ds1.nl/c/?si=5676&li=1266442&wi=420902' },
+      { name: 'Holland & Barrett', tagline: 'Vitamines, sport & health',  cta: 'Bekijk aanbod',    color: '#007A3D', url: AW(8108,   'https://www.hollandandbarrett.nl/shop/aanbiedingen/') },
+      { name: 'Vitaepro NL',      tagline: 'Vitamines & gezondheid NL',  cta: 'Bekijk aanbod',    color: '#C8102E', url: AW(18520,  'https://www.vitaepro.nl/sale') },
+      { name: 'Direct Running',   tagline: 'Hardloopschoenen & kleding', cta: 'Bekijk sale',      color: '#E63329', url: AW(71531,  'https://www.direct-running.nl/sale') },
+      { name: 'Direct Volley',    tagline: 'Volleybal gear & kleding',   cta: 'Bekijk sale',      color: '#F4A300', url: AW(103041, 'https://www.direct-volley.nl/sale') },
+      { name: 'Sinner',           tagline: 'Sport & outdoorkleding',     cta: 'Bekijk collectie', color: '#D40000', url: 'https://lt45.net/c/?si=1281&li=79935&wi=420902&dl=' + encodeURIComponent('https://www.sinner.eu/sale') },
+      { name: 'Vitaminstore',     tagline: 'Vitamines & supplementen',   cta: 'Bekijk aanbod',    color: '#00A651', url: DS('5676',  '1266442', 'https://www.vitaminstore.nl/aanbiedingen') },
     ],
   },
 ]
@@ -240,6 +243,12 @@ export function MeerBesparenWidget({ open, onClose, onOpen, activeCategory }: Pr
                         href={item.url}
                         target="_blank"
                         rel="noopener noreferrer sponsored"
+                        onClick={() => {
+                          try {
+                            // @ts-ignore
+                            if (typeof gtag !== 'undefined') gtag('event', 'affiliate_click', { affiliate_name: item.name, affiliate_category: activeGroup.id })
+                          } catch {}
+                        }}
                         className="flex flex-col gap-2 px-4 py-4 rounded-2xl transition-transform hover:scale-[1.02] active:scale-[0.97]"
                         style={{
                           background: 'rgba(255,255,255,0.85)',
