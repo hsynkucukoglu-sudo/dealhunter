@@ -8,11 +8,12 @@
 // O ana kadar her market düz (tracking'siz) link olarak çalışır.
 
 // --- Publisher kimlikleri (onaydan sonra bir kez doldur) ---
-const DAISYCON_MEDIA_ID   = '16070'  // Daisycon "si" — publisher id
-const DAISYCON_WEBSITE_ID = '420902' // Daisycon "wi" — website id
+const DAISYCON_MEDIA_ID   = '16070'   // Daisycon "si" — publisher id
+const DAISYCON_WEBSITE_ID = '420902'  // Daisycon "wi" — website id
 const AWIN_PUBLISHER_ID   = '2932569' // Awin "awinaffid"
+const BOL_SITE_ID         = '1527078' // Bol.com partner "s" — site id
 
-export type AffiliateNetwork = 'daisycon' | 'awin' | 'direct'
+export type AffiliateNetwork = 'daisycon' | 'awin' | 'bol' | 'direct'
 
 interface MarketAffiliate {
   /** Kullanıcının indiği nihai sayfa (aanbiedingen). */
@@ -48,6 +49,8 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   Flink: { destinationUrl: 'https://www.goflink.com/', network: 'daisycon', programId: '1691645', rel: REL },
   // Holland & Barrett NL — Awin onaylı 2026-06-22 (merchant ID 8108)
   'Holland & Barrett': { destinationUrl: 'https://www.hollandandbarrett.nl/aanbiedingen', network: 'awin', programId: '8108', rel: REL },
+  // Bol.com — kendi partner ağı, site ID 1527078 (dealhunter4u.nl)
+  'Bol.com': { destinationUrl: 'https://www.bol.com/', network: 'bol', rel: REL },
 }
 
 /** Hedef URL'i yapılandırılmış ağın tracking deeplink'ine sarar. */
@@ -59,6 +62,9 @@ export function wrapAffiliate(entry: MarketAffiliate): string {
   }
   if (entry.network === 'awin' && AWIN_PUBLISHER_ID && entry.programId) {
     return `https://www.awin1.com/cread.php?awinmid=${entry.programId}&awinaffid=${AWIN_PUBLISHER_ID}&ued=${dl}`
+  }
+  if (entry.network === 'bol' && BOL_SITE_ID) {
+    return `https://partner.bol.com/click/click?p=2&t=url&s=${BOL_SITE_ID}&url=${dl}`
   }
   return entry.destinationUrl
 }
@@ -88,7 +94,8 @@ const ALLOWED_AFFILIATE_HOSTS = [
   'bdt9.net',    // Daisycon tracking
   'dc.budgetthuis.nl', // Budget Thuis direct
   'awin1.com',
-  'www.awin1.com', // Awin
+  'www.awin1.com',   // Awin
+  'partner.bol.com', // Bol.com
   ...Object.values(AFFILIATE_MAP).map((e) => {
     try {
       return new URL(e.destinationUrl).hostname
