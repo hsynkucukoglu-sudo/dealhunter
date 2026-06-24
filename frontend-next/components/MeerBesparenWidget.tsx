@@ -40,11 +40,12 @@ const DEALS = [
     id: 'wonen',
     category: '🏠 Thuis & Wonen',
     items: [
-      { name: 'Kwantum',           tagline: 'Gordijnen, vloeren & meer',   cta: 'Bekijk aanbod',    color: '#E2001A', url: 'https://ds1.nl/c/?si=7762&li=1360074&wi=420902' },
-      { name: 'Witgoedhuis',      tagline: 'Witgoed & huishoudapparaten', cta: 'Bekijk aanbod',    color: '#005BAC', url: 'https://ds1.nl/c/?si=6570&li=1307850&wi=420902' },
+      { name: 'Bol.com',          tagline: 'Miljoen producten, snel thuis', cta: 'Bekijk aanbod',    color: '#0000A4', url: `https://partner.bol.com/click/click?p=2&t=url&s=1527078&url=${encodeURIComponent('https://www.bol.com/')}` },
+      { name: 'Kwantum',         tagline: 'Gordijnen, vloeren & meer',    cta: 'Bekijk aanbod',    color: '#E2001A', url: 'https://ds1.nl/c/?si=7762&li=1360074&wi=420902' },
+      { name: 'Witgoedhuis',     tagline: 'Witgoed & huishoudapparaten',  cta: 'Bekijk aanbod',    color: '#005BAC', url: 'https://ds1.nl/c/?si=6570&li=1307850&wi=420902' },
       { name: 'Tuinmeubelwereld', tagline: 'Tuinmeubelen & accessoires',  cta: 'Bekijk aanbod',    color: '#2E7D32', url: `https://ds1.nl/c/?si=16070&li=19167&wi=420902&dl=${encodeURIComponent('https://www.tuinmeubelwereld.nl/')}` },
-      { name: 'Dille&Kamille',    tagline: 'Wonen, koken & tuin',          cta: 'Bekijk collectie', color: '#5C8A3C', url: 'https://lt45.net/c/?si=7059&li=1325903&wi=420902' },
-      { name: 'Miss Towels',      tagline: 'Handdoeken & badtextiel NL',   cta: 'Bekijk aanbod',   color: '#E91E8C', url: `https://ds1.nl/c/?si=16070&li=21226&wi=420902&dl=${encodeURIComponent('https://www.misstowels.nl/')}` },
+      { name: 'Dille&Kamille',   tagline: 'Wonen, koken & tuin',          cta: 'Bekijk collectie', color: '#5C8A3C', url: 'https://lt45.net/c/?si=7059&li=1325903&wi=420902' },
+      { name: 'Miss Towels',     tagline: 'Handdoeken & badtextiel NL',   cta: 'Bekijk aanbod',    color: '#E91E8C', url: `https://ds1.nl/c/?si=16070&li=21226&wi=420902&dl=${encodeURIComponent('https://www.misstowels.nl/')}` },
     ],
   },
   {
@@ -60,13 +61,23 @@ const DEALS = [
   },
 ]
 
+const FEATURED_BRANDS = [
+  { name: 'Holland & Barrett', category: 'mode',        color: '#007A3D' },
+  { name: 'Bol.com',           category: 'wonen',       color: '#0000A4' },
+  { name: 'ENGIE',             category: 'energie',     color: '#0064A8' },
+  { name: 'CheapTickets',      category: 'reizen',      color: '#D9251D' },
+  { name: 'Kwantum',           category: 'wonen',       color: '#E2001A' },
+  { name: 'Nationale-N.',      category: 'verzekering', color: '#FF6200' },
+]
+
 interface Props {
   open: boolean
   onClose: () => void
+  onOpen: (category: string) => void
   activeCategory?: string
 }
 
-export function MeerBesparenWidget({ open, onClose, activeCategory }: Props) {
+export function MeerBesparenWidget({ open, onClose, onOpen, activeCategory }: Props) {
   const [tab, setTab] = useState(activeCategory ?? 'energie')
   const contentRef = useRef<HTMLDivElement>(null)
 
@@ -86,43 +97,46 @@ export function MeerBesparenWidget({ open, onClose, activeCategory }: Props) {
 
   return (
     <>
-      {/* COMPACT TRIGGER ROW */}
+      {/* BRAND CHIPS — altways visible, direct click to open drawer */}
       <section id="meer-besparen" className="mb-6">
-        <button
-          onClick={() => { /* open handled from parent via props */ }}
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left"
+        <div
+          className="flex items-center gap-3 px-4 py-3 rounded-2xl"
           style={{
             background: 'rgba(255,255,255,0.7)',
             border: '1px solid rgba(201,193,182,0.4)',
             boxShadow: '0 2px 0 #DDD0C4',
-            cursor: 'default',
           }}
         >
-          <span style={{ fontSize: 16 }}>💡</span>
           <span
-            className="text-sm font-black uppercase tracking-wide"
-            style={{ color: '#1A1A1A', fontFamily: 'Space Grotesk, sans-serif' }}
+            className="text-[11px] font-black uppercase tracking-wider whitespace-nowrap flex-none"
+            style={{ color: '#8C8478', fontFamily: 'Space Grotesk, sans-serif' }}
           >
-            Meer besparen
+            💡 Meer besparen
           </span>
-          <div className="flex gap-1.5 ml-1 overflow-hidden">
-            {DEALS.map(d => (
-              <span
-                key={d.id}
-                className="text-[11px] px-2 py-0.5 rounded-full whitespace-nowrap"
-                style={{ background: 'rgba(201,193,182,0.25)', color: '#8C8478' }}
+          <div className="flex gap-2 overflow-x-auto no-scrollbar flex-1">
+            {FEATURED_BRANDS.map(b => (
+              <button
+                key={b.name}
+                onClick={() => onOpen(b.category)}
+                className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap transition-all hover:scale-105 active:scale-95 flex-none"
+                style={{
+                  background: `${b.color}12`,
+                  border: `1px solid ${b.color}35`,
+                  color: b.color,
+                }}
               >
-                {d.category.split(' ').slice(0, 2).join(' ')}
-              </span>
+                <span className="w-1.5 h-1.5 rounded-full flex-none" style={{ background: b.color }} />
+                {b.name}
+              </button>
             ))}
           </div>
           <span
-            className="text-[11px] font-bold px-2 py-0.5 rounded-full ml-auto"
-            style={{ background: 'rgba(201,193,182,0.4)', color: '#9C9389' }}
+            className="text-[10px] font-medium whitespace-nowrap flex-none"
+            style={{ color: '#C9C1B6' }}
           >
             Gesponsord
           </span>
-        </button>
+        </div>
       </section>
 
       {/* DRAWER */}

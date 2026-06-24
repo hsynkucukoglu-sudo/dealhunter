@@ -1065,6 +1065,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           <MeerBesparenWidget
             open={meerBesparenOpen}
             onClose={() => { setMeerBesparenOpen(false); setMeerBesparenCategory(undefined) }}
+            onOpen={(cat) => { setMeerBesparenCategory(cat); setMeerBesparenOpen(true) }}
             activeCategory={meerBesparenCategory}
           />
         )}
