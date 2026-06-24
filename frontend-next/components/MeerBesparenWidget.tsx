@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const AW = (mid: number, dest: string) =>
@@ -230,7 +230,11 @@ export function MeerBesparenWidget({ open, onClose, onOpen, activeCategory }: Pr
               </div>
 
               {/* Cards */}
-              <div ref={contentRef} className="overflow-y-auto flex-1 p-4">
+              <div
+                ref={contentRef}
+                className="overflow-y-auto flex-1 p-4"
+                style={{ WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+              >
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={tab}
@@ -246,11 +250,14 @@ export function MeerBesparenWidget({ open, onClose, onOpen, activeCategory }: Pr
                         href={item.url}
                         target="_blank"
                         rel="noopener noreferrer sponsored"
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation()
                           try {
                             // @ts-ignore
                             if (typeof gtag !== 'undefined') gtag('event', 'affiliate_click', { affiliate_name: item.name, affiliate_category: activeGroup.id })
                           } catch {}
+                          window.open(item.url, '_blank', 'noopener,noreferrer')
+                          e.preventDefault()
                         }}
                         className="flex flex-col gap-2 px-4 py-4 rounded-2xl transition-transform hover:scale-[1.02] active:scale-[0.97]"
                         style={{
@@ -258,7 +265,9 @@ export function MeerBesparenWidget({ open, onClose, onOpen, activeCategory }: Pr
                           border: '1px solid rgba(201,193,182,0.4)',
                           boxShadow: '0 2px 0 #DDD0C4',
                           textDecoration: 'none',
-                        }}
+                          cursor: 'pointer',
+                          WebkitTapHighlightColor: 'rgba(0,0,0,0.08)',
+                        } as React.CSSProperties}
                       >
                         <div className="flex items-center gap-2">
                           <div
