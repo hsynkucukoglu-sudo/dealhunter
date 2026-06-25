@@ -3291,6 +3291,111 @@ export const POSTS: BlogPost[] = [
 <p>→ <a href="/categorie/verzorging">Bekijk alle actuele verzorgingsproducten in aanbieding</a></p>
     `.trim(),
   },
+  {
+    slug: 'kruidvat-aanbiedingen-gids',
+    relatedMarkets: ['kruidvat'],
+    title: 'Kruidvat aanbiedingen: gids voor beauty & drogisterij deals',
+    description: 'Alles over Kruidvat aanbiedingen: wanneer starten de weekdeals, 2e halve prijs & 50% korting acties op beauty, parfum en verzorging. Hoe bespaar je het meest bij Kruidvat?',
+    date: '2026-06-25',
+    readTime: 5,
+    category: 'Supermarkt gids',
+    faqs: [
+      {
+        question: 'Wanneer beginnen de Kruidvat aanbiedingen?',
+        answer: 'Kruidvat vernieuwt zijn weekaanbiedingen elke maandag. De nieuwe deals zijn geldig van maandag tot en met zondag. Kruidvat heeft ook kortlopende acties en seizoenspromoties die tussentijds kunnen starten.',
+      },
+      {
+        question: 'Heeft Kruidvat 50% korting acties?',
+        answer: 'Ja, Kruidvat heeft regelmatig 50% kortingsacties op beauty, parfum en verzorging — met name rond feestdagen (Valentijn, moederdag, kerst) en seizoensaanbiedingen. Check de actuele Kruidvat aanbiedingen op DealHunter4U voor de nieuwste 50% deals.',
+      },
+      {
+        question: 'Wat betekent 2e halve prijs bij Kruidvat?',
+        answer: 'Bij een 2e halve prijs actie bij Kruidvat koop je twee producten en betaal je voor het tweede exemplaar de helft. Dit is effectief 25% korting op twee stuks. Dit type aanbieding is populair bij shampoo, douchegel, parfum en huidverzorging.',
+      },
+      {
+        question: 'Is Kruidvat goedkoper dan Etos?',
+        answer: 'Kruidvat en Etos zijn directe concurrenten. Kruidvat heeft over het algemeen iets lagere dagprijzen op eigen merken en biedt vaker diepe 50% kortingsacties. Etos heeft een iets breder premium assortiment. Vergelijk de actuele aanbiedingen van beide drogisterijen op DealHunter4U.',
+      },
+      {
+        question: 'Heeft Kruidvat een klantenkaart?',
+        answer: 'Ja, Kruidvat heeft een klantenkaart en de Kruidvat app. Met de app krijg je toegang tot extra digitale kortingscoupons, cashback-aanbiedingen en vroege toegang tot weekdeals. De kaart is gratis aan te vragen in de winkel of via de app.',
+      },
+    ],
+    content: `
+<p class="lead">Kruidvat is de grootste drogisterij van Nederland met meer dan 1.000 filialen. Van shampoo en parfum tot babyproducten en vrij verkrijgbare medicijnen — Kruidvat heeft wekelijks scherpe <strong>aanbiedingen</strong> op het volledige assortiment. Maar hoe haal je het maximale eruit?</p>
+
+<h2>Wanneer beginnen de Kruidvat aanbiedingen?</h2>
+<p>Kruidvat vernieuwt zijn weekaanbiedingen elke <strong>maandag</strong>. De nieuwe deals zijn geldig van maandag tot en met zondag. In tegenstelling tot supermarkten heeft Kruidvat ook tussentijdse seizoensacties die op elk moment kunnen starten — met name rond feestdagen zoals Valentijn, moederdag en kerst.</p>
+<p>Wil je de actuele Kruidvat aanbiedingen bekijken? Op <a href="/supermarkt/kruidvat">DealHunter4U vind je alle Kruidvat deals dagelijks bijgewerkt</a> — filter op categorie voor de snelste resultaten.</p>
+
+<h2>Kruidvat 50% korting acties: wanneer en waarop?</h2>
+<p>Kruidvat staat bekend om zijn <strong>50% kortingsacties</strong> die meerdere keren per jaar terugkomen. Je vindt ze het vaakst bij:</p>
+<ul>
+  <li><strong>Parfum en geuren:</strong> 50% op alle parfums — meest voorkomend rond moederdag, kerst en valentijn</li>
+  <li><strong>Haarkleur:</strong> Garnier, L'Oréal en Schwarzkopf kleuring 50% korting — gemiddeld elke 6-8 weken</li>
+  <li><strong>Zonnebrand en reisproducten:</strong> 50% aan het eind van het zomerseizoen (augustus–september)</li>
+  <li><strong>Elektrische tandenborstel en scheerapparaten:</strong> Philips en Oral-B regelmatig 40–50% korting</li>
+  <li><strong>Knuffel- en speelgoed:</strong> 50% op Kruidvat eigen merk speelgoed — met name in het najaar</li>
+</ul>
+<p>Tip: sla een notificatie in voor de Kruidvat app of check DealHunter4U elke maandag voor de nieuwste 50% acties.</p>
+
+<h2>Kruidvat 2e halve prijs: de populairste deals</h2>
+<p>Na 50% korting is <strong>2e halve prijs</strong> de populairste actievorm bij Kruidvat. Dit is effectief 25% korting op twee stuks. Populaire producten met 2e halve prijs:</p>
+<ul>
+  <li><strong>Shampoo en conditioner:</strong> Elvive, Pantene, Head & Shoulders — bijna elke week bij een van deze merken</li>
+  <li><strong>Douchegel en zeep:</strong> Dove, Nivea, Palmolive — frequente 2e halve prijs actie</li>
+  <li><strong>Huidverzorging:</strong> Nivea bodylotion, Vaseline en Eucerin — regelmatig in de weekaanbieding</li>
+  <li><strong>Make-up:</strong> Maybelline, L'Oréal en Essence foundation, mascara en lippenstift</li>
+  <li><strong>Tandpasta en mondverzorging:</strong> Colgate, Oral-B en Sensodyne — elke paar weken</li>
+</ul>
+
+<h2>Welke producten zijn bij Kruidvat in de aanbieding?</h2>
+<p>Een typische Kruidvat weekfolder bevat:</p>
+<ul>
+  <li><strong>Beauty (make-up, huid, haar):</strong> 20–50% korting op A-merken en eigen merk</li>
+  <li><strong>Parfum:</strong> seizoensgebonden 30–50% kortingen, meest in het najaar</li>
+  <li><strong>Baby & kind:</strong> Pampers, Huggies en Kruidvat eigen merk luiers en babyverzorging</li>
+  <li><strong>Vitaminen en supplementen:</strong> Davitamon, Orthica en Kruidvat eigen merk regelmatig 20–40% korting</li>
+  <li><strong>Vrij verkrijgbare medicijnen:</strong> pijnstillers, neusspray, hooikoortsmedicatie bij seizoenspieken</li>
+  <li><strong>Huishoudproducten:</strong> batterijen, schoonmaakmiddelen en keukenrol</li>
+</ul>
+
+<h2>Kruidvat vs. Etos: wie heeft de beste aanbiedingen?</h2>
+<p>Kruidvat en Etos zijn directe concurrenten. De belangrijkste verschillen:</p>
+<ul>
+  <li><strong>Prijsniveau:</strong> Kruidvat heeft over het algemeen iets lagere dagprijzen op eigen merken</li>
+  <li><strong>Actiediepte:</strong> Kruidvat heeft vaker 50% en 2e halve prijs op A-merken dan Etos</li>
+  <li><strong>Assortiment:</strong> Etos heeft een iets breder premium en biologisch aanbod</li>
+  <li><strong>Filialen:</strong> Kruidvat heeft meer dan 1.000 filialen — Etos circa 500</li>
+  <li><strong>App en klantenkaart:</strong> beide vergelijkbaar, Kruidvat met iets meer digitale coupons</li>
+</ul>
+<p>Conclusie: voor diepe kortingen op A-merken beauty en verzorging wint Kruidvat. Voor een breder biologisch assortiment is Etos sterker.</p>
+
+<h2>De Kruidvat klantenkaart: extra voordeel</h2>
+<p>Met de <strong>Kruidvat klantenkaart</strong> en de bijbehorende app profiteer je van:</p>
+<ul>
+  <li>Persoonlijke digitale coupons — extra kortingen die niet in de reguliere folder staan</li>
+  <li>Vroege toegang tot weekdeals via de app</li>
+  <li>Cashback-aanbiedingen op geselecteerde producten</li>
+  <li>Spaarpunten op elk aankoop (inwisselbaar voor korting)</li>
+</ul>
+<p>De kaart is gratis aan te vragen in de winkel of via de Kruidvat app. Gemiddeld bespaar je als gebruiker extra <strong>€30–60 per jaar</strong> via de klantenkaartvoordelen.</p>
+
+<h2>Tips voor maximale besparing bij Kruidvat</h2>
+<ol>
+  <li><strong>Check elke maandag</strong> de nieuwe aanbiedingen op DealHunter4U of de Kruidvat app</li>
+  <li><strong>Stockpile bij 50% korting</strong> op houdbare producten als shampoo, douchegel en tandpasta — koop 3-4 maanden voorraad</li>
+  <li><strong>Koop parfum rond feestdagen</strong> (moederdag, valentijn, kerst) voor de diepste parfum-kortingen</li>
+  <li><strong>Gebruik de klantenkaart altijd</strong> — ook kleine aankopen tellen mee voor spaarpunten</li>
+  <li><strong>Combineer aanbiedingen</strong> — sommige Kruidvat acties stapelen met digitale coupons uit de app</li>
+  <li><strong>Koop Kruidvat eigen merk</strong> voor basisproducten — 30–50% goedkoper dan A-merken met vergelijkbare kwaliteit</li>
+</ol>
+
+<h2>Conclusie</h2>
+<p>Kruidvat biedt wekelijks de scherpste aanbiedingen op beauty, parfum en verzorging van alle Nederlandse drogisterijen. Met de frequente 50% kortingen en 2e halve prijs acties bespaar je als gezin gemakkelijk <strong>€5–10 per week</strong> op drogisterijproducten.</p>
+<p>Bekijk de actuele <a href="/supermarkt/kruidvat">Kruidvat aanbiedingen op DealHunter4U</a> — dagelijks bijgewerkt, inclusief alle 50% kortingen en 2e halve prijs deals.</p>
+    `.trim(),
+  },
 ]
 
 export function getPost(slug: string): BlogPost | undefined {
