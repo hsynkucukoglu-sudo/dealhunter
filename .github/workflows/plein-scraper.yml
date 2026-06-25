@@ -1,0 +1,23 @@
+name: Plein.nl Scraper
+
+on:
+  schedule:
+    # Her gün 09:00 UTC (Plein.nl deals günlük güncellenir)
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  scrape-plein:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run Plein.nl scraper
+        env:
+          BACKEND_URL: ${{ secrets.BACKEND_URL }}
+          ADMIN_TOKEN: ${{ secrets.ADMIN_TOKEN }}
+        run: node .github/scripts/plein-scraper.js

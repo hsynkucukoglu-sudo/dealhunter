@@ -51,6 +51,42 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   'Holland & Barrett': { destinationUrl: 'https://www.hollandandbarrett.nl/aanbiedingen', network: 'awin', programId: '8108', rel: REL },
   // Bol.com — kendi partner ağı, site ID 1527078 (dealhunter4u.nl)
   'Bol.com': { destinationUrl: 'https://www.bol.com/', network: 'bol', rel: REL },
+
+  // ── Awin — 2026-06-25 onaylı ──────────────────────────────────────────────
+  // BioProphyl NL-BE (aid: 22561) — sağlık takviyeleri
+  BioProphyl: { destinationUrl: 'https://www.bioprophyl.com/', network: 'awin', programId: '22561', rel: REL },
+  // Eonon (awinmid: 2471) — araç içi elektronik, %3 komisyon, 30 gün cookie
+  Eonon: { destinationUrl: 'https://www.eonon.com/', network: 'awin', programId: '2471', rel: REL },
+
+  // ── Daisycon — 2026-06-25 onaylı ──────────────────────────────────────────
+  // Plein.nl (li: 3366) — online eczane / sağlık & güzellik
+  'Plein.nl': { destinationUrl: 'https://www.plein.nl/', network: 'daisycon', programId: '3366', rel: REL },
+  // Plein.be (li: 14720) — Belçika versiyonu
+  'Plein.be': { destinationUrl: 'https://www.plein.be/', network: 'daisycon', programId: '14720', rel: REL },
+  // Petgamma (li: 20686) — online evcil hayvan mağazası
+  Petgamma: { destinationUrl: 'https://www.petgamma.com/', network: 'daisycon', programId: '20686', rel: REL },
+  // Leukstetickets (li: 15805) — etkinlik biletleri
+  Leukstetickets: { destinationUrl: 'https://www.leukstetickets.nl/', network: 'daisycon', programId: '15805', rel: REL },
+  // AD Webwinkel (li: 13048) — AD gazete webshop
+  'AD Webwinkel': { destinationUrl: 'https://adwebwinkel.nl/', network: 'daisycon', programId: '13048', rel: REL },
+  // Volkskrant Webwinkel (li: 15810) — De Volkskrant webshop
+  'Volkskrant Webwinkel': { destinationUrl: 'https://webwinkel.volkskrant.nl/', network: 'daisycon', programId: '15810', rel: REL },
+  // Nu.nl Shop (li: 15818) — Nu.nl webshop
+  'Nu.nl Shop': { destinationUrl: 'https://shop.nu.nl/', network: 'daisycon', programId: '15818', rel: REL },
+  // Libelle Shop (li: 15819) — Libelle magazine webshop
+  'Libelle Shop': { destinationUrl: 'https://shop.libelle.nl/', network: 'daisycon', programId: '15819', rel: REL },
+  // XLLease (li: 20255) — auto lease
+  XLLease: { destinationUrl: 'https://www.xllease.nl/', network: 'daisycon', programId: '20255', rel: REL },
+  // DutchLease (li: 20456) — auto lease
+  DutchLease: { destinationUrl: 'https://www.dutchlease.nl/', network: 'daisycon', programId: '20456', rel: REL },
+  // XLEasy (li: 15775) — internet / telecom
+  XLEasy: { destinationUrl: 'https://www.xlease.com/', network: 'daisycon', programId: '15775', rel: REL },
+  // Ziggo via Meervoordeel (li: 17174) — internet & tv aboneliği
+  Ziggo: { destinationUrl: 'https://www.ziggo.nl/', network: 'daisycon', programId: '17174', rel: REL },
+  // Vattenfall via Meervoordeel (li: 21044) — energie
+  Vattenfall: { destinationUrl: 'https://www.vattenfall.nl/', network: 'daisycon', programId: '21044', rel: REL },
+  // hollandsnieuwe via Meervoordeel (li: 21994) — sim-only / telecom
+  hollandsnieuwe: { destinationUrl: 'https://www.hollandsnieuwe.nl/', network: 'daisycon', programId: '21994', rel: REL },
 }
 
 /** Hedef URL'i yapılandırılmış ağın tracking deeplink'ine sarar. */
@@ -96,6 +132,24 @@ const ALLOWED_AFFILIATE_HOSTS = [
   'awin1.com',
   'www.awin1.com',   // Awin
   'partner.bol.com', // Bol.com
+  // Awin onaylı markalar
+  'bioprophyl.com',
+  'eonon.com',
+  // Daisycon onaylı markalar
+  'plein.nl',
+  'plein.be',
+  'petgamma.com',
+  'leukstetickets.nl',
+  'adwebwinkel.nl',
+  'webwinkel.volkskrant.nl',
+  'shop.nu.nl',
+  'shop.libelle.nl',
+  'xllease.nl',
+  'dutchlease.nl',
+  'xlease.com',
+  'ziggo.nl',
+  'vattenfall.nl',
+  'hollandsnieuwe.nl',
   ...Object.values(AFFILIATE_MAP).map((e) => {
     try {
       return new URL(e.destinationUrl).hostname

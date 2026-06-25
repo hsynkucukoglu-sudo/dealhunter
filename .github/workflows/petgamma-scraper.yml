@@ -1,0 +1,23 @@
+name: Petgamma Scraper
+
+on:
+  schedule:
+    # Her gün 09:15 UTC
+    - cron: '15 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  scrape-petgamma:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run Petgamma scraper
+        env:
+          BACKEND_URL: ${{ secrets.BACKEND_URL }}
+          ADMIN_TOKEN: ${{ secrets.ADMIN_TOKEN }}
+        run: node .github/scripts/petgamma-scraper.js
