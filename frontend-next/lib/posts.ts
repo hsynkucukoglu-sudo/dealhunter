@@ -188,8 +188,8 @@ export const POSTS: BlogPost[] = [
   {
     slug: 'albert-heijn-vs-jumbo-vs-lidl-wie-is-goedkoper',
     relatedMarkets: ['albert-heijn', 'jumbo', 'lidl'],
-    title: 'Jumbo vs Albert Heijn vs Lidl: Wie is Goedkoper in Juni 2026?',
-    description: 'Jumbo is gemiddeld 3% goedkoper dan AH — maar Lidl wint structureel met 15–25% lagere prijzen. Bijgewerkt juni 2026: vergelijking van 200+ producten met actuele weekaanbiedingen.',
+    title: 'Is Jumbo Goedkoper dan AH? ✓ Vergelijking met Lidl 2026',
+    description: '✓ Jumbo is gemiddeld 3% goedkoper dan AH op basisprijzen — maar AH wint op bonus-aanbiedingen. Lidl is 15–25% goedkoper dan AH. Vergelijking 200+ producten, bijgewerkt 2026.',
     date: '2026-06-23',
     readTime: 7,
     category: 'Vergelijking',
@@ -224,7 +224,7 @@ export const POSTS: BlogPost[] = [
       },
     ],
     content: `
-<p style="font-size:12px; color:#9C9389; margin-bottom:8px;">📅 Bijgewerkt: 23 juni 2026 — week 26 aanbiedingen verwerkt</p>
+<p style="font-size:12px; color:#9C9389; margin-bottom:8px;">📅 Bijgewerkt: juni 2026 — actuele weekaanbiedingen verwerkt</p>
 <p class="lead">Wie is goedkoper: Albert Heijn of Jumbo? Dit is de meest gestelde vraag onder Nederlandse boodschappers. Het korte antwoord: <strong>Jumbo is gemiddeld 2–5% goedkoper op basisprijzen</strong>, maar Albert Heijn biedt diepere bonusaanbiedingen. In dit artikel vergelijken we beide supermarkten op prijs, aanbiedingen en huismerken — zodat jij de slimste keuze maakt.</p>
 
 <h2>Snel antwoord: wie is goedkoopst in 2026?</h2>
