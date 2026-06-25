@@ -54,12 +54,10 @@ const DEALS = [
     category: '🏠 Thuis & Wonen',
     items: [
       { name: 'Bol.com',          tagline: 'Dagelijks nieuwe topdeals',    cta: 'Bekijk topdeals',  color: '#0000A4', url: `https://partner.bol.com/click/click?p=2&t=url&s=1527078&url=${encodeURIComponent('https://www.bol.com/nl/l/topdeals/')}` },
-      { name: 'XLease',          tagline: 'Lease witgoed & elektronica',  cta: 'Bekijk abonnementen', color: '#F7941D', url: DS('16070', '15775', 'https://www.xlease.com/') },
       { name: '999Games',         tagline: 'Bordspellen, puzzels & meer',  cta: 'Bekijk aanbod',    color: '#FF5500', url: DS('16070', '13450',   'https://www.999games.nl/sale') },
       { name: 'Kwantum',          tagline: 'Gordijnen, vloeren & meer',    cta: 'Bekijk sale',      color: '#E2001A', url: DS('16070', '1360074', 'https://www.kwantum.nl/sale') },
       { name: 'Witgoedhuis',      tagline: 'Witgoed & huishoudapparaten',  cta: 'Bekijk aanbod',    color: '#005BAC', url: DS('16070', '1307850', 'https://www.witgoedhuis.nl/aanbiedingen') },
       { name: 'Tuinmeubelwereld', tagline: 'Tuinmeubelen & accessoires',   cta: 'Bekijk aanbod',    color: '#2E7D32', url: DS('16070', '19167',   'https://www.tuinmeubelwereld.nl/aanbiedingen') },
-      { name: 'Dille&Kamille',    tagline: 'Wonen, koken & tuin',          cta: 'Bekijk collectie', color: '#5C8A3C', url: DS('16070', '1325903', 'https://www.dille-kamille.nl/sale') },
       { name: 'Miss Towels',      tagline: 'Handdoeken & badtextiel NL',   cta: 'Bekijk aanbod',    color: '#E91E8C', url: DS('16070', '21226',   'https://www.misstowels.nl/uitverkoop') },
       { name: 'Florafy',          tagline: 'Verse bloemen bezorgd',        cta: 'Bestel bloemen',   color: '#E91E63', url: DS('16070', '21211',   'https://www.florafy.eu/nl/') },
       { name: 'Petgamma',         tagline: 'Voer, speelgoed & dierenshop', cta: 'Bekijk aanbod',    color: '#FF8C00', url: DS('16070', '20686',   'https://www.petgamma.com/') },
