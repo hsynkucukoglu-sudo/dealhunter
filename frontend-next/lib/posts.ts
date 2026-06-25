@@ -1209,67 +1209,96 @@ export const POSTS: BlogPost[] = [
   {
     slug: 'dirk-aanbiedingen-gids',
     relatedMarkets: ['dirk'],
-    title: 'Dirk aanbiedingen: complete gids voor de beste deals',
-    description: 'Alles over Dirk van den Broek aanbiedingen. Wanneer starten de weekdeals, wat zijn de populairste producten in de aanbieding en hoe bespaar je het meest bij Dirk?',
+    title: 'Dirk van den Broek aanbiedingen: complete gids voor de beste deals',
+    description: 'Alles over Dirk van den Broek aanbiedingen: wanneer starten de weekdeals, de beste vlees- en drankenacties, hoe werkt de dirkvandenbroek folder en hoe bespaar je het meest?',
     date: '2026-06-04',
-    readTime: 4,
+    readTime: 6,
     category: 'Supermarkt gids',
     content: `
-<p class="lead">Dirk van den Broek is één van de meest populaire supermarkten in de Randstad. Met structureel lage prijzen en scherpe weekaanbiedingen is Dirk al jaren een favoriet van prijsbewuste boodschappers. Maar hoe haal je het maximale uit de <strong>Dirk aanbiedingen</strong>?</p>
+<p class="lead">Dirk van den Broek is één van de populairste supermarkten in de Randstad. Met structureel lage basisprijzen en scherpe weekaanbiedingen is Dirk al tientallen jaren een favoriet van prijsbewuste boodschappers. Maar hoe haal je het maximale uit de <strong>Dirk van den Broek aanbiedingen</strong>?</p>
 
 <h2>Wanneer beginnen de Dirk aanbiedingen?</h2>
-<p>Dirk vernieuwt zijn weekaanbiedingen elke <strong>woensdag</strong>, tegelijk met Albert Heijn en Jumbo. De aanbiedingen zijn geldig van woensdag tot en met dinsdag. Dirk heeft ook dagaanbiedingen op verse producten die wisselen — check de winkel of de website op woensdag voor de beste keuze.</p>
+<p>Dirk van den Broek vernieuwt zijn weekaanbiedingen elke <strong>zondag</strong>. De aanbiedingen zijn geldig van zondag tot en met zaterdag — een volle week. Dit maakt Dirk anders dan Albert Heijn en Jumbo, die op woensdag beginnen. Tip: ga op <strong>zondagochtend vroeg</strong> voor de meeste keuze bij populaire vlees- en drankenacties.</p>
+<p>Wil je de Dirk aanbiedingen deze week zien zonder de winkel in te gaan? Op <a href="/supermarkt/dirk">DealHunter4U vind je alle actuele Dirk van den Broek aanbiedingen</a> dagelijks bijgewerkt, inclusief kortingspercentage en vervaldatum.</p>
 
-<h2>Waar is Dirk van den Broek?</h2>
-<p>Dirk is een regionale supermarkt met filialen in <strong>Noord-Holland, Zuid-Holland en Utrecht</strong>. De keten heeft ruim 130 filialen in voornamelijk stedelijke gebieden. Als je in Amsterdam, Rotterdam, Den Haag of Utrecht woont, is er bijna altijd een Dirk in de buurt.</p>
+<h2>Waar zijn de Dirk van den Broek filialen?</h2>
+<p>Dirk heeft ruim <strong>130 filialen</strong> in voornamelijk stedelijke gebieden in <strong>Noord-Holland, Zuid-Holland en Utrecht</strong>. De keten is sterk aanwezig in Amsterdam, Rotterdam, Den Haag, Utrecht en hun omgeving. Buiten de Randstad zijn er weinig tot geen Dirk-filialen.</p>
 
 <h2>Wat maakt Dirk aanbiedingen uniek?</h2>
 <ul>
-  <li><strong>Lage basisprijzen:</strong> Dirk staat bekend om zijn lage dagprijzen, vergelijkbaar met Aldi en Lidl — maar met een breder A-merk assortiment.</li>
-  <li><strong>Sterke groenteaanbiedingen:</strong> Vers fruit en groenten zijn bij Dirk structureel goedkoper dan bij AH of Jumbo.</li>
-  <li><strong>Vlees en vis in de aanbieding:</strong> Kipfilet, gehakt en visfilets verschijnen wekelijks in de weekaanbiedingen met kortingen tot 30%.</li>
-  <li><strong>Geen loyaliteitspas nodig:</strong> Alle aanbiedingen gelden voor iedereen — geen app of spaarkaart vereist.</li>
+  <li><strong>Laagste vleesprijzen:</strong> Dirk staat bekend als de supermarkt met structureel de laagste vleesprijzen van alle grote Nederlandse ketens — goedkoper dan AH, Jumbo én Lidl.</li>
+  <li><strong>Scherpe drankenacties:</strong> Bier, frisdrank en sap zijn bij Dirk structureel goedkoop. Coca-Cola, Heineken en Grolsch zijn wekelijks in de aanbieding.</li>
+  <li><strong>Verse groenten en fruit:</strong> Komkommer, tomaten, paprika en fruit zijn bij Dirk gemiddeld 15–25% goedkoper dan bij AH of Jumbo.</li>
+  <li><strong>Geen pas of app nodig:</strong> Alle Dirk aanbiedingen gelden voor iedereen — geen spaarkaart of account vereist.</li>
+  <li><strong>Breed A-merk assortiment:</strong> In tegenstelling tot Aldi en Lidl voert Dirk wél A-merken als Coca-Cola, Heineken en Lay's, maar dan voor scherpe Dirk-prijzen.</li>
 </ul>
 
-<h2>Populaire Dirk producten in de aanbieding</h2>
+<h2>Dirk vlees aanbieding: de sterkste categorie</h2>
+<p>Wie Dirk kent, kent de <strong>Dirk vlees aanbiedingen</strong>. De keten onderscheidt zich structureel op vleesprijzen:</p>
 <ul>
-  <li>Verse kipfilet en kippenpoten (wekelijks in actie)</li>
-  <li>Frisdrank (Coca-Cola, Fanta, Sprite) — vaak in grootverpakking</li>
-  <li>Groenten en fruit (komkommer, paprika, tomaten)</li>
-  <li>Brood en bakkerijproducten</li>
-  <li>Zuivel (melk, yoghurt, kaas van eigen merk)</li>
+  <li><strong>Kipfilet:</strong> bij Dirk vanaf €6,99/kg — bij AH vaak €9,99–€12,99/kg</li>
+  <li><strong>Rundergehakt (500g):</strong> bij Dirk regelmatig onder €3,50 — bij Jumbo €4,50–€5,50</li>
+  <li><strong>Procureur:</strong> bij Dirk vaak in de aanbieding voor BBQ-seizoen, €5–7/kg</li>
+  <li><strong>Kippendijen en drumsticks:</strong> partijen voor minder dan €4/kg in weekactie</li>
 </ul>
+<p>De vlees-aanbiedingen wisselen elke zondag. Populaire producten raken op vrijdag- en zaterdagmiddag vaak uitverkocht — ga dus vroeg in de week.</p>
+
+<h2>Dirk dranken aanbiedingen</h2>
+<p>Naast vlees is Dirk erg sterk op <strong>dranken aanbiedingen</strong>. Wekelijks vind je hier:</p>
+<ul>
+  <li><strong>Coca-Cola / Pepsi 6-pack (1,5L):</strong> bij Dirk regelmatig onder €4 — bij AH €5–6</li>
+  <li><strong>Heineken / Grolsch bier 24-pack:</strong> bij Dirk gemiddeld €2–4 goedkoper dan bij AH of Jumbo</li>
+  <li><strong>Spa, Sourcy en Aldi water:</strong> grootverpakkingen tegen scherpe prijzen</li>
+  <li><strong>Sap en vruchtendrank:</strong> Appelsientje en Tropicana regelmatig in de actie</li>
+</ul>
+<p>Rond feestdagen (kerst, oud en nieuw, koningsdag) zijn de <strong>Dirk drankenacties</strong> de scherpste van alle Nederlandse supermarkten.</p>
+
+<h2>De dirkvandenbroek.nl folder: hoe werkt het?</h2>
+<p>De <strong>DirkVanDenBroek folder</strong> wisselt elke zondag en is digitaal te bekijken via de Dirk-app en de officiële website. Maar er is een snellere manier: op <a href="/supermarkt/dirk">DealHunter4U</a> zijn alle aanbiedingen Dirk van den Broek direct doorzoekbaar — geen app downloaden, geen folder doorbladeren.</p>
+<p>Zoek je een specifiek product? Filter op naam of categorie (vlees, dranken, groente) en zie direct of het in de aanbieding is — en vergeleken met de prijs bij AH, Jumbo of Lidl.</p>
 
 <h2>Dirk vs. Albert Heijn: wie is goedkoper?</h2>
 <p>Op basisprijzen is Dirk gemiddeld <strong>10–20% goedkoper</strong> dan Albert Heijn. Het verschil is het grootst bij:</p>
 <ul>
-  <li>Verse groenten en fruit</li>
-  <li>Zuivel en eieren</li>
-  <li>Vlees en gevogelte</li>
+  <li><strong>Vlees:</strong> Dirk is structureel €2–5/kg goedkoper dan AH op kip, rund en varken</li>
+  <li><strong>Verse groenten:</strong> Dirk 15–25% goedkoper op dagelijkse groenten</li>
+  <li><strong>Dranken:</strong> Dirk hanteert lagere dagprijzen op bier en frisdrank</li>
 </ul>
-<p>Bij A-merkproducten in de aanbieding kan AH echter goedkoper uitpakken, dankzij diepe bonusaanbiedingen. De slimste strategie: Dirk voor verse basis, AH voor A-merk acties.</p>
+<p>Bij <strong>A-merkproducten in de bonus</strong> kan AH echter goedkoper zijn, dankzij diepe bonusaanbiedingen. De slimste strategie: Dirk voor vlees, groente en dranken — AH of Jumbo voor A-merk bonusacties en zuivel.</p>
 
 <h2>Dirk vs. Lidl en Aldi</h2>
-<p>Dirk positioneert zich tussen de grote supermarkten (AH, Jumbo) en de harde discounters (Aldi, Lidl). Vergeleken met Aldi en Lidl heeft Dirk:</p>
+<p>Dirk zit tussen de grote supermarkten (AH, Jumbo) en de harde discounters (Aldi, Lidl) in. Vergeleken met Aldi en Lidl heeft Dirk:</p>
 <ul>
-  <li><strong>Meer A-merken</strong> in het assortiment</li>
-  <li><strong>Betere bereikbaarheid</strong> in stedelijke gebieden</li>
-  <li><strong>Vergelijkbare prijzen</strong> op verse producten</li>
-  <li><strong>Iets duurdere</strong> houdbare kruidenierswaren dan Aldi/Lidl</li>
+  <li><strong>Meer A-merken</strong> (Coca-Cola, Heineken, Lay's) — Aldi en Lidl voeren deze nauwelijks</li>
+  <li><strong>Betere bereikbaarheid</strong> in stedelijke gebieden van de Randstad</li>
+  <li><strong>Vergelijkbare vleesprijzen</strong> — soms zelfs goedkoper dan Aldi op verse stukken</li>
+  <li><strong>Iets hogere dagprijzen</strong> op houdbare kruidenierswaren dan Aldi/Lidl</li>
 </ul>
 
-<h2>Tips voor de beste Dirk deals</h2>
+<h2>Hoeveel bespaar je bij Dirk?</h2>
+<p>Stel je koopt elke week deze vijf basisproducten:</p>
+<ul>
+  <li>1 kg kipfilet</li>
+  <li>6-pack Coca-Cola 1,5L</li>
+  <li>500g rundergehakt</li>
+  <li>1 kg tomaten</li>
+  <li>24-pack bier</li>
+</ul>
+<p>Bij Albert Heijn kost dit pakket gemiddeld €30–36. Bij Dirk betaal je voor dezelfde producten €20–24. Dat is een besparing van <strong>€8–12 per week</strong>, of <strong>€400–600 per jaar</strong> — alleen al op deze vijf categorieën.</p>
+
+<h2>Tips voor de beste Dirk van den Broek deals</h2>
 <ol>
-  <li><strong>Ga op woensdag</strong> voor de meeste keuze bij nieuwe aanbiedingen</li>
-  <li><strong>Koop groenten in bulk</strong> — Dirk heeft de scherpste groenteprijzen in de regio</li>
-  <li><strong>Let op de versproducten</strong> in de koeling — dagverse aanbiedingen wisselen snel</li>
-  <li><strong>Combineer met Aldi</strong> voor houdbare producten en koop vers bij Dirk</li>
-  <li><strong>Check DealHunter4U</strong> voor de actuele Dirk aanbiedingen naast die van alle andere supermarkten</li>
+  <li><strong>Ga op zondag of maandag</strong> voor de volledigste voorraad bij nieuwe weekaanbiedingen</li>
+  <li><strong>Koop vlees in bulk</strong> — kipfilet en gehakt vriezen prima 3 maanden in</li>
+  <li><strong>Koop dranken per krat of grootverpakking</strong> — prijs per liter is altijd scherper</li>
+  <li><strong>Check DealHunter4U</strong> voor de <a href="/supermarkt/dirk">actuele Dirk aanbiedingen</a> naast alle andere supermarkten</li>
+  <li><strong>Wacht niet tot het weekend</strong> — populaire vlees- en drankenacties zijn op vrijdag/zaterdag vaak op</li>
+  <li><strong>Combineer Dirk met Aldi</strong> — vers bij Dirk, houdbare producten bij Aldi voor maximale besparing</li>
 </ol>
 
 <h2>Conclusie</h2>
-<p>Dirk van den Broek is de ideale supermarkt als je in de Randstad woont en wil besparen op verse producten en dagelijkse boodschappen. Met wekelijkse aanbiedingen en structureel lage dagprijzen bespaar je als gezin gemakkelijk <strong>€10–15 per week</strong> vergeleken met alleen bij AH winkelen.</p>
-<p>Bekijk de actuele <a href="/supermarkt/dirk">Dirk aanbiedingen op DealHunter4U</a> en vergelijk direct met alle andere supermarkten.</p>
+<p>Dirk van den Broek is de beste keuze als je in de Randstad woont en wil besparen op vlees, groente en dranken. Met structureel lage basisprijzen en sterke weekaanbiedingen bespaar je als gezin <strong>€10–15 per week</strong> vergeleken met alleen bij AH of Jumbo winkelen.</p>
+<p>Bekijk de actuele <a href="/supermarkt/dirk">Dirk van den Broek aanbiedingen op DealHunter4U</a> — dagelijks bijgewerkt, geen folder nodig.</p>
     `.trim(),
   },
   {
