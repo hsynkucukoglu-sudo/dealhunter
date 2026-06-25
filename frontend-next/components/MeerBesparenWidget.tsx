@@ -70,7 +70,6 @@ const DEALS = [
     category: '👟 Schoenen & Sport',
     items: [
       { name: 'Holland & Barrett', tagline: 'Vitamines, sport & health',   cta: 'Bekijk aanbod',    color: '#007A3D', url: AW(8108,   'https://www.hollandandbarrett.nl/shop/aanbiedingen/') },
-      { name: "Levi's",            tagline: 'Jeans & casualwear sale',     cta: 'Bekijk sale',      color: '#C8102E', url: DS('16070', '19949',  'https://www.levi.com/NL/nl_NL/c/sale') },
       { name: 'Happy Mammoth',     tagline: 'Darmgezondheid & energie',    cta: 'Bekijk aanbod',    color: '#FF6B35', url: DS('16070', '19600',  'https://www.happymammoth.com/nl/') },
       { name: 'Vitaepro NL',       tagline: 'Vitamines & gezondheid NL',   cta: 'Bekijk aanbod',    color: '#B71C1C', url: AW(18520,  'https://www.vitaepro.nl/sale') },
       { name: 'Direct Running',    tagline: 'Hardloopschoenen & kleding',  cta: 'Bekijk sale',      color: '#E63329', url: AW(71531,  'https://www.direct-running.nl/sale') },
