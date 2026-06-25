@@ -25,7 +25,6 @@ const DEALS = [
     items: [
       { name: 'Ziggo',          tagline: 'Internet, tv & bellen',   cta: 'Bekijk abonnementen', color: '#D70034', url: DS('16070', '17174', 'https://www.ziggo.nl/') },
       { name: 'hollandsnieuwe', tagline: 'Sim-only & data bundels', cta: 'Bekijk abonnementen', color: '#00A0E2', url: DS('16070', '21994', 'https://www.hollandsnieuwe.nl/') },
-      { name: 'XLEasy',         tagline: 'Goedkoop internet thuis', cta: 'Vergelijk tarieven',  color: '#F7941D', url: DS('16070', '15775', 'https://www.xlease.com/') },
     ],
   },
   {
@@ -33,7 +32,7 @@ const DEALS = [
     category: '🏥 Verzekering',
     items: [
       { name: 'ONVZ',                  tagline: 'Zorgverzekering vergelijken', cta: 'Bereken premie', color: '#E4002B', url: DS('16070', '1332385', 'https://www.onvz.nl/zorgverzekering') },
-      { name: 'Nationale-Nederlanden', tagline: 'Zorg & aanvullend pakket',    cta: 'Bereken premie', color: '#FF6200', url: DS('16070', '1362622', 'https://www.nn.nl/Particulier/Zorgverzekering.htm') },
+      { name: 'Nationale-Nederlanden', tagline: 'Zorg & aanvullend pakket',    cta: 'Bereken premie', color: '#FF6200', url: DS('16070', '1362622', 'https://www.nn.nl/zorgverzekering/') },
       { name: 'DELA',                  tagline: 'Uitvaartverzekering',         cta: 'Bekijk aanbod',  color: '#003087', url: DS('16070', '1414707', 'https://www.dela.nl/uitvaartverzekering') },
       { name: 'Monuta',                tagline: 'Uitvaartzorg geregeld',       cta: 'Bekijk aanbod',  color: '#2C5F8A', url: DS('16070', '1414357', 'https://www.monuta.nl/uitvaartverzekering') },
     ],
@@ -55,6 +54,7 @@ const DEALS = [
     category: '🏠 Thuis & Wonen',
     items: [
       { name: 'Bol.com',          tagline: 'Dagelijks nieuwe topdeals',    cta: 'Bekijk topdeals',  color: '#0000A4', url: `https://partner.bol.com/click/click?p=2&t=url&s=1527078&url=${encodeURIComponent('https://www.bol.com/nl/l/topdeals/')}` },
+      { name: 'XLease',          tagline: 'Lease witgoed & elektronica',  cta: 'Bekijk abonnementen', color: '#F7941D', url: DS('16070', '15775', 'https://www.xlease.com/') },
       { name: '999Games',         tagline: 'Bordspellen, puzzels & meer',  cta: 'Bekijk aanbod',    color: '#FF5500', url: DS('16070', '13450',   'https://www.999games.nl/sale') },
       { name: 'Kwantum',          tagline: 'Gordijnen, vloeren & meer',    cta: 'Bekijk sale',      color: '#E2001A', url: DS('16070', '1360074', 'https://www.kwantum.nl/sale') },
       { name: 'Witgoedhuis',      tagline: 'Witgoed & huishoudapparaten',  cta: 'Bekijk aanbod',    color: '#005BAC', url: DS('16070', '1307850', 'https://www.witgoedhuis.nl/aanbiedingen') },
