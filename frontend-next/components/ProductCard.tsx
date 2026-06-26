@@ -100,7 +100,7 @@ export function ProductCard({ product }: { product: Product }) {
             <span className="material-symbols-outlined" style={{ fontSize: 56, color: '#C9C1B6' }}>nutrition</span>
           </div>
         )}
-        <div className="absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+        <div className="absolute top-2 left-2 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
           <button
             onClick={(e) => { e.stopPropagation(); toggleFavorite(product); if (!isFavorite(product)) trackAddFavorite(product.name, product.market) }}
             className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
