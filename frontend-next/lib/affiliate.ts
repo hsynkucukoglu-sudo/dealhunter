@@ -86,10 +86,10 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
 
   // ── Daisycon — 2026-06-26 onaylı, trackingBase Daisycon'dan alınacak ───────
   // Daisycon > Campagnes > [program] > Link ophalen → si/li/domain al, network: 'daisycon' + trackingBase ekle
-  'Verfuitverkoop.nl':  { destinationUrl: 'https://www.verfuitverkoop.nl/',  network: 'direct', rel: REL }, // si=21219
-  'Wixx Coatings':      { destinationUrl: 'https://www.wixxcoatings.nl/',    network: 'direct', rel: REL }, // si=21467
-  'Weightworld.nl':     { destinationUrl: 'https://www.weightworld.nl/',     network: 'direct', rel: REL }, // si=15441
-  'Oakley':             { destinationUrl: 'https://www.oakley.com/nl-nl/',   network: 'direct', rel: REL }, // si=18433 (USD program — NL için kontrol et)
+  'Verfuitverkoop.nl':  { destinationUrl: 'https://www.verfuitverkoop.nl/',  network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=21219&li=1904818&wi=420902', rel: REL },
+  'Wixx Coatings':      { destinationUrl: 'https://www.wixxcoatings.nl/',    network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=21467&li=1913625&wi=420902', rel: REL },
+  'Weightworld.nl':     { destinationUrl: 'https://www.weightworld.nl/',     network: 'daisycon', trackingBase: 'https://fr135.net/c/?si=15441&li=1670530&wi=420902', rel: REL },
+  'Oakley':             { destinationUrl: 'https://www.oakley.com/nl-nl/',   network: 'daisycon', trackingBase: 'https://bdt9.net/c/?si=18433&li=1819889&wi=420902', rel: REL },
 }
 
 /** Hedef URL'i yapılandırılmış ağın tracking deeplink'ine sarar. */
