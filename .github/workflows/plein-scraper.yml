@@ -14,9 +14,10 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '24'
 
       - name: Run Plein.nl scraper
+        continue-on-error: true
         env:
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
           ADMIN_TOKEN: ${{ secrets.ADMIN_TOKEN }}
