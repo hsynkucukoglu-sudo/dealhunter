@@ -63,10 +63,9 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   'Direct Volley':  { destinationUrl: 'https://www.direct-volley.nl/',    network: 'awin', programId: '103041', rel: REL },
   // 2026-06-26 onaylı — aid mailine bakarak alındı
   'Wolfswinkel NL': { destinationUrl: 'https://www.wolfswinkel.nl/',      network: 'awin', programId: '119653', rel: REL },
-  // 2026-06-26 onaylı — awinmid Awin UI'dan bakılacak (Profile > Advertisers > OfficeCity NL)
-  'OfficeCity NL':  { destinationUrl: 'https://www.officecity.nl/',       network: 'direct', rel: REL },
-  // 2026-06-26 onaylı — awinmid Awin UI'dan bakılacak
-  '123watches':     { destinationUrl: 'https://www.123watches.nl/',       network: 'direct', rel: REL },
+  // Pending — onay gelince aktif olur (mid=31671)
+  'OfficeCity NL':  { destinationUrl: 'https://www.officecity.nl/',       network: 'awin', programId: '31671',  rel: REL },
+  '123watches':     { destinationUrl: 'https://www.123watches.nl/',       network: 'awin', programId: '120982', rel: REL },
 
   // ── Daisycon — CSV'den doğrulanmış trackingBase (si=program_id, li=link_id) ──
   'Plein.nl':           { destinationUrl: 'https://www.plein.nl/',                 network: 'daisycon', trackingBase: 'https://fr135.net/c/?si=3366&li=1161224&wi=420902',  rel: REL },
