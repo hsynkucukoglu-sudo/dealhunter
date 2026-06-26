@@ -56,11 +56,17 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   'Bol.com': { destinationUrl: 'https://www.bol.com/', network: 'bol', rel: REL },
 
   // ── Awin — onaylı ─────────────────────────────────────────────────────────
-  BioProphyl:      { destinationUrl: 'https://www.bioprophyl.com/',      network: 'awin', programId: '22561',  rel: REL },
-  Eonon:           { destinationUrl: 'https://www.eonon.com/',           network: 'awin', programId: '2471',   rel: REL },
-  'Vitaepro NL':   { destinationUrl: 'https://www.vitaepro.nl/',         network: 'awin', programId: '18520',  rel: REL },
-  'Direct Running': { destinationUrl: 'https://www.direct-running.nl/', network: 'awin', programId: '71531',  rel: REL },
-  'Direct Volley':  { destinationUrl: 'https://www.direct-volley.nl/',  network: 'awin', programId: '103041', rel: REL },
+  BioProphyl:       { destinationUrl: 'https://www.bioprophyl.com/',      network: 'awin', programId: '22561',  rel: REL },
+  Eonon:            { destinationUrl: 'https://www.eonon.com/',           network: 'awin', programId: '2471',   rel: REL },
+  'Vitaepro NL':    { destinationUrl: 'https://www.vitaepro.nl/',         network: 'awin', programId: '18520',  rel: REL },
+  'Direct Running': { destinationUrl: 'https://www.direct-running.nl/',   network: 'awin', programId: '71531',  rel: REL },
+  'Direct Volley':  { destinationUrl: 'https://www.direct-volley.nl/',    network: 'awin', programId: '103041', rel: REL },
+  // 2026-06-26 onaylı — aid mailine bakarak alındı
+  'Wolfswinkel NL': { destinationUrl: 'https://www.wolfswinkel.nl/',      network: 'awin', programId: '119653', rel: REL },
+  // 2026-06-26 onaylı — awinmid Awin UI'dan bakılacak (Profile > Advertisers > OfficeCity NL)
+  'OfficeCity NL':  { destinationUrl: 'https://www.officecity.nl/',       network: 'direct', rel: REL },
+  // 2026-06-26 onaylı — awinmid Awin UI'dan bakılacak
+  '123watches':     { destinationUrl: 'https://www.123watches.nl/',       network: 'direct', rel: REL },
 
   // ── Daisycon — CSV'den doğrulanmış trackingBase (si=program_id, li=link_id) ──
   'Plein.nl':           { destinationUrl: 'https://www.plein.nl/',                 network: 'daisycon', trackingBase: 'https://fr135.net/c/?si=3366&li=1161224&wi=420902',  rel: REL },
@@ -77,6 +83,13 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   Ziggo:                { destinationUrl: 'https://www.meervoordeel.nl/',          network: 'daisycon', trackingBase: 'https://jf79.net/c/?si=17174&li=1742299&wi=420902',  rel: REL },
   Vattenfall:           { destinationUrl: 'https://www.vattenfall.nl/',            network: 'direct',   rel: REL },
   hollandsnieuwe:       { destinationUrl: 'https://www.hollandsnieuwe.nl/',        network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=21994&li=1927639&wi=420902',  rel: REL },
+
+  // ── Daisycon — 2026-06-26 onaylı, trackingBase Daisycon'dan alınacak ───────
+  // Daisycon > Campagnes > [program] > Link ophalen → si/li/domain al, network: 'daisycon' + trackingBase ekle
+  'Verfuitverkoop.nl':  { destinationUrl: 'https://www.verfuitverkoop.nl/',  network: 'direct', rel: REL }, // si=21219
+  'Wixx Coatings':      { destinationUrl: 'https://www.wixxcoatings.nl/',    network: 'direct', rel: REL }, // si=21467
+  'Weightworld.nl':     { destinationUrl: 'https://www.weightworld.nl/',     network: 'direct', rel: REL }, // si=15441
+  'Oakley':             { destinationUrl: 'https://www.oakley.com/nl-nl/',   network: 'direct', rel: REL }, // si=18433 (USD program — NL için kontrol et)
 }
 
 /** Hedef URL'i yapılandırılmış ağın tracking deeplink'ine sarar. */
