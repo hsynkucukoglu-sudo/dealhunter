@@ -4,15 +4,14 @@
  * Awin + Daisycon API'den onaylı tüm programları çeker,
  * komisyon/cookie bilgilerini gösterir ve affiliate.ts için hazır kod üretir.
  *
- * Kullanım:
- *   AWIN_TOKEN=xxx DAISYCON_TOKEN=xxx node sync-affiliates.mjs
+ * Kullanım (Daisycon OAuth app):
+ *   DAISYCON_CLIENT_ID=xxx DAISYCON_CLIENT_SECRET=xxx node sync-affiliates.mjs
  *
- * Token alma:
- *   Awin:     https://ui.awin.com/user/{userId}/api-credentials  (API key bölümü)
- *   Daisycon: https://my.daisycon.com/settings/api
+ * Kullanım (eski bearer token):
+ *   DAISYCON_TOKEN=xxx node sync-affiliates.mjs
  *
- * Sadece Awin:     AWIN_TOKEN=xxx node sync-affiliates.mjs
- * Sadece Daisycon: DAISYCON_TOKEN=xxx node sync-affiliates.mjs
+ * Awin ile birlikte:
+ *   AWIN_TOKEN=xxx DAISYCON_CLIENT_ID=xxx DAISYCON_CLIENT_SECRET=xxx node sync-affiliates.mjs
  */
 
 import { readFileSync } from 'fs'
@@ -26,8 +25,48 @@ const AWIN_PUBLISHER_ID   = '2932569'
 const DAISYCON_MEDIA_ID   = '16070'
 const DAISYCON_WEBSITE_ID = '420902'
 
-const AWIN_TOKEN      = process.env.AWIN_TOKEN
-const DAISYCON_TOKEN  = process.env.DAISYCON_TOKEN
+const AWIN_TOKEN             = process.env.AWIN_TOKEN
+const DAISYCON_TOKEN         = process.env.DAISYCON_TOKEN
+const DAISYCON_CLIENT_ID     = process.env.DAISYCON_CLIENT_ID
+const DAISYCON_CLIENT_SECRET = process.env.DAISYCON_CLIENT_SECRET
+
+async function getDaisyconAccessToken() {
+  if (DAISYCON_TOKEN) return DAISYCON_TOKEN
+
+  // Daisycon OAuth: client_credentials flow bazı hesaplarda çalışmayabilir.
+  // Çalışmazsa: Daisycon dashboard → API → Bearer token kopyala → DAISYCON_TOKEN=xxx
+  if (!DAISYCON_CLIENT_ID || !DAISYCON_CLIENT_SECRET) return null
+
+  const body = new URLSearchParams({
+    grant_type:    'client_credentials',
+    client_id:     DAISYCON_CLIENT_ID,
+    client_secret: DAISYCON_CLIENT_SECRET,
+  })
+
+  const res = await fetch('https://services.daisycon.com/oauth/access_token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: body.toString(),
+  })
+
+  if (!res.ok) {
+    const text = await res.text()
+    console.error(`[Daisycon] OAuth token hatası ${res.status}: ${text}`)
+    console.error('[Daisycon] İpucu: DAISYCON_TOKEN=<bearer> ile manuel token dene')
+    console.error('  → Daisycon dashboard > Account > API access > Bearer token')
+    return null
+  }
+
+  const data = await res.json()
+  const token = data.access_token ?? data.token
+  if (!token) {
+    console.error('[Daisycon] access_token yanıtta bulunamadı:', data)
+    return null
+  }
+
+  console.log('[Daisycon] ✅ OAuth access token alındı')
+  return token
+}
 
 // ── Mevcut entegrasyon: affiliate.ts'den oku ─────────────────────────────────
 function readCurrentIntegrations() {
@@ -183,13 +222,14 @@ function printAwinResults(programs, integrated) {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 async function fetchDaisyconPrograms() {
-  if (!DAISYCON_TOKEN) {
-    console.log('[Daisycon] DAISYCON_TOKEN eksik — atlanıyor')
+  const token = await getDaisyconAccessToken()
+  if (!token) {
+    console.log('[Daisycon] Token bulunamadı — DAISYCON_CLIENT_ID + DAISYCON_CLIENT_SECRET veya DAISYCON_TOKEN gerekli')
     return []
   }
 
   const headers = {
-    'Authorization': `Bearer ${DAISYCON_TOKEN}`,
+    'Authorization': `Bearer ${token}`,
     'Accept': 'application/json',
   }
 
@@ -222,8 +262,21 @@ async function fetchDaisyconPrograms() {
         String(m.id ?? m.media_id ?? m.si ?? '') === DAISYCON_MEDIA_ID
       )
 
+      // Tracking URL'yi API'den çıkarmaya çalış (si, li, domain)
+      const rawTrack = ourMedia?.click_url ?? ourMedia?.tracking_url ?? ourMedia?.url ?? ''
+      let trackingBase = ''
+      try {
+        if (rawTrack && rawTrack.includes('/c/?')) {
+          // Zaten tam URL — dl= olmadan base al
+          trackingBase = rawTrack.split('&dl=')[0].split('?dl=')[0]
+        }
+      } catch { /* */ }
+
+      const si = String(p.id ?? p.program_id ?? p.advertiser_id ?? '')
+      const li = String(ourMedia?.program_id ?? ourMedia?.li ?? ourMedia?.id ?? '')
+
       approved.push({
-        programId: String(p.id ?? p.program_id ?? p.advertiser_id ?? ''),
+        programId: si,
         name: p.name ?? p.program_name ?? p.advertiser_name ?? '',
         destUrl: normalizeUrl(p.url ?? p.website_url ?? p.website ?? ''),
         status,
@@ -233,8 +286,8 @@ async function fetchDaisyconPrograms() {
           ? `€${p.commission_fixed}`
           : p.commission ?? null,
         cookieDays: p.cookie_duration ?? p.cookie_days ?? p.cookiePeriod ?? null,
-        // Spesifik tracking linki (li parametresi)
-        li: String(ourMedia?.program_id ?? ourMedia?.li ?? p.id ?? ''),
+        li,
+        trackingBase,
       })
     }
 
@@ -272,10 +325,11 @@ function printDaisyconResults(programs, integrated) {
   for (const p of programs) {
     const isNew = !integratedNames.has(p.name.toLowerCase())
     const status = isNew ? '🆕' : '✅'
-    const liDisplay = p.li !== p.programId ? ` (li: ${p.li})` : ''
+    const liDisplay = p.li && p.li !== p.programId ? ` li=${p.li}` : ''
     const comm = p.commission ? `  komisyon: ${p.commission}` : ''
     const cookie = p.cookieDays ? `  cookie: ${p.cookieDays}g` : ''
-    console.log(`${status} [${p.programId}]${liDisplay} ${p.name}`)
+    const trackTag = p.trackingBase ? ` [${new URL(p.trackingBase).hostname}]` : ''
+    console.log(`${status} si=${p.programId}${liDisplay}${trackTag} ${p.name}`)
     console.log(`    ${p.destUrl}${comm}${cookie}`)
     if (isNew) newOnes.push(p)
   }
@@ -286,13 +340,22 @@ function printDaisyconResults(programs, integrated) {
   }
 
   console.log('\n── affiliate.ts\'e eklenecek yeni girişler ──────────────────')
+  console.log('   (trackingBase = Daisycon campaign linki: si=program_id, li=link_id, wi=420902)\n')
   for (const p of newOnes) {
     const commComment = p.commission
       ? ` — ${p.commission} komisyon${p.cookieDays ? `, ${p.cookieDays}g cookie` : ''}`
       : ''
-    const liParam = p.li || p.programId
+
+    // trackingBase: API'den geldiyse kullan, yoksa şablonu göster
+    const base = p.trackingBase
+      || `https://ds1.nl/c/?si=${p.programId}&li=${p.li || '???'}&wi=420902`
+    const needsCheck = !p.trackingBase
+
     console.log(`  // ${p.name}${commComment}`)
-    console.log(`  '${p.name}': { destinationUrl: '${p.destUrl}/', network: 'daisycon', programId: '${liParam}', rel: REL },`)
+    if (needsCheck) {
+      console.log(`  // ⚠️  Domain ve li değerini Daisycon > Campagnes > ${p.name} > Link ophalen'den al`)
+    }
+    console.log(`  '${p.name}': { destinationUrl: '${p.destUrl}/', network: 'daisycon', trackingBase: '${base}', rel: REL },`)
   }
 }
 
@@ -306,9 +369,9 @@ async function main() {
   console.log(`║  ${new Date().toLocaleString('nl-NL').padEnd(40)}║`)
   console.log('╚══════════════════════════════════════════╝')
 
-  if (!AWIN_TOKEN && !DAISYCON_TOKEN) {
+  if (!AWIN_TOKEN && !DAISYCON_TOKEN && !DAISYCON_CLIENT_ID) {
     console.error('\n❌ Hiçbir token ayarlı değil.')
-    console.error('   AWIN_TOKEN=xxx DAISYCON_TOKEN=xxx node sync-affiliates.mjs')
+    console.error('   DAISYCON_CLIENT_ID=xxx DAISYCON_CLIENT_SECRET=xxx node sync-affiliates.mjs')
     process.exit(1)
   }
 
