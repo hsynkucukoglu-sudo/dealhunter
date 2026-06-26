@@ -56,8 +56,11 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   'Bol.com': { destinationUrl: 'https://www.bol.com/', network: 'bol', rel: REL },
 
   // ── Awin — onaylı ─────────────────────────────────────────────────────────
-  BioProphyl: { destinationUrl: 'https://www.bioprophyl.com/',  network: 'awin', programId: '22561', rel: REL },
-  Eonon:      { destinationUrl: 'https://www.eonon.com/',       network: 'awin', programId: '2471',  rel: REL },
+  BioProphyl:      { destinationUrl: 'https://www.bioprophyl.com/',      network: 'awin', programId: '22561',  rel: REL },
+  Eonon:           { destinationUrl: 'https://www.eonon.com/',           network: 'awin', programId: '2471',   rel: REL },
+  'Vitaepro NL':   { destinationUrl: 'https://www.vitaepro.nl/',         network: 'awin', programId: '18520',  rel: REL },
+  'Direct Running': { destinationUrl: 'https://www.direct-running.nl/', network: 'awin', programId: '71531',  rel: REL },
+  'Direct Volley':  { destinationUrl: 'https://www.direct-volley.nl/',  network: 'awin', programId: '103041', rel: REL },
 
   // ── Daisycon — CSV'den doğrulanmış trackingBase (si=program_id, li=link_id) ──
   'Plein.nl':           { destinationUrl: 'https://www.plein.nl/',                 network: 'daisycon', trackingBase: 'https://fr135.net/c/?si=3366&li=1161224&wi=420902',  rel: REL },
