@@ -21,7 +21,8 @@ const DEALS = [
       { name: 'ENGIE',        tagline: 'Gas & stroom vergelijken', cta: 'Vergelijk tarief', color: '#0064A8', url: DS('16070', '20757',   'https://www.engie.nl/energie-vergelijken') },
       { name: 'Oxxio',        tagline: 'Vaste lage tarieven',      cta: 'Vergelijk tarief', color: '#E4002B', url: DS('16070', '119834',  'https://www.oxxio.nl/energie/alles-in-1') },
       { name: 'Pure Energie', tagline: 'Goedkoop & transparant',   cta: 'Vergelijk tarief', color: '#F7941D', url: DS('16070', '1420973', 'https://www.pure-energie.nl/energie-vergelijken') },
-      { name: 'noSun',       tagline: 'Zonnepanelen voor thuis',  cta: 'Bekijk aanbod',    color: '#F59B00', url: DC('https://dt51.net/c/?si=19142&li=1877489&wi=420902',  'https://www.nosun.nl/') },
+      { name: 'noSun',   tagline: 'Zonnepanelen voor thuis',      cta: 'Bekijk aanbod', color: '#F59B00', url: DC('https://dt51.net/c/?si=19142&li=1877489&wi=420902',  'https://www.nosun.nl/') },
+      { name: 'Renogy', tagline: 'Zonnepanelen & accu\'s voor thuis', cta: 'Bekijk aanbod', color: '#E87722', url: DC('https://glp8.net/c/?si=21168&li=1901324&wi=420902', 'https://www.renogy.com/eu/') },
     ],
   },
   {
@@ -92,7 +93,8 @@ const DEALS = [
       { name: 'Oakley',            tagline: 'Sport brillen & kleding',    cta: 'Bekijk collectie', color: '#1A1A1A', url: DC('https://bdt9.net/c/?si=18433&li=1819889&wi=420902',   'https://www.oakley.com/nl-nl/') },
       { name: 'Wolfswinkel NL',    tagline: 'Outdoor gear & sportmode',   cta: 'Bekijk aanbod',    color: '#388E3C', url: AW(119653, 'https://www.wolfswinkel.nl/') },
       { name: '123watches',        tagline: 'Horloges & accessoires',     cta: 'Bekijk collectie', color: '#C62828', url: AW(120982, 'https://www.123watches.nl/') },
-      { name: 'Bjorn Borg',        tagline: 'Sportkleding & ondergoed',   cta: 'Bekijk collectie', color: '#003594', url: DC('https://bdt9.net/c/?si=18683&li=1810656&wi=420902',   'https://www.bjornborg.com/nl-nl/') },
+      { name: 'Bjorn Borg',  tagline: 'Sportkleding & ondergoed',    cta: 'Bekijk collectie', color: '#003594', url: DC('https://bdt9.net/c/?si=18683&li=1810656&wi=420902',  'https://www.bjornborg.com/nl-nl/') },
+      { name: 'Tsar Bomba', tagline: 'Horloges & premium accessoires', cta: 'Bekijk collectie', color: '#8B0000', url: DC('https://glp8.net/c/?si=21716&li=1916762&wi=420902',  'https://tsarbomba.com/') },
     ],
   },
   {
@@ -108,9 +110,11 @@ const DEALS = [
     id: 'tech',
     category: '💻 Tech & Software',
     items: [
-      { name: 'McAfee', tagline: 'Antivirus & internetsecurity', cta: 'Bekijk aanbod',  color: '#C8102E', url: DC('https://glp8.net/c/?si=20283&li=1865780&wi=420902', 'https://www.mcafee.com/nl-nl/') },
-      { name: '1blu',   tagline: 'Webhosting & domeinen',        cta: 'Bekijk aanbod',  color: '#1A5FA8', url: DC('https://glp8.net/c/?si=21031&li=1894705&wi=420902', 'https://www.1blu.de/') },
-      { name: 'Plaud',  tagline: 'AI-gestuurde voicerecorder',   cta: 'Bekijk aanbod',  color: '#2C2C54', url: DC('https://glp8.net/c/?si=21213&li=1903643&wi=420902', 'https://www.plaud.ai/') },
+      { name: 'McAfee',       tagline: 'Antivirus & internetsecurity', cta: 'Bekijk aanbod', color: '#C8102E', url: DC('https://glp8.net/c/?si=20283&li=1865780&wi=420902', 'https://www.mcafee.com/nl-nl/') },
+      { name: '1blu',        tagline: 'Webhosting & domeinen',        cta: 'Bekijk aanbod', color: '#1A5FA8', url: DC('https://glp8.net/c/?si=21031&li=1894705&wi=420902', 'https://www.1blu.de/') },
+      { name: 'Plaud',       tagline: 'AI-gestuurde voicerecorder',   cta: 'Bekijk aanbod', color: '#2C2C54', url: DC('https://glp8.net/c/?si=21213&li=1903643&wi=420902', 'https://www.plaud.ai/') },
+      { name: 'Amazon Music', tagline: 'Muziek streamen zonder limits', cta: 'Probeer gratis', color: '#00A8E1', url: DC('https://glp8.net/c/?si=20174&li=1861301&wi=420902', 'https://music.amazon.nl/') },
+      { name: 'Omnisend',    tagline: 'Email & SMS marketing tool',   cta: 'Probeer gratis', color: '#4A90D9', url: DC('https://glp8.net/c/?si=20641&li=1874887&wi=420902', 'https://www.omnisend.com/') },
     ],
   },
 ]
