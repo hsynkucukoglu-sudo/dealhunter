@@ -21,6 +21,7 @@ const DEALS = [
       { name: 'ENGIE',        tagline: 'Gas & stroom vergelijken', cta: 'Vergelijk tarief', color: '#0064A8', url: DS('16070', '20757',   'https://www.engie.nl/energie-vergelijken') },
       { name: 'Oxxio',        tagline: 'Vaste lage tarieven',      cta: 'Vergelijk tarief', color: '#E4002B', url: DS('16070', '119834',  'https://www.oxxio.nl/energie/alles-in-1') },
       { name: 'Pure Energie', tagline: 'Goedkoop & transparant',   cta: 'Vergelijk tarief', color: '#F7941D', url: DS('16070', '1420973', 'https://www.pure-energie.nl/energie-vergelijken') },
+      { name: 'noSun',       tagline: 'Zonnepanelen voor thuis',  cta: 'Bekijk aanbod',    color: '#F59B00', url: DC('https://dt51.net/c/?si=19142&li=1877489&wi=420902',  'https://www.nosun.nl/') },
     ],
   },
   {
@@ -30,6 +31,7 @@ const DEALS = [
       { name: 'Ziggo',          tagline: 'Internet, TV & bellen',    cta: 'Bekijk abonnement', color: '#FF6600', url: DC('https://jf79.net/c/?si=17174&li=1742299&wi=420902',  'https://www.meervoordeel.nl/providers/ziggo/') },
       { name: 'hollandsnieuwe', tagline: 'Voordelig mobiel internet', cta: 'Bekijk abonnement', color: '#00A650', url: DC('https://glp8.net/c/?si=21994&li=1927639&wi=420902',  'https://www.hollandsnieuwe.nl/abonnementen/') },
       { name: 'Lycamobile',     tagline: 'Goedkoop SIM-only',        cta: 'Bekijk abonnement', color: '#E4002B', url: DC('https://bdt9.net/c/?si=19078&li=1819944&wi=420902',  'https://www.lycamobile.nl/nl/') },
+      { name: 'Company Telecom', tagline: 'Voordelig bellen & internet', cta: 'Bekijk aanbod',    color: '#0073E6', url: DC('https://glp8.net/c/?si=20673&li=1876628&wi=420902',  'https://www.company.nl/') },
     ],
   },
   {
@@ -66,6 +68,7 @@ const DEALS = [
       { name: 'Miss Towels',      tagline: 'Premium handdoeken & badgoed', cta: 'Bekijk aanbod',   color: '#B5838D', url: DC('https://glp8.net/c/?si=21226&li=1904846&wi=420902',  'https://www.misstowels.nl/') },
       { name: 'Florafy',          tagline: 'Bloemen & planten bezorgen',   cta: 'Bestel bloemen',  color: '#FF69B4', url: DC('https://d.florafy.eu/c/?si=21211&li=1903580&wi=420902', 'https://www.florafy.eu/nl/') },
       { name: 'Petgamma',          tagline: 'Dierenbenodigdheden & voer',   cta: 'Bekijk aanbod',    color: '#E67E22', url: DC('https://fr135.net/c/?si=20686&li=1877039&wi=420902',  'https://www.petgamma.com/') },
+      { name: 'Yuplay',            tagline: 'PC games & game codes',       cta: 'Bekijk games',     color: '#7B2D8B', url: 'https://glp8.net/c/?si=19969&li=1857304&wi=420902' },
       { name: 'Verfuitverkoop.nl', tagline: 'Verfproducten met korting',    cta: 'Bekijk aanbod',    color: '#E65100', url: DC('https://glp8.net/c/?si=21219&li=1904818&wi=420902',  'https://www.verfuitverkoop.nl/') },
       { name: 'Wixx Coatings',     tagline: 'Professionele verfcoatings',   cta: 'Bekijk aanbod',    color: '#546E7A', url: DC('https://glp8.net/c/?si=21467&li=1913625&wi=420902',  'https://www.wixxcoatings.nl/') },
       { name: 'OfficeCity NL',     tagline: 'Kantoormeubelen & supplies',   cta: 'Bekijk aanbod',    color: '#1565C0', url: AW(31671,   'https://www.officecity.nl/') },
@@ -89,6 +92,7 @@ const DEALS = [
       { name: 'Oakley',            tagline: 'Sport brillen & kleding',    cta: 'Bekijk collectie', color: '#1A1A1A', url: DC('https://bdt9.net/c/?si=18433&li=1819889&wi=420902',   'https://www.oakley.com/nl-nl/') },
       { name: 'Wolfswinkel NL',    tagline: 'Outdoor gear & sportmode',   cta: 'Bekijk aanbod',    color: '#388E3C', url: AW(119653, 'https://www.wolfswinkel.nl/') },
       { name: '123watches',        tagline: 'Horloges & accessoires',     cta: 'Bekijk collectie', color: '#C62828', url: AW(120982, 'https://www.123watches.nl/') },
+      { name: 'Bjorn Borg',        tagline: 'Sportkleding & ondergoed',   cta: 'Bekijk collectie', color: '#003594', url: DC('https://bdt9.net/c/?si=18683&li=1810656&wi=420902',   'https://www.bjornborg.com/nl-nl/') },
     ],
   },
   {
@@ -98,6 +102,15 @@ const DEALS = [
       { name: 'XLLease',    tagline: 'Private lease deals',       cta: 'Bekijk aanbod',  color: '#003366', url: DC('https://fr135.net/c/?si=20255&li=1864272&wi=420902', 'https://www.xllease.nl/') },
       { name: 'DutchLease', tagline: 'Elektrisch & hybrid lease', cta: 'Bekijk aanbod',  color: '#009FE3', url: DC('https://fr135.net/c/?si=20456&li=1868213&wi=420902', 'https://www.dutchlease.nl/') },
       { name: 'XLEasy',     tagline: 'Private lease vanaf €299',  cta: 'Bereken prijs',  color: '#1A237E', url: DC('https://fr135.net/c/?si=15775&li=1682823&wi=420902', 'https://www.xleasy.nl/') },
+    ],
+  },
+  {
+    id: 'tech',
+    category: '💻 Tech & Software',
+    items: [
+      { name: 'McAfee', tagline: 'Antivirus & internetsecurity', cta: 'Bekijk aanbod',  color: '#C8102E', url: DC('https://glp8.net/c/?si=20283&li=1865780&wi=420902', 'https://www.mcafee.com/nl-nl/') },
+      { name: '1blu',   tagline: 'Webhosting & domeinen',        cta: 'Bekijk aanbod',  color: '#1A5FA8', url: DC('https://glp8.net/c/?si=21031&li=1894705&wi=420902', 'https://www.1blu.de/') },
+      { name: 'Plaud',  tagline: 'AI-gestuurde voicerecorder',   cta: 'Bekijk aanbod',  color: '#2C2C54', url: DC('https://glp8.net/c/?si=21213&li=1903643&wi=420902', 'https://www.plaud.ai/') },
     ],
   },
 ]
