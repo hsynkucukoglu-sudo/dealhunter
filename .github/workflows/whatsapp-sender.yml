@@ -1,0 +1,28 @@
+name: WhatsApp Deal Sender
+
+on:
+  schedule:
+    # Times in UTC — Netherlands is CEST (UTC+2) in summer, CET (UTC+1) in winter
+    - cron: '0 6 * * *'   # 08:00 CEST / 07:00 CET
+    - cron: '0 9 * * *'   # 11:00 CEST / 10:00 CET
+    - cron: '0 12 * * *'  # 14:00 CEST / 13:00 CET
+    - cron: '0 15 * * *'  # 17:00 CEST / 16:00 CET
+    - cron: '0 18 * * *'  # 20:00 CEST / 19:00 CET
+  workflow_dispatch:       # manual trigger for testing
+
+jobs:
+  send-deal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Send WhatsApp deal
+        env:
+          GREEN_API_INSTANCE_ID: ${{ secrets.GREEN_API_INSTANCE_ID }}
+          GREEN_API_TOKEN:        ${{ secrets.GREEN_API_TOKEN }}
+          WHATSAPP_GROUP_ID:      ${{ secrets.WHATSAPP_GROUP_ID }}
+        run: node scripts/whatsapp-sender.mjs
