@@ -1,14 +1,16 @@
 /**
  * Kruidvat scraper → Railway bulk-replace
- * Strategy: Playwright browser → intercept OCC API responses
- * Bypasses Akamai bot detection that blocks all server-side HTTP requests
+ * Strategy: playwright-extra + stealth plugin → Akamai bypass
+ * Intercepts OCC API responses from the real browser session
  */
 
-const { chromium } = require('playwright')
+const { chromium } = require('playwright-extra')
+const StealthPlugin = require('puppeteer-extra-plugin-stealth')
+chromium.use(StealthPlugin())
 
 const BACKEND_URL = process.env.BACKEND_URL || 'https://dealhunter-production-d900.up.railway.app'
 const ADMIN_TOKEN = process.env.ADMIN_TOKEN
-if (!ADMIN_TOKEN) { console.error('❌ ADMIN_TOKEN eksik'); process.exit(1) }
+if (!ADMIN_TOKEN) { console.error('ADMIN_TOKEN eksik'); process.exit(1) }
 
 function toCampaignType(text) {
   if (!text) return null
@@ -24,11 +26,12 @@ function toCampaignType(text) {
 ;(async () => {
   let browser
   try {
-    console.log('🌐 Playwright Chromium başlatılıyor...')
+    console.log('Playwright + stealth baslatiliyor...')
     browser = await chromium.launch({ headless: true })
     const context = await browser.newContext({
       locale: 'nl-NL',
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+      viewport: { width: 1280, height: 800 },
     })
     const page = await context.newPage()
 
@@ -42,40 +45,40 @@ function toCampaignType(text) {
           const items = data.products ?? []
           if (items.length > 0) {
             rawProducts.push(...items)
-            process.stdout.write(`\r  Intercepted: ${rawProducts.length} producten`)
+            process.stdout.write('\r  Intercepted: ' + rawProducts.length + ' producten')
           }
         } catch {}
       }
     })
 
-    console.log('🏪 Kruidvat aanbiedingen sayfası yükleniyor...')
+    console.log('Kruidvat aanbiedingen yukleniyor...')
     await page.goto('https://www.kruidvat.nl/aanbiedingen/dezeweek', {
       waitUntil: 'networkidle',
-      timeout: 60000,
+      timeout: 90000,
     })
 
-    // Cookie banner'ı kapat
+    // Cookie banner
     try {
-      await page.click('button[id*="accept"], button[class*="accept"], #onetrust-accept-btn-handler', { timeout: 3000 })
+      await page.click('#onetrust-accept-btn-handler', { timeout: 4000 })
       await page.waitForTimeout(1000)
     } catch {}
 
-    // Lazy-load için scroll
-    console.log('\n📜 Tüm ürünler için sayfa kaydırılıyor...')
+    // Scroll to trigger lazy-load
+    console.log('\nSayfayi kaydir...')
     let lastCount = 0
     for (let i = 0; i < 12; i++) {
       await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
-      await page.waitForTimeout(1500)
-      if (rawProducts.length === lastCount && i > 2) break
+      await page.waitForTimeout(2000)
+      if (rawProducts.length === lastCount && i > 3) break
       lastCount = rawProducts.length
     }
 
     await browser.close()
     browser = null
-    console.log(`\n  Toplam intercepted: ${rawProducts.length} ürün`)
+    console.log('\nToplam intercepted: ' + rawProducts.length + ' urun')
 
     if (rawProducts.length === 0) {
-      throw new Error('Hiç ürün intercept edilmedi — sayfa yapısı değişmiş olabilir')
+      throw new Error('Hic urun intercept edilmedi')
     }
 
     const seenCodes = new Set()
@@ -91,7 +94,7 @@ function toCampaignType(text) {
         const originalPrice = p.price?.oldValue ?? discountedPrice
         const rawImg = p.listImage?.url || p.thumbnailImage?.url || null
         const imageUrl = rawImg
-          ? (rawImg.startsWith('http') ? rawImg : `https://media.kruidvat.nl${rawImg}`)
+          ? (rawImg.startsWith('http') ? rawImg : 'https://media.kruidvat.nl' + rawImg)
           : null
         const endDate = p.topPromotion?.endDate || null
         const promoText = p.topPromotion?.description || p.name || ''
@@ -100,7 +103,7 @@ function toCampaignType(text) {
           discountedPrice,
           originalPrice: originalPrice > discountedPrice ? originalPrice : discountedPrice,
           imageUrl,
-          url: p.url ? `https://www.kruidvat.nl${p.url}` : null,
+          url: p.url ? 'https://www.kruidvat.nl' + p.url : null,
           expiresAt: endDate ? new Date(endDate).toISOString().split('T')[0] : null,
           campaignType: toCampaignType(promoText),
           isCampaign: true,
@@ -115,22 +118,22 @@ function toCampaignType(text) {
       seenNames.add(key)
       return true
     })
-    console.log(`  ✅ ${products.length} ürün → ${unique.length} uniek na naam-dedup`)
+    console.log(products.length + ' urun -> ' + unique.length + ' uniek na dedup')
 
-    if (unique.length === 0) throw new Error('İşlenebilir ürün bulunamadı!')
+    if (unique.length === 0) throw new Error('Islenebilir urun bulunamadi!')
 
-    console.log('\n📤 Railway\'e gönderiliyor...')
-    const postRes = await fetch(`${BACKEND_URL}/api/products/bulk-replace`, {
+    console.log("Railway'e gonderiliyor...")
+    const postRes = await fetch(BACKEND_URL + '/api/products/bulk-replace', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${ADMIN_TOKEN}` },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + ADMIN_TOKEN },
       body: JSON.stringify({ market: 'Kruidvat', products: unique }),
     })
     const json = await postRes.json()
-    if (!postRes.ok) throw new Error(`Backend: ${JSON.stringify(json)}`)
-    console.log(`✅ ${json.count} ürün eklendi!`)
+    if (!postRes.ok) throw new Error('Backend: ' + JSON.stringify(json))
+    console.log(json.count + ' urun eklendi!')
   } catch (e) {
     if (browser) await browser.close().catch(() => {})
-    console.error('❌', e.message)
+    console.error('HATA:', e.message)
     process.exit(1)
   }
 })()
