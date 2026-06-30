@@ -1,8 +1,10 @@
 /**
  * Kruidvat scraper → Railway bulk-replace
- * Strategy: playwright-extra + stealth plugin → Akamai bypass
- * Loads homepage to obtain Akamai session cookies, then calls the OCC
- * search API from inside the browser context (credentials included)
+ * Strategy: playwright-extra + stealth → Akamai bypass
+ *   1. Load /aanbiedingen (browser obtains Akamai session)
+ *   2. Read spartacus-app-state → promo-tab-dezeweek tiles
+ *   3. For each /p/ tile (product code), fetch /products/{code}?fields=FULL
+ *      from inside the browser context (Akamai cookies apply)
  */
 
 const { chromium } = require('playwright-extra')
@@ -24,6 +26,13 @@ function toCampaignType(text) {
   return null
 }
 
+function decodeEntities(s) {
+  return s
+    .replace(/&quot;/g, '"').replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&#(\d+);/g, (_, c) => String.fromCharCode(Number(c)))
+}
+
 ;(async () => {
   let browser
   try {
@@ -36,114 +45,117 @@ function toCampaignType(text) {
     })
     const page = await context.newPage()
 
-    // Önce ana sayfa — Akamai bot cookie/session (.kruidvat.nl) kur
+    // Ana sayfa → Akamai bot cookie (.kruidvat.nl)
     console.log('Ana sayfa ile session kuruluyor...')
     await page.goto('https://www.kruidvat.nl/', { waitUntil: 'domcontentloaded', timeout: 60000 })
-    await page.waitForTimeout(4000)
-
-    // Cookie banner
+    await page.waitForTimeout(3000)
     try {
       await page.click('#onetrust-accept-btn-handler', { timeout: 5000 })
       await page.waitForTimeout(1000)
     } catch {}
 
-    // OCC search API'sini tarayıcı içinden çağır — Akamai session cookie'leri uygulanır
-    console.log('OCC search API sorgulaniyor (browser context)...')
-    const result = await page.evaluate(async () => {
-      const OCC = 'https://api.kruidvat.nl/api/v2/kvn-spa'
-      const queries = [
-        ':relevance:isPromoted:true',
-        ':relevance:promotion:true',
-        ':relevance:onPromotion:true',
-        ':relevance',
-      ]
-      const debug = []
-      for (const q of queries) {
-        const url = OCC + '/products/search?query=' + encodeURIComponent(q)
-          + '&lang=nl&curr=EUR&currentPage=0&pageSize=20'
-          + '&fields=FULL'
-        let status = 0, total = 0, sample = null, keys = null
-        try {
-          const res = await fetch(url, {
-            headers: { 'Accept': 'application/json', 'Accept-Language': 'nl-NL,nl;q=0.9' },
-            credentials: 'include',
-          })
-          status = res.status
-          if (res.ok) {
-            const data = await res.json()
-            keys = Object.keys(data)
-            total = data.pagination?.totalResults ?? (data.products?.length ?? 0)
-            if (data.products?.length) {
-              sample = JSON.stringify(data.products[0]).slice(0, 400)
-              // İlk başarılı sorguda tüm sayfaları çek
-              const all = [...data.products]
-              const pages = data.pagination?.totalPages ?? 1
-              for (let p = 1; p < Math.min(pages, 30); p++) {
-                const u2 = OCC + '/products/search?query=' + encodeURIComponent(q)
-                  + '&lang=nl&curr=EUR&currentPage=' + p + '&pageSize=20&fields=FULL'
-                const r2 = await fetch(u2, { headers: { 'Accept': 'application/json' }, credentials: 'include' })
-                if (!r2.ok) break
-                const d2 = await r2.json()
-                all.push(...(d2.products || []))
-              }
-              return { products: all, debug, usedQuery: q }
-            }
-          }
-        } catch (e) { status = 'ERR:' + e.message }
-        debug.push({ q, status, total, keys, sample })
-      }
-      return { products: [], debug }
+    // Aanbiedingen sayfası
+    console.log('Aanbiedingen yukleniyor...')
+    await page.goto('https://www.kruidvat.nl/aanbiedingen', { waitUntil: 'domcontentloaded', timeout: 60000 })
+    await page.waitForTimeout(2000)
+
+    // spartacus-app-state oku
+    const stateText = await page.evaluate(() => {
+      const el = document.getElementById('spartacus-app-state')
+      return el ? el.textContent : ''
     })
+    if (!stateText) throw new Error('spartacus-app-state bulunamadi')
+
+    const state = JSON.parse(decodeEntities(stateText))
+    const promoTab = state['promo-tab-dezeweek']
+    if (!promoTab) throw new Error('promo-tab-dezeweek bulunamadi')
+
+    const allTiles = []
+    for (const tab of promoTab.tabs || []) {
+      for (const cat of tab.categories || []) {
+        allTiles.push(...(cat.promotionTiles || []))
+      }
+    }
+
+    // /p/ tile → ürün kodu (tile.code), dedup
+    const seenCodes = new Set()
+    const productTiles = allTiles.filter(t => {
+      if (!t.available) return false
+      const link = t.localizedURLLink || ''
+      const code = t.code || (link.match(/\/p\/(\d+)/)?.[1])
+      if (!link.includes('/p/') && !/^\d+$/.test(t.code || '')) {
+        // /a/ kampanya sayfaları fiyatsız — atla
+        if (!link.includes('/p/')) return false
+      }
+      if (!code || seenCodes.has(code)) return false
+      seenCodes.add(code)
+      t.__code = code
+      return true
+    })
+    console.log(allTiles.length + ' tile -> ' + productTiles.length + ' urun tile')
+
+    if (productTiles.length === 0) throw new Error('Urun tile bulunamadi')
+
+    // Ürün detaylarını browser içinden fetch et (Akamai cookie uygulanır)
+    const codeList = productTiles.map(t => ({ code: t.__code, title: t.title, link: t.localizedURLLink, img: t.image?.url }))
+    console.log('Urun detaylari cekiliyor (' + codeList.length + ' adet)...')
+
+    const products = await page.evaluate(async (tiles) => {
+      const OCC = 'https://api.kruidvat.nl/api/v2/kvn-spa'
+      const out = []
+      const CONC = 8
+      for (let i = 0; i < tiles.length; i += CONC) {
+        const batch = tiles.slice(i, i + CONC)
+        const res = await Promise.all(batch.map(async (t) => {
+          try {
+            const r = await fetch(OCC + '/products/' + t.code + '?lang=nl&curr=EUR&fields=FULL', {
+              headers: { 'Accept': 'application/json' }, credentials: 'include',
+            })
+            if (!r.ok) return null
+            const p = await r.json()
+            const dp = p.price?.value
+            if (!dp || dp <= 0) return null
+            const op = p.price?.oldValue ?? dp
+            const rawImg = p.listImage?.url || p.thumbnailImage?.url || t.img || null
+            return {
+              name: p.name || t.title,
+              discountedPrice: dp,
+              originalPrice: op > dp ? op : dp,
+              imageUrl: rawImg ? (rawImg.startsWith('http') ? rawImg : 'https://media.kruidvat.nl' + rawImg) : null,
+              url: t.link ? 'https://www.kruidvat.nl' + t.link : null,
+              expiresAt: p.topPromotion?.endDate ? new Date(p.topPromotion.endDate).toISOString().split('T')[0] : null,
+              promoText: [p.topPromotion?.description || '', t.title || '', t.link || ''].join(' '),
+            }
+          } catch { return null }
+        }))
+        out.push(...res.filter(Boolean))
+      }
+      return out
+    }, codeList)
 
     await browser.close()
     browser = null
 
-    const rawProducts = result.products
-    console.log('DEBUG:', JSON.stringify(result.debug, null, 2))
-    console.log('Toplam alinan: ' + rawProducts.length + ' urun (query: ' + (result.usedQuery || 'yok') + ')')
+    const mapped = products.map(p => ({
+      name: p.name,
+      discountedPrice: p.discountedPrice,
+      originalPrice: p.originalPrice,
+      imageUrl: p.imageUrl,
+      url: p.url,
+      expiresAt: p.expiresAt,
+      campaignType: toCampaignType(p.promoText),
+      isCampaign: true,
+    }))
 
-    if (rawProducts.length === 0) {
-      throw new Error('Hic urun alinamadi — DEBUG ciktisini incele')
-    }
-
-    const seenCodes = new Set()
-    const products = rawProducts
-      .filter(p => {
-        if (!p.code || seenCodes.has(p.code)) return false
-        seenCodes.add(p.code)
-        return true
-      })
-      .map(p => {
-        const discountedPrice = p.price?.value
-        if (!discountedPrice || discountedPrice <= 0) return null
-        const originalPrice = p.price?.oldValue ?? discountedPrice
-        const rawImg = p.listImage?.url || p.thumbnailImage?.url || null
-        const imageUrl = rawImg
-          ? (rawImg.startsWith('http') ? rawImg : 'https://media.kruidvat.nl' + rawImg)
-          : null
-        const endDate = p.topPromotion?.endDate || null
-        const promoText = p.topPromotion?.description || p.name || ''
-        return {
-          name: p.name,
-          discountedPrice,
-          originalPrice: originalPrice > discountedPrice ? originalPrice : discountedPrice,
-          imageUrl,
-          url: p.url ? 'https://www.kruidvat.nl' + p.url : null,
-          expiresAt: endDate ? new Date(endDate).toISOString().split('T')[0] : null,
-          campaignType: toCampaignType(promoText),
-          isCampaign: true,
-        }
-      })
-      .filter(Boolean)
-
+    // Name dedup
     const seenNames = new Set()
-    const unique = products.filter(p => {
+    const unique = mapped.filter(p => {
       const key = p.name?.toLowerCase().trim()
       if (!key || seenNames.has(key)) return false
       seenNames.add(key)
       return true
     })
-    console.log(products.length + ' urun -> ' + unique.length + ' uniek na dedup')
+    console.log(mapped.length + ' urun -> ' + unique.length + ' uniek na dedup')
 
     if (unique.length === 0) throw new Error('Islenebilir urun bulunamadi!')
 
