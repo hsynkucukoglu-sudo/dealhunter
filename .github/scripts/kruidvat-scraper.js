@@ -48,6 +48,17 @@ function findInState(obj, key, depth = 0) {
     })
     const page = await context.newPage()
 
+    // /aanbiedingen ana document HTML'ini yakala (JS hydrate edip state script'ini
+    // silmeden önce ham SSR çıktısını al)
+    let aanbiedingenHtml = null
+    page.on('response', async (response) => {
+      const url = response.url()
+      const ct = response.headers()['content-type'] || ''
+      if (!aanbiedingenHtml && url.includes('/aanbiedingen') && ct.includes('text/html')) {
+        try { aanbiedingenHtml = await response.text() } catch {}
+      }
+    })
+
     // Ana sayfa — Akamai bot session (.kruidvat.nl cookies)
     console.log('Ana sayfa ile session kuruluyor...')
     await page.goto('https://www.kruidvat.nl/', { waitUntil: 'domcontentloaded', timeout: 60000 })
@@ -62,12 +73,19 @@ function findInState(obj, key, depth = 0) {
     await page.goto('https://www.kruidvat.nl/aanbiedingen', { waitUntil: 'domcontentloaded', timeout: 60000 })
     await page.waitForTimeout(3000)
 
-    // State'i DOM'dan al
-    const stateJson = await page.evaluate(() => {
-      const el = document.getElementById('spartacus-app-state')
-      return el ? el.textContent : null
-    })
-    if (!stateJson) throw new Error('spartacus-app-state bulunamadi')
+    // State'i önce yakalanan ham HTML'den, olmazsa DOM'dan al
+    let stateJson = null
+    if (aanbiedingenHtml) {
+      const m = aanbiedingenHtml.match(/<script id="spartacus-app-state"[^>]*>([\s\S]*?)<\/script>/)
+      if (m) stateJson = m[1]
+    }
+    if (!stateJson) {
+      stateJson = await page.evaluate(() => {
+        const el = document.getElementById('spartacus-app-state')
+        return el ? el.textContent : null
+      })
+    }
+    if (!stateJson) throw new Error('spartacus-app-state bulunamadi (html=' + (aanbiedingenHtml ? aanbiedingenHtml.length : 'null') + ')')
 
     const decoded = stateJson
       .replace(/&quot;/g, '"').replace(/&amp;/g, '&')
