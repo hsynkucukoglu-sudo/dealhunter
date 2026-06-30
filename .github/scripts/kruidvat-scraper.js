@@ -1,7 +1,8 @@
 /**
  * Kruidvat scraper → Railway bulk-replace
  * Strategy: playwright-extra + stealth plugin → Akamai bypass
- * Intercepts OCC API responses from the real browser session
+ * Loads homepage to obtain Akamai session cookies, then calls the OCC
+ * search API from inside the browser context (credentials included)
  */
 
 const { chromium } = require('playwright-extra')
@@ -35,26 +36,10 @@ function toCampaignType(text) {
     })
     const page = await context.newPage()
 
-    const rawProducts = []
-
-    page.on('response', async (response) => {
-      const url = response.url()
-      if (url.includes('api.kruidvat.nl') && url.includes('/products/search')) {
-        try {
-          const data = await response.json()
-          const items = data.products ?? []
-          if (items.length > 0) {
-            rawProducts.push(...items)
-            process.stdout.write('\r  Intercepted: ' + rawProducts.length + ' producten')
-          }
-        } catch {}
-      }
-    })
-
-    // Önce ana sayfa — Akamai cookie/session kur
+    // Önce ana sayfa — Akamai bot cookie/session (.kruidvat.nl) kur
     console.log('Ana sayfa ile session kuruluyor...')
     await page.goto('https://www.kruidvat.nl/', { waitUntil: 'domcontentloaded', timeout: 60000 })
-    await page.waitForTimeout(3000)
+    await page.waitForTimeout(4000)
 
     // Cookie banner
     try {
@@ -62,34 +47,41 @@ function toCampaignType(text) {
       await page.waitForTimeout(1000)
     } catch {}
 
-    console.log('Kruidvat aanbiedingen yukleniyor...')
-    await page.goto('https://www.kruidvat.nl/aanbiedingen/dezeweek', {
-      waitUntil: 'domcontentloaded',
-      timeout: 60000,
-    })
-
-    // Ürünlerin intercept edilmesini bekle + lazy-load için scroll
-    console.log('Urunler bekleniyor + scroll...')
-    let lastCount = -1
-    let stable = 0
-    for (let i = 0; i < 20; i++) {
-      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight)).catch(() => {})
-      await page.waitForTimeout(2500)
-      if (rawProducts.length === lastCount) {
-        stable++
-        if (stable >= 3 && rawProducts.length > 0) break
-      } else {
-        stable = 0
+    // OCC search API'sini tarayıcı içinden çağır — Akamai session cookie'leri uygulanır
+    console.log('OCC search API sorgulaniyor (browser context)...')
+    const rawProducts = await page.evaluate(async () => {
+      const OCC = 'https://api.kruidvat.nl/api/v2/kvn-spa'
+      const all = []
+      let pageNo = 0
+      const pageSize = 100
+      while (pageNo < 30) {
+        const url = OCC + '/products/search?query=%3Arelevance%3AisPromoted%3Atrue&lang=nl&curr=EUR&currentPage='
+          + pageNo + '&pageSize=' + pageSize
+          + '&fields=products(code,name,price(value,oldValue),listImage(url),thumbnailImage(url),topPromotion(description,endDate),url),pagination'
+        const res = await fetch(url, {
+          headers: { 'Accept': 'application/json', 'Accept-Language': 'nl-NL,nl;q=0.9' },
+          credentials: 'include',
+        })
+        if (!res.ok) {
+          if (pageNo === 0) throw new Error('OCC HTTP ' + res.status)
+          break
+        }
+        const data = await res.json()
+        const items = data.products || []
+        all.push(...items)
+        const total = data.pagination?.totalPages ?? 1
+        if (pageNo + 1 >= total || items.length === 0) break
+        pageNo++
       }
-      lastCount = rawProducts.length
-    }
+      return all
+    })
 
     await browser.close()
     browser = null
-    console.log('\nToplam intercepted: ' + rawProducts.length + ' urun')
+    console.log('Toplam alinan: ' + rawProducts.length + ' urun')
 
     if (rawProducts.length === 0) {
-      throw new Error('Hic urun intercept edilmedi')
+      throw new Error('Hic urun alinamadi')
     }
 
     const seenCodes = new Set()
