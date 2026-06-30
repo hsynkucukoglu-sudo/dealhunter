@@ -49,39 +49,61 @@ function toCampaignType(text) {
 
     // OCC search API'sini tarayıcı içinden çağır — Akamai session cookie'leri uygulanır
     console.log('OCC search API sorgulaniyor (browser context)...')
-    const rawProducts = await page.evaluate(async () => {
+    const result = await page.evaluate(async () => {
       const OCC = 'https://api.kruidvat.nl/api/v2/kvn-spa'
-      const all = []
-      let pageNo = 0
-      const pageSize = 100
-      while (pageNo < 30) {
-        const url = OCC + '/products/search?query=%3Arelevance%3AisPromoted%3Atrue&lang=nl&curr=EUR&currentPage='
-          + pageNo + '&pageSize=' + pageSize
-          + '&fields=products(code,name,price(value,oldValue),listImage(url),thumbnailImage(url),topPromotion(description,endDate),url),pagination'
-        const res = await fetch(url, {
-          headers: { 'Accept': 'application/json', 'Accept-Language': 'nl-NL,nl;q=0.9' },
-          credentials: 'include',
-        })
-        if (!res.ok) {
-          if (pageNo === 0) throw new Error('OCC HTTP ' + res.status)
-          break
-        }
-        const data = await res.json()
-        const items = data.products || []
-        all.push(...items)
-        const total = data.pagination?.totalPages ?? 1
-        if (pageNo + 1 >= total || items.length === 0) break
-        pageNo++
+      const queries = [
+        ':relevance:isPromoted:true',
+        ':relevance:promotion:true',
+        ':relevance:onPromotion:true',
+        ':relevance',
+      ]
+      const debug = []
+      for (const q of queries) {
+        const url = OCC + '/products/search?query=' + encodeURIComponent(q)
+          + '&lang=nl&curr=EUR&currentPage=0&pageSize=20'
+          + '&fields=FULL'
+        let status = 0, total = 0, sample = null, keys = null
+        try {
+          const res = await fetch(url, {
+            headers: { 'Accept': 'application/json', 'Accept-Language': 'nl-NL,nl;q=0.9' },
+            credentials: 'include',
+          })
+          status = res.status
+          if (res.ok) {
+            const data = await res.json()
+            keys = Object.keys(data)
+            total = data.pagination?.totalResults ?? (data.products?.length ?? 0)
+            if (data.products?.length) {
+              sample = JSON.stringify(data.products[0]).slice(0, 400)
+              // İlk başarılı sorguda tüm sayfaları çek
+              const all = [...data.products]
+              const pages = data.pagination?.totalPages ?? 1
+              for (let p = 1; p < Math.min(pages, 30); p++) {
+                const u2 = OCC + '/products/search?query=' + encodeURIComponent(q)
+                  + '&lang=nl&curr=EUR&currentPage=' + p + '&pageSize=20&fields=FULL'
+                const r2 = await fetch(u2, { headers: { 'Accept': 'application/json' }, credentials: 'include' })
+                if (!r2.ok) break
+                const d2 = await r2.json()
+                all.push(...(d2.products || []))
+              }
+              return { products: all, debug, usedQuery: q }
+            }
+          }
+        } catch (e) { status = 'ERR:' + e.message }
+        debug.push({ q, status, total, keys, sample })
       }
-      return all
+      return { products: [], debug }
     })
 
     await browser.close()
     browser = null
-    console.log('Toplam alinan: ' + rawProducts.length + ' urun')
+
+    const rawProducts = result.products
+    console.log('DEBUG:', JSON.stringify(result.debug, null, 2))
+    console.log('Toplam alinan: ' + rawProducts.length + ' urun (query: ' + (result.usedQuery || 'yok') + ')')
 
     if (rawProducts.length === 0) {
-      throw new Error('Hic urun alinamadi')
+      throw new Error('Hic urun alinamadi — DEBUG ciktisini incele')
     }
 
     const seenCodes = new Set()
