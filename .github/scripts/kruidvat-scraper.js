@@ -51,25 +51,36 @@ function toCampaignType(text) {
       }
     })
 
-    console.log('Kruidvat aanbiedingen yukleniyor...')
-    await page.goto('https://www.kruidvat.nl/aanbiedingen/dezeweek', {
-      waitUntil: 'networkidle',
-      timeout: 90000,
-    })
+    // Önce ana sayfa — Akamai cookie/session kur
+    console.log('Ana sayfa ile session kuruluyor...')
+    await page.goto('https://www.kruidvat.nl/', { waitUntil: 'domcontentloaded', timeout: 60000 })
+    await page.waitForTimeout(3000)
 
     // Cookie banner
     try {
-      await page.click('#onetrust-accept-btn-handler', { timeout: 4000 })
+      await page.click('#onetrust-accept-btn-handler', { timeout: 5000 })
       await page.waitForTimeout(1000)
     } catch {}
 
-    // Scroll to trigger lazy-load
-    console.log('\nSayfayi kaydir...')
-    let lastCount = 0
-    for (let i = 0; i < 12; i++) {
-      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
-      await page.waitForTimeout(2000)
-      if (rawProducts.length === lastCount && i > 3) break
+    console.log('Kruidvat aanbiedingen yukleniyor...')
+    await page.goto('https://www.kruidvat.nl/aanbiedingen/dezeweek', {
+      waitUntil: 'domcontentloaded',
+      timeout: 60000,
+    })
+
+    // Ürünlerin intercept edilmesini bekle + lazy-load için scroll
+    console.log('Urunler bekleniyor + scroll...')
+    let lastCount = -1
+    let stable = 0
+    for (let i = 0; i < 20; i++) {
+      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight)).catch(() => {})
+      await page.waitForTimeout(2500)
+      if (rawProducts.length === lastCount) {
+        stable++
+        if (stable >= 3 && rawProducts.length > 0) break
+      } else {
+        stable = 0
+      }
       lastCount = rawProducts.length
     }
 
