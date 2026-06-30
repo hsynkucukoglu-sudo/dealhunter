@@ -1,10 +1,10 @@
 /**
  * Kruidvat scraper → Railway bulk-replace
  * Strategy: playwright-extra + stealth → Akamai bypass
- *   1. Load /aanbiedingen (browser obtains Akamai session)
- *   2. Read spartacus-app-state → promo-tab-dezeweek tiles
- *   3. For each /p/ tile (product code), fetch /products/{code}?fields=FULL
- *      from inside the browser context (Akamai cookies apply)
+ *   1. Load /aanbiedingen in real browser (Akamai session cookies)
+ *   2. Parse spartacus-app-state → promo-tab-dezeweek → product codes
+ *   3. In-browser fetch /products/{code}?fields=FULL (cookies apply)
+ *   4. POST to Railway bulk-replace
  */
 
 const { chromium } = require('playwright-extra')
@@ -26,11 +26,14 @@ function toCampaignType(text) {
   return null
 }
 
-function decodeEntities(s) {
-  return s
-    .replace(/&quot;/g, '"').replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-    .replace(/&#(\d+);/g, (_, c) => String.fromCharCode(Number(c)))
+function findInState(obj, key, depth = 0) {
+  if (!obj || typeof obj !== 'object' || depth > 8) return null
+  if (key in obj) return obj[key]
+  for (const k of Object.keys(obj)) {
+    const found = findInState(obj[k], key, depth + 1)
+    if (found) return found
+  }
+  return null
 }
 
 ;(async () => {
@@ -45,29 +48,34 @@ function decodeEntities(s) {
     })
     const page = await context.newPage()
 
-    // Ana sayfa → Akamai bot cookie (.kruidvat.nl)
+    // Ana sayfa — Akamai bot session (.kruidvat.nl cookies)
     console.log('Ana sayfa ile session kuruluyor...')
     await page.goto('https://www.kruidvat.nl/', { waitUntil: 'domcontentloaded', timeout: 60000 })
-    await page.waitForTimeout(3000)
+    await page.waitForTimeout(4000)
     try {
       await page.click('#onetrust-accept-btn-handler', { timeout: 5000 })
       await page.waitForTimeout(1000)
     } catch {}
 
-    // Aanbiedingen sayfası
+    // Aanbiedingen sayfası → spartacus-app-state
     console.log('Aanbiedingen yukleniyor...')
     await page.goto('https://www.kruidvat.nl/aanbiedingen', { waitUntil: 'domcontentloaded', timeout: 60000 })
-    await page.waitForTimeout(2000)
+    await page.waitForTimeout(3000)
 
-    // spartacus-app-state oku
-    const stateText = await page.evaluate(() => {
+    // State'i DOM'dan al
+    const stateJson = await page.evaluate(() => {
       const el = document.getElementById('spartacus-app-state')
-      return el ? el.textContent : ''
+      return el ? el.textContent : null
     })
-    if (!stateText) throw new Error('spartacus-app-state bulunamadi')
+    if (!stateJson) throw new Error('spartacus-app-state bulunamadi')
 
-    const state = JSON.parse(decodeEntities(stateText))
-    const promoTab = state['promo-tab-dezeweek']
+    const decoded = stateJson
+      .replace(/&quot;/g, '"').replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+      .replace(/&#(\d+);/g, (_, c) => String.fromCharCode(Number(c)))
+    const state = JSON.parse(decoded)
+
+    const promoTab = state['promo-tab-dezeweek'] || findInState(state, 'promo-tab-dezeweek')
     if (!promoTab) throw new Error('promo-tab-dezeweek bulunamadi')
 
     const allTiles = []
@@ -77,66 +85,67 @@ function decodeEntities(s) {
       }
     }
 
-    // /p/ tile → ürün kodu (tile.code), dedup
     const seenCodes = new Set()
     const productTiles = allTiles.filter(t => {
-      if (!t.available) return false
-      const link = t.localizedURLLink || ''
-      const code = t.code || (link.match(/\/p\/(\d+)/)?.[1])
-      if (!link.includes('/p/') && !/^\d+$/.test(t.code || '')) {
-        // /a/ kampanya sayfaları fiyatsız — atla
-        if (!link.includes('/p/')) return false
-      }
+      if (!t.available || !t.localizedURLLink?.includes('/p/')) return false
+      const code = t.localizedURLLink.match(/\/p\/(\d+)/)?.[1]
       if (!code || seenCodes.has(code)) return false
       seenCodes.add(code)
-      t.__code = code
       return true
     })
-    console.log(allTiles.length + ' tile -> ' + productTiles.length + ' urun tile')
+    console.log(allTiles.length + ' tile -> ' + productTiles.length + ' unieke urun tile')
 
-    if (productTiles.length === 0) throw new Error('Urun tile bulunamadi')
+    if (productTiles.length === 0) throw new Error('Hic urun tile bulunamadi')
 
-    // Ürün detaylarını browser içinden fetch et (Akamai cookie uygulanır)
-    const codeList = productTiles.map(t => ({ code: t.__code, title: t.title, link: t.localizedURLLink, img: t.image?.url }))
-    console.log('Urun detaylari cekiliyor (' + codeList.length + ' adet)...')
+    // Tile listesini tarayıcıya geçir, /products/{code} fetch'lerini orada yap
+    const tilePayload = productTiles.map(t => ({
+      code: t.localizedURLLink.match(/\/p\/(\d+)/)[1],
+      link: t.localizedURLLink,
+      title: t.title || '',
+      img: t.image?.url || null,
+    }))
 
-    const products = await page.evaluate(async (tiles) => {
+    console.log('Urun detaylari cekiliyor (browser context)...')
+    const { products, firstErr } = await page.evaluate(async (tiles) => {
       const OCC = 'https://api.kruidvat.nl/api/v2/kvn-spa'
       const out = []
+      let firstErr = null
       const CONC = 8
       for (let i = 0; i < tiles.length; i += CONC) {
         const batch = tiles.slice(i, i + CONC)
         const res = await Promise.all(batch.map(async (t) => {
           try {
             const r = await fetch(OCC + '/products/' + t.code + '?lang=nl&curr=EUR&fields=FULL', {
-              headers: { 'Accept': 'application/json' }, credentials: 'include',
+              headers: { 'Accept': 'application/json', 'Accept-Language': 'nl-NL,nl;q=0.9' },
+              credentials: 'include',
             })
-            if (!r.ok) return null
+            if (!r.ok) { if (!firstErr) firstErr = 'HTTP ' + r.status + ' code=' + t.code; return null }
             const p = await r.json()
             const dp = p.price?.value
             if (!dp || dp <= 0) return null
             const op = p.price?.oldValue ?? dp
             const rawImg = p.listImage?.url || p.thumbnailImage?.url || t.img || null
+            const imageUrl = rawImg ? (rawImg.startsWith('http') ? rawImg : 'https://media.kruidvat.nl' + rawImg) : null
             return {
               name: p.name || t.title,
               discountedPrice: dp,
               originalPrice: op > dp ? op : dp,
-              imageUrl: rawImg ? (rawImg.startsWith('http') ? rawImg : 'https://media.kruidvat.nl' + rawImg) : null,
-              url: t.link ? 'https://www.kruidvat.nl' + t.link : null,
+              imageUrl,
+              url: 'https://www.kruidvat.nl' + t.link,
               expiresAt: p.topPromotion?.endDate ? new Date(p.topPromotion.endDate).toISOString().split('T')[0] : null,
-              promoText: [p.topPromotion?.description || '', t.title || '', t.link || ''].join(' '),
+              promoText: [p.topPromotion?.description || '', t.title, t.link].join(' '),
             }
-          } catch { return null }
+          } catch (e) { if (!firstErr) firstErr = 'ERR ' + e.message; return null }
         }))
         out.push(...res.filter(Boolean))
       }
-      return out
-    }, codeList)
+      return { products: out, firstErr }
+    }, tilePayload)
 
     await browser.close()
     browser = null
 
-    const mapped = products.map(p => ({
+    const finalProducts = products.map(p => ({
       name: p.name,
       discountedPrice: p.discountedPrice,
       originalPrice: p.originalPrice,
@@ -147,23 +156,14 @@ function decodeEntities(s) {
       isCampaign: true,
     }))
 
-    // Name dedup
-    const seenNames = new Set()
-    const unique = mapped.filter(p => {
-      const key = p.name?.toLowerCase().trim()
-      if (!key || seenNames.has(key)) return false
-      seenNames.add(key)
-      return true
-    })
-    console.log(mapped.length + ' urun -> ' + unique.length + ' uniek na dedup')
-
-    if (unique.length === 0) throw new Error('Islenebilir urun bulunamadi!')
+    console.log(finalProducts.length + ' urun toplandi (ilk hata: ' + (firstErr || 'yok') + ')')
+    if (finalProducts.length === 0) throw new Error('Islenebilir urun yok — ilk hata: ' + firstErr)
 
     console.log("Railway'e gonderiliyor...")
     const postRes = await fetch(BACKEND_URL + '/api/products/bulk-replace', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + ADMIN_TOKEN },
-      body: JSON.stringify({ market: 'Kruidvat', products: unique }),
+      body: JSON.stringify({ market: 'Kruidvat', products: finalProducts }),
     })
     const json = await postRes.json()
     if (!postRes.ok) throw new Error('Backend: ' + JSON.stringify(json))
