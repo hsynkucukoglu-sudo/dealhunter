@@ -120,51 +120,37 @@ async function sendWhatsApp(message) {
 }
 
 // ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-function pickAffiliate(exclude = new Set()) {
-  const pool = AFFILIATE_DEALS.filter(d => !exclude.has(d.name))
-  return pool[Math.floor(Math.random() * pool.length)]
-}
-
-async function buildMessage() {
-  const product = await getRandomProduct()
-  if (product) {
-    return { label: `${product.name} (${product.market}, -${product.discount}%)`, text: formatProductMessage(product) }
-  }
-  const deal = pickAffiliate()
-  return { label: `affiliate fallback: ${deal.name}`, text: formatAffiliateMessage(deal) }
-}
-
-// ---------------------------------------------------------------------------
-// Main — sends 3 messages per run with a 3-second gap
+// Main
 // ---------------------------------------------------------------------------
 async function main() {
   if (!INSTANCE_ID || !API_TOKEN || !GROUP_ID) {
     throw new Error('Missing env vars: GREEN_API_INSTANCE_ID, GREEN_API_TOKEN, WHATSAPP_GROUP_ID')
   }
 
-  const used = new Set()
+  // Affiliate uren (UTC): 07:00, 10:00, 13:00 = 09:00, 12:00, 15:00 CEST
+  const utcHour = new Date().getUTCHours()
+  const affiliateHours = new Set([7, 10, 13])
 
-  // Message 1 — supermarket product (or affiliate fallback)
-  const msg1 = await buildMessage()
-  console.log(`[1/3] ${msg1.label}`)
-  await sendWhatsApp(msg1.text)
-  await new Promise(r => setTimeout(r, 3000))
+  let message
 
-  // Message 2 — affiliate deal
-  const deal2 = pickAffiliate(used)
-  used.add(deal2.name)
-  console.log(`[2/3] affiliate: ${deal2.name}`)
-  await sendWhatsApp(formatAffiliateMessage(deal2))
-  await new Promise(r => setTimeout(r, 3000))
+  if (affiliateHours.has(utcHour)) {
+    const deal = AFFILIATE_DEALS[Math.floor(Math.random() * AFFILIATE_DEALS.length)]
+    message = formatAffiliateMessage(deal)
+    console.log(`Sending affiliate: ${deal.name}`)
+  } else {
+    const product = await getRandomProduct()
+    if (product) {
+      message = formatProductMessage(product)
+      console.log(`Sending product: ${product.name} (${product.market}, -${product.discount}%)`)
+    } else {
+      const deal = AFFILIATE_DEALS[Math.floor(Math.random() * AFFILIATE_DEALS.length)]
+      message = formatAffiliateMessage(deal)
+      console.log(`API empty, fallback affiliate: ${deal.name}`)
+    }
+  }
 
-  // Message 3 — different affiliate deal
-  const deal3 = pickAffiliate(used)
-  console.log(`[3/3] affiliate: ${deal3.name}`)
-  await sendWhatsApp(formatAffiliateMessage(deal3))
-
-  console.log('Done — 3 messages sent.')
+  const result = await sendWhatsApp(message)
+  console.log('Sent OK:', result)
 }
 
 main().catch(err => {
