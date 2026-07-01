@@ -123,4 +123,55 @@ export const MARKET_CONTENT: Record<string, string> = {
 <h3>DekaMarkt klantenkaart en extra kortingen</h3>
 <p>Met de DekaMarkt klantenkaart ontvang je extra kortingen op geselecteerde producten en kun je spaarpunten verdienen. Combineer de klantenkaartvoordelen met de <strong>DekaMarkt aanbiedingen deze week</strong> op DealHunter voor maximale besparing zonder folder bladeren.</p>
 `,
+
+  'vomar': `
+<h2>Over Vomar Aanbiedingen</h2>
+<p>Vomar Voordeelmarkt is een regionale supermarktketen met ruim <strong>60 filialen</strong>, vrijwel uitsluitend in <strong>Noord-Holland</strong> — van Alkmaar en Haarlem tot Zaandam, Purmerend en de regio Amsterdam-Noord. De keten positioneert zich als "Voordeelmarkt" met structureel lage dagprijzen, aangevuld met wekelijkse weekaanbiedingen.</p>
+<h3>Wanneer wisselen Vomar-aanbiedingen?</h3>
+<p>Vomar vernieuwt zijn weekaanbiedingen elke <strong>woensdag</strong>, geldig tot en met de volgende dinsdag. Daarnaast heeft Vomar <strong>dagknallers</strong> — extra scherpe kortingen die op elk moment kunnen verschijnen en gelden zolang de voorraad strekt. DealHunter werkt de Vomar-deals dagelijks bij zodat je geen dagknaller mist.</p>
+<h3>Wat maakt Vomar bijzonder?</h3>
+<ul>
+<li><strong>Eigen merk (Vomar huismerk):</strong> gemiddeld 20-30% goedkoper dan A-merken, vergelijkbare kwaliteit op dagelijkse producten</li>
+<li><strong>Breed A-merk assortiment:</strong> ondanks de lage-prijspositionering voert Vomar veel A-merken zoals Coca-Cola, Heineken en Unilever tegen scherpe prijzen</li>
+<li><strong>Wekelijkse folder met 50+ deals:</strong> elke woensdag tientallen aanbiedingen op vlees, dranken, groente en zuivel</li>
+</ul>
+<h3>Vomar versus AH en Jumbo</h3>
+<p>Voor inwoners van Noord-Holland is Vomar een directe concurrent van AH en Jumbo, met vergelijkbare of scherpere basisprijzen op vlees en dranken. Buiten Noord-Holland zijn er nauwelijks Vomar-winkels — vergelijk daarom altijd met de landelijke ketens op DealHunter om de beste deal in jouw regio te vinden.</p>
+`,
+
+  'plus': `
+<h2>Over PLUS Aanbiedingen</h2>
+<p>PLUS is een coöperatieve supermarktketen die kwaliteit en voordeel combineert — van een breed biologisch assortiment tot scherpe weekaanbiedingen op A-merken. De <strong>PLUS aanbiedingen</strong> staan hier wekelijks bijgewerkt, zonder dat je de folder hoeft te bladeren.</p>
+<h3>Wanneer wisselen PLUS-aanbiedingen?</h3>
+<p>PLUS vernieuwt zijn weekaanbiedingen elke <strong>woensdag</strong>, geldig tot en met de volgende dinsdag. Daarnaast heeft PLUS kortlopende acties op verse producten die tussentijds kunnen wisselen — check daarom regelmatig de actuele deals.</p>
+<h3>PLUS 1+1 gratis en 2e halve prijs</h3>
+<p>PLUS is sterk in combinatie-aanbiedingen. Elke week vind je meerdere <strong>1+1 gratis</strong> en <strong>2e halve prijs</strong> deals, met name op:</p>
+<ul>
+<li><strong>Vlees:</strong> kipfilet, biefstuk en gehakt — 1+1 gratis is effectief 50% korting</li>
+<li><strong>Zuivel:</strong> yoghurt, kwark en kaas van biologische merken</li>
+<li><strong>Dranken:</strong> Coca-Cola, Spa en sportdranken</li>
+</ul>
+<h3>PLUS biologische aanbiedingen</h3>
+<p>PLUS heeft het grootste biologische assortiment van de Nederlandse middensegment-supermarkten, regelmatig met <strong>20-40% korting</strong>. Bij AH en Jumbo zijn biologische producten minder vaak in de weekaanbieding — hierin onderscheidt PLUS zich duidelijk.</p>
+<h3>PLUS versus Albert Heijn en Jumbo</h3>
+<p>PLUS en AH zitten in hetzelfde marktsegment met vergelijkbare prijsniveaus. Het verschil zit in de focus: PLUS wint op biologisch assortiment en regionale producten, AH wint op diepere bonusacties via de app. Vergelijk beide wekelijks op DealHunter voor de slimste keuze.</p>
+`,
+
+  'kruidvat': `
+<h2>Over Kruidvat Aanbiedingen</h2>
+<p>Kruidvat is de grootste drogisterij van Nederland met meer dan <strong>1.000 filialen</strong>. Van shampoo en parfum tot babyproducten en verzorging — Kruidvat heeft wekelijks scherpe aanbiedingen op het volledige assortiment.</p>
+<h3>Wanneer wisselen Kruidvat-aanbiedingen?</h3>
+<p>Kruidvat vernieuwt zijn weekaanbiedingen elke <strong>maandag</strong>, geldig tot en met zondag. Daarnaast heeft Kruidvat tussentijdse seizoensacties die op elk moment kunnen starten — met name rond feestdagen zoals Valentijn, moederdag en kerst.</p>
+<h3>Kruidvat 50% korting: wanneer en waarop?</h3>
+<p>Kruidvat staat bekend om zijn <strong>50% kortingsacties</strong>, die meerdere keren per jaar terugkomen op:</p>
+<ul>
+<li><strong>Parfum en geuren:</strong> meest voorkomend rond moederdag, kerst en Valentijn</li>
+<li><strong>Haarkleur:</strong> Garnier, L'Oréal en Schwarzkopf — gemiddeld elke 6-8 weken</li>
+<li><strong>Elektrische tandenborstel en scheerapparaten:</strong> Philips en Oral-B regelmatig 40-50% korting</li>
+</ul>
+<h3>Kruidvat 2e halve prijs</h3>
+<p>Na 50% korting is <strong>2e halve prijs</strong> (effectief 25% korting op twee stuks) de populairste actievorm — vooral op shampoo, douchegel, huidverzorging en make-up van A-merken als Nivea, Dove en L'Oréal.</p>
+<h3>Kruidvat versus Etos</h3>
+<p>Kruidvat en Etos zijn directe concurrenten. Kruidvat heeft over het algemeen iets lagere dagprijzen op eigen merken en biedt vaker diepe 50% kortingsacties. Vergelijk de actuele Kruidvat-deals direct op DealHunter voor de beste beauty-besparing.</p>
+`,
 }

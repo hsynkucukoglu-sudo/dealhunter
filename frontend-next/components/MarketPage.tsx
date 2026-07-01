@@ -173,10 +173,33 @@ export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
 
         {/* Grid */}
         {filtered.length === 0 ? (
-          <div className="text-center py-20 rounded-3xl" style={{ background: 'rgba(255,255,255,0.6)' }}>
-            <span className="material-symbols-outlined text-6xl mb-4 block" style={{ color: '#C9C1B6' }}>search_off</span>
-            <p className="text-xl font-headline font-bold" style={{ color: '#1A1A1A' }}>Geen aanbiedingen gevonden</p>
-          </div>
+          initialProducts.length === 0 ? (
+            <div className="text-center py-20 rounded-3xl" style={{ background: 'rgba(255,255,255,0.6)' }}>
+              <span className="material-symbols-outlined text-6xl mb-4 block" style={{ color: '#C9C1B6' }}>schedule</span>
+              <p className="text-xl font-headline font-bold mb-2" style={{ color: '#1A1A1A' }}>
+                {market.name} aanbiedingen worden bijgewerkt
+              </p>
+              <p className="text-sm max-w-md mx-auto mb-6" style={{ color: '#9C9389' }}>
+                We zijn de nieuwste {market.name}-deals aan het ophalen. Bekijk in de tussentijd de actuele aanbiedingen van andere supermarkten.
+              </p>
+              <div className="flex flex-wrap justify-center gap-2">
+                {['albert-heijn', 'jumbo', 'lidl', 'aldi']
+                  .filter(s => s !== market.slug)
+                  .map(slug => (
+                    <Link key={slug} href={`/supermarkt/${slug}`}
+                      className="px-4 py-2 rounded-full text-sm font-medium transition-all hover:bg-white"
+                      style={{ background: 'white', border: '1.5px solid #E0D8CE', color: '#1A1A1A' }}>
+                      {slug.split('-').map(w => w[0].toUpperCase() + w.slice(1)).join(' ')} aanbiedingen
+                    </Link>
+                  ))}
+              </div>
+            </div>
+          ) : (
+            <div className="text-center py-20 rounded-3xl" style={{ background: 'rgba(255,255,255,0.6)' }}>
+              <span className="material-symbols-outlined text-6xl mb-4 block" style={{ color: '#C9C1B6' }}>search_off</span>
+              <p className="text-xl font-headline font-bold" style={{ color: '#1A1A1A' }}>Geen aanbiedingen gevonden</p>
+            </div>
+          )
         ) : (
           <>
             <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
