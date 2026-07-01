@@ -1,13 +1,13 @@
-name: Plus Scraper
+name: Dirk Scraper
 
 on:
   schedule:
-    # Pazartesi 09:00 UTC (Railway scraper 08:00 bittikten 1 saat sonra — Railway'in üzerine yazar)
-    - cron: '0 9 * * 1'
+    # Pazartesi 08:30 UTC (Railway scraper 08:00 bittikten sonra)
+    - cron: '30 8 * * 1'
   workflow_dispatch: # Manuel tetikleme için
 
 jobs:
-  scrape-plus:
+  scrape-dirk:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,8 +16,8 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Run Plus scraper
+      - name: Run Dirk scraper
         env:
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
           ADMIN_TOKEN: ${{ secrets.ADMIN_TOKEN }}
-        run: node .github/scripts/plus-scraper.js
+        run: node .github/scripts/dirk-scraper.js
