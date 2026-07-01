@@ -185,7 +185,7 @@ export function ProductCard({ product }: { product: Product }) {
             expiryStatus.expired ? (
               <p className="text-[11px] flex items-center gap-1 font-medium" style={{ color: '#C9C1B6', fontFamily: 'JetBrains Mono' }}>
                 <span className="material-symbols-outlined text-sm" aria-hidden="true">schedule</span>
-                {expiryStatus.label}
+                <span suppressHydrationWarning>{expiryStatus.label}</span>
               </p>
             ) : expiryStatus.pulse ? (
               <span
@@ -193,12 +193,12 @@ export function ProductCard({ product }: { product: Product }) {
                 style={{ background: expiryStatus.color, color: 'white', fontFamily: 'JetBrains Mono' }}
               >
                 <span className="material-symbols-outlined text-sm" aria-hidden="true">alarm</span>
-                {expiryStatus.label}
+                <span suppressHydrationWarning>{expiryStatus.label}</span>
               </span>
             ) : (
               <p className="text-[11px] flex items-center gap-1 font-medium" style={{ color: expiryStatus.color, fontFamily: 'JetBrains Mono' }}>
                 <span className="material-symbols-outlined text-sm" aria-hidden="true">schedule</span>
-                {expiryStatus.label}
+                <span suppressHydrationWarning>{expiryStatus.label}</span>
               </p>
             )
           ) : (

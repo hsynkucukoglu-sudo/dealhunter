@@ -148,7 +148,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </h1>
 
         {/* Reklam — başlık altı, okuyucu henüz engaged */}
-        <AdBanner slot="7882410354" format="auto" className="mb-6" minHeight={100} />
+        <AdBanner slot="7882410354" format="auto" className="mb-6" minHeight={280} />
 
         {/* Article body */}
         <div

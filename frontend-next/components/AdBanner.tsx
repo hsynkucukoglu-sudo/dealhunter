@@ -16,7 +16,7 @@ declare global {
   }
 }
 
-export function AdBanner({ slot, format = 'auto', className = '', minHeight = 100 }: AdBannerProps) {
+export function AdBanner({ slot, format = 'auto', className = '', minHeight = 280 }: AdBannerProps) {
   const adRef = useRef<HTMLModElement>(null)
   const initialized = useRef(false)
 
@@ -30,7 +30,7 @@ export function AdBanner({ slot, format = 'auto', className = '', minHeight = 10
 
   return (
     <div
-      className={`adsense-wrapper overflow-hidden text-center ${className}`}
+      className={`adsense-wrapper text-center ${className}`}
       style={{ minHeight }}
     >
       <ins
