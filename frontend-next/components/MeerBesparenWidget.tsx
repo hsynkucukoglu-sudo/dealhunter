@@ -115,6 +115,7 @@ const DEALS = [
       { name: 'Tsar Bomba',      tagline: 'Horloges & premium accessoires', cta: 'Bekijk collectie', color: '#8B0000', url: DC('https://glp8.net/c/?si=21716&li=1916762&wi=420902',  'https://tsarbomba.com/') },
       { name: 'Sportiek.com',    tagline: 'Sportschoenen & kleding',       cta: 'Bekijk aanbod',    color: '#F97316', url: DC('https://ds1.nl/c/?si=8485&li=1389201&wi=420902',       'https://www.sportiek.com/') },
       { name: 'Primal Focus EU', tagline: 'Focus & energie supplementen',  cta: 'Bekijk aanbod',    color: '#0F766E', url: DC('https://glp8.net/c/?si=21577&li=1913855&wi=420902',   'https://primalfocus.eu/') },
+      { name: 'Pulsetto',        tagline: 'Vagus zenuw stimulator & stress', cta: 'Bekijk aanbod',  color: '#6366F1', url: AW(81357, 'https://pulsetto.tech/') },
     ],
   },
   {
