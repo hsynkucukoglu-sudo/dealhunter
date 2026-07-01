@@ -64,6 +64,12 @@ const DEALS = [
       { name: '123Helikoptervluchten',   tagline: 'Helikoptervlucht cadeau',       cta: 'Bekijk vluchten', color: '#F59E0B', url: DC('https://jdt8.net/c/?si=17893&li=1774970&wi=420902',  'https://www.123helikoptervluchten.nl/') },
       { name: 'Smartbox & Bongo',        tagline: 'Cadeaubon voor beleving',       cta: 'Bekijk aanbod',  color: '#C8102E', url: DC('https://glp8.net/c/?si=21185&li=1902306&wi=420902',   'https://www.smartbox.com/nl-nl/') },
       { name: 'Leukstetickets',          tagline: 'Uitjes, events & shows',        cta: 'Bekijk tickets', color: '#FF4500', url: DC('https://lt45.net/c/?si=15805&li=1684191&wi=420902',   'https://www.leukstetickets.nl/') },
+      { name: 'UplandParcs',             tagline: 'Luxe vakantieverblijven DE/AT', cta: 'Bekijk verblijven', color: '#6D4C41', url: DC('https://fr135.net/c/?si=15690&li=1680158&wi=420902', 'https://www.uplandparcs.nl/') },
+      { name: 'Lavida Travel',           tagline: 'Vakanties & tours online',      cta: 'Bekijk reizen',  color: '#00796B', url: DC('https://ds1.nl/c/?si=6141&li=1285507&wi=420902',      'https://www.lavidatravel.nl/') },
+      { name: 'Italieplanner',           tagline: 'Persoonlijke reizen door Italië', cta: 'Plan reis',    color: '#C62828', url: DC('https://ds1.nl/c/?si=19421&li=1830808&wi=420902',     'https://www.italieplanner.nl/') },
+      { name: 'Wereldplanner',           tagline: 'Reizen naar elke bestemming',   cta: 'Bekijk reizen',  color: '#1565C0', url: DC('https://ds1.nl/c/?si=20232&li=1862768&wi=420902',     'https://www.wereldplanner.nl/') },
+      { name: 'Doenkado',                tagline: 'Uitjes & belevenissen cadeau',  cta: 'Bekijk ervaringen', color: '#E65100', url: DC('https://ds1.nl/c/?si=1305&li=80616&wi=420902',    'https://www.doenkado.nl/') },
+      { name: 'Kiwi.com',                tagline: 'Goedkoopste vluchten EU',       cta: 'Zoek vlucht',    color: '#F57F17', url: DC('https://glp8.net/c/?si=20714&li=1878051&wi=420902',   'https://www.kiwi.com/nl/') },
     ],
   },
   {
@@ -83,6 +89,8 @@ const DEALS = [
       { name: 'Wixx Coatings',     tagline: 'Professionele verfcoatings',   cta: 'Bekijk aanbod',    color: '#546E7A', url: DC('https://glp8.net/c/?si=21467&li=1913625&wi=420902',  'https://www.wixxcoatings.nl/') },
       { name: 'HomeWizard',        tagline: 'Slimme energie- & thuismeters', cta: 'Bekijk aanbod',   color: '#1E88E5', url: DC('https://partner.homewizard.com/c/?si=18407&li=1795784&wi=420902', 'https://www.homewizard.com/') },
       { name: 'OfficeCity NL',     tagline: 'Kantoormeubelen & supplies',   cta: 'Bekijk aanbod',    color: '#1565C0', url: AW(31671,   'https://www.officecity.nl/') },
+      { name: '8Wines',            tagline: 'Premium wijnen wereldwijd',    cta: 'Bekijk wijnen',    color: '#7B1FA2', url: DC('https://glp8.net/c/?si=19317&li=1828446&wi=420902',   'https://www.8wines.com/') },
+      { name: 'NSA Alarmering',    tagline: 'Persoonlijk alarm voor senioren', cta: 'Bekijk aanbod', color: '#0277BD', url: DC('https://jdt8.net/c/?si=17851&li=1773171&wi=420902',   'https://nl-alarmering.nl/') },
     ],
   },
   {
@@ -126,7 +134,8 @@ const DEALS = [
       { name: '1blu',        tagline: 'Webhosting & domeinen',        cta: 'Bekijk aanbod', color: '#1A5FA8', url: DC('https://glp8.net/c/?si=21031&li=1894705&wi=420902', 'https://www.1blu.de/') },
       { name: 'Plaud',       tagline: 'AI-gestuurde voicerecorder',   cta: 'Bekijk aanbod', color: '#2C2C54', url: DC('https://glp8.net/c/?si=21213&li=1903643&wi=420902', 'https://www.plaud.ai/') },
       { name: 'Amazon Music', tagline: 'Muziek streamen zonder limits', cta: 'Probeer gratis', color: '#00A8E1', url: DC('https://glp8.net/c/?si=20174&li=1861301&wi=420902', 'https://music.amazon.nl/') },
-      { name: 'Omnisend',    tagline: 'Email & SMS marketing tool',   cta: 'Probeer gratis', color: '#4A90D9', url: DC('https://glp8.net/c/?si=20641&li=1874887&wi=420902', 'https://www.omnisend.com/') },
+      { name: 'Omnisend',        tagline: 'Email & SMS marketing tool',   cta: 'Probeer gratis', color: '#4A90D9', url: DC('https://glp8.net/c/?si=20641&li=1874887&wi=420902', 'https://www.omnisend.com/') },
+      { name: 'Quadcopter-shop', tagline: 'Drones voor hobby & pro',      cta: 'Bekijk drones',  color: '#37474F', url: DC('https://bdt9.net/c/?si=18088&li=1783485&wi=420902',   'https://www.quadcopter-shop.nl/') },
     ],
   },
 ]
