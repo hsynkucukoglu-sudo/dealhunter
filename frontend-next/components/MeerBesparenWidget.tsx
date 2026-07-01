@@ -116,6 +116,9 @@ const DEALS = [
       { name: 'Sportiek.com',    tagline: 'Sportschoenen & kleding',       cta: 'Bekijk aanbod',    color: '#F97316', url: DC('https://ds1.nl/c/?si=8485&li=1389201&wi=420902',       'https://www.sportiek.com/') },
       { name: 'Primal Focus EU', tagline: 'Focus & energie supplementen',  cta: 'Bekijk aanbod',    color: '#0F766E', url: DC('https://glp8.net/c/?si=21577&li=1913855&wi=420902',   'https://primalfocus.eu/') },
       { name: 'Pulsetto',        tagline: 'Vagus zenuw stimulator & stress', cta: 'Bekijk aanbod',  color: '#6366F1', url: AW(81357, 'https://pulsetto.tech/') },
+      { name: 'Dr. Martens',     tagline: 'Iconische boots & schoenen',    cta: 'Bekijk collectie', color: '#FFC72C', url: DC('https://fr135.net/c/?si=15138&li=1656908&wi=420902', 'https://www.drmartens.com/nl/nl/') },
+      { name: 'Eastpak',         tagline: 'Rugzakken & tassen sale',       cta: 'Bekijk collectie', color: '#FF6B00', url: DC('https://glp8.net/c/?si=20076&li=1857675&wi=420902',  'https://www.eastpak.com/nl-nl/') },
+      { name: 'Foreo',           tagline: 'Gezichtsreiniging & beauty tech', cta: 'Bekijk aanbod',  color: '#00BCD4', url: DC('https://jf79.net/c/?si=16254&li=1697784&wi=420902',  'https://www.foreo.com/nl') },
     ],
   },
   {
@@ -137,6 +140,7 @@ const DEALS = [
       { name: 'Amazon Music', tagline: 'Muziek streamen zonder limits', cta: 'Probeer gratis', color: '#00A8E1', url: DC('https://glp8.net/c/?si=20174&li=1861301&wi=420902', 'https://music.amazon.nl/') },
       { name: 'Omnisend',        tagline: 'Email & SMS marketing tool',   cta: 'Probeer gratis', color: '#4A90D9', url: DC('https://glp8.net/c/?si=20641&li=1874887&wi=420902', 'https://www.omnisend.com/') },
       { name: 'Quadcopter-shop', tagline: 'Drones voor hobby & pro',      cta: 'Bekijk drones',  color: '#37474F', url: DC('https://bdt9.net/c/?si=18088&li=1783485&wi=420902',   'https://www.quadcopter-shop.nl/') },
+      { name: 'Difmark',         tagline: 'Refurbished smartphones met korting', cta: 'Bekijk aanbod', color: '#059669', url: DC('https://glp8.net/c/?si=20242&li=1863153&wi=420902', 'https://www.difmark.com/') },
     ],
   },
 ]
