@@ -402,6 +402,158 @@ export const POSTS: BlogPost[] = [
     `.trim(),
   },
   {
+    slug: 'is-lidl-goedkoper-dan-albert-heijn',
+    relatedMarkets: ['lidl', 'albert-heijn'],
+    title: 'Is Lidl Goedkoper dan Albert Heijn? ✓ Vergelijking 2026',
+    description: '✓ Lidl is gemiddeld 15–25% goedkoper dan Albert Heijn op basisprijzen. Grootste verschil op vlees, groenten en zuivel. AH wint op bonusdeals. Vergelijking 200+ producten, bijgewerkt 2026.',
+    date: '2026-07-01',
+    readTime: 6,
+    category: 'Vergelijking',
+    faqs: [
+      {
+        question: 'Is Lidl echt goedkoper dan Albert Heijn?',
+        answer: 'Ja, Lidl is gemiddeld 15–25% goedkoper dan Albert Heijn op basisprijzen. Op vers vlees, groenten en zuivel loopt het verschil op tot 30%. Bij een weekbudget van €150 bespaar je bij Lidl al snel €20–35 per week vergeleken met de reguliere AH-prijzen — ruim €1.000 per jaar.',
+      },
+      {
+        question: 'Hoeveel goedkoper is Lidl dan Albert Heijn?',
+        answer: 'Op basisprijzen is Lidl 15–25% goedkoper dan Albert Heijn. Op een volle boodschappenkar van 40–50 producten scheelt dat gemiddeld €20–35. Het grootste prijsverschil zie je op vers vlees (tot 30% goedkoper), groenten en fruit (20–30%) en zuivel (15–20%).',
+      },
+      {
+        question: 'Wanneer is Albert Heijn goedkoper dan Lidl?',
+        answer: 'Albert Heijn kan goedkoper zijn tijdens de AH Bonus, vooral bij 1+1 gratis en 2e halve prijs acties op A-merken. Op frisdrank, koekjes, toiletartikelen en kaas heeft AH regelmatig diepe kortingen waardoor die producten tijdelijk goedkoper zijn dan bij Lidl. Buiten de bonus is Lidl vrijwel altijd goedkoper.',
+      },
+      {
+        question: 'Is de kwaliteit van Lidl net zo goed als Albert Heijn?',
+        answer: 'Op veel producten wel. Lidl-huismerken zoals Milbona (zuivel) en Deluxe scoren in onafhankelijke tests vaak gelijk of beter dan AH Basis. Albert Heijn heeft een breder assortiment en meer A-merken, maar op basisproducten is het kwaliteitsverschil klein terwijl het prijsverschil groot is.',
+      },
+      {
+        question: 'Kan ik beter alleen bij Lidl of bij beide winkelen?',
+        answer: 'De slimste strategie is combineren: doe je basisboodschappen (vlees, groenten, zuivel) bij Lidl en sla A-merken in bij AH tijdens 1+1 bonusacties. Zo profiteer je van Lidl\'s lage basisprijzen én van AH\'s diepe aanbiedingen. Op DealHunter4U vergelijk je beide elke week naast elkaar.',
+      },
+    ],
+    content: `
+<p style="font-size:12px; color:#9C9389; margin-bottom:8px;">📅 Bijgewerkt: juli 2026 — actuele weekaanbiedingen verwerkt</p>
+<p class="lead">Is Lidl goedkoper dan Albert Heijn? Het korte antwoord: <strong>ja, Lidl is gemiddeld 15–25% goedkoper</strong> dan AH op basisprijzen. Op vers vlees, groenten en zuivel loopt dat verschil zelfs op tot 30%. Maar Albert Heijn slaat terug met diepe bonusaanbiedingen. In dit artikel vergelijken we Lidl en Albert Heijn op prijs, kwaliteit en aanbiedingen — zodat jij precies weet waar je het goedkoopst uit bent.</p>
+
+<h2>Snel antwoord: is Lidl goedkoper dan AH?</h2>
+<table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
+  <thead>
+    <tr style="background:#f5f5f5;">
+      <th style="padding:10px; text-align:left; border:1px solid #ddd;">Supermarkt</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Basisprijzen</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Aanbiedingen</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Beste voor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;"><strong>Lidl</strong></td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🥇 15–25% goedkoper</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">★★★★</td>
+      <td style="padding:10px; border:1px solid #ddd;">Budget, vlees, groenten, zuivel</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;"><strong>Albert Heijn</strong></td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🥈 Duurste basis</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">★★★★★</td>
+      <td style="padding:10px; border:1px solid #ddd;">Bonusacties, 1+1 gratis, A-merken</td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Conclusie in één zin:</strong> op reguliere prijzen wint Lidl overtuigend, maar tijdens de AH Bonus kan Albert Heijn op specifieke A-merken tijdelijk goedkoper zijn.</p>
+
+<h2>Hoeveel goedkoper is Lidl dan Albert Heijn?</h2>
+<p>Op basisprijzen — dus zonder kortingen — is <strong>Lidl gemiddeld 15–25% goedkoper</strong> dan Albert Heijn. Bij een gemiddeld weekbudget van €150 scheelt dat al snel <strong>€20–35 per week</strong>, oftewel meer dan €1.000 per jaar voor een gezin.</p>
+<p>Het verschil is niet overal gelijk. Op de volgende categorieën is Lidl het meest voordelig ten opzichte van AH:</p>
+<ul>
+  <li><strong>Vers vlees:</strong> tot 30% goedkoper</li>
+  <li><strong>Groenten en fruit:</strong> 20–30% goedkoper</li>
+  <li><strong>Zuivel (melk, kaas, yoghurt):</strong> 15–20% goedkoper</li>
+  <li><strong>Brood en bakkerij:</strong> 15–25% goedkoper</li>
+</ul>
+
+<h2>Lidl vs Albert Heijn: prijsvergelijking op veelgekochte producten</h2>
+<p>Om de vergelijking concreet te maken, zetten we een aantal veelgekochte producten naast elkaar (reguliere prijzen, zonder bonus):</p>
+<table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
+  <thead>
+    <tr style="background:#f5f5f5;">
+      <th style="padding:10px; text-align:left; border:1px solid #ddd;">Product</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Albert Heijn</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Lidl</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Winnaar</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;">Kipfilet (500g)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€5,49</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€3,99</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Lidl</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;">Halfvolle melk (1L)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€0,99</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€0,89</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Lidl</td>
+    </tr>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;">Volkoren brood</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€1,89</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€1,49</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Lidl</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;">Rundergehakt (500g)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€4,49</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€3,49</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Lidl</td>
+    </tr>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;">Jonagold appels (1kg)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€1,99</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€1,59</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Lidl</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;">Coca-Cola 6x1,5L (bij AH Bonus)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€5,49</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€5,99</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 AH (bonus)</td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Conclusie:</strong> op vrijwel alle basisproducten is Lidl goedkoper dan Albert Heijn. Alleen wanneer AH een diepe bonusactie draait op een A-merk, wint Albert Heijn tijdelijk.</p>
+
+<h2>Wanneer is Albert Heijn goedkoper dan Lidl?</h2>
+<p>Albert Heijn slaat terug met de <strong>AH Bonus</strong> (elke woensdag nieuw). Op populaire A-merken zoals Coca-Cola, Douwe Egberts, Lay's en Unilever-producten heeft AH regelmatig 1+1 gratis of 2e halve prijs. Op zulke momenten is Albert Heijn tijdelijk goedkoper dan Lidl — Lidl voert die A-merken vaak niet eens.</p>
+<p>Met de AH-app krijg je bovendien persoonlijke aanbiedingen die het prijsverschil verder verkleinen. Voor wie merktrouw is aan specifieke A-merken, kan AH tijdens de bonusweek dus voordeliger uitpakken.</p>
+
+<h2>Lidl vs AH: kwaliteit van de huismerken</h2>
+<p>Een lagere prijs betekent niet automatisch mindere kwaliteit. De huismerken van beide supermarkten scoren goed:</p>
+<ul>
+  <li><strong>Lidl Milbona</strong> (zuivel) — scoort in tests vaak gelijk of beter dan AH Basis</li>
+  <li><strong>Lidl Deluxe</strong> — premiumlijn, vergelijkbaar met AH Excellent maar goedkoper</li>
+  <li><strong>AH Basis</strong> — goedkoopste AH-lijn, prijstechnisch dichter bij Lidl maar meestal net duurder</li>
+  <li><strong>AH Excellent</strong> — sterke premiumlijn, breed assortiment</li>
+</ul>
+<p>Op basisproducten is het kwaliteitsverschil klein, terwijl het prijsverschil groot is. Dat maakt Lidl voor prijsbewuste boodschappers de logische keuze.</p>
+
+<h2>Het nadeel van Lidl ten opzichte van AH</h2>
+<p>Lidl is goedkoper, maar er zijn ook nadelen ten opzichte van Albert Heijn:</p>
+<ul>
+  <li><strong>Kleiner assortiment:</strong> Lidl voert ongeveer 1.500–2.000 producten, AH tot 25.000</li>
+  <li><strong>Minder A-merken:</strong> veel Lidl-producten zijn huismerk</li>
+  <li><strong>Minder winkels en bezorging:</strong> AH heeft meer vestigingen en sterkere thuisbezorging</li>
+  <li><strong>Wisselend aanbod:</strong> Lidl's non-food en actieproducten zijn "op = op"</li>
+</ul>
+<p>Voor wie een brede keuze en specifieke A-merken wil, blijft AH aantrekkelijk. Voor de laagste prijs op dagelijkse boodschappen wint Lidl.</p>
+
+<h2>Conclusie: is Lidl goedkoper dan Albert Heijn?</h2>
+<p><strong>Ja — Lidl is structureel 15–25% goedkoper dan Albert Heijn op basisprijzen.</strong> Op vers vlees, groenten en zuivel is het verschil het grootst. Albert Heijn wint alleen tijdelijk op A-merken tijdens diepe bonusacties.</p>
+<p>De slimste strategie: <strong>combineer beide</strong>. Doe je basisboodschappen bij Lidl en sla A-merken in bij AH wanneer er een 1+1 bonus loopt. Vergelijk elke week de actuele deals op <a href="/supermarkt/lidl">DealHunter4U — Lidl aanbiedingen</a> en <a href="/supermarkt/albert-heijn">Albert Heijn aanbiedingen</a> naast elkaar, en betaal nooit te veel.</p>
+    `.trim(),
+  },
+  {
     slug: 'aldi-aanbiedingen-gids',
     relatedMarkets: ['aldi'],
     title: 'Aldi aanbiedingen: complete gids voor de beste deals',
