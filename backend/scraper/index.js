@@ -930,16 +930,19 @@ function vomarCleanName(raw) {
 function parseVomarPageText(text) {
   const results = []
 
-  // Pattern 1: ORIG_PRICE [OP=OP] DISC_CENTS . product_name
-  // Example: "6.99 499 . G'woon Pindakaas" → orig=6.99 disc=4.99
-  const RE1 = /(\d{1,2}[.,]\d{2})\s+(?:OP=OP\s+)?(\d{3,4})\s*\.\s*((?:(?!\d{1,2}[.,]\d{2}\s+(?:OP=OP\s+)?\d{3}).)+)/g
+  // Pattern 1: ORIG_PRICE DISC_PRICE [OP=OP] Product name
+  // Example: "7.99 5.99 OP=OP Varkenshaas Per 500 gram" → orig=7.99 disc=5.99
+  // Publitas re-orders folder text per page layout, so this format drifts
+  // week to week — re-verify against a fresh page sample if matches drop to ~0.
+  const RE1 = /(\d{1,2}[.,]\d{2})\s+(\d{1,2}[.,]\d{2})\s+(?:OP=OP\s+)?([A-ZÀ-Ý][a-zà-ÿA-ZÀ-Ý',.\-\s]{3,70}?)(?=\s+(?:\d|Per\s|Alle\s|Pak\s|Stuk\s|Bak\s|Schaal\s|Bos\s|Rol\s|Zonder\s|Alléén\s|Max\.\s|$))/g
   let m
   while ((m = RE1.exec(text)) !== null) {
     const orig = parseFloat(m[1].replace(',', '.'))
-    const disc = parseInt(m[2], 10) / 100
+    const disc = parseFloat(m[2].replace(',', '.'))
     const name = vomarCleanName(m[3])
-    if (!name || name.length < 5 || !/[a-z]/.test(name)) continue
-    if (disc >= orig || orig > 50 || disc > 50 || orig < 0.2 || disc < 0.1) continue
+    if (!name || name.length < 4 || !/[a-zA-ZÀ-ÿ]{3,}/.test(name)) continue
+    if (/^(GRATIS|Alle soorten|Per\s|Zonder|Max\.|All[ée]{2}n)/i.test(name)) continue
+    if (disc >= orig || orig > 60 || disc > 60 || orig < 0.3 || disc < 0.15) continue
     results.push({ name, orig, disc })
   }
 
