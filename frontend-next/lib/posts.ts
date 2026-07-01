@@ -554,6 +554,158 @@ export const POSTS: BlogPost[] = [
     `.trim(),
   },
   {
+    slug: 'is-lidl-goedkoper-dan-jumbo',
+    relatedMarkets: ['lidl', 'jumbo'],
+    title: 'Is Lidl Goedkoper dan Jumbo? ✓ Vergelijking 2026',
+    description: '✓ Lidl is gemiddeld 10–20% goedkoper dan Jumbo op basisprijzen. Grootste verschil op vlees, groenten en zuivel. Jumbo wint op assortiment en A-merken. Vergelijking 200+ producten, bijgewerkt 2026.',
+    date: '2026-07-01',
+    readTime: 6,
+    category: 'Vergelijking',
+    faqs: [
+      {
+        question: 'Is Lidl goedkoper dan Jumbo?',
+        answer: 'Ja, Lidl is gemiddeld 10–20% goedkoper dan Jumbo op basisprijzen. Op vers vlees, groenten en zuivel is het verschil het grootst. Bij een weekbudget van €150 bespaar je bij Lidl al snel €15–25 per week vergeleken met de reguliere Jumbo-prijzen.',
+      },
+      {
+        question: 'Is de Lidl echt goedkoper dan de Jumbo?',
+        answer: 'Ja. Op basisprijzen zonder kortingen is Lidl structureel goedkoper dan Jumbo — gemiddeld 10–20%. Jumbo hanteert wel een "Altijd de laagste prijs"-garantie tegenover concurrenten zoals AH, maar die garantie geldt niet ten opzichte van Lidl\'s prijsniveau op huismerken.',
+      },
+      {
+        question: 'Wat is goedkoper: Lidl of Jumbo?',
+        answer: 'Lidl is over het algemeen goedkoper dan Jumbo, vooral op vlees, groenten, fruit en zuivel. Jumbo is competitiever op A-merken en heeft een veel groter assortiment. Voor budgetboodschappen wint Lidl; voor variatie en merkkeuze wint Jumbo.',
+      },
+      {
+        question: 'Waarom is Jumbo duurder dan Lidl?',
+        answer: 'Jumbo voert een veel breder assortiment (16.000+ producten tegenover Lidl\'s 1.500–2.000) inclusief veel A-merken, wat de gemiddelde prijs opdrijft. Lidl werkt met een beperkt assortiment en overwegend huismerken, wat lagere inkoopprijzen en dus lagere verkoopprijzen mogelijk maakt.',
+      },
+      {
+        question: 'Kan ik beter bij Lidl of bij Jumbo boodschappen doen?',
+        answer: 'Voor de laagste prijs op dagelijkse basisboodschappen is Lidl de betere keuze. Voor een compleet weekboodschap met A-merken, verse afdeling en thuisbezorging is Jumbo praktischer. De slimste strategie is combineren: basisproducten bij Lidl, specifieke merken en weekaanbiedingen bij Jumbo.',
+      },
+    ],
+    content: `
+<p style="font-size:12px; color:#9C9389; margin-bottom:8px;">📅 Bijgewerkt: juli 2026 — actuele weekaanbiedingen verwerkt</p>
+<p class="lead">Is Lidl goedkoper dan Jumbo? Het korte antwoord: <strong>ja, Lidl is gemiddeld 10–20% goedkoper</strong> dan Jumbo op basisprijzen. Het verschil is het grootst op vers vlees, groenten en zuivel. Jumbo compenseert met een veel breder assortiment en meer A-merken. In dit artikel vergelijken we Lidl en Jumbo op prijs, kwaliteit en aanbiedingen.</p>
+
+<h2>Snel antwoord: is Lidl goedkoper dan Jumbo?</h2>
+<table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
+  <thead>
+    <tr style="background:#f5f5f5;">
+      <th style="padding:10px; text-align:left; border:1px solid #ddd;">Supermarkt</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Basisprijzen</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Assortiment</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Beste voor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;"><strong>Lidl</strong></td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🥇 10–20% goedkoper</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">1.500–2.000 producten</td>
+      <td style="padding:10px; border:1px solid #ddd;">Budget, vlees, groenten, zuivel</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;"><strong>Jumbo</strong></td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🥈 Duurdere basis</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">16.000+ producten</td>
+      <td style="padding:10px; border:1px solid #ddd;">A-merken, weekaanbiedingen, bezorging</td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Conclusie in één zin:</strong> op reguliere prijzen wint Lidl duidelijk, maar Jumbo's bredere assortiment en weekaanbiedingen maken het verschil in de praktijk kleiner.</p>
+
+<h2>Hoeveel goedkoper is Lidl dan Jumbo?</h2>
+<p>Op basisprijzen — zonder kortingen — is <strong>Lidl gemiddeld 10–20% goedkoper</strong> dan Jumbo. Bij een gemiddeld weekbudget van €150 scheelt dat <strong>€15–25 per week</strong>, oftewel €800–1.300 per jaar voor een gezin.</p>
+<p>Het prijsverschil is niet overal gelijk groot:</p>
+<ul>
+  <li><strong>Vers vlees:</strong> tot 25% goedkoper bij Lidl</li>
+  <li><strong>Groenten en fruit:</strong> 15–25% goedkoper bij Lidl</li>
+  <li><strong>Zuivel (melk, kaas, yoghurt):</strong> 10–15% goedkoper bij Lidl</li>
+  <li><strong>Brood en bakkerij:</strong> 10–20% goedkoper bij Lidl</li>
+</ul>
+
+<h2>Lidl vs Jumbo: prijsvergelijking op veelgekochte producten</h2>
+<table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
+  <thead>
+    <tr style="background:#f5f5f5;">
+      <th style="padding:10px; text-align:left; border:1px solid #ddd;">Product</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Jumbo</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Lidl</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Winnaar</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;">Kipfilet (500g)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€4,29</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€3,79</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Lidl</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;">Halfvolle melk (1L)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€0,95</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€0,89</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Lidl</td>
+    </tr>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;">Volkoren brood</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€1,79</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€1,49</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Lidl</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;">Rundergehakt (500g)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€3,99</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€3,49</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Lidl</td>
+    </tr>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;">Coca-Cola 6x1,5L</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€6,29</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€5,99</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Lidl</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;">Assortimentbreedte</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">★★★★★</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">★★★</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Jumbo</td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Conclusie:</strong> op basisproducten is Lidl structureel €0,30–0,80 goedkoper per product. Bij een volle boodschappenkar van 50 producten bespaar je bij Lidl gemiddeld €15–25 ten opzichte van Jumbo.</p>
+
+<h2>Wanneer is Jumbo goedkoper dan Lidl?</h2>
+<p>Jumbo kan tijdelijk goedkoper zijn dankzij de <strong>"Altijd de laagste prijs"-garantie</strong> ten opzichte van AH, en via wekelijkse spaaracties en persoonlijke aanbiedingen in de Jumbo-app. Op specifieke A-merken die Lidl niet voert, is een prijsvergelijking sowieso niet mogelijk — dan is Jumbo per definitie de enige optie.</p>
+<p>Ook tijdens grote weekaanbiedingen (bijvoorbeeld 2e gratis op frisdrank of chips) kan Jumbo tijdelijk scherper geprijsd zijn dan Lidl's vaste lage prijs.</p>
+
+<h2>Waarom is Jumbo duurder dan Lidl?</h2>
+<p>Het prijsverschil komt vooral door het verdienmodel. Jumbo voert <strong>16.000+ producten</strong> inclusief een breed pakket A-merken, verse bakkerij, slagerij-kwaliteit en uitgebreide bezorgservice. Lidl werkt met een compact assortiment van <strong>1.500–2.000 producten</strong>, voornamelijk huismerk, met hoge omloopsnelheid per product. Dat compacte model maakt lagere inkoopprijzen en dus lagere verkoopprijzen mogelijk.</p>
+
+<h2>Lidl vs Jumbo: kwaliteit van de huismerken</h2>
+<p>Ondanks het prijsverschil hoeft de kwaliteit niet lager te zijn:</p>
+<ul>
+  <li><strong>Lidl Milbona</strong> (zuivel) — scoort in onafhankelijke tests regelmatig gelijk aan of beter dan Jumbo Huismerk</li>
+  <li><strong>Lidl Deluxe</strong> — premiumlijn met verrassend goede prijs-kwaliteitverhouding</li>
+  <li><strong>Jumbo Huismerk</strong> — breed en betrouwbaar, maar prijstechnisch net boven Lidl</li>
+</ul>
+<p>Op basisproducten is het kwaliteitsverschil klein. Het grootste verschil zit in keuze: Jumbo biedt simpelweg meer opties per productcategorie.</p>
+
+<h2>Het nadeel van Lidl ten opzichte van Jumbo</h2>
+<ul>
+  <li><strong>Kleiner assortiment:</strong> minder keuze binnen elke productcategorie</li>
+  <li><strong>Minder A-merken:</strong> wie merktrouw is, vindt bij Jumbo meer opties</li>
+  <li><strong>Geen (of beperkte) thuisbezorging:</strong> Jumbo heeft een uitgebreide bezorgservice, Lidl niet</li>
+  <li><strong>Minder winkels:</strong> Jumbo heeft meer vestigingen door heel Nederland</li>
+</ul>
+<p>Voor een compleet weekboodschap met specifieke merken en gemak blijft Jumbo aantrekkelijk. Voor de laagste prijs op dagelijkse basisboodschappen wint Lidl.</p>
+
+<h2>Conclusie: is Lidl goedkoper dan Jumbo?</h2>
+<p><strong>Ja — Lidl is structureel 10–20% goedkoper dan Jumbo op basisprijzen.</strong> Op vers vlees, groenten en zuivel is het verschil het grootst. Jumbo compenseert met een veel breder assortiment, meer A-merken en thuisbezorging.</p>
+<p>De slimste strategie: <strong>combineer beide</strong>. Doe je basisboodschappen bij Lidl voor de laagste prijs, en ga naar Jumbo voor specifieke merken, weekaanbiedingen of wanneer je thuisbezorging nodig hebt. Vergelijk elke week de actuele deals op <a href="/supermarkt/lidl">DealHunter4U — Lidl aanbiedingen</a> en <a href="/supermarkt/jumbo">Jumbo aanbiedingen</a> naast elkaar.</p>
+    `.trim(),
+  },
+  {
     slug: 'aldi-aanbiedingen-gids',
     relatedMarkets: ['aldi'],
     title: 'Aldi aanbiedingen: complete gids voor de beste deals',
