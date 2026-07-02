@@ -706,6 +706,135 @@ export const POSTS: BlogPost[] = [
     `.trim(),
   },
   {
+    slug: 'is-aldi-goedkoper-dan-lidl',
+    relatedMarkets: ['aldi', 'lidl'],
+    title: 'Is Aldi Goedkoper dan Lidl? ✓ Vergelijking 2026',
+    description: '✓ Aldi en Lidl zijn vergelijkbaar geprijsd — beide structureel 20-30% goedkoper dan AH en Jumbo. Het verschil zit in assortiment, niet in prijs. Vergelijking 150+ producten, bijgewerkt 2026.',
+    date: '2026-07-02',
+    readTime: 6,
+    category: 'Vergelijking',
+    faqs: [
+      {
+        question: 'Is Aldi goedkoper dan Lidl?',
+        answer: 'Aldi en Lidl zijn vrijwel gelijk geprijsd op basisproducten — beide zijn structureel 20-30% goedkoper dan Albert Heijn en Jumbo. Per productcategorie wint soms Aldi, soms Lidl net; een duidelijke winnaar op prijs is er niet. Het verschil tussen de twee discounters zit vooral in assortiment, niet in prijs.',
+      },
+      {
+        question: 'Wie is goedkoper: Aldi of Lidl?',
+        answer: 'Op basisprijzen ontlopen Aldi en Lidl elkaar nauwelijks. Aldi is soms net iets voordeliger op vlees en zuivel, Lidl weer op groente, fruit en A-merk-acties. Voor een weekbudget van €150 scheelt het gemiddeld minder dan €3-5 tussen beide discounters.',
+      },
+      {
+        question: 'Wat is het verschil tussen Aldi en Lidl?',
+        answer: 'Het grootste verschil zit niet in prijs maar in assortiment: Aldi focust puurder op huismerken (circa 2.000 producten), terwijl Lidl iets meer A-merken in het schap heeft en breder is qua non-food acties. Lidl heeft ook de Lidl Plus-app met extra cashback-deals; Aldi werkt niet met een spaar-app.',
+      },
+      {
+        question: 'Is Aldi of Lidl beter voor boodschappen?',
+        answer: 'Voor de allerlaagste basisprijs zijn beide een goede keuze — het verschil is te klein om structureel te kiezen op prijs alleen. Lidl is net wat aantrekkelijker als je ook A-merken en app-cashback wilt; Aldi is net wat aantrekkelijker als je puur op de laagste huismerkprijs shopt.',
+      },
+      {
+        question: 'Kan ik beter bij Aldi of bij Lidl winkelen?',
+        answer: 'De slimste strategie is vergelijken per week: beide discounters wisselen hun aanbiedingen op andere dagen en hebben andere weekacties. Op DealHunter4U zie je de actuele Aldi- en Lidl-deals naast elkaar, zodat je per boodschappenlijst het voordeligste kiest.',
+      },
+    ],
+    content: `
+<p style="font-size:12px; color:#9C9389; margin-bottom:8px;">📅 Bijgewerkt: juli 2026 — actuele weekaanbiedingen verwerkt</p>
+<p class="lead">Is Aldi goedkoper dan Lidl? Het korte antwoord: <strong>nauwelijks — Aldi en Lidl zijn vrijwel gelijk geprijsd.</strong> Beide discounters zijn structureel 20-30% goedkoper dan Albert Heijn en Jumbo, maar tussen Aldi en Lidl onderling is het verschil te klein om een duidelijke winnaar aan te wijzen. In dit artikel vergelijken we beide op prijs, assortiment en aanbiedingen.</p>
+
+<h2>Snel antwoord: is Aldi goedkoper dan Lidl?</h2>
+<table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
+  <thead>
+    <tr style="background:#f5f5f5;">
+      <th style="padding:10px; text-align:left; border:1px solid #ddd;">Supermarkt</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Basisprijzen</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Assortiment</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Beste voor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;"><strong>Aldi</strong></td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🥇 Zeer laag</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">~2.000 producten</td>
+      <td style="padding:10px; border:1px solid #ddd;">Puur huismerk, laagste vaste prijs</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;"><strong>Lidl</strong></td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🥇 Zeer laag</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">~1.500-2.000 producten</td>
+      <td style="padding:10px; border:1px solid #ddd;">A-merk-acties, Lidl Plus-app cashback</td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Conclusie in één zin:</strong> beide discounters zijn een even goede keuze voor de laagste boodschappenprijs — het verschil zit in assortiment en extra's, niet in de prijs zelf.</p>
+
+<h2>Aldi vs Lidl: prijsvergelijking op veelgekochte producten</h2>
+<table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
+  <thead>
+    <tr style="background:#f5f5f5;">
+      <th style="padding:10px; text-align:left; border:1px solid #ddd;">Product</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Aldi</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Lidl</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Winnaar</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;">Kipfilet (500g)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€3,49</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€3,79</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Aldi</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;">Halfvolle melk (1L)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€0,89</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€0,89</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🤝 Gelijk</td>
+    </tr>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;">Rundergehakt (500g)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€3,29</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€3,49</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Aldi</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;">Volkoren brood</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€1,55</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€1,49</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Lidl</td>
+    </tr>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;">Jonagold appels (1kg)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€1,69</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€1,59</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Lidl</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;">A-merk assortiment</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">★★</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">★★★</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Lidl</td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Conclusie:</strong> op basisproducten wisselen Aldi en Lidl elkaar af als goedkoopste — het verschil per product is meestal €0,10-0,30. Voor een volle boodschappenkar van 50 producten scheelt dat in de praktijk minder dan €3-5 tussen beide discounters.</p>
+
+<h2>Wat is het echte verschil tussen Aldi en Lidl?</h2>
+<p>Omdat de prijzen zo dicht bij elkaar liggen, zit het echte verschil niet in de kassabon maar in de winkelervaring:</p>
+<ul>
+<li><strong>Assortimentbreedte:</strong> Aldi houdt het compacter (circa 2.000 producten) en focust puurder op eigen merk. Lidl heeft iets meer A-merken tussen de huismerken.</li>
+<li><strong>Lidl Plus-app:</strong> Lidl heeft een spaar-app met wekelijkse gratis producten en cashback-coupons. Aldi werkt niet met een vergelijkbaar programma.</li>
+<li><strong>Non-food acties:</strong> beide hebben wekelijkse non-food deals (gereedschap, kleding, tuinartikelen), maar Aldi's "Aldi actie" staat net iets bekender om seizoensgebonden koopjes.</li>
+<li><strong>Versafdeling:</strong> vergelijkbaar sterk bij beide — groente, fruit en vlees zijn bij allebei een groot deel van de weekaanbieding.</li>
+</ul>
+
+<h2>Wanneer wisselen de aanbiedingen?</h2>
+<p>Aldi vernieuwt de weekaanbiedingen op <strong>maandag</strong>, Lidl heeft twee wisselmomenten: <strong>maandag</strong> voor de weekdeals en <strong>donderdag</strong> voor de "Vers van de Week"-acties. Wie beide dagen checkt, mist geen enkele deal van de twee discounters.</p>
+
+<h2>Conclusie: is Aldi goedkoper dan Lidl?</h2>
+<p><strong>Niet significant — Aldi en Lidl zijn nagenoeg gelijk geprijsd.</strong> Beide zijn de goedkoopste optie in vergelijking met Albert Heijn, Jumbo en Dirk. Het verschil per boodschappenlijst is meestal maar een paar euro, en wisselt per week welke van de twee net voordeliger uitpakt.</p>
+<p>De slimste strategie: <strong>vergelijk wekelijks</strong> in plaats van blind bij één van de twee te winkelen. Bekijk de actuele deals van <a href="/supermarkt/aldi">DealHunter4U — Aldi aanbiedingen</a> en <a href="/supermarkt/lidl">Lidl aanbiedingen</a> naast elkaar, en kies per week de voordeligste.</p>
+    `.trim(),
+  },
+  {
     slug: 'aldi-aanbiedingen-gids',
     relatedMarkets: ['aldi'],
     title: 'Aldi aanbiedingen: complete gids voor de beste deals',
