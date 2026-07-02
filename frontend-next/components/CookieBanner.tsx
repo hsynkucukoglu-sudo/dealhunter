@@ -31,10 +31,10 @@ export function CookieBanner() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
-          className="fixed bottom-20 md:bottom-4 left-4 right-4 z-[200]"
+          className="fixed bottom-20 sm:bottom-4 left-4 right-4 sm:right-auto sm:max-w-sm z-[200]"
         >
           <div
-            className="max-w-3xl mx-auto rounded-2xl p-4 md:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4"
+            className="mx-auto sm:mx-0 rounded-2xl p-4 flex flex-col items-start gap-3"
             style={{
               background: '#1A1A1A',
               boxShadow: '0 8px 32px rgba(0,0,0,0.25)',
@@ -49,7 +49,7 @@ export function CookieBanner() {
                 </a>
               </p>
             </div>
-            <div className="flex gap-2 flex-none">
+            <div className="flex gap-2 flex-none w-full sm:w-auto">
               <button
                 onClick={decline}
                 className="px-4 py-2 rounded-full text-sm font-medium cursor-pointer transition-all hover:bg-white/20"
