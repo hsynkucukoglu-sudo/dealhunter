@@ -835,6 +835,155 @@ export const POSTS: BlogPost[] = [
     `.trim(),
   },
   {
+    slug: 'is-aldi-goedkoper-dan-jumbo',
+    relatedMarkets: ['aldi', 'jumbo'],
+    title: 'Is Aldi Goedkoper dan Jumbo? ✓ Vergelijking 2026',
+    description: '✓ Aldi is gemiddeld 20–30% goedkoper dan Jumbo op basisprijzen. Grootste verschil op vlees, zuivel en huismerken. Jumbo wint op assortiment en bezorging. Vergelijking 150+ producten, bijgewerkt 2026.',
+    date: '2026-07-02',
+    readTime: 6,
+    category: 'Vergelijking',
+    faqs: [
+      {
+        question: 'Is Aldi goedkoper dan Jumbo?',
+        answer: 'Ja, Aldi is gemiddeld 20–30% goedkoper dan Jumbo op basisprijzen. Aldi werkt met een compact assortiment van vrijwel uitsluitend huismerken, wat structureel lagere inkoopprijzen mogelijk maakt dan bij Jumbo, dat een veel breder pakket A-merken voert.',
+      },
+      {
+        question: 'Hoeveel goedkoper is Aldi dan Jumbo?',
+        answer: 'Op basisprijzen is Aldi 20–30% goedkoper dan Jumbo. Bij een weekbudget van €150 scheelt dat al snel €25–40 per week, oftewel meer dan €1.500 per jaar voor een gezin. Het grootste verschil zie je op vlees, zuivel en huismerkproducten.',
+      },
+      {
+        question: 'Wanneer is Jumbo goedkoper dan Aldi?',
+        answer: 'Jumbo kan tijdelijk goedkoper zijn tijdens diepe weekaanbiedingen op A-merken (1+1 gratis, 2e halve prijs) die Aldi vaak niet eens voert. Ook via de "7 zekerheden"-garantie kan Jumbo prijsverschillen met concurrenten compenseren. Buiten die acties is Aldi vrijwel altijd goedkoper.',
+      },
+      {
+        question: 'Waarom is Jumbo duurder dan Aldi?',
+        answer: 'Jumbo voert 16.000+ producten inclusief veel A-merken, een uitgebreide bezorgservice en verse bakkerij/slagerij-afdelingen, wat de gemiddelde prijs opdrijft. Aldi werkt met circa 2.000 producten en vrijwel uitsluitend huismerken, met hoge omloopsnelheid en lage marges per product.',
+      },
+      {
+        question: 'Kan ik beter bij Aldi of bij Jumbo boodschappen doen?',
+        answer: 'Voor de laagste prijs op dagelijkse basisboodschappen is Aldi de duidelijke winnaar. Voor een compleet weekboodschap met specifieke A-merken en thuisbezorging blijft Jumbo praktischer. De slimste strategie: basisproducten bij Aldi, merkgebonden artikelen en weekaanbiedingen bij Jumbo.',
+      },
+    ],
+    content: `
+<p style="font-size:12px; color:#9C9389; margin-bottom:8px;">📅 Bijgewerkt: juli 2026 — actuele weekaanbiedingen verwerkt</p>
+<p class="lead">Is Aldi goedkoper dan Jumbo? Het korte antwoord: <strong>ja, Aldi is gemiddeld 20–30% goedkoper</strong> dan Jumbo op basisprijzen. Het verschil is het grootst op vlees, zuivel en huismerkproducten. Jumbo compenseert met een veel breder assortiment, meer A-merken en thuisbezorging. In dit artikel vergelijken we Aldi en Jumbo op prijs, kwaliteit en aanbiedingen.</p>
+
+<h2>Snel antwoord: is Aldi goedkoper dan Jumbo?</h2>
+<table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
+  <thead>
+    <tr style="background:#f5f5f5;">
+      <th style="padding:10px; text-align:left; border:1px solid #ddd;">Supermarkt</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Basisprijzen</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Assortiment</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Beste voor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;"><strong>Aldi</strong></td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🥇 20–30% goedkoper</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">~2.000 producten</td>
+      <td style="padding:10px; border:1px solid #ddd;">Budget, vlees, zuivel, huismerken</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;"><strong>Jumbo</strong></td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🥈 Duurdere basis</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">16.000+ producten</td>
+      <td style="padding:10px; border:1px solid #ddd;">A-merken, weekaanbiedingen, bezorging</td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Conclusie in één zin:</strong> op reguliere prijzen wint Aldi overtuigend, maar Jumbo's diepe weekaanbiedingen op A-merken kunnen dat verschil tijdelijk verkleinen.</p>
+
+<h2>Hoeveel goedkoper is Aldi dan Jumbo?</h2>
+<p>Op basisprijzen — zonder kortingen — is <strong>Aldi gemiddeld 20–30% goedkoper</strong> dan Jumbo. Bij een gemiddeld weekbudget van €150 scheelt dat al snel <strong>€25–40 per week</strong>, oftewel meer dan €1.500 per jaar voor een gezin.</p>
+<ul>
+  <li><strong>Vlees:</strong> tot 30% goedkoper bij Aldi</li>
+  <li><strong>Zuivel (melk, kaas, yoghurt):</strong> 15–25% goedkoper bij Aldi</li>
+  <li><strong>Huismerkproducten:</strong> 20–30% goedkoper — Aldi's kernsegment</li>
+  <li><strong>Groenten en fruit:</strong> vergelijkbaar tot licht goedkoper bij Aldi</li>
+</ul>
+
+<h2>Aldi vs Jumbo: prijsvergelijking op veelgekochte producten</h2>
+<table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
+  <thead>
+    <tr style="background:#f5f5f5;">
+      <th style="padding:10px; text-align:left; border:1px solid #ddd;">Product</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Jumbo</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Aldi</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Winnaar</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;">Kipfilet (500g)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€4,29</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€3,49</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Aldi</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;">Halfvolle melk (1L)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€0,95</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€0,89</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Aldi</td>
+    </tr>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;">Rundergehakt (500g)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€3,99</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€3,29</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Aldi</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;">Volkoren brood</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€1,79</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€1,55</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Aldi</td>
+    </tr>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;">Coca-Cola 6x1,5L (bij Jumbo-actie)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€5,99</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€6,29</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Jumbo (actie)</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;">Assortimentbreedte</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">★★★★★</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">★★</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Jumbo</td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Conclusie:</strong> op vrijwel alle basisproducten is Aldi goedkoper dan Jumbo. Bij een volle boodschappenkar van 50 producten bespaar je bij Aldi gemiddeld €25–40 ten opzichte van Jumbo.</p>
+
+<h2>Wanneer is Jumbo goedkoper dan Aldi?</h2>
+<p>Jumbo slaat terug met wekelijkse <strong>1+1 gratis</strong> en <strong>2e halve prijs</strong>-acties op A-merken die Aldi vaak niet eens voert — denk aan Coca-Cola, Douwe Egberts en bekende wasmiddelmerken. Op zulke momenten kan Jumbo tijdelijk goedkoper zijn dan Aldi's vaste huismerkprijs. De "7 zekerheden"-garantie van Jumbo compenseert bovendien prijsverschillen met concurrenten op specifieke A-merken.</p>
+
+<h2>Waarom is Jumbo duurder dan Aldi?</h2>
+<p>Het prijsverschil komt door het verdienmodel. Jumbo voert <strong>16.000+ producten</strong>, waaronder een breed pakket A-merken, verse bakkerij, slagerij-kwaliteit en uitgebreide thuisbezorging. Aldi werkt met een compact assortiment van <strong>circa 2.000 producten</strong>, vrijwel uitsluitend huismerk, met hoge omloopsnelheid per product. Dat maakt lagere inkoopprijzen en dus lagere verkoopprijzen mogelijk.</p>
+
+<h2>Aldi vs Jumbo: kwaliteit van de huismerken</h2>
+<p>Een lagere prijs betekent bij Aldi niet automatisch mindere kwaliteit:</p>
+<ul>
+  <li><strong>Aldi eigen merken</strong> (Mamia, Tandil, Bellarom) — scoren in onafhankelijke tests regelmatig gelijk aan of beter dan Jumbo Huismerk</li>
+  <li><strong>Jumbo Huismerk</strong> — breed en betrouwbaar, maar prijstechnisch boven Aldi's niveau</li>
+  <li><strong>A-merken bij Jumbo</strong> — voor wie merktrouw is aan specifieke A-merken, biedt Jumbo simpelweg meer keuze dan Aldi</li>
+</ul>
+
+<h2>Het nadeel van Aldi ten opzichte van Jumbo</h2>
+<ul>
+  <li><strong>Kleiner assortiment:</strong> Aldi voert circa 2.000 producten, Jumbo tot 16.000+</li>
+  <li><strong>Minder A-merken:</strong> wie merktrouw is, vindt bij Jumbo veel meer opties</li>
+  <li><strong>Geen thuisbezorging:</strong> Jumbo bezorgt aan huis via Jumbo.com, Aldi niet</li>
+  <li><strong>Geen spaarprogramma:</strong> Jumbo heeft een klantenkaart met spaarpunten, Aldi niet</li>
+</ul>
+<p>Voor een compleet weekboodschap met specifieke merken en bezorgservice blijft Jumbo aantrekkelijk. Voor de laagste prijs op dagelijkse basisboodschappen wint Aldi overtuigend.</p>
+
+<h2>Conclusie: is Aldi goedkoper dan Jumbo?</h2>
+<p><strong>Ja — Aldi is structureel 20–30% goedkoper dan Jumbo op basisprijzen.</strong> Op vlees, zuivel en huismerkproducten is het verschil het grootst. Jumbo wint alleen tijdelijk tijdens diepe weekacties op A-merken.</p>
+<p>De slimste strategie: <strong>combineer beide</strong>. Doe je basisboodschappen bij Aldi voor de laagste prijs, en ga naar Jumbo voor specifieke merken of wanneer er een sterke 1+1 bonus loopt. Vergelijk elke week de actuele deals op <a href="/supermarkt/aldi">DealHunter4U — Aldi aanbiedingen</a> en <a href="/supermarkt/jumbo">Jumbo aanbiedingen</a> naast elkaar.</p>
+    `.trim(),
+  },
+  {
     slug: 'aldi-aanbiedingen-gids',
     relatedMarkets: ['aldi'],
     title: 'Aldi aanbiedingen: complete gids voor de beste deals',
