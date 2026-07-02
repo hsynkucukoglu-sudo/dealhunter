@@ -984,7 +984,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: i * 0.05 }}
                 >
-                  <ProductCard product={product} />
+                  <ProductCard product={product} priority={i < 5} />
                 </motion.div>
               ))}
             </div>

@@ -11,7 +11,7 @@ import { detectCampaignType } from '@/lib/campaignType'
 import { usePriceHistory } from '@/context/PriceHistoryContext'
 import { trackDealClick, trackAddFavorite, trackAddWatchlist } from '@/lib/analytics'
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({ product, priority = false }: { product: Product; priority?: boolean }) {
   const { t } = useLanguage()
 
   const affiliateLink = getAffiliateLink(product.market)
@@ -89,11 +89,17 @@ export function ProductCard({ product }: { product: Product }) {
           <img
             src={imgSrc}
             alt={product.name}
-            loading="lazy"
+            loading={priority ? 'eager' : 'lazy'}
+            fetchPriority={priority ? 'high' : 'auto'}
             width={300}
             height={300}
             className="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-500"
             onError={() => setImgError(true)}
+            onLoad={(e) => {
+              // Some browsers don't fire onError for a 0-byte 404 body from
+              // the image proxy — naturalWidth stays 0 with no error event.
+              if (e.currentTarget.naturalWidth === 0) setImgError(true)
+            }}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
