@@ -66,6 +66,9 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   // Pending — onay gelince aktif olur (mid=31671)
   'OfficeCity NL':  { destinationUrl: 'https://www.officecity.nl/',       network: 'awin', programId: '31671',  rel: REL },
   '123watches':     { destinationUrl: 'https://www.123watches.nl/',       network: 'awin', programId: '120982', rel: REL },
+  // 2026-07-02 onaylı
+  'buttinette NL':  { destinationUrl: 'https://creatief-nl.buttinette.com/', network: 'awin', programId: '122862', rel: REL },
+  Pulsetto:         { destinationUrl: 'https://pulsetto.tech/',              network: 'awin', programId: '81357',  rel: REL },
 
   // ── Daisycon — CSV'den doğrulanmış trackingBase (si=program_id, li=link_id) ──
   'Plein.nl':           { destinationUrl: 'https://www.plein.nl/',                 network: 'daisycon', trackingBase: 'https://fr135.net/c/?si=3366&li=1161224&wi=420902',  rel: REL },
@@ -89,6 +92,15 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   'Wixx Coatings':      { destinationUrl: 'https://www.wixxcoatings.nl/',    network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=21467&li=1913625&wi=420902', rel: REL },
   'Weightworld.nl':     { destinationUrl: 'https://www.weightworld.nl/',     network: 'daisycon', trackingBase: 'https://fr135.net/c/?si=15441&li=1670530&wi=420902', rel: REL },
   'Oakley':             { destinationUrl: 'https://www.oakley.com/nl-nl/',   network: 'daisycon', trackingBase: 'https://bdt9.net/c/?si=18433&li=1819889&wi=420902', rel: REL },
+
+  // ── Daisycon — 2026-07-02 onaylı, trackingBase Daisycon'dan alınacak ───────
+  // Daisycon > Campagnes > [program] > Link ophalen → si/li/domain al, trackingBase ekle
+  // destinationUrl'ler web'den doğrulandı (Minisforum FR hariç — birden fazla FR site var, doğrulanmalı)
+  'Housefinan (DE)':     { destinationUrl: 'https://www.housefinan.de/',       network: 'daisycon', rel: REL }, // si=21988
+  'Kredanta (DACH)':     { destinationUrl: 'https://kredanta.de/',             network: 'daisycon', rel: REL }, // si=21987
+  Hermie:                { destinationUrl: 'https://hermie.com/',              network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=20097&li=1858135&wi=420902', rel: REL },
+  'Minisforum (FR)':     { destinationUrl: 'https://minisforum-store.com/fr/', network: 'daisycon', rel: REL }, // si=20763 — domain doğrulanmadı
+  'VVVCadeaukaarten.nl': { destinationUrl: 'https://www.vvvcadeaukaarten.nl/', network: 'daisycon', trackingBase: 'https://fr135.net/c/?si=15261&li=1660848&wi=420902', rel: REL },
 }
 
 /** Hedef URL'i yapılandırılmış ağın tracking deeplink'ine sarar. */
