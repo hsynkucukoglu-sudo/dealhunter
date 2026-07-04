@@ -118,6 +118,7 @@ const DEALS = [
       { name: 'Oakley',            tagline: 'Sport brillen & kleding',    cta: 'Bekijk collectie', color: '#1A1A1A', url: DC('https://bdt9.net/c/?si=18433&li=1819889&wi=420902',   'https://www.oakley.com/nl-nl/') },
       { name: 'Wolfswinkel NL',    tagline: 'Outdoor gear & sportmode',   cta: 'Bekijk aanbod',    color: '#388E3C', url: AW(119653, 'https://www.wolfswinkel.nl/') },
       { name: '123watches',        tagline: 'Horloges & accessoires',     cta: 'Bekijk collectie', color: '#C62828', url: AW(120982, 'https://www.123watches.nl/') },
+      { name: 'Erverte Paris',     tagline: 'Duurzame heren mode uit Parijs', cta: 'Bekijk collectie', color: '#2F4F3E', url: AW(87255, 'https://erverte.com/') },
       { name: 'Bjorn Borg',  tagline: 'Sportkleding & ondergoed',    cta: 'Bekijk collectie', color: '#003594', url: DC('https://bdt9.net/c/?si=18683&li=1810656&wi=420902',  'https://www.bjornborg.com/nl-nl/') },
       { name: 'Tsar Bomba',      tagline: 'Horloges & premium accessoires', cta: 'Bekijk collectie', color: '#8B0000', url: DC('https://glp8.net/c/?si=21716&li=1916762&wi=420902',  'https://tsarbomba.com/') },
       { name: 'Sportiek.com',    tagline: 'Sportschoenen & kleding',       cta: 'Bekijk aanbod',    color: '#F97316', url: DC('https://ds1.nl/c/?si=8485&li=1389201&wi=420902',       'https://www.sportiek.com/') },

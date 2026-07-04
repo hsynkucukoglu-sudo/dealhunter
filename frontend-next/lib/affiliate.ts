@@ -69,6 +69,8 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   // 2026-07-02 onaylı
   'buttinette NL':  { destinationUrl: 'https://creatief-nl.buttinette.com/', network: 'awin', programId: '122862', rel: REL },
   Pulsetto:         { destinationUrl: 'https://pulsetto.tech/',              network: 'awin', programId: '81357',  rel: REL },
+  // 2026-07-03 onaylı — davet kabul edildi
+  'Erverte Paris':  { destinationUrl: 'https://erverte.com/',                network: 'awin', programId: '87255',  rel: REL },
 
   // ── Daisycon — CSV'den doğrulanmış trackingBase (si=program_id, li=link_id) ──
   'Plein.nl':           { destinationUrl: 'https://www.plein.nl/',                 network: 'daisycon', trackingBase: 'https://fr135.net/c/?si=3366&li=1161224&wi=420902',  rel: REL },
