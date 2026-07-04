@@ -52,7 +52,7 @@ export function SiteFooter() {
                 </svg>
               </a>
               <a
-                href="https://wa.me/31000000000"
+                href="https://wa.me/31649305079"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-full flex items-center justify-center transition-all"

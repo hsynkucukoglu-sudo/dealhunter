@@ -880,10 +880,10 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           {/* Subtitle */}
           <p className="hidden sm:block mb-6 md:mb-8 max-w-2xl" style={{ fontSize: '1.0625rem', lineHeight: '1.7', color: '#6B6259', fontFamily: 'Hanken Grotesk, sans-serif' }}>
             {lang === 'nl'
-              ? 'Vergelijk dagelijks bijgewerkte aanbiedingen van 11 winkels. Stop met bladeren, begin met besparen.'
+              ? 'Vergelijk dagelijks bijgewerkte aanbiedingen van 10 winkels. Stop met bladeren, begin met besparen.'
               : lang === 'en'
-              ? 'Compare daily updated deals from 11 stores. Stop browsing, start saving.'
-              : 'Her gün güncellenen 11 mağazadan fırsatları karşılaştırın.'}
+              ? 'Compare daily updated deals from 10 stores. Stop browsing, start saving.'
+              : 'Her gün güncellenen 10 mağazadan fırsatları karşılaştırın.'}
           </p>
 
           {/* Hero search bar */}
@@ -1407,8 +1407,8 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             <div>
               <p className="font-bold mb-1" style={{ color: '#1A1A1A' }}>Welke supermarkten staan op DealHunter4U?</p>
               <p className="leading-relaxed" style={{ color: '#5A534B' }}>
-                Op dit moment vergelijken we de aanbiedingen van elf winkels: Albert Heijn, Jumbo, Lidl,
-                Aldi, Dirk van den Broek, Hoogvliet, Vomar, DekaMarkt, Coop, Plus en Kruidvat. We breiden het aanbod regelmatig uit.
+                Op dit moment vergelijken we de aanbiedingen van tien winkels: Albert Heijn, Jumbo, Lidl,
+                Aldi, Dirk van den Broek, Hoogvliet, Vomar, DekaMarkt, Plus en Kruidvat. We breiden het aanbod regelmatig uit.
               </p>
             </div>
             <div>

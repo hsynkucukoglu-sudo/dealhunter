@@ -10,7 +10,7 @@ const HOME_FAQS = [
   },
   {
     question: 'Welke supermarkten en winkels staan op DealHunter4U?',
-    answer: 'Op dit moment vergelijken we de aanbiedingen van elf winkels: Albert Heijn, Jumbo, Lidl, Aldi, Dirk van den Broek, Hoogvliet, Vomar, DekaMarkt, Coop, Plus en Kruidvat. We breiden het aanbod regelmatig uit.',
+    answer: 'Op dit moment vergelijken we de aanbiedingen van tien winkels: Albert Heijn, Jumbo, Lidl, Aldi, Dirk van den Broek, Hoogvliet, Vomar, DekaMarkt, Plus en Kruidvat. We breiden het aanbod regelmatig uit.',
   },
   {
     question: 'Hoe vaak worden de aanbiedingen bijgewerkt?',
