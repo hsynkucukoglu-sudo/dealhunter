@@ -105,6 +105,7 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   'VVVCadeaukaarten.nl': { destinationUrl: 'https://www.vvvcadeaukaarten.nl/', network: 'daisycon', trackingBase: 'https://fr135.net/c/?si=15261&li=1660848&wi=420902', rel: REL },
   // 2026-07-03 onaylı — ayrı program, Minisforum (FR)'den farklı si
   'Minisforum (EU)':     { destinationUrl: 'https://www.minisforum.com/', network: 'daisycon', rel: REL }, // si=20771
+  Jwverzekeringen:       { destinationUrl: 'https://www.jwverzekeringen.nl/', network: 'daisycon', rel: REL }, // si=21167
 }
 
 /** Hedef URL'i yapılandırılmış ağın tracking deeplink'ine sarar. */

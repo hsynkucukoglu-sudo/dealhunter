@@ -47,6 +47,8 @@ const DEALS = [
       { name: 'Housefinan',            tagline: 'Hypotheek vergelijken (DE)',  cta: 'Vergelijk rente', color: '#0A5C36', url: 'https://www.housefinan.de/' },
       // si=21987 — trackingBase Daisycon'dan alınacak
       { name: 'Kredanta',              tagline: 'Krediet vergelijken (DACH)',  cta: 'Vergelijk krediet', color: '#1A3E6F', url: 'https://kredanta.de/' },
+      // 2026-07-03 onaylı — si=21167, trackingBase Daisycon'dan alınacak
+      { name: 'JW Verzekeringen',      tagline: 'Autoverzekering vergelijken', cta: 'Bereken premie', color: '#B71C1C', url: 'https://www.jwverzekeringen.nl/' },
     ],
   },
   {
