@@ -101,6 +101,8 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   Hermie:                { destinationUrl: 'https://hermie.com/',              network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=20097&li=1858135&wi=420902', rel: REL },
   'Minisforum (FR)':     { destinationUrl: 'https://minisforum-store.com/fr/', network: 'daisycon', rel: REL }, // si=20763 — domain doğrulanmadı
   'VVVCadeaukaarten.nl': { destinationUrl: 'https://www.vvvcadeaukaarten.nl/', network: 'daisycon', trackingBase: 'https://fr135.net/c/?si=15261&li=1660848&wi=420902', rel: REL },
+  // 2026-07-03 onaylı — ayrı program, Minisforum (FR)'den farklı si
+  'Minisforum (EU)':     { destinationUrl: 'https://www.minisforum.com/', network: 'daisycon', rel: REL }, // si=20771
 }
 
 /** Hedef URL'i yapılandırılmış ağın tracking deeplink'ine sarar. */

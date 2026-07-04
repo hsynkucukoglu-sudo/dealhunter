@@ -150,6 +150,8 @@ const DEALS = [
       { name: 'Difmark',         tagline: 'Refurbished smartphones met korting', cta: 'Bekijk aanbod', color: '#059669', url: DC('https://glp8.net/c/?si=20242&li=1863153&wi=420902', 'https://www.difmark.com/') },
       // si=20763 — trackingBase Daisycon'dan alınacak, domain doğrulanmadı (meerdere FR sites bestaan), şimdilik untracked
       { name: 'Minisforum FR',   tagline: 'Mini PC\'s & AI workstations',  cta: 'Bekijk aanbod',  color: '#1A1A2E', url: 'https://minisforum-store.com/fr/' },
+      // si=20771 — ayrı programma, trackingBase Daisycon'dan alınacak
+      { name: 'Minisforum EU',   tagline: 'Mini PC\'s & AI workstations',  cta: 'Bekijk aanbod',  color: '#2B2D42', url: 'https://www.minisforum.com/' },
     ],
   },
 ]
