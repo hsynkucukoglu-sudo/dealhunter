@@ -1341,8 +1341,22 @@ export const POSTS: BlogPost[] = [
     title: 'Vlees in de aanbieding: wanneer en waar is vlees het goedkoopst?',
     description: 'Ontdek wanneer vlees het goedkoopst is in de supermarkt. Vergelijk kipfilet, gehakt en biefstuk aanbiedingen bij Aldi, Lidl, Albert Heijn en Jumbo.',
     date: '2026-05-16',
-    readTime: 4,
+    readTime: 6,
     category: 'Categorie gids',
+    faqs: [
+      {
+        question: 'Hoe lang kun je vlees invriezen?',
+        answer: 'Gehakt en kipfilet blijven 3-4 maanden goed in de vriezer, biefstuk en karbonade 6-9 maanden, en hele stukken zoals een rollade tot 12 maanden. Vries vlees altijd in op de dag van aankoop voor de beste kwaliteit.',
+      },
+      {
+        question: 'Is het goedkoper om vlees bij de slager te kopen?',
+        answer: 'Meestal niet voor dagelijks vlees zoals kipfilet of gehakt — supermarktaanbiedingen bij Aldi of Lidl zijn vaak 20-30% goedkoper. Voor premium cuts zoals biefstuk of bij grote hoeveelheden (bijvoorbeeld voor een BBQ) kan de slager wel concurrerend zijn, zeker met een pakketdeal.',
+      },
+      {
+        question: 'Wat is de goedkoopste eiwitbron als alternatief voor vlees?',
+        answer: 'Eieren (±€0,25 per stuk), linzen en kikkererwten (±€0,10 per portie uit blik) en kwark zijn de goedkoopste eiwitbronnen — vaak minder dan de helft van de prijs per gram eiwit vergeleken met vlees.',
+      },
+    ],
     content: `
 <p class="lead">Vlees is één van de grootste kostenposten in je boodschappenmand. Een gemiddeld gezin geeft <strong>€15–25 per week</strong> uit aan vlees. Met de juiste strategie kun je dit makkelijk halveren — zonder in te leveren op kwaliteit.</p>
 
@@ -1377,6 +1391,26 @@ export const POSTS: BlogPost[] = [
 <h2>Biefstuk en premium vlees</h2>
 <p>Voor premium cuts zoals biefstuk, entrecôte of lamskarbonade loont het de moeite om te wachten op een specifieke aanbieding. Albert Heijn heeft regelmatig biefstuk in de bonus met 30–40% korting — dan is de prijs vergelijkbaar met Lidl regulier.</p>
 
+<h2>Worst, karbonade en gehaktballen vergelijken</h2>
+<p>Naast kipfilet en gehakt zijn worst en karbonade vaste prik op het Nederlandse menu. Ook hier lopen de prijzen flink uiteen:</p>
+<ul>
+  <li><strong>Speklapjes/karbonade (500g):</strong> Aldi/Lidl ±€2,49 regulier, aanbieding €1,79–€1,99 | AH/Jumbo ±€3,29 regulier, aanbieding €2,49</li>
+  <li><strong>Rookworst (1 stuk):</strong> Aldi ±€1,29 | Lidl ±€1,35 | AH Unox (bonus) ±€1,79 (normaal ±€2,49)</li>
+  <li><strong>Braadworst (4 stuks):</strong> Aldi/Lidl ±€2,29 | AH/Jumbo ±€3,49, aanbieding ±€2,49</li>
+  <li><strong>Kant-en-klare gehaktballen (8 stuks):</strong> Aldi ±€2,99 | AH Bonus ±€3,99 (normaal ±€5,49)</li>
+</ul>
+<p>Vuistregel: op elk vleesproduct dat je vergelijkt, zit gemiddeld <strong>25–35% prijsverschil</strong> tussen het duurste en goedkoopste alternatief bij dezelfde kwaliteit.</p>
+
+<h2>Vlees invriezen: bewaartijden en tips</h2>
+<p>De beste manier om structureel te besparen op vlees is inkopen bij een scherpe aanbieding en invriezen. Bewaartijden in de vriezer (-18°C):</p>
+<ul>
+  <li><strong>Gehakt en kipfilet:</strong> 3–4 maanden</li>
+  <li><strong>Karbonade en biefstuk:</strong> 6–9 maanden</li>
+  <li><strong>Worst (rauw):</strong> 1–2 maanden</li>
+  <li><strong>Hele stukken (rollade, braadstuk):</strong> tot 12 maanden</li>
+</ul>
+<p>Vries vlees het liefst in op de dag van aankoop, in platte porties (sneller ontdooien, minder ruimte) en label met datum en gewicht. Ontdooi altijd in de koelkast, niet op het aanrecht.</p>
+
 <h2>Slim vlees kopen: 5 tips</h2>
 <ol>
   <li><strong>Koop in bulk en vries in</strong> — vlees bewaart 3–6 maanden in de vriezer, koop altijd dubbel bij een goede aanbieding</li>
@@ -1398,8 +1432,22 @@ export const POSTS: BlogPost[] = [
     title: 'Boodschappen doen voor €50 per week: het complete plan',
     description: 'Leer hoe je als gezin of stel voor slechts €50 per week boodschappen doet zonder in te leveren op voeding of smaak. Met weekmenu en boodschappenlijst.',
     date: '2026-05-15',
-    readTime: 6,
+    readTime: 8,
     category: 'Bespaartips',
+    faqs: [
+      {
+        question: 'Kan een gezin van 4 personen ook voor €50 per week rondkomen?',
+        answer: 'Niet realistisch — reken voor een gezin van 4 op €90-120 per week met dezelfde strategie. Het budget schaalt niet lineair omdat vaste basisproducten (kruiden, olie, schoonmaakmiddelen) niet evenredig meestijgen met het aantal personen.',
+      },
+      {
+        question: 'Wat is de grootste valkuil bij een laag boodschappenbudget?',
+        answer: 'Impulsaankopen en boodschappen doen zonder lijst. Onderzoek toont dat mensen zonder boodschappenlijst gemiddeld 20-30% meer uitgeven dan gepland. De tweede valkuil is te vaak kleine tussentijdse boodschappen doen in plaats van één grote, geplande ronde.',
+      },
+      {
+        question: 'Moet ik voor €50 per week alle A-merken laten staan?',
+        answer: 'Niet per se. Combineer huismerken voor je basisboodschappen (pasta, rijst, zuivel) met A-merken alleen wanneer ze in de aanbieding staan. Zo behoud je variatie zonder je budget te overschrijden.',
+      },
+    ],
     content: `
 <p class="lead">€50 per week voor je volledige boodschappen — het klinkt ambitieus, maar voor een stel of klein gezin is het haalbaar. We laten je zien hoe met een concreet weekplan, de juiste supermarktkeuzes en slimme aanbiedingsstrategie.</p>
 
@@ -1448,6 +1496,24 @@ export const POSTS: BlogPost[] = [
   <li><strong>Groenten op seizoen:</strong> Paprika's in de zomer, wortel en kool in de winter — tot 50% goedkoper</li>
   <li><strong>Beperk kant-en-klaar:</strong> Een zak maaltijdsoep kost €2, een blik soep €0,79</li>
   <li><strong>Water uit de kraan:</strong> €50 water per jaar vs. €200+ aan flesjeswater</li>
+</ul>
+
+<h2>Wat als je met een gezin van 4 bent?</h2>
+<p>€50 per week is realistisch voor 2 personen, maar schaalt niet lineair mee met gezinsgrootte. Voor een gezin van 4 personen is <strong>€90–120 per week</strong> een realistischer doel met dezelfde strategie:</p>
+<ul>
+  <li><strong>Avondeten (7 maaltijden, 4 personen):</strong> €38–45 — grotere porties, maar minder verspilling per persoon door slimmer plannen</li>
+  <li><strong>Ontbijt en lunch (4 personen):</strong> €35–45</li>
+  <li><strong>Tussendoortjes, dranken, schoolspullen kinderen:</strong> €15–25</li>
+</ul>
+<p>De reden dat het budget niet simpelweg verdubbelt: vaste basisproducten zoals kruiden, olie, wasmiddel en schoonmaakmiddel stijgen niet evenredig mee met het aantal eters. Grotere verpakkingen zijn bovendien vaak goedkoper per portie.</p>
+
+<h2>Veelgemaakte fouten bij een laag boodschappenbudget</h2>
+<ul>
+  <li><strong>Zonder lijst winkelen:</strong> mensen die zonder boodschappenlijst gaan, geven gemiddeld 20–30% meer uit door impulsaankopen bij de kassa en tussendoor-schappen.</li>
+  <li><strong>Te vaak kleine boodschappen doen:</strong> elke keer 2-3 extra producten halen kost meer dan één grote, geplande boodschappenronde — je mist bovendien de weekaanbiedingen.</li>
+  <li><strong>Boodschappen doen met honger:</strong> onderzoek laat consistent zien dat je meer (en ongezonder) koopt op een lege maag.</li>
+  <li><strong>Restjes weggooien:</strong> plan bewust één "restjesdag" per week (bijvoorbeeld zondag) om overgebleven ingrediënten te verwerken in plaats van weg te gooien.</li>
+  <li><strong>Alleen op prijs kijken, niet op prijs per 100g:</strong> een grotere verpakking is niet altijd voordeliger — reken altijd de eenheidsprijs na.</li>
 </ul>
 
 <h2>Conclusie</h2>
@@ -1539,10 +1605,24 @@ export const POSTS: BlogPost[] = [
     title: 'Supermarkt thuisbezorging vergelijken: AH, Jumbo, Picnic en meer',
     description: 'Vergelijk de thuisbezorgdiensten van Albert Heijn, Jumbo en Picnic. Kosten, minimale bestelling, bezorgtijden en wanneer thuisbezorging echt loont.',
     date: '2026-05-13',
-    readTime: 5,
+    readTime: 7,
     category: 'Vergelijking',
+    faqs: [
+      {
+        question: 'Wat is het verschil tussen Flink en Picnic?',
+        answer: 'Flink is een flitsbezorger — boodschappen binnen 10-15 minuten, maar met een beperkter assortiment en iets hogere prijzen. Picnic bezorgt op een vast tijdslot per buurt (vaak dezelfde dag of de volgende dag) met een breder assortiment tegen scherpere prijzen.',
+      },
+      {
+        question: 'Is thuisbezorging duurder dan zelf naar de supermarkt gaan?',
+        answer: 'Bij Albert Heijn en Jumbo zijn de productprijzen online identiek aan de winkel — je betaalt alleen de bezorgkosten extra. Bij Picnic en flitsbezorgers als Flink liggen de productprijzen vaak 5-10% hoger dan de fysieke winkelprijs, ook al is bezorging zelf gratis of goedkoop.',
+      },
+      {
+        question: 'Kan ik bij thuisbezorging ook gebruikmaken van de Bonus-aanbiedingen?',
+        answer: 'Ja, bij AH.nl en Jumbo.com gelden dezelfde Bonus- en weekaanbiedingen als in de winkel, inclusief persoonlijke bonussen via je account. Bij Picnic en Flink geldt het eigen prijssysteem van de dienst, niet de winkelaanbiedingen van AH of Jumbo.',
+      },
+    ],
     content: `
-<p class="lead">Steeds meer Nederlanders laten hun boodschappen thuisbezorgen. Maar welke dienst is het goedkoopst en het handigst? We vergelijken <strong>Albert Heijn Bezorgen, Jumbo Thuisbezorgd en Picnic</strong> op prijs, service en aanbiedingen.</p>
+<p class="lead">Steeds meer Nederlanders laten hun boodschappen thuisbezorgen. Maar welke dienst is het goedkoopst en het handigst? We vergelijken <strong>Albert Heijn Bezorgen, Jumbo Thuisbezorgd, Picnic en Flink</strong> op prijs, service en aanbiedingen.</p>
 
 <h2>Het grote verschil: vaste bezorgkosten</h2>
 <p>De grootste kostenpost bij thuisbezorging is de bezorgfee. Hier het overzicht:</p>
@@ -1591,6 +1671,25 @@ export const POSTS: BlogPost[] = [
   <li><strong>Jumbo Online met abonnement:</strong> ~€60 + €1,75 = €61,75</li>
 </ul>
 <p>Bij regelmatig bestellen is het <strong>Jumbo-abonnement</strong> vaak de goedkoopste optie voor thuisbezorging.</p>
+
+<h2>Flink en andere flitsbezorgers</h2>
+<p><a href="/go?m=Flink">Flink</a> en vergelijkbare flitsbezorgers leveren boodschappen binnen 10-15 minuten — ideaal als je iets vergeten bent of geen tijd hebt om te winkelen.</p>
+<ul>
+  <li><strong>Bezorgkosten:</strong> €1,00–€2,00 per bezorging, soms gratis vanaf een bepaald bedrag</li>
+  <li><strong>Assortiment:</strong> beperkter dan een volledige supermarkt — vooral basisproducten, snacks en verse producten</li>
+  <li><strong>Prijzen:</strong> gemiddeld 5–15% hoger dan AH of Jumbo, vanwege het gemak en de snelheid</li>
+  <li><strong>Beste voor:</strong> kleine aanvullende boodschappen, niet voor je volledige weekboodschappen</li>
+</ul>
+<p>Flitsbezorgers vervangen dus niet je wekelijkse boodschappenronde, maar zijn een handige aanvulling wanneer je tussendoor iets nodig hebt zonder naar de winkel te hoeven.</p>
+
+<h2>Bezorgtijden en tijdvakken vergelijken</h2>
+<ul>
+  <li><strong>Albert Heijn:</strong> tijdvakken van 1-2 uur, vaak dezelfde dag beschikbaar als je op tijd bestelt. Avondbezorging tot 22:00 in de meeste steden.</li>
+  <li><strong>Jumbo:</strong> vergelijkbare tijdvakken, iets flexibeler in het weekend.</li>
+  <li><strong>Picnic:</strong> vaste rondes per buurt, meestal één of twee vaste bezorgmomenten per dag — minder flexibel maar wel voorspelbaar.</li>
+  <li><strong>Flink:</strong> geen tijdvak nodig — bestelling wordt direct na plaatsing bezorgd, binnen 10-15 minuten.</li>
+</ul>
+<p>Kies AH of Jumbo als je precies wilt plannen wanneer je boodschappen aankomen, Picnic als je een vaste routine hebt, en Flink voor spontane, kleine bestellingen.</p>
 
 <h2>Tip: combineer thuisbezorging met DealHunter4U</h2>
 <p>Bekijk op <a href="https://www.dealhunter4u.nl">DealHunter4U</a> welke supermarkt de beste aanbiedingen heeft die week. Bestel daarna online bij die supermarkt om zowel de aanbieding als thuisbezorging te combineren — zonder extra winkelmoeite.</p>
@@ -2540,9 +2639,17 @@ export const POSTS: BlogPost[] = [
     title: 'Goedkope groenten en fruit: welke supermarkt is het voordeligst in 2026?',
     description: 'Vergelijking van groenten en fruitprijzen bij Aldi, Lidl, Dirk, AH en Jumbo. Tips voor seizoensgroenten, bevroren alternatieven en de goedkoopste groente-deals.',
     date: '2026-06-02',
-    readTime: 5,
+    readTime: 7,
     category: 'Vergelijking',
     faqs: [
+      {
+        question: 'Is voorgesneden groente de moeite waard?',
+        answer: 'Prijstechnisch niet — voorgesneden groente kost gemiddeld 50-80% meer dan zelf snijden. Alleen de tijdsbesparing kan het waard maken, bijvoorbeeld op drukke doordeweekse avonden.',
+      },
+      {
+        question: 'Hoeveel voedsel gooien Nederlandse huishoudens gemiddeld weg?',
+        answer: 'Een gemiddeld Nederlands huishouden gooit jaarlijks voor ±€140-190 aan eten weg, waarvan groente en fruit een groot deel uitmaken door bederf. Met bewuste opslag en portionering bespaar je dit grotendeels.',
+      },
       {
         question: 'Welke supermarkt is het goedkoopst voor groenten?',
         answer: 'Aldi, Lidl en Dirk zijn structureel het goedkoopst voor verse groenten. Dirk in de Randstad heeft de scherpste dagprijzen voor basisgroenten zoals komkommer, paprika en tomaten.',
@@ -2642,6 +2749,24 @@ export const POSTS: BlogPost[] = [
 </ul>
 <p>Seizoensgroenten zijn 30–50% goedkoper dan buiten het seizoen. Een zomerse paprika van €0,89 kost in de winter €1,49.</p>
 
+<h2>Voorgesneden groente vs. zelf snijden: wat kost het echt?</h2>
+<p>Voorgesneden groentemixen (wokgroenten, rauwkostmix, gesneden paprika) zijn populair vanwege het gemak, maar de meerprijs is fors:</p>
+<ul>
+  <li><strong>Wokgroentemix (400g):</strong> voorgesneden ±€1,99 | zelf snijden van losse groenten ±€1,10 — 80% duurder</li>
+  <li><strong>Gesneden paprika (250g):</strong> voorgesneden ±€1,79 | zelf snijden ±€0,90 — bijna dubbel</li>
+  <li><strong>Rauwkostmix (300g):</strong> voorgesneden ±€1,29 | zelf raspen (kool + wortel) ±€0,70</li>
+</ul>
+<p>Voor een gezin dat wekelijks voorgesneden groente koopt, loopt dit al snel op tot <strong>€15–25 per maand</strong> extra. Zelf snijden kost een paar minuten meer, maar is aanzienlijk goedkoper — en je voorkomt bovendien versnelde kwaliteitsachteruitgang die bij voorgesneden groente sneller optreedt.</p>
+
+<h2>Zo voorkom je voedselverspilling (en bespaar je nog meer)</h2>
+<p>Groente en fruit zijn de meest verspilde productcategorie in Nederlandse huishoudens — gemiddeld <strong>€140–190 per jaar</strong> aan weggegooide groente en fruit per huishouden. Praktische tips om dit te voorkomen:</p>
+<ul>
+  <li><strong>Bewaar in de juiste bewaarzone:</strong> bladgroenten en kruiden in de groentelade met vochtige theedoek, aardappelen en uien juist donker en droog buiten de koelkast</li>
+  <li><strong>Koop kleinere hoeveelheden vaker</strong> bij snel bedervende producten zoals sla en zachtfruit</li>
+  <li><strong>Vries overschot in</strong> — bijna alle groente kan ingevroren worden na blancheren, ook als je te veel hebt gekocht bij een aanbieding</li>
+  <li><strong>Gebruik "lelijke groente"-lijnen:</strong> Aldi, Lidl en Jumbo verkopen groente en fruit met een afwijkend uiterlijk voor 30-40% korting — smaak en kwaliteit zijn identiek</li>
+</ul>
+
 <h2>Tips voor de goedkoopste groenten en fruit</h2>
 <ol>
   <li><strong>Koop bij Aldi, Lidl of Dirk</strong> voor structureel lagere dagprijzen</li>
@@ -2649,6 +2774,7 @@ export const POSTS: BlogPost[] = [
   <li><strong>Diepvries voor niet-verse toepassingen</strong> (soep, wok, stamppot)</li>
   <li><strong>Check AH en Jumbo bonus</strong> voor grotere hoeveelheden (1+1 op paprika, 2e halve prijs op fruit)</li>
   <li><strong>Ga op woensdag</strong> — nieuwe aanbiedingen en meeste keuze</li>
+  <li><strong>Snijd zelf in plaats van voorgesneden te kopen</strong> — bespaart 50-80% op groentemixen</li>
 </ol>
 
 <p>→ <a href="/categorie/groente-fruit">Bekijk alle actuele groente-aanbiedingen</a> bij 8 supermarkten</p>
@@ -2918,9 +3044,17 @@ export const POSTS: BlogPost[] = [
     title: 'Ontbijtproducten aanbieding: cornflakes, muesli, hagelslag en brood goedkoop',
     description: 'Wanneer zijn Brinta, Kellogg\'s cornflakes, Nutella, hagelslag en brood het goedkoopst? Complete gids voor ontbijtproducten-aanbiedingen bij Nederlandse supermarkten.',
     date: '2026-06-08',
-    readTime: 5,
+    readTime: 7,
     category: 'Aanbiedingen',
     faqs: [
+      {
+        question: 'Wat is goedkoper: filterkoffie of koffiepads?',
+        answer: 'Filterkoffie is structureel goedkoper — gemalen koffie kost ±€0,10-0,15 per kop, tegenover ±€0,20-0,30 per koffiepad of capsule. Voor een gezin dat dagelijks meerdere koppen drinkt, scheelt dit al snel €10-15 per maand.',
+      },
+      {
+        question: 'Is een gezond ontbijt duurder dan een ongezond ontbijt?',
+        answer: 'Niet per se. Havermout, eieren en fruit zijn vaak goedkoper per portie dan bewerkte ontbijtgranen of gebak. De sleutel is kiezen voor basisproducten in plaats van kant-en-klare, sterk bewerkte varianten.',
+      },
       {
         question: 'Wanneer is Nutella in de aanbieding?',
         answer: 'Nutella staat bij Albert Heijn gemiddeld elke 4-6 weken in de Bonus, met kortingen van 30-40%. De grootste pot (900g) voor ±€4,99 is de beste deal. Jumbo heeft ook regelmatig Nutella-acties.',
@@ -3015,6 +3149,26 @@ export const POSTS: BlogPost[] = [
   <li><strong>Sinaasappelsap (1L vers geperst):</strong> Lidl ±€1,99 | AH ±€2,49</li>
 </ul>
 
+<h2>Koffie en thee: waar zijn ze het goedkoopst?</h2>
+<p>Koffie is voor veel huishoudens een vast en soms onderschat onderdeel van het ontbijtbudget:</p>
+<ul>
+  <li><strong>Gemalen koffie (250g):</strong> Aldi/Lidl eigen merk ±€2,29 | AH Bonus (Douwe Egberts) ±€3,49 (normaal ±€4,99)</li>
+  <li><strong>Koffiepads (36 stuks):</strong> Aldi/Lidl ±€2,99 | Senseo (AH Bonus) ±€3,99 (normaal ±€5,49)</li>
+  <li><strong>Capsules (Nespresso-compatible, 20 stuks):</strong> huismerk (Aldi/Lidl) ±€2,49 | merk-capsules ±€5,99–€7,99</li>
+  <li><strong>Thee (20 zakjes):</strong> Aldi/Lidl ±€0,89 | Pickwick (AH Bonus) ±€1,29 (normaal ±€1,99)</li>
+</ul>
+<p>Filterkoffie met huismerk gemalen koffie is verreweg de goedkoopste optie: ±€0,10–0,15 per kop, tegenover ±€0,20–0,30 per pad of capsule. Voor een gezin dat 3-4 koppen per dag drinkt, scheelt dit €10–15 per maand.</p>
+
+<h2>Gezond én goedkoop: het beste van twee werelden</h2>
+<p>Een gezond ontbijt hoeft niet duurder te zijn dan een bewerkt alternatief — vaak is het juist goedkoper:</p>
+<ul>
+  <li><strong>Havermout met vers fruit:</strong> ±€0,40 per portie — goedkoper én voedzamer dan de meeste ontbijtgranen</li>
+  <li><strong>Gekookt ei (2 stuks):</strong> ±€0,50 — hoogwaardig eiwit voor een fractie van de prijs van vleeswaren</li>
+  <li><strong>Volkoren brood met kaas of pindakaas:</strong> ±€0,60 per boterham — vezelrijk en verzadigend</li>
+  <li><strong>Kwark met fruit en muesli:</strong> ±€0,70 per portie — meer eiwit en minder suiker dan gezoete yoghurtvarianten</li>
+</ul>
+<p>De duurdere en minder gezonde opties (croissants, gesuikerde ontbijtgranen, kant-en-klaar gebak) kosten vaak <strong>2-3 keer zoveel per portie</strong>. Kiezen voor basisproducten is dus zowel goed voor je portemonnee als voor je gezondheid.</p>
+
 <h2>Goedkoopste ontbijtopties per portie</h2>
 <ol>
   <li><strong>Havermout met melk (Aldi):</strong> ±€0,15 per portie — absoluut goedkoopst</li>
@@ -3033,9 +3187,17 @@ export const POSTS: BlogPost[] = [
     title: 'Chips, snacks en koek in aanbieding: Lay\'s, Pringles en Verkade goedkoop',
     description: 'Wanneer zijn Lay\'s chips, Pringles, Oreo, Verkade koeken en M&Ms het goedkoopst? Complete gids voor snacks-aanbiedingen bij AH, Jumbo, Aldi en Lidl.',
     date: '2026-06-09',
-    readTime: 5,
+    readTime: 7,
     category: 'Aanbiedingen',
     faqs: [
+      {
+        question: 'Wanneer zijn chocoladeletters en paaseieren het goedkoopst?',
+        answer: 'Direct na het feest — chocoladeletters op 6 december en paaseieren op de maandag na Pasen gaan vaak 50-70% in de prijs. Koop dan voor volgend jaar en vries in, chocolade blijft in de vriezer maandenlang goed.',
+      },
+      {
+        question: 'Is huismerk frisdrank net zo lekker als Coca-Cola of Fanta?',
+        answer: 'De smaak verschilt merkbaar, vooral bij cola. Voor citroen- en sinaasappelfrisdranken zijn huismerken van Aldi en Lidl vaak nauwelijks te onderscheiden van A-merken, tegen 50-60% lagere prijs.',
+      },
       {
         question: 'Wanneer zijn Lay\'s chips in de aanbieding?',
         answer: 'Lay\'s staat bij Albert Heijn gemiddeld elke 3-4 weken in de aanbieding, met kortingen van 30-50%. De beste deal is een multipak (5-6 zakjes) voor ±€3,99. Jumbo en Dirk hebben ook regelmatig Lay\'s-acties.',
@@ -3139,6 +3301,24 @@ export const POSTS: BlogPost[] = [
   <li><strong>Cashewnoten (200g):</strong> Lidl ±€2,29 | AH Bonus ±€2,49</li>
   <li><strong>Rijstwafels (12 stuks):</strong> Aldi ±€0,79 | AH ±€1,29</li>
 </ul>
+
+<h2>Frisdrank bij de snacks</h2>
+<p>Frisdrank hoort er voor veel huishoudens bij, en ook hier is het prijsverschil fors:</p>
+<ul>
+  <li><strong>Cola (1,5L):</strong> Aldi/Lidl huismerk ±€0,89 | Coca-Cola (AH Bonus) ±€1,29 (normaal ±€1,99)</li>
+  <li><strong>Sinas/citroenlimonade (1,5L):</strong> huismerk ±€0,69 | Fanta/Sprite (Jumbo actie) ±€0,99 (normaal ±€1,79)</li>
+  <li><strong>Blikjes frisdrank (6-pack):</strong> huismerk ±€1,99 | A-merk (AH Bonus) ±€2,99 (normaal ±€4,49)</li>
+</ul>
+<p>Bij citroen- en sinaasappelsmaken is huismerk vaak nauwelijks te onderscheiden van A-merken — bij cola is het verschil merkbaarder. Combineer: huismerk voor dagelijks gebruik, A-merk bij aanbieding voor bezoek of feestjes.</p>
+
+<h2>Seizoenssnacks: paaseieren, chocoladeletters en kerstchocolade</h2>
+<p>Rond feestdagen is er een voorspelbaar prijspatroon dat je in je voordeel kunt gebruiken:</p>
+<ul>
+  <li><strong>Chocoladeletters (Sinterklaas):</strong> volle prijs eind november ±€4,99-7,99 | direct na 6 december: 50-70% korting</li>
+  <li><strong>Paaseieren en paaschocolade:</strong> volle prijs voor Pasen | maandag na Pasen: 50-70% korting bij vrijwel alle supermarkten</li>
+  <li><strong>Kerstchocolade en -koek:</strong> volle prijs in december | tussen kerst en oud &amp; nieuw: 40-60% korting</li>
+</ul>
+<p>Chocolade is maandenlang houdbaar in de vriezer — koop na de feestdagen in bulk voor het jaar erna. Dit is een van de makkelijkste manieren om structureel op snoep en chocolade te besparen.</p>
 
 <h2>Snack-strategie: wanneer kopen?</h2>
 <ol>
