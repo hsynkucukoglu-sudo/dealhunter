@@ -110,4 +110,18 @@ export const CATEGORY_FAQS: Record<string, FAQ[]> = {
       answer: 'Ja, wasmiddel (Ariel, Robijn, Persil) en schoonmaakmiddelen (Dettol, Mr. Proper) staan regelmatig in de weekaanbiedingen bij AH, Jumbo en Kruidvat. Lidl en Aldi bieden krachtige huismerk-alternatieven aan tot 50% korting. Gebruik DealHunter om alle actuele wasmiddel- en schoonmaakdeals te vergelijken.',
     },
   ],
+  'zomeracties': [
+    {
+      question: 'Welke supermarkt heeft de beste BBQ-aanbiedingen?',
+      answer: 'Dirk van den Broek heeft structureel de laagste vleesprijzen van Nederland, ook op BBQ-vlees zoals hamburgers, worst en spek. Albert Heijn en Jumbo draaien regelmatig diepe weekacties (1+1 gratis, 2e halve prijs) op kant-en-klare BBQ-pakketten. DealHunter vergelijkt alle actuele zomeracties in één overzicht.',
+    },
+    {
+      question: 'Wanneer is ijs het goedkoopst?',
+      answer: 'Ijs staat in de zomermaanden bijna wekelijks bij een van de supermarkten in de aanbieding. Aldi en Lidl bieden hun eigen ijslijnen structureel goedkoper aan, terwijl AH en Jumbo regelmatig 2e-halve-prijs acties draaien op merkijs zoals Magnum en Cornetto. Ijs is maandenlang houdbaar, dus stockpilen bij een scherpe aanbieding loont.',
+    },
+    {
+      question: 'Zijn zomerfruit zoals aardbeien en meloen goedkoper in de zomer?',
+      answer: 'Ja, seizoensfruit is in de zomer 30-50% goedkoper dan daarbuiten. Aardbeien zijn het voordeligst in mei-juni, meloen en steenfruit in juli-augustus. Dirk, Aldi en Lidl scoren structureel het best op dagverse prijzen voor zomerfruit.',
+    },
+  ],
 }

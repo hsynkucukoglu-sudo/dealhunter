@@ -110,4 +110,19 @@ export const CATEGORY_CONTENT: Record<string, string> = {
 <h3>Seizoens- en feestdagacties</h3>
 <p>Rond feestdagen zoals Pasen, Sinterklaas en Kerst lopen de acties op. Chocolade, gourmetschotels, oliebollen en feestelijke dranken zijn dan met flinke korting verkrijgbaar. Houd DealHunter in de gaten voor de beste seizoensdeals.</p>
 `,
+
+  'zomeracties': `
+<h2>Zomeracties supermarkt 2026: BBQ, ijs en zomerdrankjes vergelijken</h2>
+<p>Zodra de temperatuur stijgt, draaien supermarkten hun assortiment om: barbecuevlees, ijs en verfrissende drankjes komen massaal in de aanbieding. Op DealHunter verzamelen we alle actuele <strong>zomeracties</strong> van Albert Heijn, Jumbo, Lidl, Aldi, Dirk en meer — zodat je niet apart bij elke supermarkt hoeft te kijken.</p>
+<h3>BBQ-vlees: welke supermarkt is het goedkoopst?</h3>
+<p>Hamburgers, worst, spek en marinades staan in de zomer wekelijks in de bonus of aanbieding. <strong>Dirk van den Broek</strong> heeft structureel de laagste vleesprijzen van Nederland, ook op BBQ-vlees. Albert Heijn en Jumbo compenseren met diepe weekacties (1+1 gratis, 2e halve prijs) op kant-en-klare BBQ-pakketten. Vergelijk voor je het weekend ingaat welke supermarkt dat weekend de scherpste BBQ-deal heeft.</p>
+<h3>IJs en verkoeling</h3>
+<p>Van Magnum en Cornetto tot huismerk waterijs — ijs is een van de meest gepromote zomerproducten. Aldi en Lidl bieden hun eigen ijslijnen vaak voor de helft van de A-merkprijs, terwijl AH en Jumbo regelmatig 2e-halve-prijs acties draaien op merkijs. Koop bij een scherpe aanbieding meteen een paar dozen extra — ijs is maandenlang houdbaar in de vriezer.</p>
+<h3>Zomerfruit en salade-ingrediënten</h3>
+<p>Aardbeien, meloen en steenfruit zijn in de zomer op hun goedkoopst — vaak 30-50% lager dan buiten het seizoen. Combineer dat met scherpe prijzen op sla, tomaten en komkommer voor een goedkope zomersalade. Dirk, Aldi en Lidl scoren hier structureel het best op dagverse prijzen.</p>
+<h3>Koele drankjes zonder de hoofdprijs</h3>
+<p>Bier, rosé, ijsthee en frisdrank gaan in de zomer volop in de aanbieding, vaak met kratkorting of 2e-halve-prijs op sixpacks. Vergelijk de kratprijzen tussen supermarkten voordat je een terrasje bij jezelf thuis bouwt — het verschil kan oplopen tot enkele euro's per krat.</p>
+<h3>Slim BBQ'en op een budget</h3>
+<p>Plan je BBQ rond de aanbiedingen in plaats van andersom: check op DealHunter welke supermarkt die week de beste deal heeft op vlees, drank en bijgerechten, en combineer waar nodig meerdere supermarkten. Zo bespaar je op een gemiddelde zomer-BBQ voor 6 personen al snel €15-25 ten opzichte van reguliere prijzen.</p>
+`,
 }
