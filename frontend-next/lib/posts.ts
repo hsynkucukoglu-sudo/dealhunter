@@ -4526,6 +4526,94 @@ export const POSTS: BlogPost[] = [
 <p>Bekijk de actuele deals van <a href="/supermarkt/plus">DealHunter4U — Plus aanbiedingen</a> en <a href="/supermarkt/jumbo">Jumbo aanbiedingen</a> naast elkaar.</p>
     `.trim(),
   },
+  {
+    slug: 'is-dekamarkt-goedkoper-dan-dirk',
+    relatedMarkets: ['dekamarkt', 'dirk'],
+    title: 'Is DekaMarkt Goedkoper dan Dirk? ✓ Vergelijking 2026',
+    description: '✓ DekaMarkt en Dirk zijn beide regionale prijsvechters in Noord-Holland/Utrecht, maar met een ander model: combi-deals versus scherpe vleesacties. Vergelijking bijgewerkt 2026.',
+    date: '2026-07-05',
+    readTime: 6,
+    category: 'Vergelijking',
+    faqs: [
+      {
+        question: 'Is DekaMarkt goedkoper dan Dirk?',
+        answer: 'Het hangt af van wat je koopt. Dirk is vaak scherper op vlees — historisch de laagste vleesprijzen van Nederland — terwijl DekaMarkt uitblinkt in combi-deals: twee of meer verschillende producten samen voor een vaste, lage prijs. Voor een brede boodschappenlijst met vers en zuivel is DekaMarkt vaak aantrekkelijker; voor vlees alleen wint Dirk doorgaans.',
+      },
+      {
+        question: 'Wat is een combi-deal bij DekaMarkt?',
+        answer: 'Een combi-deal is een DekaMarkt-specifieke actievorm waarbij je twee of meer verschillende producten (bijvoorbeeld vlees plus een bijgerecht, of zuivel plus fruit) samen voor een vaste lage prijs koopt. Dit is een uniek actieformat dat je bij Dirk niet op dezelfde manier terugziet.',
+      },
+      {
+        question: 'Zijn DekaMarkt en Dirk in dezelfde regio te vinden?',
+        answer: 'Grotendeels wel — beide ketens zijn sterk vertegenwoordigd in Noord-Holland en Utrecht, met overlappende verzorgingsgebieden in en rond Amsterdam. Dat maakt een directe vergelijking voor veel huishoudens in die regio relevant, omdat beide supermarkten vaak op fietsafstand van elkaar liggen.',
+      },
+      {
+        question: 'Welke supermarkt heeft het bredere assortiment: DekaMarkt of Dirk?',
+        answer: 'DekaMarkt profileert zich sterker op een breed versassortiment met uitgebreide zuivel-, groente- en fruitafdelingen. Dirk focust historisch meer op scherpe prijzen bij een compacter assortiment, met vlees als uitgesproken sterk punt.',
+      },
+    ],
+    content: `
+<p style="font-size:12px; color:#9C9389; margin-bottom:8px;">📅 Bijgewerkt: juli 2026 — actuele weekaanbiedingen verwerkt</p>
+<p class="lead">Is DekaMarkt goedkoper dan Dirk? Beide zijn regionale prijsvechters die elkaar in Noord-Holland en Utrecht regelmatig beconcurreren, maar met een verschillend actiemodel: DekaMarkt zet in op combi-deals, Dirk op scherpe losse vleesprijzen. In dit artikel vergelijken we beide op prijs, actievorm en assortiment.</p>
+
+<h2>Snel antwoord: is DekaMarkt goedkoper dan Dirk?</h2>
+<table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
+  <thead>
+    <tr style="background:#f5f5f5;">
+      <th style="padding:10px; text-align:left; border:1px solid #ddd;">Supermarkt</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Actiemodel</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Sterkste categorie</th>
+      <th style="padding:10px; border:1px solid #ddd;">Regio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;"><strong>DekaMarkt</strong></td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">Combi-deals, breed vers</td>
+      <td style="padding:10px; border:1px solid #ddd;">Zuivel, groente & fruit, combinatie-acties</td>
+      <td style="padding:10px; border:1px solid #ddd;">Noord-Holland, Utrecht</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;"><strong>Dirk</strong></td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">Scherpe wisselende weekacties</td>
+      <td style="padding:10px; border:1px solid #ddd;">Vlees — vaak laagste prijs van NL</td>
+      <td style="padding:10px; border:1px solid #ddd;">Amsterdam, Utrecht</td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Conclusie in één zin:</strong> voor vlees is Dirk meestal voordeliger, voor een brede boodschappenlijst met combi-deals op vers en zuivel is DekaMarkt vaak de slimmere keuze.</p>
+
+<h2>Combi-deals: het unieke wapen van DekaMarkt</h2>
+<p>DekaMarkt onderscheidt zich met combi-deals — een actievorm waarbij je twee of meer verschillende producten samen koopt voor een vaste, lage totaalprijs. Denk aan vlees gecombineerd met een bijgerecht, of zuivel samen met fruit. Dit format is vrij uniek voor DekaMarkt en kan per maaltijd voordeliger uitpakken dan losse aanbiedingen bij elkaar optellen.</p>
+
+<h2>Vlees: nog altijd het domein van Dirk</h2>
+<p>Ondanks DekaMarkt's sterke vers-imago blijft Dirk van den Broek de referentie voor de laagste vleesprijzen van Nederland. Voor kipfilet, gehakt en varkensvlees is Dirk doorgaans de eerste keuze — ook wanneer je de combi-deals van DekaMarkt meerekent.</p>
+
+<h2>Assortimentsbreedte: waar DekaMarkt wint</h2>
+<p>DekaMarkt voert een breder versassortiment dan Dirk, met een uitgebreide zuivel-, groente- en fruitafdeling. Voor huishoudens die op zoek zijn naar variatie naast scherpe prijzen, is DekaMarkt vaak de completere supermarkt van de twee.</p>
+
+<h2>Overlappende regio: wanneer vergelijken de moeite waard is</h2>
+<p>Omdat DekaMarkt en Dirk allebei sterk vertegenwoordigd zijn in Noord-Holland en Utrecht, hebben veel huishoudens in die regio daadwerkelijk de keuze tussen de twee. In dat geval loont het om wekelijks te vergelijken: Dirk voor vlees en scherpe actieproducten, DekaMarkt voor combi-deals en een breder versassortiment.</p>
+
+<h2>Wanneer wisselen de aanbiedingen?</h2>
+<p>DekaMarkt vernieuwt de weekaanbiedingen op <strong>woensdag</strong>, gelijk met Albert Heijn en Jumbo. Dirk wisselt zijn scherpe vleesacties doorgaans rond het weekend. Wie beide dagen in de gaten houdt, mist geen enkele combi-deal of vleesactie van de twee ketens.</p>
+
+<h2>Huismerk en kwaliteit</h2>
+<p>Beide supermarkten voeren een eigen huismerklijn naast A-merken, met vergelijkbare kwaliteitsnormen als de grotere ketens. DekaMarkt's huismerk is breed vertegenwoordigd in de vers- en zuivelafdeling; Dirk zet zijn huismerk vooral in op basisproducten naast de scherpe vleesacties. Voor beide geldt: de lagere prijs komt voort uit een efficiënter inkoopmodel, niet uit mindere kwaliteit.</p>
+
+<h2>Praktisch advies: hoe combineer je DekaMarkt en Dirk?</h2>
+<p>Voor huishoudens die toegang hebben tot beide supermarkten, is de meest voordelige aanpak:</p>
+<ol>
+  <li><strong>Check de Dirk-aanbiedingen</strong> voor vlees en de scherpste actieproducten van die week</li>
+  <li><strong>Vul aan bij DekaMarkt</strong> voor combi-deals, zuivel, groente en fruit</li>
+  <li><strong>Vergelijk bij twijfel op DealHunter4U</strong> om te zien welke supermarkt die week de scherpste deal heeft op een specifiek product</li>
+</ol>
+
+<h2>Conclusie: is DekaMarkt goedkoper dan Dirk?</h2>
+<p><strong>Het hangt af van je boodschappenlijst.</strong> Voor vlees blijft Dirk de scherpste keuze; voor een brede, gevarieerde boodschappenlijst met combi-deals op vers en zuivel is DekaMarkt vaak voordeliger. De slimste aanpak: vergelijk per week welke van de twee de beste deal heeft voor wat je nodig hebt.</p>
+<p>Bekijk de actuele deals van <a href="/supermarkt/dekamarkt">DealHunter4U — DekaMarkt aanbiedingen</a> en <a href="/supermarkt/dirk">Dirk aanbiedingen</a> naast elkaar.</p>
+    `.trim(),
+  },
 ]
 
 export function getPost(slug: string): BlogPost | undefined {
