@@ -4358,6 +4358,174 @@ export const POSTS: BlogPost[] = [
 <p>Of zonnepanelen lonen, hangt volledig af van jouw specifieke situatie — er bestaat geen one-size-fits-all antwoord. Vraag een offerte op maat aan om een betrouwbaar beeld van de terugverdientijd te krijgen, en overweeg een kleinschalig alternatief als een volledige dakinstallatie niet haalbaar is.</p>
     `.trim(),
   },
+  {
+    slug: 'is-dirk-goedkoper-dan-aldi',
+    relatedMarkets: ['dirk', 'aldi'],
+    title: 'Is Dirk Goedkoper dan Aldi? ✓ Vergelijking 2026',
+    description: '✓ Dirk en Aldi zijn allebei prijsvechters, maar met een ander model: Dirk werkt met wisselende weekacties, Aldi met constant lage huismerkprijzen. Vergelijking bijgewerkt 2026.',
+    date: '2026-07-05',
+    readTime: 6,
+    category: 'Vergelijking',
+    faqs: [
+      {
+        question: 'Is Dirk goedkoper dan Aldi?',
+        answer: 'Het hangt af van het product en het moment. Dirk werkt met scherpe, wisselende weekaanbiedingen — vooral op vlees vaak de laagste prijs van Nederland — terwijl Aldi het hele jaar door constant lage huismerkprijzen hanteert. Op actiedagen is Dirk vaak goedkoper, op niet-actieproducten wint Aldi doorgaans.',
+      },
+      {
+        question: 'Wat is het verschil tussen Dirk en Aldi?',
+        answer: 'Aldi is een klassieke discounter met een compact, overwegend eigen-merk assortiment tegen structureel lage vaste prijzen. Dirk werkt met een ander model: een breder assortiment met wekelijks sterk wisselende, diepe kortingen op specifieke producten — vooral bekend om de laagste vleesprijzen van Nederland.',
+      },
+      {
+        question: 'Welke supermarkt heeft de goedkoopste vleesprijzen: Dirk of Aldi?',
+        answer: 'Dirk van den Broek staat al decennia bekend als de goedkoopste voor vlees in Nederland, met structureel lagere prijzen dan Aldi op producten als kipfilet, gehakt en varkensvlees. Voor vlees is Dirk dan ook meestal de eerste keuze van de twee.',
+      },
+      {
+        question: 'Is Dirk overal in Nederland te vinden?',
+        answer: 'Nee, Dirk van den Broek is vooral sterk vertegenwoordigd in de regio Amsterdam en Utrecht en heeft minder landelijke dekking dan Aldi. Woon je buiten deze regio\'s, dan is Aldi vaak de meest toegankelijke discounter.',
+      },
+    ],
+    content: `
+<p style="font-size:12px; color:#9C9389; margin-bottom:8px;">📅 Bijgewerkt: juli 2026 — actuele weekaanbiedingen verwerkt</p>
+<p class="lead">Is Dirk goedkoper dan Aldi? Het antwoord hangt af van <strong>hoe</strong> je vergelijkt: Dirk en Aldi zijn allebei prijsvechters, maar met een fundamenteel ander verdienmodel. Dirk werkt met sterk wisselende, diepe weekacties — Aldi met het hele jaar door constant lage huismerkprijzen. In dit artikel leggen we het verschil uit en zeggen we wanneer je bij welke moet zijn.</p>
+
+<h2>Snel antwoord: is Dirk goedkoper dan Aldi?</h2>
+<table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
+  <thead>
+    <tr style="background:#f5f5f5;">
+      <th style="padding:10px; text-align:left; border:1px solid #ddd;">Supermarkt</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Prijsmodel</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Sterkste categorie</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Dekking</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;"><strong>Dirk</strong></td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">Wisselende diepe weekacties</td>
+      <td style="padding:10px; border:1px solid #ddd;">Vlees — vaak laagste prijs van NL</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">Regionaal (Amsterdam/Utrecht)</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;"><strong>Aldi</strong></td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">Constant lage huismerkprijzen</td>
+      <td style="padding:10px; border:1px solid #ddd;">Dagelijkse boodschappen, breed</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">Landelijk</td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Conclusie in één zin:</strong> voor vlees en actieproducten is Dirk vaak het voordeligst, voor consistent lage prijzen op je hele boodschappenlijst is Aldi de betrouwbaardere keuze.</p>
+
+<h2>Waarom vergelijken bij Dirk en Aldi anders werkt</h2>
+<p>Bij <strong>Aldi</strong> weet je vooraf ongeveer wat je gaat betalen: de meeste producten hebben het hele jaar door een vergelijkbaar laag prijsniveau, zonder grote schommelingen. Bij <strong>Dirk</strong> ligt dat anders — de kracht zit in de wekelijks wisselende aanbiedingen, waarbij specifieke producten (vooral vlees) tijdelijk fors worden afgeprijsd. Dat maakt Dirk onvoorspelbaarder maar potentieel voordeliger als je gericht op de aanbieding shopt.</p>
+
+<h2>Vlees: het domein van Dirk</h2>
+<p>Op het gebied van vlees is Dirk van den Broek al jarenlang een vaste waarde in prijsvergelijkingen — vaak de laagste vleesprijzen van heel Nederland, ook lager dan Aldi. Voor kipfilet, gehakt en varkensvlees is Dirk daarom meestal de eerste supermarkt om te checken, zeker als je vlees in bulk inkoopt en invriest.</p>
+
+<h2>Basisboodschappen: het domein van Aldi</h2>
+<p>Voor een volledige, voorspelbare boodschappenlijst — zuivel, brood, pasta, groente — is Aldi vaak de stabielere keuze. Het huismerkassortiment is consistent scherp geprijsd, zonder dat je hoeft te wachten op een specifieke actieweek.</p>
+
+<h2>Wanneer wisselen de aanbiedingen?</h2>
+<p>Dirk vernieuwt de aanbiedingen wekelijks, met name rond het weekend populair vanwege de vleesacties. Aldi vernieuwt op <strong>maandag</strong>. Wie in de regio Amsterdam of Utrecht woont, kan door beide te combineren — Dirk voor vlees en acties, Aldi voor de rest — het meeste besparen.</p>
+
+<h2>Is goedkoper ook minder kwaliteit?</h2>
+<p>Nee. Zowel Dirk als Aldi verkopen producten die aan dezelfde Nederlandse voedselveiligheidsnormen voldoen als duurdere supermarkten. Aldi's huismerken worden regelmatig positief beoordeeld in onafhankelijke smaaktests, vergelijkbaar met A-merken. Dirk's scherpe vleesprijzen komen voort uit een efficiënt inkoop- en distributiemodel, niet uit mindere kwaliteit. De lagere prijs zit in de bedrijfsvoering, niet in het product.</p>
+
+<h2>Praktisch advies: hoe combineer je Dirk en Aldi slim?</h2>
+<p>Voor wie toegang heeft tot beide supermarkten, is de meest voordelige aanpak:</p>
+<ol>
+  <li><strong>Check eerst de Dirk-aanbiedingen</strong> voor vlees en de actieproducten van die week</li>
+  <li><strong>Vul aan bij Aldi</strong> voor de rest van je boodschappenlijst — zuivel, brood, groente, huishoudartikelen</li>
+  <li><strong>Vergelijk bij twijfel op DealHunter4U</strong> — zo zie je in één overzicht welke van de twee die week scherper zit op een specifiek product</li>
+</ol>
+<p>Deze gecombineerde aanpak kost iets meer tijd dan bij één supermarkt winkelen, maar levert doorgaans de laagste totale boodschappenrekening op.</p>
+
+<h2>Conclusie: is Dirk goedkoper dan Aldi?</h2>
+<p><strong>Het hangt af van wat je koopt.</strong> Voor vlees en specifieke weekacties is Dirk vaak voordeliger; voor een constant lage prijs op je volledige boodschappenlijst is Aldi de betrouwbaardere optie. De slimste aanpak: vergelijk per week welke supermarkt de beste deal heeft voor wat er op jouw lijstje staat.</p>
+<p>Bekijk de actuele deals van <a href="/supermarkt/dirk">DealHunter4U — Dirk aanbiedingen</a> en <a href="/supermarkt/aldi">Aldi aanbiedingen</a> naast elkaar.</p>
+    `.trim(),
+  },
+  {
+    slug: 'is-plus-goedkoper-dan-jumbo',
+    relatedMarkets: ['plus', 'jumbo'],
+    title: 'Is Plus Goedkoper dan Jumbo? ✓ Vergelijking 2026',
+    description: '✓ Plus en Jumbo liggen dicht bij elkaar in prijsniveau — het verschil zit vooral in de weekaanbiedingen en klantenprogramma\'s, niet in de basisprijzen. Vergelijking bijgewerkt 2026.',
+    date: '2026-07-05',
+    readTime: 6,
+    category: 'Vergelijking',
+    faqs: [
+      {
+        question: 'Is Plus goedkoper dan Jumbo?',
+        answer: 'Plus en Jumbo zitten op basisprijzen dicht bij elkaar — beide zijn volwaardige supermarkten met een breed assortiment, geen discounters. Het verschil zit vooral in de wekelijkse aanbiedingen: welke supermarkt die week de scherpste actie heeft op specifieke producten, wisselt voortdurend.',
+      },
+      {
+        question: 'Wat is het verschil tussen Plus en Jumbo?',
+        answer: 'Jumbo is de op één na grootste supermarktketen van Nederland met landelijke dekking en een uitgebreid huismerkassortiment. Plus is een coöperatie van zelfstandige ondernemers, vaak sterker vertegenwoordigd in kleinere plaatsen, met een iets persoonlijkere winkelervaring en regelmatig scherpe lokale acties.',
+      },
+      {
+        question: 'Welke supermarkt heeft de beste aanbiedingen: Plus of Jumbo?',
+        answer: 'Beide werken met wekelijkse Bonus- en actieperiodes die qua diepte vergelijkbaar zijn — 1+1 gratis en 2e halve prijs komen bij allebei regelmatig voor. Jumbo heeft door zijn schaal net iets vaker landelijke topacties, Plus compenseert met scherpe lokale en huismerk-acties.',
+      },
+      {
+        question: 'Is Plus een discounter zoals Aldi of Lidl?',
+        answer: 'Nee, Plus is net als Jumbo en Albert Heijn een volwaardige supermarkt met een breed A-merk- en versassortiment, geen discounter. Voor structureel de laagste basisprijzen kom je eerder uit bij Aldi of Lidl; Plus en Jumbo concurreren vooral op assortiment, service en wekelijkse aanbiedingen.',
+      },
+    ],
+    content: `
+<p style="font-size:12px; color:#9C9389; margin-bottom:8px;">📅 Bijgewerkt: juli 2026 — actuele weekaanbiedingen verwerkt</p>
+<p class="lead">Is Plus goedkoper dan Jumbo? Op basisprijzen ontlopen de twee elkaar niet veel — beide zijn volwaardige supermarkten, geen discounters. Het echte verschil zit in de wekelijkse aanbiedingen en de winkelervaring. In dit artikel vergelijken we Plus en Jumbo op prijs, aanbiedingen en assortiment.</p>
+
+<h2>Snel antwoord: is Plus goedkoper dan Jumbo?</h2>
+<table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
+  <thead>
+    <tr style="background:#f5f5f5;">
+      <th style="padding:10px; text-align:left; border:1px solid #ddd;">Supermarkt</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Type</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Dekking</th>
+      <th style="padding:10px; border:1px solid #ddd;">Beste voor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;"><strong>Plus</strong></td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">Coöperatie, zelfstandige ondernemers</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">Sterk in kleinere plaatsen</td>
+      <td style="padding:10px; border:1px solid #ddd;">Lokale acties, persoonlijke service</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;"><strong>Jumbo</strong></td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">Landelijke keten</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">Landelijk, grootstedelijk sterk</td>
+      <td style="padding:10px; border:1px solid #ddd;">Breed assortiment, landelijke topacties</td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Conclusie in één zin:</strong> Plus en Jumbo liggen qua basisprijs dicht bij elkaar — de winst zit in het wekelijks vergelijken van de aanbiedingen, niet in structureel bij één van de twee te winkelen.</p>
+
+<h2>Waarom Plus en Jumbo moeilijk te vergelijken zijn op prijs alleen</h2>
+<p>Plus is geen landelijke keten met één centraal prijsbeleid, maar een coöperatie van zelfstandige ondernemers. Dat betekent dat prijzen en acties per vestiging iets kunnen verschillen — vooral op lokaal geproduceerde of regionale producten. Jumbo werkt wel met een centraal, landelijk uniform prijsbeleid. Hierdoor is een exacte prijs-op-prijs vergelijking lastiger dan tussen twee landelijke ketens.</p>
+
+<h2>Voor wie is Plus de betere keuze?</h2>
+<p>Plus is vaak de aantrekkelijkste optie als je woont in een kleinere plaats waar geen Jumbo-filiaal in de buurt is, of als je waarde hecht aan een kleinschaligere winkelervaring met persoonlijke service. Ondernemers achter een Plus-vestiging hebben doorgaans meer ruimte om in te spelen op lokale wensen dan een landelijke keten.</p>
+<h2>Voor wie is Jumbo de betere keuze?</h2>
+<p>Jumbo is aantrekkelijker als je waarde hecht aan een uniforme winkelervaring in elke vestiging, een breed en consistent assortiment, en de mogelijkheid om altijd online te bestellen met dezelfde voorwaarden. De schaal van Jumbo zorgt bovendien voor regelmatig terugkerende landelijke topacties op bekende A-merken.</p>
+
+<h2>Aanbiedingen: allebei stevig, andere nadruk</h2>
+<p>Zowel Plus als Jumbo werken met wekelijkse Bonus- en actieperiodes, met vergelijkbare mechanismen als 1+1 gratis en 2e halve prijs. Jumbo profiteert van zijn schaal bij landelijke fabrikantenacties; Plus zet vaker in op scherpe huismerk-aanbiedingen en lokale versacties. Voor de scherpste deal loont het om beide wekelijks te vergelijken in plaats van blind te kiezen.</p>
+
+<h2>Winkelervaring: waar Plus zich onderscheidt</h2>
+<p>Plus profileert zich van oudsher op persoonlijke service en betrokkenheid bij de lokale gemeenschap — vaak zichtbaar in kleinere filialen met een vaste klantenkring. Jumbo zet sterker in op een uniforme, efficiënte winkelformule met "7 zekerheden" als onderscheidend kenmerk. Welke ervaring je prefereert is grotendeels persoonlijke smaak.</p>
+
+<h2>Online bestellen en bezorging</h2>
+<p>Jumbo heeft een landelijk uitgerold bezorgnetwerk via Jumbo.com, met vaste bezorgkosten en de mogelijkheid om alle weekaanbiedingen ook online te bestellen. Plus biedt bezorging en afhalen aan, maar de beschikbaarheid en voorwaarden verschillen per vestiging omdat het een coöperatie van zelfstandige ondernemers is. Woon je in een gebied waar Plus sterk vertegenwoordigd is, dan is het de moeite waard om lokaal te checken welke bezorgopties beschikbaar zijn.</p>
+
+<h2>Huismerk versus A-merk</h2>
+<p>Beide supermarkten voeren een breed huismerkassortiment naast A-merken. Jumbo's huismerklijn is inmiddels breed uitgerold en qua prijs vaak 15-25% goedkoper dan vergelijkbare A-merken. Plus voert eveneens een eigen huismerklijn met vergelijkbare prijsvoordelen. Voor wie vooral op huismerk shopt, ontlopen beide ketens elkaar niet veel.</p>
+
+<h2>Conclusie: is Plus goedkoper dan Jumbo?</h2>
+<p><strong>Niet structureel — de twee liggen dicht bij elkaar.</strong> Het verschil zit in de wekelijkse aanbiedingen, niet in een vast prijsverschil. De slimste aanpak: vergelijk elke week welke van de twee de scherpste actie heeft voor wat er op jouw boodschappenlijst staat.</p>
+<p>Bekijk de actuele deals van <a href="/supermarkt/plus">DealHunter4U — Plus aanbiedingen</a> en <a href="/supermarkt/jumbo">Jumbo aanbiedingen</a> naast elkaar.</p>
+    `.trim(),
+  },
 ]
 
 export function getPost(slug: string): BlogPost | undefined {
