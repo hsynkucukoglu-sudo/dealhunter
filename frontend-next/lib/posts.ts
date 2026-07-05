@@ -4158,6 +4158,206 @@ export const POSTS: BlogPost[] = [
 <p>Bekijk de actuele <a href="/supermarkt/kruidvat">Kruidvat aanbiedingen op DealHunter4U</a> — dagelijks bijgewerkt, inclusief alle 50% kortingen en 2e halve prijs deals.</p>
     `.trim(),
   },
+  {
+    slug: 'energie-vergelijken-gids-2026',
+    title: 'Energie vergelijken 2026: complete gids voor gas en stroom',
+    description: 'Hoe vergelijk je energieleveranciers in 2026? Complete gids over overstappen, vast versus variabel contract, groene stroom en de belangrijkste aanbieders op een rij.',
+    date: '2026-07-05',
+    readTime: 8,
+    category: 'Vergelijking',
+    faqs: [
+      {
+        question: 'Kan ik altijd overstappen van energieleverancier?',
+        answer: 'Ja, overstappen kan het hele jaar door. Loopt je huidige contract nog, dan kan de leverancier opzegkosten in rekening brengen — meestal een beperkt bedrag per resterende maand. Loopt je contract bijna af, dan is overstappen kosteloos.',
+      },
+      {
+        question: 'Hoeveel scheelt het tussen energieleveranciers?',
+        answer: 'Het verschil hangt sterk af van je verbruik, regio en het moment van vergelijken — tarieven wisselen per leverancier en per week. Vergelijk daarom altijd de actuele tarieven via de leverancier zelf voordat je een contract afsluit, in plaats van te vertrouwen op oude prijsvergelijkingen.',
+      },
+      {
+        question: 'Is een groene-stroom-contract duurder?',
+        answer: 'Niet per definitie. Sommige leveranciers, zoals Pure Energie, bieden 100% Nederlandse groene stroom tegen tarieven die vergelijkbaar zijn met grijze stroom bij andere aanbieders. De prijs hangt vooral af van het type contract (vast/variabel) en de leverancier, niet primair van de kleur van de stroom.',
+      },
+    ],
+    content: `
+<p class="lead">Energie vergelijken is een van de makkelijkste manieren om structureel te besparen op je vaste lasten — maar met tientallen leveranciers en verschillende contractvormen is het overzicht al snel zoek. Deze gids legt uit waar je op moet letten en welke leveranciers de moeite waard zijn om te vergelijken.</p>
+
+<h2>Waarom energie vergelijken loont</h2>
+<p>Veel huishoudens blijven jarenlang bij dezelfde energieleverancier, ook als die niet meer de scherpste voorwaarden biedt. Energieleveranciers concurreren voortdurend met nieuwe aanbiedingen voor nieuwe klanten — wie nooit vergelijkt, betaalt vaak het langst het meest. Vergelijken kost een paar minuten en is bij een aflopend contract altijd zonder risico.</p>
+
+<h2>De drie stappen van overstappen</h2>
+<ol>
+  <li><strong>Vergelijk actuele tarieven</strong> — bekijk de voorwaarden van meerdere leveranciers voor jouw verbruik en regio</li>
+  <li><strong>Kies je contractvorm</strong> — vast voor zekerheid, variabel als je wilt meebewegen met de markt (zie hieronder)</li>
+  <li><strong>Laat de nieuwe leverancier de overstap regelen</strong> — dit gebeurt vrijwel altijd automatisch, inclusief opzegging bij je huidige leverancier</li>
+</ol>
+
+<h2>Vast versus variabel: kort samengevat</h2>
+<p>Bij een <strong>vast contract</strong> liggen je tarieven voor de hele looptijd vast — meestal 1 tot 3 jaar. Bij een <strong>variabel contract</strong> volgen de tarieven de energiemarkt en kunnen ze periodiek wijzigen. Vast geeft rust en voorspelbaarheid, variabel kan voordeliger zijn wanneer marktprijzen dalen. Een uitgebreide vergelijking van beide vind je in onze gids <a href="/blog/vast-of-variabel-energiecontract">vast of variabel energiecontract</a>.</p>
+
+<h2>Drie leveranciers om te vergelijken</h2>
+<p>DealHunter4U werkt samen met de volgende energieleveranciers — vergelijk hun actuele voorwaarden direct via onderstaande links:</p>
+<ul>
+  <li><strong><a href="/go?m=ENGIE">ENGIE</a></strong> — gevestigde landelijke leverancier met keuze uit vaste en variabele contracten, ook geschikt voor zakelijke energie en laadpalen.</li>
+  <li><strong><a href="/go?m=Oxxio">Oxxio</a></strong> — bekend om scherpe vaste tarieven en een alles-in-1 pakket inclusief slimme meter, zonder gedoe bij de overstap.</li>
+  <li><strong><a href="/go?m=Pure Energie">Pure Energie</a></strong> — 100% Nederlandse groene stroom van eigen windmolens en zonneparken, met transparante tariefopbouw.</li>
+</ul>
+<p>Bekijk de volledige vergelijking, inclusief zonnepanelen-aanbieders, op onze <a href="/energie">energie vergelijken pagina</a>.</p>
+
+<h2>Groene stroom: let op de herkomst</h2>
+<p>Vrijwel elke leverancier verkoopt tegenwoordig "groene stroom", maar de herkomst verschilt. Sommige leveranciers kopen internationale garanties van oorsprong in, terwijl anderen — zoals Pure Energie — daadwerkelijk stroom leveren van Nederlandse windmolens en zonneparken. Als duurzaamheid voor jou zwaar weegt, vraag dan door naar de herkomst voordat je een contract afsluit.</p>
+
+<h2>Wanneer is het beste moment om te vergelijken?</h2>
+<p>Het beste moment om te vergelijken is 1 tot 3 maanden voordat je huidige contract afloopt — dan kun je zonder opzegkosten overstappen en heb je voldoende tijd om aanbieders rustig te vergelijken. Loopt je contract nog lang, dan kun je alsnog vergelijken om te zien of overstappen (met eventuele opzegkosten) per saldo voordeliger uitpakt.</p>
+
+<h2>Hoe lees je een energiecontract?</h2>
+<p>Een energiecontract bestaat uit meer dan alleen "de prijs". Let bij het vergelijken op deze onderdelen:</p>
+<ul>
+  <li><strong>Leveringstarief per kWh (stroom) en per m³ (gas)</strong> — het bedrag dat je betaalt per eenheid verbruik, het grootste deel van je rekening.</li>
+  <li><strong>Vastrecht</strong> — een vast bedrag per maand dat je betaalt ongeacht je verbruik, ter dekking van aansluit- en administratiekosten.</li>
+  <li><strong>Terugleververgoeding</strong> — relevant als je zelf stroom opwekt (bijvoorbeeld met zonnepanelen): het bedrag dat je krijgt voor stroom die je teruglevert aan het net.</li>
+  <li><strong>Looptijd en opzegtermijn</strong> — vooral belangrijk bij vaste contracten, dit bepaalt wanneer je kosteloos kunt overstappen.</li>
+</ul>
+<p>Vergelijk deze onderdelen altijd samen, niet alleen het kale leveringstarief — een lagere kWh-prijs met een hoog vastrecht kan per saldo duurder uitpakken dan een iets hogere kWh-prijs zonder vastrecht.</p>
+
+<h2>Overstappen kost jou niets om te regelen</h2>
+<p>Een veelgehoord misverstand is dat overstappen ingewikkeld is. In de praktijk regelt de nieuwe leverancier vrijwel het volledige proces: van de opzegging bij je huidige leverancier tot de meterstanden-overdracht. Jij hoeft alleen het nieuwe contract af te sluiten. Reken op enkele weken voordat de overstap daadwerkelijk actief wordt — je energielevering wordt in de tussentijd nooit onderbroken.</p>
+
+<h2>Conclusie</h2>
+<p>Energie vergelijken is laagdrempelig en kan structureel schelen op je jaarrekening. Begin met het bepalen van je contractvoorkeur (vast of variabel), let bij het vergelijken op vastrecht en terugleververgoeding naast het kale tarief, vergelijk vervolgens de actuele voorwaarden van ENGIE, Oxxio en Pure Energie, en laat de nieuwe leverancier de overstap voor je regelen.</p>
+<p>→ Bekijk alle leveranciers en zonnepanelen-aanbieders op onze <a href="/energie">energie vergelijken pagina</a>.</p>
+    `.trim(),
+  },
+  {
+    slug: 'vast-of-variabel-energiecontract',
+    title: 'Vast of variabel energiecontract: wat kies je in 2026?',
+    description: 'Wat is het verschil tussen een vast en variabel energiecontract? Voor- en nadelen op een rij, zodat je de juiste keuze maakt voor jouw situatie.',
+    date: '2026-07-05',
+    readTime: 6,
+    category: 'Tips & Tricks',
+    faqs: [
+      {
+        question: 'Wat gebeurt er met een variabel contract als de energiemarkt stijgt?',
+        answer: 'Bij een variabel contract passt de leverancier de tarieven periodiek aan op basis van de actuele energiemarkt. Stijgen de marktprijzen, dan stijgt ook jouw tarief — en andersom bij dalende prijzen. Dit maakt je maandlasten minder voorspelbaar dan bij een vast contract.',
+      },
+      {
+        question: 'Kan ik tussentijds overstappen van variabel naar vast?',
+        answer: 'Ja, bij de meeste leveranciers kun je tussentijds overstappen naar een vast contract, al kan dit afhankelijk van de leverancier gepaard gaan met voorwaarden. Neem contact op met je leverancier of vergelijk via DealHunter4U welke aanbieder dit het soepelst regelt.',
+      },
+      {
+        question: 'Is vast altijd de veiligere keuze?',
+        answer: 'Vast geeft voorspelbaarheid, maar niet per definitie de laagste prijs — je betaalt in feite voor zekerheid. Wie financiële schommelingen goed kan opvangen en verwacht dat de markt stabiel blijft of daalt, kan met variabel voordeliger uitkomen. Het is een afweging tussen risico en rust, geen absolute keuze.',
+      },
+    ],
+    content: `
+<p class="lead">Bij het afsluiten van een nieuw energiecontract is de eerste grote keuze: vast of variabel? Beide vormen hebben duidelijke voor- en nadelen, en de juiste keuze hangt sterk af van je persoonlijke risicobereidheid en situatie.</p>
+
+<h2>Wat is een vast energiecontract?</h2>
+<p>Bij een vast contract spreek je met je energieleverancier een tarief af voor gas en stroom dat gedurende de hele looptijd (meestal 1, 2 of 3 jaar) niet verandert, ongeacht wat er op de energiemarkt gebeurt. Je weet dus vooraf precies wat je maandelijks betaalt.</p>
+<h3>Voordelen van vast</h3>
+<ul>
+  <li>Volledige voorspelbaarheid van je energiekosten</li>
+  <li>Bescherming tegen plotselinge prijsstijgingen op de energiemarkt</li>
+  <li>Makkelijker te budgetteren, vooral voor huishoudens met een krap maandbudget</li>
+</ul>
+<h3>Nadelen van vast</h3>
+<ul>
+  <li>Je profiteert niet mee als de marktprijzen dalen tijdens je contractperiode</li>
+  <li>Vaak iets hogere instaptarieven dan een variabel contract op het moment van afsluiten, als "verzekeringspremie" tegen schommelingen</li>
+</ul>
+
+<h2>Wat is een variabel energiecontract?</h2>
+<p>Bij een variabel contract volgen de tarieven voor gas en stroom de energiemarkt en worden ze periodiek (vaak per kwartaal of maand, afhankelijk van de leverancier) aangepast. Er is geen vaste looptijd en meestal kun je maandelijks opzeggen.</p>
+<h3>Voordelen van variabel</h3>
+<ul>
+  <li>Profiteer direct van dalende marktprijzen</li>
+  <li>Meestal flexibel opzegbaar, zonder lange contractverplichting</li>
+  <li>Kan voordeliger zijn in periodes van dalende of stabiele energieprijzen</li>
+</ul>
+<h3>Nadelen van variabel</h3>
+<ul>
+  <li>Minder voorspelbaar — je maandlasten kunnen stijgen bij marktschommelingen</li>
+  <li>Vereist dat je bereid bent risico te dragen op korte termijn</li>
+</ul>
+
+<h2>Welke past bij jou?</h2>
+<p>Kies <strong>vast</strong> als je zekerheid en een voorspelbaar maandbudget belangrijker vindt dan de kans op een lagere prijs. Dit geldt vooral voor huishoudens die weinig financiële ruimte hebben om schommelingen op te vangen.</p>
+<p>Kies <strong>variabel</strong> als je flexibel wilt blijven, verwacht dat de energiemarkt stabiel blijft of daalt, en het geen probleem is als je maandlasten af en toe wijzigen.</p>
+
+<h2>Bestaan er tussenvormen?</h2>
+<p>Sommige leveranciers bieden inmiddels een tussenvorm aan: een contract met een korte vaste periode (bijvoorbeeld 3 tot 6 maanden) dat daarna automatisch overgaat in een variabel tarief, of een "dynamisch" contract waarbij het tarief per uur verschilt op basis van de actuele marktprijs. Dynamische contracten kunnen interessant zijn als je energieverbruik goed te sturen is (bijvoorbeeld met een thuisbatterij of elektrische auto die je 's nachts oplaadt), maar vragen wel actieve betrokkenheid — ze zijn minder geschikt als je liever niet naar energieprijzen omkijkt.</p>
+
+<h2>Praktijkvoorbeeld: hoe kies je in de praktijk?</h2>
+<p>Een huurder met een strak maandbudget en weinig buffer voor tegenvallers kiest doorgaans voor een <strong>vast contract</strong> — de voorspelbaarheid weegt zwaarder dan een mogelijk iets lagere prijs. Een huiseigenaar met zonnepanelen en een thuisbatterij, die zijn verbruik kan afstemmen op goedkope momenten, overweegt eerder een <strong>variabel of dynamisch contract</strong> om te profiteren van prijsschommelingen. De juiste keuze hangt dus niet alleen af van risicobereidheid, maar ook van hoeveel controle je hebt over wanneer je energie verbruikt.</p>
+
+<h2>Vergelijk beide contractvormen</h2>
+<p>Niet elke leverancier biedt beide vormen even scherp aan. <a href="/go?m=ENGIE">ENGIE</a> biedt bijvoorbeeld keuze uit vast én variabel, terwijl <a href="/go?m=Oxxio">Oxxio</a> zich vooral richt op scherpe vaste tarieven. Vergelijk de actuele voorwaarden van beide op onze <a href="/energie">energie vergelijken pagina</a> voordat je een keuze maakt.</p>
+
+<h2>Conclusie</h2>
+<p>Er is geen universeel beste keuze — vast en variabel dienen verschillende behoeften. Bepaal eerst hoeveel risico je wilt dragen en hoeveel controle je hebt over je verbruiksmomenten, en vergelijk daarna de leveranciers die de contractvorm van jouw voorkeur het scherpst aanbieden.</p>
+    `.trim(),
+  },
+  {
+    slug: 'zonnepanelen-terugverdientijd-2026',
+    title: 'Zonnepanelen terugverdientijd: loont het nog in 2026?',
+    description: 'Wat bepaalt de terugverdientijd van zonnepanelen in 2026? Uitleg over de belangrijkste factoren, van dakligging tot verbruik, en wanneer een offerte op maat zinvol is.',
+    date: '2026-07-05',
+    readTime: 6,
+    category: 'Besparen',
+    faqs: [
+      {
+        question: 'Wat is een gemiddelde terugverdientijd voor zonnepanelen?',
+        answer: 'De terugverdientijd verschilt sterk per situatie — dakligging, verbruik, energieprijzen en de actuele salderingsregeling spelen allemaal een rol. Een offerte op maat, bijvoorbeeld via een aanbieder als noSun, geeft het meest betrouwbare beeld voor jouw specifieke dak en verbruik.',
+      },
+      {
+        question: 'Wat is saldering en verandert dat de terugverdientijd?',
+        answer: 'Saldering is de regeling waarbij de stroom die je zelf terug het net op stuurt, wordt verrekend met je verbruik. De regeling wordt de komende jaren geleidelijk aangepast door de overheid, wat invloed heeft op de terugverdientijd van nieuwe installaties. Vraag bij de aanbieder naar de actuele regels op het moment van je offerte.',
+      },
+      {
+        question: 'Zijn kleinschalige zonnepanelen (balkon, camper) ook interessant?',
+        answer: 'Ja, voor wie geen dak beschikbaar heeft of een kleinere investering zoekt, zijn balkonpanelen of mobiele setups (bijvoorbeeld voor een camper of tuinhuis, zoals Renogy aanbiedt) een laagdrempelige manier om deels zelf energie op te wekken, zonder de installatie van een volledig dakpakket.',
+      },
+    ],
+    content: `
+<p class="lead">Zonnepanelen blijven een van de meest gestelde vragen als het gaat om besparen op energie: loont de investering nog? Het antwoord hangt af van een aantal concrete factoren die per huishouden verschillen.</p>
+
+<h2>Wat bepaalt de terugverdientijd?</h2>
+<ul>
+  <li><strong>Dakligging en oriëntatie</strong> — een zuidgericht dak zonder schaduw levert het meeste op; oost-west georiënteerde daken presteren doorgaans iets minder maar leveren wel een gelijkmatiger opbrengst gedurende de dag.</li>
+  <li><strong>Eigen energieverbruik</strong> — hoe meer van de opgewekte stroom je zelf direct verbruikt (in plaats van terug te leveren), hoe gunstiger de businesscase doorgaans uitpakt.</li>
+  <li><strong>Actuele energieprijzen</strong> — hogere energietarieven verkorten de terugverdientijd, omdat je meer bespaart per opgewekte kWh.</li>
+  <li><strong>De salderingsregeling</strong> — deze regeling bepaalt hoe teruggeleverde stroom wordt verrekend en wordt de komende jaren stapsgewijs aangepast. Dit is een van de belangrijkste variabelen voor nieuwe installaties.</li>
+</ul>
+
+<h2>Waarom een offerte op maat het beste startpunt is</h2>
+<p>Omdat de terugverdientijd zo sterk verschilt per dak, verbruik en regio, is een algemene vuistregel niet betrouwbaar genoeg om op te sturen. Een offerte op maat — bijvoorbeeld via <a href="/go?m=noSun">noSun</a> — brengt je dakligging, verbruik en de actuele regelgeving samen in een concreet terugverdienplaatje, inclusief installatiekosten en verwacht rendement.</p>
+
+<h2>Waar moet een goede offerte op letten?</h2>
+<p>Een degelijke offerte gaat verder dan alleen een prijs per paneel. Let op of de aanbieder rekening houdt met:</p>
+<ul>
+  <li><strong>Exacte dakmaten en oriëntatie</strong>, bij voorkeur op basis van een schouw ter plaatse of gedetailleerde satellietdata, niet alleen een schatting.</li>
+  <li><strong>Je werkelijke jaarverbruik</strong> — gebaseerd op je energierekening van het afgelopen jaar, niet op een landelijk gemiddelde.</li>
+  <li><strong>Type omvormer en garantietermijnen</strong> voor zowel panelen als omvormer afzonderlijk.</li>
+  <li><strong>Eventuele schaduwval</strong> door bomen, schoorstenen of aangrenzende gebouwen gedurende het jaar.</li>
+</ul>
+<p>Vraag bij twijfel meerdere offertes op en vergelijk niet alleen de prijs, maar ook de onderbouwing van het verwachte rendement.</p>
+
+<h2>Kleinschalige alternatieven</h2>
+<p>Heb je geen geschikt dak, huur je je woning, of zoek je een kleinere eerste stap? Dan zijn balkonpanelen of mobiele zonne-oplossingen een laagdrempelig alternatief. <a href="/go?m=Renogy">Renogy</a> biedt bijvoorbeeld losse panelen en accu's die geschikt zijn voor camper, tuinhuis of off-grid gebruik — een kleinere investering met een navenant kleinere maar wel directe opbrengst.</p>
+
+<h2>Onderhoud en levensduur</h2>
+<p>Zonnepanelen vragen weinig onderhoud: regelmatig schoonhouden (regen doet het meeste werk) en een periodieke check van de bekabeling en omvormer volstaan meestal. De omvormer — het onderdeel dat opgewekte gelijkstroom omzet naar bruikbare wisselstroom — heeft doorgaans een kortere levensduur dan de panelen zelf en moet op een gegeven moment vervangen worden. Vraag bij je offerte na wat de garantietermijnen zijn voor zowel panelen als omvormer, dit verschilt per aanbieder en fabrikant.</p>
+
+<h2>Wat gebeurt er bij verhuizing?</h2>
+<p>Zonnepanelen verhogen doorgaans de waarde van je woning en worden bij verkoop meestal als vast onderdeel van het huis beschouwd — vergelijkbaar met een cv-ketel. Neem dit mee in je overweging: de investering hoeft niet volledig binnen je eigen woonperiode terugverdiend te worden, een deel van het rendement kan zich vertalen in een hogere verkoopwaarde.</p>
+
+<h2>Zonnepanelen combineren met je energiecontract</h2>
+<p>Zonnepanelen vervangen je energiecontract niet volledig — op bewolkte dagen en 's nachts blijf je afhankelijk van het net. Het loont daarom om, naast de zonnepanelen-investering, ook je energieleverancier te blijven vergelijken. Bekijk onze <a href="/blog/energie-vergelijken-gids-2026">energie vergelijken gids</a> en de actuele leveranciers op de <a href="/energie">energie vergelijken pagina</a>.</p>
+
+<h2>Conclusie</h2>
+<p>Of zonnepanelen lonen, hangt volledig af van jouw specifieke situatie — er bestaat geen one-size-fits-all antwoord. Vraag een offerte op maat aan om een betrouwbaar beeld van de terugverdientijd te krijgen, en overweeg een kleinschalig alternatief als een volledige dakinstallatie niet haalbaar is.</p>
+    `.trim(),
+  },
 ]
 
 export function getPost(slug: string): BlogPost | undefined {

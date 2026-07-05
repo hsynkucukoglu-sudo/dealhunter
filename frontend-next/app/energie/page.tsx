@@ -230,6 +230,28 @@ export default function EnergiePage() {
 
           <p>→ <Link href="/">Bekijk ook alle actuele supermarktaanbiedingen</Link> op DealHunter4U.</p>
         </div>
+
+        {/* Verdiepende gidsen */}
+        <section style={{ marginTop: 40 }}>
+          <h2 style={{ fontSize: 20, fontWeight: 900, color: '#1A1A1A', marginBottom: 16, fontFamily: 'Space Grotesk, sans-serif' }}>
+            Lees ook
+          </h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
+            {[
+              { href: '/blog/energie-vergelijken-gids-2026', title: 'Energie vergelijken 2026: complete gids' },
+              { href: '/blog/vast-of-variabel-energiecontract', title: 'Vast of variabel energiecontract: wat kies je?' },
+              { href: '/blog/zonnepanelen-terugverdientijd-2026', title: 'Zonnepanelen terugverdientijd: loont het nog?' },
+            ].map(g => (
+              <Link key={g.href} href={g.href} style={{
+                display: 'block', borderRadius: 16, padding: '16px 20px',
+                background: 'white', border: '1.5px solid #E0D8CE', textDecoration: 'none',
+              }}>
+                <p style={{ fontWeight: 700, fontSize: 13, lineHeight: 1.4, color: '#1A1A1A', marginBottom: 8 }}>{g.title}</p>
+                <span style={{ fontSize: 12, fontWeight: 600, color: '#E33D26' }}>Lees meer →</span>
+              </Link>
+            ))}
+          </div>
+        </section>
       </main>
 
       <footer style={{ textAlign: 'center', padding: '32px 24px', borderTop: '1px solid #F0E6DE', fontSize: 13, color: '#888' }}>
