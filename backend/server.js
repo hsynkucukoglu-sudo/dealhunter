@@ -409,8 +409,9 @@ async function runScraperJob() {
   }
 }
 
-// Pazartesi 08:00 — scraper
-cron.schedule('0 8 * * 1', async () => {
+// Elke dag 08:00 UTC — scraper (2026-07-05: haftalıktan günlüğe çevrildi, AH/Jumbo/Lidl/Aldi/Hoogvliet/Vomar/DekaMarkt
+// haftanın son günlerinde expiresAt geçtiği için boş kalıyordu — botlanma testi temiz çıktı, sadece Coop/Plus 403 veriyor ki onlar zaten ayrı yönetiliyor)
+cron.schedule('0 8 * * *', async () => {
   try {
     await runScraperJob()
   } catch (error) {
