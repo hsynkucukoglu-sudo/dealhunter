@@ -1445,6 +1445,7 @@ async function scrapeKruidvat() {
           ].join(' ')
 
           return {
+            market: 'Kruidvat',
             name: p.name || tile.title,
             discountedPrice,
             originalPrice: originalPrice > discountedPrice ? originalPrice : discountedPrice,
