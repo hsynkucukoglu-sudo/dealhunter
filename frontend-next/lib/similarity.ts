@@ -42,10 +42,15 @@ export function buildComparisonGroups(products: Product[]): ComparisonGroup[] {
     ])
   )
 
+  // tokenize() runs a few regexes per call — with an O(n²) comparison below,
+  // recomputing it inside the inner loop meant ~n² regex passes (2M+ at
+  // 1400 products). Precompute once per product so the inner loop is O(1) lookups.
+  const tokenMap = new Map(products.map(p => [p.id, tokenize(p.name)]))
+
   for (const product of products) {
     if (used.has(product.id)) continue
 
-    const tokens = new Set(tokenize(product.name))
+    const tokens = new Set(tokenMap.get(product.id))
     if (tokens.size < 2) continue
 
     const seedMeta = metaMap.get(product.id)!
@@ -53,7 +58,7 @@ export function buildComparisonGroups(products: Product[]): ComparisonGroup[] {
 
     const matches = products.filter(p => {
       if (p.id === product.id || p.market === product.market || used.has(p.id)) return false
-      const otherTokens = tokenize(p.name)
+      const otherTokens = tokenMap.get(p.id)!
       const overlap = otherTokens.filter(t => tokens.has(t)).length
       if (overlap < 2) return false
       const pMeta = metaMap.get(p.id)!
