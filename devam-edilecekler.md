@@ -8,6 +8,8 @@ status: active
 
 ## ✅ Bugün tamamlanan (2026-07-05)
 
+- [x] **Market bazlı OG image eklendi** (`app/supermarkt/[slug]/opengraph-image.tsx`) — önceden sadece ana sayfa ve blog'da dinamik paylaşım görseli vardı, 10 market sayfası site varsayılanına düşüyordu. Her market artık kendi marka rengi, hafta numarası, canlı deal sayısı ve en yüksek indirim yüzdesiyle kendi görselini üretiyor; Albert Heijn "Bonus" markalaşmasını da yansıtıyor. İki Satori (next/og) sınırlaması bulunup düzeltildi: (1) hex+alpha (`${color}18`) render olmuyor, `rgba()`'ya çevrilmesi gerekiyor; (2) "✓" karakteri glyph olarak desteklenmiyor, kutucuk çıkıyor — kaldırıldı. Build + görsel doğrulama yapıldı, commit `5513193`.
+
 - [x] **10 commit'lik dünkü birikim deploy edildi ve canlıda doğrulandı** (WhatsApp numarası, market sayısı, sitemap fix, blog derinleştirme, yeni merchantlar) — `git push origin main`, Railway otomatik deploy etti
 - [x] **Albert Heijn "Bonus" title fix** — dinamik title formülü (25 Haziran) AH'nin `ctaTitle`'ındaki "Bonus" kelimesini sessizce düşürüyordu (H1'de var, `<title>`'da yoktu). Yeni `dealBrandTerm` alanı eklendi, artık "Albert Heijn Bonus Aanbiedingen Week 27 ✓ N Actuele Deals" — GSC'nin "bonus aanbiedingen" (poz 15.8) ve "bonus aanbiedingen deze week" (poz 16.4) hedef sorgularıyla tutarlı (`0c98de7`)
 - [x] 🚨 **Büyük bulgu: AH/Jumbo/Lidl/Aldi/Hoogvliet/Vomar/DekaMarkt canlı API'de 0 ürün döndürüyordu** (1591 → 321 toplam ürün). Railway loglarına bakıldı (CLI zaten kurulu/giriş yapılmış, backend servis adı **"dealhunter"**): kök neden — bu 7 marketin backend'deki kendi scraper'ı **haftada sadece 1 kez** (Pazartesi 08:00 UTC) çalışıyordu; 6 gün sonra (Pazar) deal'lerin `expiresAt` tarihi geçmişti, container restart'ında otomatik temizlik rutini 1270 süresi geçmiş ürünü sildi. Dirk/Plus/Kruidvat hayatta kaldı çünkü onlar ayrıca GitHub Actions ile daha sık besleniyor.
@@ -53,7 +55,7 @@ status: active
 - [ ] **GSC "Doğrula" (Validate Fix)** — sitemap + içerik derinleştirme değişiklikleri deploy olduktan birkaç hafta sonra GSC'de tekrar doğrulama tetiklenmeli
 - [ ] **"aldi" / "plus aanbiedingen" / "dirk aanbiedingen" / "bonus aanbiedingen" TO takibi** — title formülleri Google'da canlı, ama GSC verisi henüz bunu yansıtmıyor. 1-2 hafta sonra taze export alıp gerçek TO değişimini ölç.
 - [ ] **CTR takip dosyası** (`docs/ctr-takip.md`) — henüz oluşturulmadı, istenirse yapılabilir
-- [ ] **24 adımlık dış plandan geriye kalan gerçekten yeni olanlar**: market bazlı OG image (`/supermarkt/[slug]/opengraph-image.tsx` yok), zomeracties sayfası (düşük öncelik, küçük hacim — 107 gösterim)
+- [ ] **24 adımlık dış plandan geriye kalan tek madde: zomeracties sayfası** (düşük öncelik, küçük hacim — 107 gösterim, pozisyon 58). Market bazlı OG image bugün tamamlandı.
 - [ ] **Enerji pilot kategorisi** — "her şeyin indirimi" pozisyonu kararı sonrası ilk somut adım — henüz başlanmadı
 - [ ] **Kruidvat manuel scraper anomalisi** — manuel tetiklemede 161 taze ürün bulundu ama DB'ye hiç yansımadı (health check hâlâ 64/June 30 gösteriyor). Kruidvat zaten kendi GH Action'ıyla besleniyor, düşük öncelik ama not edildi.
 - [ ] **Coop scraper'ı** — hâlâ HTTP 403, zaten gizli market, düşük öncelik
