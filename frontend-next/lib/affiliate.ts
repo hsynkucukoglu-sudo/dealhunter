@@ -106,6 +106,13 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   // 2026-07-03 onaylı — ayrı program, Minisforum (FR)'den farklı si
   'Minisforum (EU)':     { destinationUrl: 'https://www.minisforum.com/', network: 'daisycon', rel: REL }, // si=20771
   Jwverzekeringen:       { destinationUrl: 'https://www.jwverzekeringen.nl/', network: 'daisycon', rel: REL }, // si=21167
+
+  // ── Energie — widget'tan (MeerBesparenWidget) taşındı, /energie pilot sayfası için tek kaynak ──
+  ENGIE:          { destinationUrl: 'https://www.engie.nl/energie-vergelijken',   network: 'daisycon', trackingBase: 'https://ds1.nl/c/?si=16070&li=20757&wi=420902',   rel: REL },
+  Oxxio:          { destinationUrl: 'https://www.oxxio.nl/energie/alles-in-1',    network: 'daisycon', trackingBase: 'https://ds1.nl/c/?si=16070&li=119834&wi=420902',  rel: REL },
+  'Pure Energie': { destinationUrl: 'https://www.pure-energie.nl/energie-vergelijken', network: 'daisycon', trackingBase: 'https://ds1.nl/c/?si=16070&li=1420973&wi=420902', rel: REL },
+  noSun:          { destinationUrl: 'https://www.nosun.nl/',      network: 'daisycon', trackingBase: 'https://dt51.net/c/?si=19142&li=1877489&wi=420902', rel: REL },
+  Renogy:         { destinationUrl: 'https://www.renogy.com/eu/', network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=21168&li=1901324&wi=420902', rel: REL },
 }
 
 /** Hedef URL'i yapılandırılmış ağın tracking deeplink'ine sarar. */

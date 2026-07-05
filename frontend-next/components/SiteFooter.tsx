@@ -129,6 +129,7 @@ export function SiteFooter() {
             <ul className="space-y-2.5">
               {[
                 { href: '/', label: 'Alle aanbiedingen' },
+                { href: '/energie', label: '⚡ Energie vergelijken' },
                 { href: '/zomeracties', label: '☀️ Zomeracties' },
                 { href: '/blog', label: 'Blog & Tips' },
                 { href: '/over-ons', label: 'Over ons' },
