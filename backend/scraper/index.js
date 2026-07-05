@@ -917,6 +917,10 @@ const VOMAR_PUBLITAS_BASE = 'https://view.publitas.com'
 // where DISC_CENTS is 3-4 digits without decimal (399 = €3.99, 1499 = €14.99)
 const VOMAR_NAME_STOP = /\b(?:OP=OP|GRATIS|GIGA|GIGAGANTISCH|GIGAPACK|VOUCHER|BONUS|Prijsvoorbeeld)\b/i
 const VOMAR_LEADING_JUNK = /^(?:(?:Prijsvoorbeeld:|[A-Z0-9%]+)\s+){0,5}/
+// Publitas OCR soms laat alleen een losse verpakkingseenheid over als "productnaam"
+// (bv. "STUK", "KRAT") wanneer de echte naam elders op de pagina staat — dit is geen
+// product, dus zulke namen worden volledig genegeerd in plaats van als product ingevoerd.
+const VOMAR_UNIT_ONLY_NAME = /^(stuks?|krat(?:ten)?|pak(?:ken)?|zak(?:ken)?|rol(?:len)?|bak(?:ken)?|schaal|schotel|bos(?:sen)?|doos(?:jes)?|fles(?:sen)?|pot(?:ten)?|verpakking(?:en)?)\.?$/i
 
 function vomarCleanName(raw) {
   let name = raw.replace(/\s+/g, ' ').trim()
@@ -942,6 +946,7 @@ function parseVomarPageText(text) {
     const name = vomarCleanName(m[3])
     if (!name || name.length < 4 || !/[a-zA-ZÀ-ÿ]{3,}/.test(name)) continue
     if (/^(GRATIS|Alle soorten|Per\s|Zonder|Max\.|All[ée]{2}n)/i.test(name)) continue
+    if (VOMAR_UNIT_ONLY_NAME.test(name)) continue
     if (disc >= orig || orig > 60 || disc > 60 || orig < 0.3 || disc < 0.15) continue
     results.push({ name, orig, disc })
   }
@@ -961,6 +966,7 @@ function parseVomarPageText(text) {
     const orig = priceHigh
     const name = vomarCleanName(rawName)
     if (!name || name.length < 5 || !/[a-z]/.test(name)) continue
+    if (VOMAR_UNIT_ONLY_NAME.test(name)) continue
     if (disc >= orig || orig > 50 || disc > 50 || orig < 0.2 || disc < 0.1) continue
     results.push({ name, orig, disc })
   }
@@ -1025,18 +1031,28 @@ async function scrapeVomar() {
     }
 
     // Open Food Facts — product images by name (max 1 req/sec)
+    // Blindelings het eerste zoekresultaat nemen gaf regelmatig een totaal
+    // ongerelateerde afbeelding (bv. "STUK" → geitenkaas) — nu wordt pas een
+    // afbeelding overgenomen als minstens één betekenisvol woord uit de query
+    // ook echt in de gevonden productnaam voorkomt.
     for (const p of results) {
       try {
         await new Promise(r => setTimeout(r, 600))
-        const q = p.name.replace(/[^a-zA-Z\s]/g, ' ').split(/\s+/).filter(w => w.length > 2).slice(0, 3).join(' ')
+        const queryWords = p.name.replace(/[^a-zA-Z\s]/g, ' ').split(/\s+/).filter(w => w.length > 2)
+        const q = queryWords.slice(0, 3).join(' ')
         if (!q) continue
         const offRes = await fetch(
-          `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(q)}&search_simple=1&action=process&json=1&page_size=3`,
+          `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(q)}&search_simple=1&action=process&json=1&page_size=5`,
           { headers: { 'User-Agent': 'DealHunter4U/1.0 (hsyn.kucukoglu@gmail.com)', 'Accept': 'application/json' }, signal: AbortSignal.timeout(8000) }
         )
         if (!offRes.ok) continue
         const offData = await offRes.json()
-        const img = offData.products?.[0]?.image_front_small_url || offData.products?.[0]?.image_small_url || null
+        const significantWords = queryWords.filter(w => w.length > 3).map(w => w.toLowerCase())
+        const match = (offData.products || []).find(prod => {
+          const candidateName = `${prod.product_name || ''} ${prod.product_name_nl || ''}`.toLowerCase()
+          return significantWords.some(w => candidateName.includes(w))
+        })
+        const img = match?.image_front_small_url || match?.image_small_url || null
         if (img) p.imageUrl = img
       } catch { /* geen afbeelding, geen probleem */ }
     }
