@@ -1,12 +1,20 @@
 ---
-date: 2026-07-04
-tags: [dealhunter, seo, adsense, affiliate]
+date: 2026-07-05
+tags: [dealhunter, seo, adsense, affiliate, scraper]
 status: active
 ---
 
 # DealHunter4U — Devam Edilecekler
 
-## ✅ Bugün tamamlanan (2026-07-04)
+## ✅ Bugün tamamlanan (2026-07-05)
+
+- [x] **10 commit'lik dünkü birikim deploy edildi ve canlıda doğrulandı** (WhatsApp numarası, market sayısı, sitemap fix, blog derinleştirme, yeni merchantlar) — `git push origin main`, Railway otomatik deploy etti
+- [x] **Albert Heijn "Bonus" title fix** — dinamik title formülü (25 Haziran) AH'nin `ctaTitle`'ındaki "Bonus" kelimesini sessizce düşürüyordu (H1'de var, `<title>`'da yoktu). Yeni `dealBrandTerm` alanı eklendi, artık "Albert Heijn Bonus Aanbiedingen Week 27 ✓ N Actuele Deals" — GSC'nin "bonus aanbiedingen" (poz 15.8) ve "bonus aanbiedingen deze week" (poz 16.4) hedef sorgularıyla tutarlı (`0c98de7`)
+- [x] 🚨 **Büyük bulgu: AH/Jumbo/Lidl/Aldi/Hoogvliet/Vomar/DekaMarkt canlı API'de 0 ürün döndürüyordu** (1591 → 321 toplam ürün). Railway loglarına bakıldı (CLI zaten kurulu/giriş yapılmış, backend servis adı **"dealhunter"**): kök neden — bu 7 marketin backend'deki kendi scraper'ı **haftada sadece 1 kez** (Pazartesi 08:00 UTC) çalışıyordu; 6 gün sonra (Pazar) deal'lerin `expiresAt` tarihi geçmişti, container restart'ında otomatik temizlik rutini 1270 süresi geçmiş ürünü sildi. Dirk/Plus/Kruidvat hayatta kaldı çünkü onlar ayrıca GitHub Actions ile daha sık besleniyor.
+- [x] **Manuel scraper tetikleme ile risk testi yapıldı** (`POST /api/scraper/run`, `railway run` ile ADMIN_TOKEN'ı hiç ekrana yazdırmadan header'a enjekte edildi — güvenlik: secret asla transcript'e girmedi). Sonuç: AH/Jumbo/Lidl/Aldi/Hoogvliet/Vomar/DekaMarkt **hiçbir botlanma olmadan** temiz tarandı (~3 dakika, 321→1561 ürün). Sadece **Coop (403)** ve **Plus (403)** Railway IP'sinden engelleniyor — ikisi de zaten bilinen/ayrı yönetilen durumlar (Coop gizli market, Plus zaten GitHub Actions'a taşınmıştı).
+- [x] **Backend scraper cron'u haftalıktan günlüğe çevrildi**: `cron.schedule('0 8 * * 1', ...)` → `'0 8 * * *'` — Cuma-Pazar boşluk sorunu kalıcı çözüldü (`e9106da`, deploy edildi)
+
+## Eski tamamlananlar (2026-07-04)
 
 - [x] Daisycon/Awin mailleri tarandı, aksiyona döküldü: 4 kapanan program (Awake Organics, Cloqu, Audiobooks for Everyone, CCreation Market) kodda hiç yoktu — kaldıracak bir şey çıkmadı
 - [x] 8 yeni onaylı merchant `affiliate.ts` + `MeerBesparenWidget.tsx`'e eklendi: buttinette NL, Pulsetto, Hermie, VVVCadeaukaarten.nl, Housefinan (DE), Kredanta (DACH), Minisforum (FR), Minisforum (EU) (`873b65c`, `b8558e5`)
@@ -40,16 +48,17 @@ status: active
 
 ## 🔜 Sıradaki adımlar (gelince buradan devam)
 
-- [ ] **KARAR BEKLİYOR — "2" sorusu**: bonus-aanbiedingen içeriği (Kutu B, AH "Bonus" markalaşması için sayfa/içerik güçlendirme) mi, yoksa CTR takip dosyası (`docs/ctr-takip.md`, haftalık TO ölçüm tablosu) mi önce yapılsın?
-- [x] **Deploy edildi** (2026-07-05 sabah) — 10 commit push edildi (`ecf3fe2..801c922`), Railway otomatik deploy başlattı
+- [ ] **Yarın (6 Temmuz Pazartesi 08:00 UTC) günlük cron'un ilk çalışmasını doğrula** — `railway logs -s dealhunter` ile veya `/api/health/scraper` ile kontrol et, Coop/Plus hâlâ 403 mü bak
 - [ ] **Housefinan, Kredanta, Minisforum (FR/EU), JW Verzekeringen** — yeni Daisycon CSV export alınca (`Campagnes > Materialen > Deeplinks`) gerçek `trackingBase` (si/li/domain) eklenip tam tracked hale getirilecek
 - [ ] **GSC "Doğrula" (Validate Fix)** — sitemap + içerik derinleştirme değişiklikleri deploy olduktan birkaç hafta sonra GSC'de tekrar doğrulama tetiklenmeli
-- [ ] **"aldi" / "plus aanbiedingen" / "dirk aanbiedingen" TO takibi** — yeni title formülü Google'da canlı, ama GSC verisi henüz bunu yansıtmıyor (1 Tem export'u formülden sadece 6 gün sonrası). 1-2 hafta sonra taze export alıp gerçek TO değişimini ölç.
-- [ ] **24 adımlık dış plandan gerçekten yeni olanlar** (öncelik sırasıyla): bonus-aanbiedingen içeriği, market bazlı OG image (`/supermarkt/[slug]/opengraph-image.tsx` yok), zomeracties sayfası (düşük öncelik, küçük hacim — 107 gösterim)
+- [ ] **"aldi" / "plus aanbiedingen" / "dirk aanbiedingen" / "bonus aanbiedingen" TO takibi** — title formülleri Google'da canlı, ama GSC verisi henüz bunu yansıtmıyor. 1-2 hafta sonra taze export alıp gerçek TO değişimini ölç.
+- [ ] **CTR takip dosyası** (`docs/ctr-takip.md`) — henüz oluşturulmadı, istenirse yapılabilir
+- [ ] **24 adımlık dış plandan geriye kalan gerçekten yeni olanlar**: market bazlı OG image (`/supermarkt/[slug]/opengraph-image.tsx` yok), zomeracties sayfası (düşük öncelik, küçük hacim — 107 gösterim)
 - [ ] **Enerji pilot kategorisi** — "her şeyin indirimi" pozisyonu kararı sonrası ilk somut adım — henüz başlanmadı
+- [ ] **Kruidvat manuel scraper anomalisi** — manuel tetiklemede 161 taze ürün bulundu ama DB'ye hiç yansımadı (health check hâlâ 64/June 30 gösteriyor). Kruidvat zaten kendi GH Action'ıyla besleniyor, düşük öncelik ama not edildi.
+- [ ] **Coop scraper'ı** — hâlâ HTTP 403, zaten gizli market, düşük öncelik
 - [ ] **AdSense review takibi** — deploy sonrası 3-7 gün içinde dashboard'da "Hazırlanıyor" → "Hazır" değişimini kontrol et
 - [ ] **CWV yeniden ölçüm** — birkaç gün sonra Clarity/PageSpeed'den taze veri çekip CLS ve hydration hata sayısının düştüğünü doğrula
-- [ ] **Vomar veri kontrolü** — cron sonrası `/supermarkt/vomar`'da gerçek ürünlerin göründüğünü doğrula
 - [ ] **Mammotion (INT)** — Daisycon'da henüz onaylı değil, sadece bültende duyuruldu
 - [ ] **Green API token rotasyonu** — düşük öncelik (hiç push edilmedi, dışarı çıkmadı) ama tam iç rahatlığı için Green API panelinden yenilenebilir
 
@@ -57,4 +66,6 @@ status: active
 
 - Site: https://www.dealhunter4u.nl
 - Repo: dealhunter-market (main branch)
-- Son commit'ler: `58e18f3` (.gitignore .env fix), `39e470e` (WhatsApp numarası + market sayısı fix), `814b02e` (JW Verzekeringen), `c2f707d` (devam-edilecekler ilk kayıt), `740d7bf` (6 zayıf blog yazısı derinleştirildi), `f014479` (sitemap lastModified fix), `13142ba` (Erverte Paris), `b8558e5` (Minisforum EU), `873b65c` (8 yeni Daisycon/Awin merchant)
+- Railway: proje "pleasing-learning" — frontend servis adı `dealhunter-frontend`, **backend servis adı `dealhunter`** (loglara bakmak için: `railway logs -s dealhunter`, deployment listesi: `railway deployment list -s dealhunter`)
+- Backend API: https://dealhunter-production-d900.up.railway.app (health: `/api/health/scraper`, manuel tetikleme: `POST /api/scraper/run` — `ADMIN_TOKEN` gerektirir, `railway run -s dealhunter` ile env'i hiç yazdırmadan enjekte et)
+- Son commit'ler: `e9106da` (scraper cron haftalık→günlük), `0c98de7` (AH Bonus title fix), `58e18f3` (.gitignore .env fix), `39e470e` (WhatsApp numarası + market sayısı fix), `814b02e` (JW Verzekeringen), `740d7bf` (6 zayıf blog yazısı derinleştirildi), `f014479` (sitemap lastModified fix), `13142ba` (Erverte Paris), `b8558e5` (Minisforum EU), `873b65c` (8 yeni Daisycon/Awin merchant)
