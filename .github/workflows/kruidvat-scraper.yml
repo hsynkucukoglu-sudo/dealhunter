@@ -2,8 +2,8 @@ name: Kruidvat Scraper
 
 on:
   schedule:
-    # Pazartesi 08:15 UTC
-    - cron: '15 8 * * 1'
+    # Elke dag 08:15 UTC
+    - cron: '15 8 * * *'
   workflow_dispatch:
 
 jobs:

@@ -2,8 +2,8 @@ name: Plus Scraper
 
 on:
   schedule:
-    # Pazartesi 09:00 UTC (Railway scraper 08:00 bittikten 1 saat sonra — Railway'in üzerine yazar)
-    - cron: '0 9 * * 1'
+    # Elke dag 09:00 UTC (Railway scraper 08:00 bittikten 1 saat sonra — Railway'in üzerine yazar)
+    - cron: '0 9 * * *'
   workflow_dispatch: # Manuel tetikleme için
 
 jobs:
