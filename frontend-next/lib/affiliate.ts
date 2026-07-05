@@ -98,14 +98,14 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   // ── Daisycon — 2026-07-02 onaylı, trackingBase Daisycon'dan alınacak ───────
   // Daisycon > Campagnes > [program] > Link ophalen → si/li/domain al, trackingBase ekle
   // destinationUrl'ler web'den doğrulandı (Minisforum FR hariç — birden fazla FR site var, doğrulanmalı)
-  'Housefinan (DE)':     { destinationUrl: 'https://www.housefinan.de/',       network: 'daisycon', rel: REL }, // si=21988
-  'Kredanta (DACH)':     { destinationUrl: 'https://kredanta.de/',             network: 'daisycon', rel: REL }, // si=21987
+  'Housefinan (DE)':     { destinationUrl: 'https://www.housefinan.de/',       network: 'daisycon', rel: REL }, // si=21988 — 2026-07-05 CSV export'unda yok
+  'Kredanta (DACH)':     { destinationUrl: 'https://kredanta.de/',             network: 'daisycon', rel: REL }, // si=21987 — 2026-07-05 CSV export'unda yok
   Hermie:                { destinationUrl: 'https://hermie.com/',              network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=20097&li=1858135&wi=420902', rel: REL },
-  'Minisforum (FR)':     { destinationUrl: 'https://minisforum-store.com/fr/', network: 'daisycon', rel: REL }, // si=20763 — domain doğrulanmadı
+  'Minisforum (FR)':     { destinationUrl: 'https://minisforum-store.com/fr/', network: 'daisycon', rel: REL }, // si=20763 — domain doğrulanmadı, 2026-07-05 CSV export'unda yok
   'VVVCadeaukaarten.nl': { destinationUrl: 'https://www.vvvcadeaukaarten.nl/', network: 'daisycon', trackingBase: 'https://fr135.net/c/?si=15261&li=1660848&wi=420902', rel: REL },
   // 2026-07-03 onaylı — ayrı program, Minisforum (FR)'den farklı si
-  'Minisforum (EU)':     { destinationUrl: 'https://www.minisforum.com/', network: 'daisycon', rel: REL }, // si=20771
-  Jwverzekeringen:       { destinationUrl: 'https://www.jwverzekeringen.nl/', network: 'daisycon', rel: REL }, // si=21167
+  'Minisforum (EU)':     { destinationUrl: 'https://www.minisforum.com/', network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=20771&li=1880782&wi=420902', rel: REL },
+  Jwverzekeringen:       { destinationUrl: 'https://www.jwverzekeringen.nl/', network: 'daisycon', trackingBase: 'https://partners.jwverzekeringen.nl/c/?si=21167&li=1901301&wi=420902', rel: REL },
 
   // ── Energie — widget'tan (MeerBesparenWidget) taşındı, /energie pilot sayfası için tek kaynak ──
   ENGIE:          { destinationUrl: 'https://www.engie.nl/energie-vergelijken',   network: 'daisycon', trackingBase: 'https://ds1.nl/c/?si=16070&li=20757&wi=420902',   rel: REL },
