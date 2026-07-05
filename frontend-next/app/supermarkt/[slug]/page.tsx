@@ -31,14 +31,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     : 0
 
   // Deal sayısı varsa dinamik title (CTR için ✓ + rakam), yoksa statik fallback
+  // dealBrandTerm: marketin eigen aanbiedingsmerk (bv. AH's "Bonus") — H1 ile ve GSC hedef sorgularıyla tutarlı olsun diye title/description'a da eklenir
+  const brandTerm = (market as { dealBrandTerm?: string }).dealBrandTerm
+  const brandPrefix = brandTerm ? `${brandTerm} ` : ''
   const baseTitle = market.ctaTitle ?? `${market.name} Aanbiedingen Deze Week | DealHunter4U`
   const pageTitle = dealCount > 0
-    ? `${market.name} Aanbiedingen Week ${week} ✓ ${dealCount} Actuele Deals | DealHunter4U`
+    ? `${market.name} ${brandPrefix}Aanbiedingen Week ${week} ✓ ${dealCount} Actuele Deals | DealHunter4U`
     : baseTitle.replace('Deze Week', `Week ${week} ${year}`)
 
   const discountStr = topDiscount > 0 ? ` — tot ${topDiscount}% korting` : ''
   const dynamicDesc = dealCount > 0
-    ? `✓ ${dealCount} actuele ${market.name} aanbiedingen voor week ${week}${discountStr}. ${market.description}`
+    ? `✓ ${dealCount} actuele ${market.name} ${brandPrefix}aanbiedingen voor week ${week}${discountStr}. ${market.description}`
     : market.description
 
   return {

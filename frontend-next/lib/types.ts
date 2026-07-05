@@ -51,6 +51,7 @@ export const MARKETS = [
     slug: 'albert-heijn',
     name: 'Albert Heijn',
     color: '#00A0E2',
+    dealBrandTerm: 'Bonus',
     ctaTitle: 'Albert Heijn Bonus Aanbiedingen Deze Week ✓ 1+1 Gratis | DealHunter4U',
     description: '1+1 gratis, 2e halve prijs & bonus deals elke week. Dagelijks bijgewerkt, geen app nodig.',
     keywords: 'ah aanbiedingen, bonus aanbiedingen, bonus aanbiedingen deze week, aanbiedingen ah, ah aanbieding, albert heijn bonus aanbiedingen, albert heijn aanbieding, albert heijn aanbiedingen, albert heijn bonus, AH acties, ah bonus deze week, 1+1 gratis ah, a h aanbiedingen',
