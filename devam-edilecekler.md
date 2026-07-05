@@ -41,7 +41,7 @@ status: active
 ## 🔜 Sıradaki adımlar (gelince buradan devam)
 
 - [ ] **KARAR BEKLİYOR — "2" sorusu**: bonus-aanbiedingen içeriği (Kutu B, AH "Bonus" markalaşması için sayfa/içerik güçlendirme) mi, yoksa CTR takip dosyası (`docs/ctr-takip.md`, haftalık TO ölçüm tablosu) mi önce yapılsın?
-- [ ] **Deploy et** — bugünkü tüm commit'ler henüz sadece local/main'de, Railway'e push edilmedi (10 commit ahead of origin/main)
+- [x] **Deploy edildi** (2026-07-05 sabah) — 10 commit push edildi (`ecf3fe2..801c922`), Railway otomatik deploy başlattı
 - [ ] **Housefinan, Kredanta, Minisforum (FR/EU), JW Verzekeringen** — yeni Daisycon CSV export alınca (`Campagnes > Materialen > Deeplinks`) gerçek `trackingBase` (si/li/domain) eklenip tam tracked hale getirilecek
 - [ ] **GSC "Doğrula" (Validate Fix)** — sitemap + içerik derinleştirme değişiklikleri deploy olduktan birkaç hafta sonra GSC'de tekrar doğrulama tetiklenmeli
 - [ ] **"aldi" / "plus aanbiedingen" / "dirk aanbiedingen" TO takibi** — yeni title formülü Google'da canlı, ama GSC verisi henüz bunu yansıtmıyor (1 Tem export'u formülden sadece 6 gün sonrası). 1-2 hafta sonra taze export alıp gerçek TO değişimini ölç.
