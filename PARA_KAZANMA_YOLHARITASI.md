@@ -56,7 +56,7 @@
 ### FAZ B — TO→Trafik→Gelir Çevrimi (2-6 hafta)
 *Kanıtlanmış olanı ölçekle.*
 
-- [ ] **Karşılaştırma içeriğini ölçekle** — tek kanıtlanmış format bu (25 tıklama/yazı). Eksik ikililer: "Dirk vs Aldi", "Plus vs Jumbo", "Kruidvat vs Etos", "DekaMarkt vs Dirk". Hedef: 2 yazı/hafta, her biri 600+ kelime + FAQ.
+- [x] **Karşılaştırma içeriğini ölçekle (başladı)** — "Dirk vs Aldi" (562 kelime) ve "Plus vs Jumbo" (587 kelime) eklendi, 5 Tem (commit `4a4570c`). Kalan: "Kruidvat vs Etos" (Etos site'de yok, atlanabilir), "DekaMarkt vs Dirk". TO etkisini 1-2 hafta sonra GSC'de ölç.
 - [ ] **Aldi bağımlılığını çeşitlendir** — Aldi formülü çalıştıysa (15.8K gösterim) aynı derinliği Plus (3.7K gösterim, 1 tıklama!) ve Dirk sayfalarına uygula.
 - [ ] **Play Store yayını** ($25) — APK hazır, bedava dağıtım kanalı; app kullanıcısı = push bildirimi = tekrar ziyaret.
 - [ ] **Kitle büyütme CTA'ları** — newsletter/WhatsApp aboneliği şu an pasif. Blog yazısı sonuna + exit noktalarına belirgin CTA; Brevo abone sayısını ölç ve buraya işle (şu an bilinmiyor).
