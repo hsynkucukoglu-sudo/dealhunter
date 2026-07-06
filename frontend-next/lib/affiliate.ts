@@ -113,6 +113,14 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   'Pure Energie': { destinationUrl: 'https://www.pure-energie.nl/energie-vergelijken', network: 'daisycon', trackingBase: 'https://ds1.nl/c/?si=16070&li=1420973&wi=420902', rel: REL },
   noSun:          { destinationUrl: 'https://www.nosun.nl/',      network: 'daisycon', trackingBase: 'https://dt51.net/c/?si=19142&li=1877489&wi=420902', rel: REL },
   Renogy:         { destinationUrl: 'https://www.renogy.com/eu/', network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=21168&li=1901324&wi=420902', rel: REL },
+
+  // ── Energie — 2026-07-02/05 onaylı, trackingBase Daisycon CSV export'undan alınacak ──
+  Essent:              { destinationUrl: 'https://www.essent.nl/',              network: 'daisycon', rel: REL }, // si=9787
+  'Essent Zakelijk':   { destinationUrl: 'https://www.essent.nl/zakelijk',      network: 'daisycon', rel: REL }, // si=13190
+  energiedirect:       { destinationUrl: 'https://www.energiedirect.nl/',      network: 'daisycon', rel: REL }, // si=924
+  'Frank Energie':     { destinationUrl: 'https://www.frankenergie.nl/',       network: 'daisycon', rel: REL }, // si=16978
+  'Gewoon Energie':    { destinationUrl: 'https://www.gewoonenergie.nl/',      network: 'daisycon', rel: REL }, // si=16832
+  Powerpeers:          { destinationUrl: 'https://www.powerpeers.nl/',         network: 'daisycon', rel: REL }, // si=12400
 }
 
 /** Hedef URL'i yapılandırılmış ağın tracking deeplink'ine sarar. */

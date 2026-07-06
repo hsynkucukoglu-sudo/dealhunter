@@ -23,6 +23,12 @@ const DEALS = [
       { name: 'Pure Energie', tagline: 'Goedkoop & transparant',   cta: 'Vergelijk tarief', color: '#F7941D', url: DS('16070', '1420973', 'https://www.pure-energie.nl/energie-vergelijken') },
       { name: 'noSun',   tagline: 'Zonnepanelen voor thuis',      cta: 'Bekijk aanbod', color: '#F59B00', url: DC('https://dt51.net/c/?si=19142&li=1877489&wi=420902',  'https://www.nosun.nl/') },
       { name: 'Renogy', tagline: 'Zonnepanelen & accu\'s voor thuis', cta: 'Bekijk aanbod', color: '#E87722', url: DC('https://glp8.net/c/?si=21168&li=1901324&wi=420902', 'https://www.renogy.com/eu/') },
+      // 2026-07-02/05 onaylı — trackingBase Daisycon CSV export'undan alınacak, şimdilik untracked direct link
+      { name: 'Essent',           tagline: 'Grootste energieleverancier van NL', cta: 'Vergelijk tarief', color: '#E2001A', url: 'https://www.essent.nl/' }, // si=9787
+      { name: 'energiedirect',    tagline: 'Gas & stroom voordelig geregeld',    cta: 'Vergelijk tarief', color: '#0F9D58', url: 'https://www.energiedirect.nl/' }, // si=924
+      { name: 'Frank Energie',    tagline: 'Dynamische energietarieven',        cta: 'Vergelijk tarief', color: '#1A1A2E', url: 'https://www.frankenergie.nl/' }, // si=16978
+      { name: 'Gewoon Energie',   tagline: 'Eerlijke energie zonder poespas',   cta: 'Vergelijk tarief', color: '#00A99D', url: 'https://www.gewoonenergie.nl/' }, // si=16832
+      { name: 'Powerpeers',       tagline: 'Deel lokale groene stroom',         cta: 'Bekijk aanbod',    color: '#6FCF97', url: 'https://www.powerpeers.nl/' }, // si=12400
     ],
   },
   {
