@@ -1673,10 +1673,11 @@ export async function scrapeFlyerProducts() {
 
   let all = [...dirk, ...jumbo, ...hoogvliet, ...lidl, ...ah, ...aldi, ...vomar, ...deka, ...coop, ...plus, ...kruidvat]
 
-  // Duplicate temizliği
+  // Duplicate temizliği — market + name, sadece name değil (yoksa aynı isimli ürün
+  // başka bir markette sessizce kaybolur, bu da cross-market karşılaştırmayı bozar)
   const seen = new Set()
   all = all.filter(p => {
-    const key = p.name.toLowerCase().trim()
+    const key = `${p.market}:${p.name.toLowerCase().trim()}`
     if (seen.has(key)) return false
     seen.add(key)
     return true
