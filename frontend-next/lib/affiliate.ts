@@ -114,13 +114,13 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   noSun:          { destinationUrl: 'https://www.nosun.nl/',      network: 'daisycon', trackingBase: 'https://dt51.net/c/?si=19142&li=1877489&wi=420902', rel: REL },
   Renogy:         { destinationUrl: 'https://www.renogy.com/eu/', network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=21168&li=1901324&wi=420902', rel: REL },
 
-  // ── Energie — 2026-07-02/05 onaylı, trackingBase Daisycon CSV export'undan alınacak ──
-  Essent:              { destinationUrl: 'https://www.essent.nl/',              network: 'daisycon', rel: REL }, // si=9787
-  'Essent Zakelijk':   { destinationUrl: 'https://www.essent.nl/zakelijk',      network: 'daisycon', rel: REL }, // si=13190
-  energiedirect:       { destinationUrl: 'https://www.energiedirect.nl/',      network: 'daisycon', rel: REL }, // si=924
-  'Frank Energie':     { destinationUrl: 'https://www.frankenergie.nl/',       network: 'daisycon', rel: REL }, // si=16978
-  'Gewoon Energie':    { destinationUrl: 'https://www.gewoonenergie.nl/',      network: 'daisycon', rel: REL }, // si=16832
-  Powerpeers:          { destinationUrl: 'https://www.powerpeers.nl/',         network: 'daisycon', rel: REL }, // si=12400
+  // ── Energie — 2026-07-02/05 onaylı, trackingBase 2026-07-06 CSV export'undan doğrulandı ──
+  Essent:              { destinationUrl: 'https://www.essent.nl/',         network: 'daisycon', trackingBase: 'https://lt45.net/c/?si=9787&li=1437653&wi=420902', rel: REL },
+  'Essent Zakelijk':   { destinationUrl: 'https://www.essent.nl/zakelijk', network: 'daisycon', trackingBase: 'https://lt45.net/c/?si=13190&li=1579477&wi=420902', rel: REL },
+  energiedirect:       { destinationUrl: 'https://www.energiedirect.nl/', network: 'daisycon', trackingBase: 'https://lt45.net/c/?si=924&li=55221&wi=420902', rel: REL },
+  'Frank Energie':     { destinationUrl: 'https://www.frankenergie.nl/',  network: 'daisycon', trackingBase: 'https://jf79.net/c/?si=16978&li=1731992&wi=420902', rel: REL },
+  'Gewoon Energie':    { destinationUrl: 'https://www.gewoonenergie.nl/', network: 'daisycon', trackingBase: 'https://partners.gewoonenergie.nl/c/?si=16832&li=1724962&wi=420902', rel: REL },
+  Powerpeers:          { destinationUrl: 'https://www.powerpeers.nl/',    network: 'daisycon', trackingBase: 'https://lt45.net/c/?si=12400&li=1544330&wi=420902', rel: REL },
 }
 
 /** Hedef URL'i yapılandırılmış ağın tracking deeplink'ine sarar. */
