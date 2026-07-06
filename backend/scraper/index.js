@@ -931,6 +931,65 @@ function vomarCleanName(raw) {
   return name.slice(0, 70).trim()
 }
 
+// Publitas OCR-tekst mengt vaak meerdere producten door elkaar (naam van product A
+// naast prijs van product B, willekeurige losse cijfers uit decoratieve tekst) — te
+// dubbelzinnig voor regex om betrouwbaar te ontleden zonder verkeerde naam/prijs
+// combinaties te riskeren. Claude kan de context gebruiken om dit wél te ontwarren.
+// ANTHROPIC_API_KEY ontbreekt → functie retourneert null, aanroeper valt terug op regex.
+async function parseVomarPageWithLLM(text) {
+  const apiKey = process.env.ANTHROPIC_API_KEY
+  if (!apiKey || !text || text.length < 20) return null
+
+  const prompt = `Dit is ruwe, door elkaar gehusselde OCR-tekst van één pagina uit een Nederlandse supermarkt-folder (Vomar). Tekstvolgorde komt niet overeen met de visuele lay-out — namen en prijzen van verschillende producten kunnen door elkaar staan.
+
+Haal ALLEEN producten eruit waarbij je met hoge zekerheid een productnaam aan een prijs kunt koppelen. Sla dubbelzinnige of onduidelijke gevallen over — geen data is beter dan foute data.
+
+Regels:
+- "X.XX OP=OP Naam" → alleen één prijs bekend, gebruik die voor zowel originalPrice als discountedPrice (geen korting, maar wel een geldige huidige prijs)
+- "N+M GRATIS TOTAAL Naam ... Per stuk van LAAG tot HOOG" → discountedPrice = TOTAAL/(N+M) afgerond op 2 decimalen, originalPrice = HOOG
+- "PRIJS1 PRIJS2 Naam" (twee prijzen vlak voor de naam) → originalPrice = hoogste, discountedPrice = laagste
+- Negeer decoratieve tekst, algemene categorieën zonder specifieke merknaam, en voorbeeldprijzen ("Prijsvoorbeeld: ...")
+- Productnamen: normale hoofdletter/kleine letter Nederlandse tekst, geen losse eenheidswoorden ("STUK", "KRAT") als naam
+
+Retourneer UITSLUITEND een JSON array, geen andere tekst:
+[{"name": "Productnaam", "originalPrice": 0.00, "discountedPrice": 0.00}]
+Als er geen zekere producten zijn: []
+
+Tekst:
+${text.slice(0, 2000)}`
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 1024,
+        messages: [{ role: 'user', content: prompt }],
+      }),
+      signal: AbortSignal.timeout(20000),
+    })
+    if (!res.ok) return null
+    const data = await res.json()
+    const raw = data.content?.[0]?.text || ''
+    const jsonMatch = raw.match(/\[[\s\S]*\]/)
+    if (!jsonMatch) return []
+    const parsed = JSON.parse(jsonMatch[0])
+    return parsed
+      .filter(p => p && typeof p.name === 'string' && p.name.length >= 3
+        && typeof p.originalPrice === 'number' && typeof p.discountedPrice === 'number'
+        && p.discountedPrice > 0 && p.originalPrice >= p.discountedPrice
+        && p.originalPrice < 100 && !VOMAR_UNIT_ONLY_NAME.test(p.name.trim()))
+      .map(p => ({ name: vomarCleanName(p.name), orig: p.originalPrice, disc: p.discountedPrice }))
+  } catch {
+    return null
+  }
+}
+
 function parseVomarPageText(text) {
   const results = []
 
@@ -1007,11 +1066,25 @@ async function scrapeVomar() {
     const pageCount = Object.keys(pageTexts).length
     console.log(`  📄 ${pageCount} pagina's gevonden`)
 
-    // Parse products from all pages
+    // Parse products from all pages — LLM eerst (ontwart de door elkaar gehusselde
+    // OCR-tekst betrouwbaarder dan regex), regex als fallback per pagina (geen key of
+    // LLM-call faalt). Batches van 5 gelijktijdig om binnen een redelijke tijd te blijven.
+    const pageEntries = Object.values(pageTexts)
+    const pageResultsList = []
+    const LLM_CONCURRENCY = 5
+    for (let i = 0; i < pageEntries.length; i += LLM_CONCURRENCY) {
+      const batch = pageEntries.slice(i, i + LLM_CONCURRENCY)
+      const batchResults = await Promise.all(batch.map(async (text) => {
+        const llmResult = await parseVomarPageWithLLM(text)
+        return llmResult ?? parseVomarPageText(text)
+      }))
+      pageResultsList.push(...batchResults)
+    }
+
     const seen = new Set()
     const results = []
-    for (const text of Object.values(pageTexts)) {
-      for (const { name, orig, disc } of parseVomarPageText(text)) {
+    for (const pageResults of pageResultsList) {
+      for (const { name, orig, disc } of pageResults) {
         const key = name.toLowerCase().slice(0, 30)
         if (seen.has(key)) continue
         seen.add(key)
