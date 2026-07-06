@@ -18,9 +18,10 @@ const DEALS = [
     id: 'energie',
     category: '⚡ Energie',
     items: [
-      { name: 'ENGIE',        tagline: 'Gas & stroom vergelijken', cta: 'Vergelijk tarief', color: '#0064A8', url: DS('16070', '20757',   'https://www.engie.nl/energie-vergelijken') },
-      { name: 'Oxxio',        tagline: 'Vaste lage tarieven',      cta: 'Vergelijk tarief', color: '#E4002B', url: DS('16070', '119834',  'https://www.oxxio.nl/energie/alles-in-1') },
-      { name: 'Pure Energie', tagline: 'Goedkoop & transparant',   cta: 'Vergelijk tarief', color: '#F7941D', url: DS('16070', '1420973', 'https://www.pure-energie.nl/energie-vergelijken') },
+      // dl= parameter breekt bij deze 3 (dubbele URL → 404/foutpagina, canlı test 2026-07-06) — geen dl
+      { name: 'ENGIE',        tagline: 'Gas & stroom vergelijken', cta: 'Vergelijk tarief', color: '#0064A8', url: 'https://ds1.nl/c/?si=16070&li=20757&wi=420902' },
+      { name: 'Oxxio',        tagline: 'Vaste lage tarieven',      cta: 'Vergelijk tarief', color: '#E4002B', url: 'https://ds1.nl/c/?si=16070&li=119834&wi=420902' },
+      { name: 'Pure Energie', tagline: 'Goedkoop & transparant',   cta: 'Vergelijk tarief', color: '#F7941D', url: 'https://ds1.nl/c/?si=16070&li=1420973&wi=420902' },
       { name: 'noSun',   tagline: 'Zonnepanelen voor thuis',      cta: 'Bekijk aanbod', color: '#F59B00', url: DC('https://dt51.net/c/?si=19142&li=1877489&wi=420902',  'https://www.nosun.nl/') },
       { name: 'Renogy', tagline: 'Zonnepanelen & accu\'s voor thuis', cta: 'Bekijk aanbod', color: '#E87722', url: DC('https://glp8.net/c/?si=21168&li=1901324&wi=420902', 'https://www.renogy.com/eu/') },
       // 2026-07-02/05 onaylı, trackingBase 2026-07-06 CSV export'undan doğrulandı
@@ -45,10 +46,11 @@ const DEALS = [
     id: 'verzekering',
     category: '🏥 Verzekering',
     items: [
-      { name: 'ONVZ',                  tagline: 'Zorgverzekering vergelijken', cta: 'Bereken premie', color: '#E4002B', url: DS('16070', '1332385', 'https://www.onvz.nl/zorgverzekering') },
-      { name: 'Nationale-Nederlanden', tagline: 'Zorg & aanvullend pakket',    cta: 'Bereken premie', color: '#FF6200', url: DS('16070', '1362622', 'https://www.nn.nl/zorgverzekering/') },
-      { name: 'DELA',                  tagline: 'Uitvaartverzekering',         cta: 'Bekijk aanbod',  color: '#003087', url: DS('16070', '1414707', 'https://www.dela.nl/uitvaartverzekering') },
-      { name: 'Monuta',                tagline: 'Uitvaartzorg geregeld',       cta: 'Bekijk aanbod',  color: '#2C5F8A', url: DS('16070', '1414357', 'https://www.monuta.nl/uitvaartverzekering') },
+      // dl= parameter breekt bij deze 4 (dubbele URL → 404/foutpagina, canlı test 2026-07-06) — geen dl
+      { name: 'ONVZ',                  tagline: 'Zorgverzekering vergelijken', cta: 'Bereken premie', color: '#E4002B', url: 'https://ds1.nl/c/?si=16070&li=1332385&wi=420902' },
+      { name: 'Nationale-Nederlanden', tagline: 'Zorg & aanvullend pakket',    cta: 'Bereken premie', color: '#FF6200', url: 'https://ds1.nl/c/?si=16070&li=1362622&wi=420902' },
+      { name: 'DELA',                  tagline: 'Uitvaartverzekering',         cta: 'Bekijk aanbod',  color: '#003087', url: 'https://ds1.nl/c/?si=16070&li=1414707&wi=420902' },
+      { name: 'Monuta',                tagline: 'Uitvaartzorg geregeld',       cta: 'Bekijk aanbod',  color: '#2C5F8A', url: 'https://ds1.nl/c/?si=16070&li=1414357&wi=420902' },
       // Deeplink desteklemiyor (Advertisements > Landing Page reklam materyali) — dl= eklenmez, DC() kullanılmaz
       { name: 'Housefinan',            tagline: 'Hypotheek vergelijken (DE)',  cta: 'Vergelijk rente', color: '#0A5C36', url: 'https://glp8.net/c/?si=21988&li=1926905&wi=420902' },
       { name: 'Kredanta',              tagline: 'Krediet vergelijken (DACH)',  cta: 'Vergelijk krediet', color: '#1A3E6F', url: 'https://glp8.net/c/?si=21987&li=1926881&wi=420902' },
@@ -60,7 +62,8 @@ const DEALS = [
     category: '✈️ Reizen',
     items: [
       { name: 'CheapTickets',             tagline: 'Goedkope vluchten',             cta: 'Zoek vlucht',    color: '#D9251D', url: DS('16070', '70202',   'https://www.cheaptickets.nl/vluchten') },
-      { name: 'Vakantiediscounter',       tagline: 'Last minute vakanties',         cta: 'Bekijk deals',   color: '#006FB9', url: DS('16070', '1362777', 'https://www.vakantiediscounter.nl/last-minute/') },
+      // dl= parameter breekt (dubbele URL, canlı test 2026-07-06) — geen dl
+      { name: 'Vakantiediscounter',       tagline: 'Last minute vakanties',         cta: 'Bekijk deals',   color: '#006FB9', url: 'https://ds1.nl/c/?si=16070&li=1362777&wi=420902' },
       { name: 'Prijsvrij',               tagline: 'Vluchten & hotels',             cta: 'Zoek vakantie',  color: '#FF6B00', url: DS('16070', '168050',  'https://www.prijsvrij.nl/last-minute') },
       { name: 'Oad',                     tagline: 'Georganiseerde reizen',         cta: 'Bekijk reizen',  color: '#003B7A', url: DS('16070', '1352504', 'https://www.oad.nl/aanbiedingen') },
       { name: 'Tjingo',                  tagline: 'Vliegvakanties & last minute',  cta: 'Zoek vakantie',  color: '#E8341C', url: DC('https://ds1.nl/c/?si=2554&li=148518&wi=420902',        'https://www.tjingo.nl/') },
@@ -87,8 +90,11 @@ const DEALS = [
     category: '🏠 Thuis & Wonen',
     items: [
       { name: 'Bol.com',          tagline: 'Dagelijks nieuwe topdeals',    cta: 'Bekijk topdeals', color: '#0000A4', url: `https://partner.bol.com/click/click?p=2&t=url&s=1527078&url=${encodeURIComponent('https://www.bol.com/nl/l/topdeals/')}` },
-      { name: 'Kwantum',          tagline: 'Gordijnen, vloeren & meer',    cta: 'Bekijk sale',     color: '#E2001A', url: DS('16070', '1360074', 'https://www.kwantum.nl/sale') },
-      { name: 'Witgoedhuis',      tagline: 'Witgoed & huishoudapparaten',  cta: 'Bekijk aanbod',   color: '#005BAC', url: DS('16070', '1307850', 'https://www.witgoedhuis.nl/aanbiedingen') },
+      // Kwantum's eigen redirect breekt op de dl= deeplink parameter (dubbele URL → 404,
+      // zelfde probleem als Levi's/Rakuten) — geen dl, gaat naar kwantum.nl homepage i.p.v. /sale
+      { name: 'Kwantum',          tagline: 'Gordijnen, vloeren & meer',    cta: 'Bekijk sale',     color: '#E2001A', url: 'https://ds1.nl/c/?si=16070&li=1360074&wi=420902' },
+      // dl= parameter breekt (dubbele URL, canlı test 2026-07-06) — geen dl
+      { name: 'Witgoedhuis',      tagline: 'Witgoed & huishoudapparaten',  cta: 'Bekijk aanbod',   color: '#005BAC', url: 'https://ds1.nl/c/?si=16070&li=1307850&wi=420902' },
       { name: '999Games',         tagline: 'Spellen, puzzels & speelgoed', cta: 'Bekijk aanbod',   color: '#E4007C', url: DC('https://lt45.net/c/?si=13450&li=1593002&wi=420902',  'https://www.999games.nl/') },
       { name: 'Tuinmeubelwereld', tagline: 'Tuinmeubelen & lounge sets',   cta: 'Bekijk collectie', color: '#3A7D44', url: DC('https://bdt9.net/c/?si=19167&li=1822967&wi=420902',  'https://www.tuinmeubelwereld.nl/') },
       { name: 'Miss Towels',      tagline: 'Premium handdoeken & badgoed', cta: 'Bekijk aanbod',   color: '#B5838D', url: DC('https://glp8.net/c/?si=21226&li=1904846&wi=420902',  'https://www.misstowels.nl/') },
@@ -114,8 +120,9 @@ const DEALS = [
       { name: 'Vitaepro NL',       tagline: 'Vitamines & gezondheid NL',  cta: 'Bekijk aanbod',    color: '#B71C1C', url: AW(18520,  'https://www.vitaepro.nl/') },
       { name: 'Direct Running',    tagline: 'Hardloopschoenen & kleding', cta: 'Bekijk aanbod',    color: '#E63329', url: AW(71531,  'https://www.direct-running.nl/') },
       { name: 'Direct Volley',     tagline: 'Volleybal gear & kleding',   cta: 'Bekijk aanbod',    color: '#F4A300', url: AW(103041, 'https://www.direct-volley.nl/') },
-      { name: 'Sinner',            tagline: 'Sport & outdoorkleding',     cta: 'Bekijk collectie', color: '#D40000', url: DS('16070', '79935',   'https://www.sinner.eu/sale') },
-      { name: 'Vitaminstore',      tagline: 'Vitamines & supplementen',   cta: 'Bekijk aanbod',    color: '#00A651', url: DS('16070', '1266442', 'https://www.vitaminstore.nl/aanbiedingen') },
+      // dl= parameter breekt (dubbele URL, canlı test 2026-07-06) — geen dl
+      { name: 'Sinner',            tagline: 'Sport & outdoorkleding',     cta: 'Bekijk collectie', color: '#D40000', url: 'https://ds1.nl/c/?si=16070&li=79935&wi=420902' },
+      { name: 'Vitaminstore',      tagline: 'Vitamines & supplementen',   cta: 'Bekijk aanbod',    color: '#00A651', url: 'https://ds1.nl/c/?si=16070&li=1266442&wi=420902' },
       { name: 'BioProphyl',        tagline: 'Kwalitatieve supplementen',  cta: 'Bekijk aanbod',    color: '#2E7D32', url: AW(22561,  'https://www.bioprophyl.com/') },
       { name: 'Happy Mammoth',     tagline: 'Gut health & supplementen',  cta: 'Bekijk aanbod',    color: '#FF6B35', url: DC('https://glp8.net/c/?si=19600&li=1839644&wi=420902',  'https://eu.happymammoth.com/') },
       { name: 'Plein.nl',          tagline: 'Drogist & gezondheid online', cta: 'Bekijk aanbod',   color: '#0071BC', url: DC('https://fr135.net/c/?si=3366&li=1161224&wi=420902',  'https://www.plein.nl/') },

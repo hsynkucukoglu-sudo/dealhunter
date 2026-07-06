@@ -110,9 +110,12 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   Jwverzekeringen:       { destinationUrl: 'https://www.jwverzekeringen.nl/', network: 'daisycon', trackingBase: 'https://partners.jwverzekeringen.nl/c/?si=21167&li=1901301&wi=420902', rel: REL },
 
   // ── Energie — widget'tan (MeerBesparenWidget) taşındı, /energie pilot sayfası için tek kaynak ──
-  ENGIE:          { destinationUrl: 'https://www.engie.nl/energie-vergelijken',   network: 'daisycon', trackingBase: 'https://ds1.nl/c/?si=16070&li=20757&wi=420902',   rel: REL },
-  Oxxio:          { destinationUrl: 'https://www.oxxio.nl/energie/alles-in-1',    network: 'daisycon', trackingBase: 'https://ds1.nl/c/?si=16070&li=119834&wi=420902',  rel: REL },
-  'Pure Energie': { destinationUrl: 'https://www.pure-energie.nl/energie-vergelijken', network: 'daisycon', trackingBase: 'https://ds1.nl/c/?si=16070&li=1420973&wi=420902', rel: REL },
+  // ENGIE/Oxxio/Pure Energie: dl= (deeplink) parametresi bu 3 programın kendi redirect'inde
+  // çift URL'e yol açıp 404/hata sayfasına düşürüyordu (Kwantum/Levi's ile aynı bug, canlı
+  // test edildi 2026-07-06) — destinationUrl doğrudan tam tracking linki, trackingBase KULLANILMIYOR.
+  ENGIE:          { destinationUrl: 'https://ds1.nl/c/?si=16070&li=20757&wi=420902',   network: 'daisycon', rel: REL },
+  Oxxio:          { destinationUrl: 'https://ds1.nl/c/?si=16070&li=119834&wi=420902',  network: 'daisycon', rel: REL },
+  'Pure Energie': { destinationUrl: 'https://ds1.nl/c/?si=16070&li=1420973&wi=420902', network: 'daisycon', rel: REL },
   noSun:          { destinationUrl: 'https://www.nosun.nl/',      network: 'daisycon', trackingBase: 'https://dt51.net/c/?si=19142&li=1877489&wi=420902', rel: REL },
   Renogy:         { destinationUrl: 'https://www.renogy.com/eu/', network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=21168&li=1901324&wi=420902', rel: REL },
 
