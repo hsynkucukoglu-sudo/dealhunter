@@ -95,13 +95,15 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   'Weightworld.nl':     { destinationUrl: 'https://www.weightworld.nl/',     network: 'daisycon', trackingBase: 'https://fr135.net/c/?si=15441&li=1670530&wi=420902', rel: REL },
   'Oakley':             { destinationUrl: 'https://www.oakley.com/nl-nl/',   network: 'daisycon', trackingBase: 'https://bdt9.net/c/?si=18433&li=1819889&wi=420902', rel: REL },
 
-  // ── Daisycon — 2026-07-02 onaylı, trackingBase Daisycon'dan alınacak ───────
-  // Daisycon > Campagnes > [program] > Link ophalen → si/li/domain al, trackingBase ekle
-  // destinationUrl'ler web'den doğrulandı (Minisforum FR hariç — birden fazla FR site var, doğrulanmalı)
-  'Housefinan (DE)':     { destinationUrl: 'https://www.housefinan.de/',       network: 'daisycon', rel: REL }, // si=21988 — 2026-07-05 CSV export'unda yok
-  'Kredanta (DACH)':     { destinationUrl: 'https://kredanta.de/',             network: 'daisycon', rel: REL }, // si=21987 — 2026-07-05 CSV export'unda yok
+  // ── Daisycon — 2026-07-02 onaylı ────────────────────────────────────────────
+  // Housefinan/Kredanta: bu programlar deeplink desteklemiyor (Daisycon "Advertisements"
+  // bölümündeki tek link "Landing Page" reklam materyali) — Levi's/Rakuten ile aynı durum,
+  // destinationUrl doğrudan tam tracking linki, trackingBase KULLANILMIYOR ki wrapAffiliate()
+  // &dl= eklemesin (eklerse redirect zinciri bozulabilir).
+  'Housefinan (DE)':     { destinationUrl: 'https://glp8.net/c/?si=21988&li=1926905&wi=420902', network: 'daisycon', rel: REL },
+  'Kredanta (DACH)':     { destinationUrl: 'https://glp8.net/c/?si=21987&li=1926881&wi=420902', network: 'daisycon', rel: REL },
   Hermie:                { destinationUrl: 'https://hermie.com/',              network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=20097&li=1858135&wi=420902', rel: REL },
-  'Minisforum (FR)':     { destinationUrl: 'https://minisforum-store.com/fr/', network: 'daisycon', rel: REL }, // si=20763 — domain doğrulanmadı, 2026-07-05 CSV export'unda yok
+  'Minisforum (FR)':     { destinationUrl: 'https://minisforum-store.com/fr/', network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=20763&li=1880752&wi=420902', rel: REL },
   'VVVCadeaukaarten.nl': { destinationUrl: 'https://www.vvvcadeaukaarten.nl/', network: 'daisycon', trackingBase: 'https://fr135.net/c/?si=15261&li=1660848&wi=420902', rel: REL },
   // 2026-07-03 onaylı — ayrı program, Minisforum (FR)'den farklı si
   'Minisforum (EU)':     { destinationUrl: 'https://www.minisforum.com/', network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=20771&li=1880782&wi=420902', rel: REL },

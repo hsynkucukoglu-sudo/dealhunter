@@ -49,10 +49,9 @@ const DEALS = [
       { name: 'Nationale-Nederlanden', tagline: 'Zorg & aanvullend pakket',    cta: 'Bereken premie', color: '#FF6200', url: DS('16070', '1362622', 'https://www.nn.nl/zorgverzekering/') },
       { name: 'DELA',                  tagline: 'Uitvaartverzekering',         cta: 'Bekijk aanbod',  color: '#003087', url: DS('16070', '1414707', 'https://www.dela.nl/uitvaartverzekering') },
       { name: 'Monuta',                tagline: 'Uitvaartzorg geregeld',       cta: 'Bekijk aanbod',  color: '#2C5F8A', url: DS('16070', '1414357', 'https://www.monuta.nl/uitvaartverzekering') },
-      // 2026-07-02 onaylı — trackingBase Daisycon'dan alınacak, şimdilik untracked direct link (si=21988)
-      { name: 'Housefinan',            tagline: 'Hypotheek vergelijken (DE)',  cta: 'Vergelijk rente', color: '#0A5C36', url: 'https://www.housefinan.de/' },
-      // si=21987 — trackingBase Daisycon'dan alınacak
-      { name: 'Kredanta',              tagline: 'Krediet vergelijken (DACH)',  cta: 'Vergelijk krediet', color: '#1A3E6F', url: 'https://kredanta.de/' },
+      // Deeplink desteklemiyor (Advertisements > Landing Page reklam materyali) — dl= eklenmez, DC() kullanılmaz
+      { name: 'Housefinan',            tagline: 'Hypotheek vergelijken (DE)',  cta: 'Vergelijk rente', color: '#0A5C36', url: 'https://glp8.net/c/?si=21988&li=1926905&wi=420902' },
+      { name: 'Kredanta',              tagline: 'Krediet vergelijken (DACH)',  cta: 'Vergelijk krediet', color: '#1A3E6F', url: 'https://glp8.net/c/?si=21987&li=1926881&wi=420902' },
       { name: 'JW Verzekeringen',      tagline: 'Autoverzekering vergelijken', cta: 'Bereken premie', color: '#B71C1C', url: DC('https://partners.jwverzekeringen.nl/c/?si=21167&li=1901301&wi=420902', 'https://www.jwverzekeringen.nl/') },
     ],
   },
@@ -156,8 +155,7 @@ const DEALS = [
       { name: 'Omnisend',        tagline: 'Email & SMS marketing tool',   cta: 'Probeer gratis', color: '#4A90D9', url: DC('https://glp8.net/c/?si=20641&li=1874887&wi=420902', 'https://www.omnisend.com/') },
       { name: 'Quadcopter-shop', tagline: 'Drones voor hobby & pro',      cta: 'Bekijk drones',  color: '#37474F', url: DC('https://bdt9.net/c/?si=18088&li=1783485&wi=420902',   'https://www.quadcopter-shop.nl/') },
       { name: 'Difmark',         tagline: 'Refurbished smartphones met korting', cta: 'Bekijk aanbod', color: '#059669', url: DC('https://glp8.net/c/?si=20242&li=1863153&wi=420902', 'https://www.difmark.com/') },
-      // si=20763 — trackingBase Daisycon'dan alınacak, domain doğrulanmadı (meerdere FR sites bestaan), şimdilik untracked
-      { name: 'Minisforum FR',   tagline: 'Mini PC\'s & AI workstations',  cta: 'Bekijk aanbod',  color: '#1A1A2E', url: 'https://minisforum-store.com/fr/' },
+      { name: 'Minisforum FR',   tagline: 'Mini PC\'s & AI workstations',  cta: 'Bekijk aanbod',  color: '#1A1A2E', url: DC('https://glp8.net/c/?si=20763&li=1880752&wi=420902', 'https://minisforum-store.com/fr/') },
       { name: 'Minisforum EU',   tagline: 'Mini PC\'s & AI workstations',  cta: 'Bekijk aanbod',  color: '#2B2D42', url: DC('https://glp8.net/c/?si=20771&li=1880782&wi=420902', 'https://www.minisforum.com/') },
     ],
   },
