@@ -417,6 +417,15 @@ cron.schedule('0 8 * * *', async () => {
   } catch (error) {
     console.error('⏰ Scraper Zamanlama Hatası:', error)
   }
+  // Süresi geçmiş/orphan ürün temizliği önceden sadece sunucu başlangıcında (restart'ta)
+  // çalışıyordu — deploy'lar arası günlerce eski veri DB'de kalabiliyordu. Artık günlük.
+  try {
+    await clearOrphanProducts()
+    const deleted = await clearExpiredProducts()
+    if (deleted > 0) console.log(`🧹 ${deleted} tarihi geçmiş ürün DB'den silindi.`)
+  } catch (error) {
+    console.error('🧹 Günlük Temizlik Hatası:', error)
+  }
 })
 
 // Pazartesi 09:00 — haftalık bülten (scraper bittikten 1 saat sonra)
