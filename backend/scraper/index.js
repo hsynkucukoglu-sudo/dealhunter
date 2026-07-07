@@ -934,11 +934,12 @@ function vomarCleanName(raw) {
 // Publitas OCR-tekst mengt vaak meerdere producten door elkaar (naam van product A
 // naast prijs van product B, willekeurige losse cijfers uit decoratieve tekst) — te
 // dubbelzinnig voor regex om betrouwbaar te ontleden zonder verkeerde naam/prijs
-// combinaties te riskeren. Claude kan de context gebruiken om dit wél te ontwarren.
-// ANTHROPIC_API_KEY ontbreekt → functie retourneert null, aanroeper valt terug op regex.
+// combinaties te riskeren. Een LLM kan de context gebruiken om dit wél te ontwarren.
+// Gemini (gratis tier, geen creditcard nodig via aistudio.google.com) — GEMINI_API_KEY
+// ontbreekt → functie retourneert null, aanroeper valt terug op regex.
 let vomarLLMErrorLogged = false
 async function parseVomarPageWithLLM(text) {
-  const apiKey = process.env.ANTHROPIC_API_KEY
+  const apiKey = process.env.GEMINI_API_KEY
   if (!apiKey || !text || text.length < 20) return null
 
   const prompt = `Dit is ruwe, door elkaar gehusselde OCR-tekst van één pagina uit een Nederlandse supermarkt-folder (Vomar). Tekstvolgorde komt niet overeen met de visuele lay-out — namen en prijzen van verschillende producten kunnen door elkaar staan.
@@ -952,7 +953,7 @@ Regels:
 - Negeer decoratieve tekst, algemene categorieën zonder specifieke merknaam, en voorbeeldprijzen ("Prijsvoorbeeld: ...")
 - Productnamen: normale hoofdletter/kleine letter Nederlandse tekst, geen losse eenheidswoorden ("STUK", "KRAT") als naam
 
-Retourneer UITSLUITEND een JSON array, geen andere tekst:
+Retourneer UITSLUITEND een JSON array, geen andere tekst, geen markdown code block:
 [{"name": "Productnaam", "originalPrice": 0.00, "discountedPrice": 0.00}]
 Als er geen zekere producten zijn: []
 
@@ -960,20 +961,18 @@ Tekst:
 ${text.slice(0, 2000)}`
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 1024,
-        messages: [{ role: 'user', content: prompt }],
-      }),
-      signal: AbortSignal.timeout(20000),
-    })
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0, maxOutputTokens: 1024 },
+        }),
+        signal: AbortSignal.timeout(20000),
+      }
+    )
     if (!res.ok) {
       if (!vomarLLMErrorLogged) {
         vomarLLMErrorLogged = true
@@ -982,7 +981,7 @@ ${text.slice(0, 2000)}`
       return null
     }
     const data = await res.json()
-    const raw = data.content?.[0]?.text || ''
+    const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || ''
     const jsonMatch = raw.match(/\[[\s\S]*\]/)
     if (!jsonMatch) return []
     const parsed = JSON.parse(jsonMatch[0])
