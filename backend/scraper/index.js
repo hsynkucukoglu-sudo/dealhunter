@@ -936,6 +936,7 @@ function vomarCleanName(raw) {
 // dubbelzinnig voor regex om betrouwbaar te ontleden zonder verkeerde naam/prijs
 // combinaties te riskeren. Claude kan de context gebruiken om dit wél te ontwarren.
 // ANTHROPIC_API_KEY ontbreekt → functie retourneert null, aanroeper valt terug op regex.
+let vomarLLMErrorLogged = false
 async function parseVomarPageWithLLM(text) {
   const apiKey = process.env.ANTHROPIC_API_KEY
   if (!apiKey || !text || text.length < 20) return null
@@ -973,7 +974,13 @@ ${text.slice(0, 2000)}`
       }),
       signal: AbortSignal.timeout(20000),
     })
-    if (!res.ok) return null
+    if (!res.ok) {
+      if (!vomarLLMErrorLogged) {
+        vomarLLMErrorLogged = true
+        console.error(`  ⚠️ [Vomar] LLM parsing HTTP ${res.status}, regex'e düşülüyor:`, (await res.text()).slice(0, 200))
+      }
+      return null
+    }
     const data = await res.json()
     const raw = data.content?.[0]?.text || ''
     const jsonMatch = raw.match(/\[[\s\S]*\]/)
@@ -985,7 +992,11 @@ ${text.slice(0, 2000)}`
         && p.discountedPrice > 0 && p.originalPrice >= p.discountedPrice
         && p.originalPrice < 100 && !VOMAR_UNIT_ONLY_NAME.test(p.name.trim()))
       .map(p => ({ name: vomarCleanName(p.name), orig: p.originalPrice, disc: p.discountedPrice }))
-  } catch {
+  } catch (e) {
+    if (!vomarLLMErrorLogged) {
+      vomarLLMErrorLogged = true
+      console.error('  ⚠️ [Vomar] LLM parsing hatası, regex\'e düşülüyor:', e.message)
+    }
     return null
   }
 }
@@ -1035,6 +1046,7 @@ function parseVomarPageText(text) {
 
 async function scrapeVomar() {
   console.log('🏪 [Vomar] Publitas weekfolder...')
+  vomarLLMErrorLogged = false
   try {
     // Follow redirect to get current publication slug
     const redirectRes = await fetch(`${VOMAR_PUBLITAS_BASE}/${VOMAR_PUBLITAS_GROUP}`, {
