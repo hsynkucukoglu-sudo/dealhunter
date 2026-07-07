@@ -411,11 +411,16 @@ export async function clearOrphanProducts() {
 }
 
 export async function clearExpiredProducts() {
+  // expiresAt sadece tarih (saat yok, ör. '2026-07-07') olarak saklanıyor. TIMESTAMPTZ'e
+  // cast edilince gece yarısına (00:00 UTC) denk geliyordu — cron gün içinde herhangi bir
+  // saatte çalıştığında "bugün biten" ürünler daha gün bitmeden siliniyordu (2026-07-07
+  // regresyonu: Plus 136→21 ürüne düştü). Gün bazlı karşılaştırma: sadece expiresAt
+  // TARİHİ bugünden kesinlikle önceyse sil, "bugün biten" ürün gün sonuna kadar kalır.
   const res = await pool.query(`
     DELETE FROM products
     WHERE "expiresAt" IS NOT NULL
       AND "expiresAt" != ''
-      AND "expiresAt"::TIMESTAMPTZ < NOW()
+      AND "expiresAt"::DATE < CURRENT_DATE
   `)
   return res.rowCount
 }
