@@ -1747,12 +1747,20 @@ export async function scrapeFlyerProducts() {
   })
 
   // Unit-price meta: use API-provided values when available, regex as fallback
+  let __diagLogged = 0
   all = all.map(p => {
+    let result
     if (p.unitSize != null && p.unitType) {
       // AH API already gave us clean data — only fill brand if missing
-      return { ...p, brand: p.brand ?? _extractBrand(p.name) }
+      result = { ...p, brand: p.brand ?? _extractBrand(p.name) }
+    } else {
+      result = { ...p, ...enrichProductMeta(p.name, p.discountedPrice) }
     }
-    return { ...p, ...enrichProductMeta(p.name, p.discountedPrice) }
+    if (__diagLogged < 5) {
+      __diagLogged++
+      console.log(`[BRAND-DIAG] name="${p.name}" price=${p.discountedPrice} -> brand=${result.brand} unitSize=${result.unitSize}`)
+    }
+    return result
   })
 
   console.log(`\n✅ Toplam ${all.length} ürün (${dirk.length} Dirk, ${jumbo.length} Jumbo, ${hoogvliet.length} Hoogvliet, ${lidl.length} Lidl, ${ah.length} AH, ${aldi.length} Aldi, ${vomar.length} Vomar, ${deka.length} DekaMarkt, ${coop.length} Coop, ${plus.length} Plus, ${kruidvat.length} Kruidvat)`)
