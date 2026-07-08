@@ -3,8 +3,9 @@ import { VISIBLE_MARKETS as MARKETS, CATEGORIES } from '@/lib/types'
 import { getAllPosts } from '@/lib/posts'
 import { currentWeekSlug } from '@/lib/weeklyDeals'
 import { getAllPairs } from '@/lib/vergelijk'
+import { getBrandList } from '@/lib/brands'
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const base = 'https://www.dealhunter4u.nl'
     const now = new Date()
 
@@ -29,6 +30,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.7,
   }))
 
+  const brands = await getBrandList()
+  const brandPages = brands.map(b => ({
+        url: `${base}/merk/${b.slug}`,
+        lastModified: now,
+        changeFrequency: 'weekly' as const,
+        priority: 0.65,
+  }))
+
   const blogPages = getAllPosts().map(post => ({
         url: `${base}/blog/${post.slug}`,
         lastModified: new Date(post.date),
@@ -50,10 +59,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/zomeracties`, lastModified: now, changeFrequency: 'daily' as const, priority: 0.7 },
     { url: `${base}/energie`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.7 },
     { url: `${base}/vergelijk`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.8 },
+    { url: `${base}/merk`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.75 },
         ...blogPages,
         ...marketPages,
         ...categoryPages,
         ...vergelijkPages,
+        ...brandPages,
     { url: `${base}/privacy`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.3 },
     { url: `${base}/contact`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.3 },
       ]

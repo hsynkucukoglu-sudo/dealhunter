@@ -130,6 +130,7 @@ export function SiteFooter() {
               {[
                 { href: '/', label: 'Alle aanbiedingen' },
                 { href: '/vergelijk', label: '⚖️ Supermarkten vergelijken' },
+                { href: '/merk', label: '🏷️ Merken vergelijken' },
                 { href: '/energie', label: '⚡ Energie vergelijken' },
                 { href: '/zomeracties', label: '☀️ Zomeracties' },
                 { href: '/blog', label: 'Blog & Tips' },
