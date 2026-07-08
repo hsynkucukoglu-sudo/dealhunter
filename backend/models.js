@@ -33,6 +33,11 @@ export async function createProduct(data) {
     category: data.category || 'overig',
     campaignType: data.campaignType ?? null,
     affiliateUrl: data.affiliateUrl ?? null,
+    brand: data.brand ?? null,
+    unitSize: data.unitSize ?? null,
+    unitType: data.unitType ?? null,
+    unitPrice: data.unitPrice ?? null,
+    fullSizeLabel: data.fullSizeLabel ?? null,
   }
 
   await db.createProduct(product)
