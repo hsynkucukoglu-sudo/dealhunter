@@ -119,6 +119,10 @@ export const MARKET_FAQS: Record<string, FAQ[]> = {
       question: 'Welke dranken zijn bij Dirk in de aanbieding?',
       answer: 'Dirk van den Broek heeft wekelijks scherpe aanbiedingen op bier (Heineken, Grolsch), frisdrank (Coca-Cola, Fanta) en sappen. Bier 24-pack is bij Dirk gemiddeld €2-4 goedkoper dan bij AH of Jumbo. In de zomer en rond feestdagen zijn de dranken-aanbiedingen bij Dirk de scherpste van alle Nederlandse supermarkten.',
     },
+    {
+      question: 'Is Dirk volgens onafhankelijk onderzoek de goedkoopste supermarkt?',
+      answer: 'Ja. Uit onderzoek van de Consumentenbond (2026) komt Dirk samen met Nettorama naar voren als de goedkoopste supermarkt van Nederland, gevolgd door Vomar, Hoogvliet, Lidl en Aldi. Op DealHunter zie je wekelijks alle actuele Dirk-aanbiedingen, zodat je zelf profiteert van die lage prijzen.',
+    },
   ],
   'aldi': [
     {

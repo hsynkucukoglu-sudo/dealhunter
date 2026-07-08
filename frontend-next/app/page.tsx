@@ -20,6 +20,14 @@ const HOME_FAQS = [
     question: 'Kan ik zien hoeveel ik bespaar?',
     answer: 'Ja. Bij elk product zie je het kortingspercentage en de besparing ten opzichte van de normale prijs. Een "Laagste prijs"-label geeft aan welke supermarkt op dat moment het goedkoopst is voor een vergelijkbaar product.',
   },
+  {
+    question: 'Zijn de aanbiedingen op DealHunter4U altijd actueel?',
+    answer: 'Ja. Verlopen aanbiedingen verdwijnen automatisch van DealHunter4U — we tonen alleen deals die op dit moment geldig zijn. Onze data komt rechtstreeks uit de officiële folders en wordt dagelijks ververst, dus je vindt hier geen verlopen kortingscodes of aanbiedingen die al zijn afgelopen.',
+  },
+  {
+    question: 'Wat maakt DealHunter4U anders dan andere aanbiedingensites?',
+    answer: 'DealHunter4U is de enige aanbiedingensite van Nederland die te gebruiken is in het Nederlands, Engels én Turks. Daarnaast combineren we supermarkt-, drogisterij- en energie-aanbiedingen op één plek, terwijl de meeste concurrenten zich tot één categorie beperken.',
+  },
 ]
 
 export async function generateMetadata({ searchParams }: { searchParams: Promise<{ q?: string }> }): Promise<Metadata> {
