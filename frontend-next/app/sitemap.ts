@@ -60,6 +60,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/energie`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.7 },
     { url: `${base}/vergelijk`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.8 },
     { url: `${base}/merk`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.75 },
+    { url: `${base}/kortingsindex`, lastModified: now, changeFrequency: 'daily' as const, priority: 0.8 },
+    { url: `${base}/pers`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.5 },
         ...blogPages,
         ...marketPages,
         ...categoryPages,

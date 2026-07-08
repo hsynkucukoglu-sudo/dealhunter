@@ -131,10 +131,12 @@ export function SiteFooter() {
                 { href: '/', label: 'Alle aanbiedingen' },
                 { href: '/vergelijk', label: '⚖️ Supermarkten vergelijken' },
                 { href: '/merk', label: '🏷️ Merken vergelijken' },
+                { href: '/kortingsindex', label: '📊 Kortingsindex' },
                 { href: '/energie', label: '⚡ Energie vergelijken' },
                 { href: '/zomeracties', label: '☀️ Zomeracties' },
                 { href: '/blog', label: 'Blog & Tips' },
                 { href: '/over-ons', label: 'Over ons' },
+                { href: '/pers', label: 'Pers' },
                 { href: '/contact', label: 'Contact' },
                 { href: '/privacy', label: 'Privacybeleid' },
               ].map(link => (
