@@ -108,6 +108,9 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   // 2026-07-03 onaylı — ayrı program, Minisforum (FR)'den farklı si
   'Minisforum (EU)':     { destinationUrl: 'https://www.minisforum.com/', network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=20771&li=1880782&wi=420902', rel: REL },
   Jwverzekeringen:       { destinationUrl: 'https://www.jwverzekeringen.nl/', network: 'daisycon', trackingBase: 'https://partners.jwverzekeringen.nl/c/?si=21167&li=1901301&wi=420902', rel: REL },
+  // 2026-07-07 onaylı — trackingBase Daisycon CSV export'undan alınacak
+  Westwing: { destinationUrl: 'https://www.westwing.nl/', network: 'daisycon', rel: REL }, // si=17294
+  Sembo:    { destinationUrl: 'https://www.sembo.nl/',    network: 'daisycon', rel: REL }, // si=20811
 
   // ── Energie — widget'tan (MeerBesparenWidget) taşındı, /energie pilot sayfası için tek kaynak ──
   // ENGIE/Oxxio/Pure Energie: dl= (deeplink) parametresi bu 3 programın kendi redirect'inde

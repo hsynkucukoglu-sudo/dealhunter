@@ -83,6 +83,8 @@ const DEALS = [
       { name: 'Wereldplanner',           tagline: 'Reizen naar elke bestemming',   cta: 'Bekijk reizen',  color: '#1565C0', url: DC('https://ds1.nl/c/?si=20232&li=1862768&wi=420902',     'https://www.wereldplanner.nl/') },
       { name: 'Doenkado',                tagline: 'Uitjes & belevenissen cadeau',  cta: 'Bekijk ervaringen', color: '#E65100', url: DC('https://ds1.nl/c/?si=1305&li=80616&wi=420902',    'https://www.doenkado.nl/') },
       { name: 'Kiwi.com',                tagline: 'Goedkoopste vluchten EU',       cta: 'Zoek vlucht',    color: '#F57F17', url: DC('https://glp8.net/c/?si=20714&li=1878051&wi=420902',   'https://www.kiwi.com/nl/') },
+      // 2026-07-07 onaylı — trackingBase Daisycon CSV export'undan alınacak
+      { name: 'Sembo',                   tagline: 'Pakketreizen & vliegvakanties', cta: 'Bekijk reizen',  color: '#0057B8', url: 'https://www.sembo.nl/' },
     ],
   },
   {
@@ -93,6 +95,8 @@ const DEALS = [
       // Kwantum's eigen redirect breekt op de dl= deeplink parameter (dubbele URL → 404,
       // zelfde probleem als Levi's/Rakuten) — geen dl, gaat naar kwantum.nl homepage i.p.v. /sale
       { name: 'Kwantum',          tagline: 'Gordijnen, vloeren & meer',    cta: 'Bekijk sale',     color: '#E2001A', url: 'https://ds1.nl/c/?si=16070&li=1360074&wi=420902' },
+      // 2026-07-07 onaylı — trackingBase Daisycon CSV export'undan alınacak
+      { name: 'Westwing',         tagline: 'Design meubels & woonaccessoires', cta: 'Bekijk aanbod', color: '#8B2439', url: 'https://www.westwing.nl/' },
       // dl= parameter breekt (dubbele URL, canlı test 2026-07-06) — geen dl
       { name: 'Witgoedhuis',      tagline: 'Witgoed & huishoudapparaten',  cta: 'Bekijk aanbod',   color: '#005BAC', url: 'https://ds1.nl/c/?si=16070&li=1307850&wi=420902' },
       { name: '999Games',         tagline: 'Spellen, puzzels & speelgoed', cta: 'Bekijk aanbod',   color: '#E4007C', url: DC('https://lt45.net/c/?si=13450&li=1593002&wi=420902',  'https://www.999games.nl/') },
