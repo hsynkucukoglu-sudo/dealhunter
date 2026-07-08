@@ -1114,32 +1114,11 @@ async function scrapeVomar() {
       }
     }
 
-    // Open Food Facts — product images by name (max 1 req/sec)
-    // Blindelings het eerste zoekresultaat nemen gaf regelmatig een totaal
-    // ongerelateerde afbeelding (bv. "STUK" → geitenkaas) — nu wordt pas een
-    // afbeelding overgenomen als minstens één betekenisvol woord uit de query
-    // ook echt in de gevonden productnaam voorkomt.
-    for (const p of results) {
-      try {
-        await new Promise(r => setTimeout(r, 600))
-        const queryWords = p.name.replace(/[^a-zA-Z\s]/g, ' ').split(/\s+/).filter(w => w.length > 2)
-        const q = queryWords.slice(0, 3).join(' ')
-        if (!q) continue
-        const offRes = await fetch(
-          `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(q)}&search_simple=1&action=process&json=1&page_size=5`,
-          { headers: { 'User-Agent': 'DealHunter4U/1.0 (hsyn.kucukoglu@gmail.com)', 'Accept': 'application/json' }, signal: AbortSignal.timeout(8000) }
-        )
-        if (!offRes.ok) continue
-        const offData = await offRes.json()
-        const significantWords = queryWords.filter(w => w.length > 3).map(w => w.toLowerCase())
-        const match = (offData.products || []).find(prod => {
-          const candidateName = `${prod.product_name || ''} ${prod.product_name_nl || ''}`.toLowerCase()
-          return significantWords.some(w => candidateName.includes(w))
-        })
-        const img = match?.image_front_small_url || match?.image_small_url || null
-        if (img) p.imageUrl = img
-      } catch { /* geen afbeelding, geen probleem */ }
-    }
+    // Open Food Facts görsel eşleştirmesi KALDIRILDI (2026-07-08) — tekst benzerliği
+    // kategori farkını görmüyor: "STUK" → keçi peyniri, "Slagers Filet Americain"
+    // (gerçek et) → "De Vegetarische Slager" vejetaryen alternatifi gibi yanlış/
+    // yanıltıcı eşleşmeler defalarca çıktı. Yanlış görsel, görsel yoktan kötü —
+    // imageUrl artık her zaman null, ProductCard'ın mevcut fallback ikonu devreye girer.
 
     const withSavings = results.filter(r => r.originalPrice > r.discountedPrice)
     console.log(`  ✅ Vomar: ${results.length} ürün (${withSavings.length} met besparing)`)
