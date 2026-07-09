@@ -117,6 +117,22 @@ export async function initDatabase() {
   await pool.query(`CREATE INDEX IF NOT EXISTS idx_products_market ON products (market)`)
   await pool.query(`CREATE INDEX IF NOT EXISTS idx_price_history_recorded_week ON price_history (recorded_week)`)
 
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS deal_alerts (
+      id SERIAL PRIMARY KEY,
+      email TEXT NOT NULL,
+      keyword TEXT NOT NULL,
+      market TEXT DEFAULT NULL,
+      confirmed BOOLEAN DEFAULT FALSE,
+      token TEXT UNIQUE NOT NULL,
+      last_sent_at TIMESTAMPTZ DEFAULT NULL,
+      created_at TIMESTAMPTZ DEFAULT NOW(),
+      UNIQUE(email, keyword)
+    )
+  `)
+  await pool.query(`CREATE INDEX IF NOT EXISTS idx_deal_alerts_email ON deal_alerts (email)`)
+  await pool.query(`CREATE INDEX IF NOT EXISTS idx_deal_alerts_keyword ON deal_alerts (lower(keyword))`)
+
   console.log('✅ PostgreSQL veritabanı başlatıldı')
 }
 
@@ -513,4 +529,42 @@ export async function getScraperStats() {
   `)
   const total = rows.reduce((s, r) => s + r.total, 0)
   return { total, markets: rows }
+}
+
+export async function subscribeDealAlert({ email, keyword, market, token }) {
+  const { rows } = await pool.query(
+    `INSERT INTO deal_alerts (email, keyword, market, token)
+     VALUES ($1, $2, $3, $4)
+     ON CONFLICT (email, keyword) DO UPDATE SET market = EXCLUDED.market
+     RETURNING *`,
+    [email.toLowerCase().trim(), keyword.toLowerCase().trim(), market || null, token]
+  )
+  return rows[0]
+}
+
+export async function unsubscribeDealAlert(token) {
+  const { rowCount } = await pool.query(
+    `DELETE FROM deal_alerts WHERE token = $1`,
+    [token]
+  )
+  return rowCount > 0
+}
+
+export async function getMatchingAlerts(productNames) {
+  if (!productNames?.length) return []
+  const { rows } = await pool.query(
+    `SELECT * FROM deal_alerts
+     WHERE last_sent_at IS NULL OR last_sent_at < NOW() - INTERVAL '6 days'`
+  )
+  return rows.filter(alert => {
+    const kw = alert.keyword.toLowerCase()
+    return productNames.some(name => name.toLowerCase().includes(kw))
+  })
+}
+
+export async function markAlertSent(id) {
+  await pool.query(
+    `UPDATE deal_alerts SET last_sent_at = NOW() WHERE id = $1`,
+    [id]
+  )
 }

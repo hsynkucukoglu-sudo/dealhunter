@@ -6,6 +6,7 @@ import { buildBreadcrumbSchema, buildFaqSchema, buildMultiMarketProductListSchem
 import { DealHunterLogo } from '@/components/DealHunterLogo'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { ProductCard } from '@/components/ProductCard'
+import { DealAlertForm } from '@/components/DealAlertForm'
 
 export const revalidate = 3600
 
@@ -153,6 +154,20 @@ export default async function ProductKeywordPage({ params }: Props) {
             </Link>
           </div>
         )}
+
+        {/* Deal Alert */}
+        <div className="rounded-3xl p-6 md:p-8 mb-8" style={{ background: 'white', border: '1.5px solid #E0D8CE' }}>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="material-symbols-outlined text-xl" style={{ color: '#E33D26', fontVariationSettings: '"FILL" 1' }}>notifications</span>
+            <h2 className="font-bold" style={{ fontSize: '1rem', color: '#1A1A1A', fontFamily: 'Space Grotesk' }}>
+              Alert instellen voor {keyword.label}
+            </h2>
+          </div>
+          <p className="text-sm mb-4" style={{ color: '#6B6259' }}>
+            Ontvang een e-mail zodra er nieuwe {keyword.label} aanbiedingen zijn — gratis, geen account nodig.
+          </p>
+          <DealAlertForm defaultKeyword={keyword.label} />
+        </div>
 
         {/* FAQ */}
         <div className="rounded-3xl p-6 md:p-10 mb-8" style={{ background: 'rgba(255,255,255,0.7)', border: '1px solid rgba(201,193,182,0.4)' }}>

@@ -135,6 +135,7 @@ export function SiteFooter() {
                 { href: '/kortingsindex', label: '📊 Kortingsindex' },
                 { href: '/energie', label: '⚡ Energie vergelijken' },
                 { href: '/zomeracties', label: '☀️ Zomeracties' },
+                { href: '/volgende-week', label: '📅 Aanbiedingen volgende week' },
                 { href: '/blog', label: 'Blog & Tips' },
                 { href: '/over-ons', label: 'Over ons' },
                 { href: '/pers', label: 'Pers' },

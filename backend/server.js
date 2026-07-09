@@ -3,7 +3,7 @@ import cors from 'cors'
 import rateLimit from 'express-rate-limit'
 import { initDatabase } from './db.js'
 import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, updateProductCategory, clearAllProducts, clearProductsByMarket } from './models.js'
-import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, archiveWeeklyDeals, getMinPriceMap, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts, updateSubscriptionPreferences, getUnsegmentedSubscriptions, getSegmentedSubscriptions, clearOrphanProducts, getProductCount, clearExpiredProducts } from './db.js'
+import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, archiveWeeklyDeals, getMinPriceMap, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts, updateSubscriptionPreferences, getUnsegmentedSubscriptions, getSegmentedSubscriptions, clearOrphanProducts, getProductCount, clearExpiredProducts, subscribeDealAlert, unsubscribeDealAlert } from './db.js'
 import { sendWeeklyNewsletter, sendWatchlistAlert } from './email.js'
 import { sendPushToAll, sendPushToSubscriptions } from './push.js'
 import { scrapeFlyerProducts } from './scraper/index.js'
@@ -648,6 +648,33 @@ app.post('/api/newsletter/subscribe', newsletterLimit, asyncHandler(async (req, 
 
   console.error('[Newsletter] Brevo error', brevoRes.status, JSON.stringify(data))
   res.status(500).json({ error: 'Aanmelding mislukt, probeer het later opnieuw' })
+}))
+
+// POST /api/deal-alerts/subscribe
+app.post('/api/deal-alerts/subscribe', newsletterLimit, asyncHandler(async (req, res) => {
+  const { email, keyword, market } = req.body
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ error: 'Ongeldig e-mailadres' })
+  }
+  if (!keyword || keyword.trim().length < 2) {
+    return res.status(400).json({ error: 'Vul een zoekwoord in (minimaal 2 tekens)' })
+  }
+  const crypto = await import('crypto')
+  const token = crypto.randomBytes(24).toString('hex')
+  await subscribeDealAlert({ email, keyword: keyword.trim(), market: market || null, token })
+  res.json({ success: true, message: `Je ontvangt een alert zodra er "${keyword}" aanbiedingen zijn.` })
+}))
+
+// GET /api/deal-alerts/unsubscribe?token=xxx
+app.get('/api/deal-alerts/unsubscribe', asyncHandler(async (req, res) => {
+  const { token } = req.query
+  if (!token) return res.status(400).json({ error: 'Token ontbreekt' })
+  const removed = await unsubscribeDealAlert(token)
+  if (removed) {
+    res.send('<html><body style="font-family:sans-serif;text-align:center;padding:60px"><h2>✅ Uitgeschreven</h2><p>Je ontvangt geen deal alerts meer.</p><a href="https://www.dealhunter4u.nl">Terug naar DealHunter4U</a></body></html>')
+  } else {
+    res.status(404).send('<html><body>Token niet gevonden.</body></html>')
+  }
 }))
 
 // ===== 404 Handler =====

@@ -121,6 +121,7 @@ export function ProductsPage({ initialProducts, initialSearch = '' }: { initialP
   const [searchTerm, setSearchTerm] = useState(initialSearch)
   const [debouncedSearch, setDebouncedSearch] = useState(initialSearch)
   const [showCampaignsOnly, setShowCampaignsOnly] = useState(false)
+  const [showKassakoopjes, setShowKassakoopjes] = useState(false)
   const [selectedMarket, setSelectedMarket] = useState('all')
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [navScrolled, setNavScrolled] = useState(false)
@@ -144,6 +145,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
   const deferredMarket = useDeferredValue(selectedMarket)
   const deferredCategory = useDeferredValue(selectedCategory)
   const deferredCampaignsOnly = useDeferredValue(showCampaignsOnly)
+  const deferredKassakoopjes = useDeferredValue(showKassakoopjes)
   const deferredFavoritesOnly = useDeferredValue(showFavoritesOnly)
   const deferredCampaign = useDeferredValue(selectedCampaign)
   const deferredSearch = useDeferredValue(debouncedSearch)
@@ -151,7 +153,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
   // Reset pagination when any filter changes
   useEffect(() => {
     setVisibleCount(36)
-  }, [deferredMarket, deferredCategory, deferredCampaignsOnly, deferredFavoritesOnly, deferredCampaign, deferredSearch])
+  }, [deferredMarket, deferredCategory, deferredCampaignsOnly, deferredFavoritesOnly, deferredCampaign, deferredSearch, deferredKassakoopjes])
 
   const { itemCount, setIsCartOpen } = useShoppingList()
   const { t, lang, setLang } = useLanguage()
@@ -311,6 +313,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
       const matchesMarket = deferredMarket === 'all' || p.market === deferredMarket
       const matchesCategory = deferredCategory === 'all' || p.category === deferredCategory
       const matchesFavorites = deferredFavoritesOnly ? favorites.some(f => f.id === p.id || (f.name === p.name && f.market === p.market)) : true
+      const matchesKassakoopjes = deferredKassakoopjes ? (p.discountedPrice > 0 && p.discountedPrice < 5) : true
       const matchesCampaignType = (() => {
         if (deferredCampaign === 'all') return true
         const discountPct = p.originalPrice > p.discountedPrice && p.originalPrice > 0
@@ -318,7 +321,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           : 0
         return detectCampaignType(p.name, discountPct, p.campaignType).type === deferredCampaign
       })()
-      return notExpired && matchesCampaign && matchesMarket && matchesCategory && matchesFavorites && matchesCampaignType
+      return notExpired && matchesCampaign && matchesMarket && matchesCategory && matchesFavorites && matchesKassakoopjes && matchesCampaignType
     }).sort((a, b) => {
       const pctA = a.originalPrice > a.discountedPrice && a.originalPrice > 0
         ? (a.discount || Math.round(((a.originalPrice - a.discountedPrice) / a.originalPrice) * 100))
@@ -328,7 +331,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         : 0
       return pctB - pctA
     })
-  }, [products, deferredSearch, searchProducts, deferredCampaignsOnly, deferredMarket, deferredCategory, deferredFavoritesOnly, favorites, deferredCampaign])
+  }, [products, deferredSearch, searchProducts, deferredCampaignsOnly, deferredKassakoopjes, deferredMarket, deferredCategory, deferredFavoritesOnly, favorites, deferredCampaign])
 
   const displayedProducts = useMemo(() => {
     // Default view: ensure min. 2 products per market in the first visible slot
@@ -712,16 +715,22 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         {/* FILTER ROW — sadeleştirildi: markten showcase'e taşındı */}
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-2">
           <motion.button whileTap={{ scale: 0.95 }}
-            onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setSelectedCampaign('all'); setSelectedCategory('all') })}
-            className={`market-pill flex-none ${selectedMarket === 'all' && !showCampaignsOnly && !showFavoritesOnly ? 'market-pill-active' : ''}`}>
+            onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setShowKassakoopjes(false); setSelectedCampaign('all'); setSelectedCategory('all') })}
+            className={`market-pill flex-none ${selectedMarket === 'all' && !showCampaignsOnly && !showFavoritesOnly && !showKassakoopjes ? 'market-pill-active' : ''}`}>
             <span className="material-symbols-outlined text-base">bolt</span>
             {t.allMarkets}
           </motion.button>
           <motion.button whileTap={{ scale: 0.95 }}
-            onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(true); setSelectedCampaign('all'); setSelectedCategory('all') })}
+            onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(true); setSelectedCampaign('all'); setSelectedCategory('all'); setShowKassakoopjes(false) })}
             className={`market-pill flex-none ${showCampaignsOnly ? 'market-pill-active' : ''}`}>
             <span className="material-symbols-outlined text-base">local_fire_department</span>
             {t.campaignsOnly}
+          </motion.button>
+          <motion.button whileTap={{ scale: 0.95 }}
+            onClick={() => startTransition(() => { setSelectedMarket('all'); setShowKassakoopjes(!showKassakoopjes); setShowCampaignsOnly(false); setSelectedCategory('all'); setSelectedCampaign('all') })}
+            className={`market-pill flex-none ${showKassakoopjes ? 'market-pill-active' : ''}`}>
+            <span className="material-symbols-outlined text-base">payments</span>
+            Kassakoopjes &lt;€5
           </motion.button>
           {favorites.length > 0 && (
             <motion.button whileTap={{ scale: 0.95 }}
@@ -1346,7 +1355,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           </span>
         </button>
         <button
-          onClick={() => setShowCampaignsOnly(!showCampaignsOnly)}
+          onClick={() => startTransition(() => { setShowCampaignsOnly(!showCampaignsOnly); setShowKassakoopjes(false) })}
           className="flex flex-col items-center justify-center p-2 cursor-pointer"
           style={{ color: showCampaignsOnly ? '#E33D26' : '#6B6259' }}
         >
@@ -1356,8 +1365,16 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           </span>
         </button>
         <button
+          onClick={() => startTransition(() => { setShowKassakoopjes(!showKassakoopjes); setShowCampaignsOnly(false); setSelectedMarket('all'); setSelectedCategory('all') })}
+          className="flex flex-col items-center justify-center p-2 cursor-pointer"
+          style={{ color: showKassakoopjes ? '#1B9E4B' : '#6B6259' }}
+        >
+          <span className="material-symbols-outlined">payments</span>
+          <span className="font-headline text-[10px] font-bold uppercase">&lt;€5</span>
+        </button>
+        <button
           onClick={() => {
-            startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setSelectedCategory('all') })
+            startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setShowKassakoopjes(false); setSelectedCategory('all') })
             window.scrollTo({ top: 700, behavior: 'smooth' })
           }}
           className="flex flex-col items-center justify-center p-2 cursor-pointer"

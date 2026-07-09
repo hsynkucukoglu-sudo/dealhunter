@@ -65,6 +65,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/blog`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.8 },
     { url: `${base}/blog/beste-deals/${currentWeekSlug()}`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.85 },
     { url: `${base}/zomeracties`, lastModified: now, changeFrequency: 'daily' as const, priority: 0.7 },
+    { url: `${base}/volgende-week`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.8 },
     { url: `${base}/energie`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.7 },
     { url: `${base}/vergelijk`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.8 },
     { url: `${base}/merk`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.75 },
