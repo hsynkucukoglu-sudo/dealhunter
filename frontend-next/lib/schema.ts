@@ -134,6 +134,66 @@ export function buildHomeDealsSchema(products: Product[]) {
   }
 }
 
+export function buildMultiMarketProductListSchema(
+  products: Product[],
+  listName: string,
+  listUrl: string,
+) {
+  const week = getISOWeek(new Date())
+  const valid = products.filter(p => {
+    const img = resolveImageUrl(p.imageUrl)
+    return img !== null && p.discountedPrice > 0 && p.originalPrice > p.discountedPrice
+  })
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `${listName} — Week ${week}`,
+    url: listUrl.startsWith('http') ? listUrl : `${SITE_URL}${listUrl}`,
+    numberOfItems: Math.min(valid.length, 20),
+    itemListElement: valid.slice(0, 20).map((p, i) => {
+      const marketSlug = MARKET_SLUG[p.market] ?? p.market.toLowerCase().replace(/\s+/g, '-')
+      const resolvedImage = resolveImageUrl(p.imageUrl)
+      return {
+        '@type': 'ListItem',
+        position: i + 1,
+        item: {
+          '@context': 'https://schema.org',
+          '@type': 'Product',
+          name: p.name,
+          description: `${p.name} aanbieding bij ${p.market} — nu voor €${p.discountedPrice.toFixed(2)}`,
+          ...(resolvedImage ? { image: resolvedImage } : {}),
+          ...(p.brand ? { brand: { '@type': 'Brand', name: p.brand } } : {}),
+          offers: {
+            '@type': 'Offer',
+            url: `${SITE_URL}/supermarkt/${marketSlug}`,
+            priceCurrency: 'EUR',
+            price: p.discountedPrice.toFixed(2),
+            priceValidUntil: p.expiresAt,
+            availability: 'https://schema.org/InStock',
+            itemCondition: 'https://schema.org/NewCondition',
+            seller: { '@type': 'Organization', name: p.market },
+            priceSpecification: [
+              {
+                '@type': 'UnitPriceSpecification',
+                priceType: 'https://schema.org/ListPrice',
+                price: p.originalPrice.toFixed(2),
+                priceCurrency: 'EUR',
+              },
+              {
+                '@type': 'UnitPriceSpecification',
+                priceType: 'https://schema.org/SalePrice',
+                price: p.discountedPrice.toFixed(2),
+                priceCurrency: 'EUR',
+                validThrough: p.expiresAt,
+              },
+            ],
+          },
+        },
+      }
+    }),
+  }
+}
+
 export function buildHomePageSchema(markets: string) {
   return {
     '@context': 'https://schema.org',

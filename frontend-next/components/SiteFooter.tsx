@@ -131,6 +131,7 @@ export function SiteFooter() {
                 { href: '/', label: 'Alle aanbiedingen' },
                 { href: '/vergelijk', label: '⚖️ Supermarkten vergelijken' },
                 { href: '/merk', label: '🏷️ Merken vergelijken' },
+                { href: '/product', label: '🛒 Product aanbiedingen' },
                 { href: '/kortingsindex', label: '📊 Kortingsindex' },
                 { href: '/energie', label: '⚡ Energie vergelijken' },
                 { href: '/zomeracties', label: '☀️ Zomeracties' },

@@ -4,6 +4,7 @@ import { getAllPosts } from '@/lib/posts'
 import { currentWeekSlug } from '@/lib/weeklyDeals'
 import { getAllPairs } from '@/lib/vergelijk'
 import { getBrandList } from '@/lib/brands'
+import { PRODUCT_KEYWORDS } from '@/lib/productKeywords'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const base = 'https://www.dealhunter4u.nl'
@@ -45,6 +46,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.75,
   }))
 
+  const productPages = PRODUCT_KEYWORDS.map(k => ({
+        url: `${base}/product/${k.slug}`,
+        lastModified: now,
+        changeFrequency: 'weekly' as const,
+        priority: 0.65,
+  }))
+
   return [
     {
             url: base,
@@ -60,6 +68,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/energie`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.7 },
     { url: `${base}/vergelijk`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.8 },
     { url: `${base}/merk`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.75 },
+    { url: `${base}/product`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.7 },
     { url: `${base}/kortingsindex`, lastModified: now, changeFrequency: 'daily' as const, priority: 0.8 },
     { url: `${base}/pers`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.5 },
     { url: `${base}/tr`, lastModified: now, changeFrequency: 'daily' as const, priority: 0.9 },
@@ -68,6 +77,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ...categoryPages,
         ...vergelijkPages,
         ...brandPages,
+        ...productPages,
     { url: `${base}/privacy`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.3 },
     { url: `${base}/contact`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.3 },
       ]

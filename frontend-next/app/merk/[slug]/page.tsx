@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getBrandList, getBrandPageData } from '@/lib/brands'
-import { buildBreadcrumbSchema, buildFaqSchema, getISOWeek } from '@/lib/schema'
+import { buildBreadcrumbSchema, buildFaqSchema, buildMultiMarketProductListSchema, getISOWeek } from '@/lib/schema'
 import { DealHunterLogo } from '@/components/DealHunterLogo'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { ProductCard } from '@/components/ProductCard'
@@ -66,11 +66,17 @@ export default async function BrandPage({ params }: Props) {
     },
   ]
   const faqSchema = buildFaqSchema(faqs)
+  const productListSchema = products.length > 0
+    ? buildMultiMarketProductListSchema(products, `${name} Aanbiedingen`, `/merk/${slug}`)
+    : null
 
   return (
     <div className="min-h-screen" style={{ background: '#F5EDE3' }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      {productListSchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productListSchema) }} />
+      )}
 
       <nav
         className="fixed top-0 left-0 right-0 z-50 bg-white"

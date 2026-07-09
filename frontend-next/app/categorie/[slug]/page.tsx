@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getProductsByCategory } from '@/lib/api'
 import { CATEGORIES } from '@/lib/types'
-import { buildBreadcrumbSchema, buildFaqSchema } from '@/lib/schema'
+import { buildBreadcrumbSchema, buildFaqSchema, buildMultiMarketProductListSchema } from '@/lib/schema'
 import { CategoryPage } from '@/components/CategoryPage'
 import { getPostsByCategory } from '@/lib/posts'
 import { CATEGORY_FAQS } from '@/lib/categoryFaqs'
@@ -106,6 +106,9 @@ export default async function CategoriePageRoute({ params }: Props) {
   ])
   const faqs = CATEGORY_FAQS[slug] ?? []
   const faqSchema = faqs.length ? buildFaqSchema(faqs) : null
+  const productListSchema = products.length > 0
+    ? buildMultiMarketProductListSchema(products, `${cat.label} Aanbiedingen`, `/categorie/${slug}`)
+    : null
 
   return (
     <>
@@ -117,6 +120,12 @@ export default async function CategoriePageRoute({ params }: Props) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
+      {productListSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(productListSchema) }}
         />
       )}
       <CategoryPage category={cat} initialProducts={products} relatedPosts={relatedPosts} />
