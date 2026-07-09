@@ -3,7 +3,7 @@ import cors from 'cors'
 import rateLimit from 'express-rate-limit'
 import { initDatabase } from './db.js'
 import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, updateProductCategory, clearAllProducts, clearProductsByMarket } from './models.js'
-import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, getMinPriceMap, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts, updateSubscriptionPreferences, getUnsegmentedSubscriptions, getSegmentedSubscriptions, clearOrphanProducts, getProductCount, clearExpiredProducts } from './db.js'
+import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, archiveWeeklyDeals, getMinPriceMap, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts, updateSubscriptionPreferences, getUnsegmentedSubscriptions, getSegmentedSubscriptions, clearOrphanProducts, getProductCount, clearExpiredProducts } from './db.js'
 import { sendWeeklyNewsletter, sendWatchlistAlert } from './email.js'
 import { sendPushToAll, sendPushToSubscriptions } from './push.js'
 import { scrapeFlyerProducts } from './scraper/index.js'
@@ -289,6 +289,9 @@ async function runScraperJob() {
 
     // Fiyat geçmişini kaydet
     recordPriceHistory(createdProducts).catch(e => console.error('Fiyat geçmişi kayıt hatası:', e.message))
+
+    // Haftalık deal arşivi — Kortingsindex ve prijshistorie hammaddesi
+    archiveWeeklyDeals(createdProducts).catch(e => console.error('Deal arşiv hatası:', e.message))
 
     // IndexNow ping — Bing/Yandex'e güncel URL'leri bildir
     const INDEXNOW_KEY = process.env.INDEXNOW_KEY || 'dh4u-2026-x9k3m7p2'

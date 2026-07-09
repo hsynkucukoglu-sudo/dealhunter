@@ -165,7 +165,7 @@ export const MARKET_FAQS: Record<string, FAQ[]> = {
     },
     {
       question: 'Is Hoogvliet goedkoper dan Albert Heijn?',
-      answer: 'Hoogvliet is op weekaanbiedingen gemiddeld 10-20% goedkoper dan Albert Heijn, met name op versproducten (vlees, groente, zuivel). Hoogvliet richt zich sterk op de regio en biedt soms exclusieve regionale aanbiedingen die je bij AH of Jumbo niet vindt. Vergelijk de actuele kortingen van beide supermarkten direct op DealHunter.',
+      answer: 'Ja. Hoogvliet is op weekaanbiedingen gemiddeld 10-20% goedkoper dan Albert Heijn. Volgens de Consumentenbond (2026) behoort Hoogvliet tot de goedkoopste supermarkten van Nederland, na Dirk en Vomar. Met name op versproducten (vlees, groente, zuivel) is het prijsverschil merkbaar. Vergelijk de actuele kortingen direct op DealHunter.',
     },
     {
       question: 'Welke producten zijn bij Hoogvliet in de aanbieding?',
@@ -191,7 +191,7 @@ export const MARKET_FAQS: Record<string, FAQ[]> = {
     },
     {
       question: 'Is Vomar goedkoper dan andere supermarkten?',
-      answer: 'Vomar biedt scherpe weekprijzen die vaak vergelijkbaar zijn met Dirk en Aldi. Vomar is gemiddeld 10-15% goedkoper dan Albert Heijn op basisboodschappen. De supermarkt staat bekend om een goed prijs-kwaliteitaanbod en heeft wekelijks opvallende kortingen op vlees, dranken en zuivel.',
+      answer: 'Ja. Vomar behoort volgens de Consumentenbond (2026) tot de goedkoopste supermarkten van Nederland, samen met Dirk en Hoogvliet. Vomar is gemiddeld 10-15% goedkoper dan Albert Heijn op basisboodschappen. De supermarkt staat bekend om een goed prijs-kwaliteitaanbod en heeft wekelijks opvallende kortingen op vlees, dranken en zuivel.',
     },
     {
       question: 'Welke producten zijn bij Vomar in de aanbieding?',

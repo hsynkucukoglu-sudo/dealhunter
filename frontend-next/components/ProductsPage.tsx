@@ -330,7 +330,21 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
     })
   }, [products, deferredSearch, searchProducts, deferredCampaignsOnly, deferredMarket, deferredCategory, deferredFavoritesOnly, favorites, deferredCampaign])
 
-  const displayedProducts = useMemo(() => filteredProducts.slice(0, visibleCount), [filteredProducts, visibleCount])
+  const displayedProducts = useMemo(() => {
+    // Default view: ensure min. 2 products per market in the first visible slot
+    if (deferredMarket === 'all' && deferredCategory === 'all' && !deferredSearch && !deferredCampaignsOnly && !deferredFavoritesOnly) {
+      const guaranteed: typeof filteredProducts = []
+      const rest: typeof filteredProducts = []
+      const counts: Record<string, number> = {}
+      for (const p of filteredProducts) {
+        const c = counts[p.market] ?? 0
+        if (c < 2) { guaranteed.push(p); counts[p.market] = c + 1 }
+        else rest.push(p)
+      }
+      return [...guaranteed, ...rest].slice(0, visibleCount)
+    }
+    return filteredProducts.slice(0, visibleCount)
+  }, [filteredProducts, visibleCount, deferredMarket, deferredCategory, deferredSearch, deferredCampaignsOnly, deferredFavoritesOnly])
   const hasMore = filteredProducts.length > visibleCount
 
   const potentialSavings = useMemo(() =>
@@ -942,6 +956,24 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             )}
           </div>
 
+          {/* Trust badges — enige site + anti-flipbook + auto-expire */}
+          <div className="flex flex-wrap justify-center items-center gap-2 mt-4 mb-1">
+            {[
+              { icon: 'translate',     text: lang === 'nl' ? 'Enige 3-talige aanbiedingssite van NL' : lang === 'en' ? 'Only trilingual deals site in NL' : 'NL\'nin tek 3 dilli fırsat sitesi' },
+              { icon: 'block',         text: lang === 'nl' ? 'Geen folders doorbladeren' : lang === 'en' ? 'No flipping through folders' : 'Broşür karıştırmaya son' },
+              { icon: 'check_circle',  text: lang === 'nl' ? 'Verlopen deals verdwijnen automatisch' : lang === 'en' ? 'Expired deals removed automatically' : 'Süresi geçen fırsatlar otomatik silinir' },
+            ].map(b => (
+              <div
+                key={b.icon}
+                className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold"
+                style={{ background: 'rgba(255,255,255,0.75)', border: '1px solid rgba(201,193,182,0.4)', color: '#5A534B' }}
+              >
+                <span className="material-symbols-outlined text-sm" style={{ color: '#1B9E4B', fontSize: '14px', fontVariationSettings: '"FILL" 1' }}>{b.icon}</span>
+                {b.text}
+              </div>
+            ))}
+          </div>
+
           {/* Category shortcut chips */}
           <div className="hidden sm:flex flex-wrap justify-center items-center gap-2 mt-6">
             {[
@@ -1356,7 +1388,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           <p className="mb-4 leading-relaxed" style={{ color: '#5A534B' }}>
             DealHunter4U verzamelt elke dag automatisch de actuele aanbiedingen van de grootste Nederlandse
             supermarkten en drogisterijen — <strong>Albert Heijn, Jumbo, Lidl, Aldi, Dirk van den Broek,
-            Hoogvliet, Vomar, DekaMarkt, Coop, Plus en Kruidvat</strong> — en zet ze overzichtelijk naast
+            Hoogvliet, Vomar, DekaMarkt, Plus en Kruidvat</strong> — en zet ze overzichtelijk naast
             elkaar. Zo zie je in één oogopslag waar jouw boodschappen en drogisterijaankopen deze week het
             goedkoopst zijn, zonder eindeloos folders door te bladeren of tussen apps te wisselen.
           </p>

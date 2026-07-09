@@ -93,6 +93,23 @@ export async function initDatabase() {
     )
   `)
   
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS deal_archive (
+      id SERIAL PRIMARY KEY,
+      week_start DATE NOT NULL,
+      market TEXT NOT NULL,
+      name TEXT NOT NULL,
+      discounted_price REAL,
+      original_price REAL,
+      discount INTEGER,
+      category TEXT,
+      campaign_type TEXT,
+      image_url TEXT,
+      UNIQUE(week_start, market, name)
+    )
+  `)
+  await pool.query(`CREATE INDEX IF NOT EXISTS idx_deal_archive_week ON deal_archive (week_start)`)
+
   // Performance Indexes
   await pool.query(`CREATE INDEX IF NOT EXISTS idx_products_expiresAt ON products ("expiresAt")`)
   await pool.query(`CREATE INDEX IF NOT EXISTS idx_products_lower_name_market ON products (lower(name), market)`)
@@ -460,6 +477,23 @@ export async function getEmailsForFavoritedProducts() {
     GROUP BY ue.email
   `)
   return rows.map(r => ({ email: r.email, products: r.products }))
+}
+
+export async function archiveWeeklyDeals(products) {
+  if (!products?.length) return
+  const weekStart = currentWeekMonday()
+  const BATCH_SIZE = 50
+  for (let i = 0; i < products.length; i += BATCH_SIZE) {
+    const batch = products.slice(i, i + BATCH_SIZE)
+    await Promise.all(batch.map(p =>
+      pool.query(
+        `INSERT INTO deal_archive (week_start, market, name, discounted_price, original_price, discount, category, campaign_type, image_url)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+         ON CONFLICT (week_start, market, name) DO NOTHING`,
+        [weekStart, p.market, p.name, p.discountedPrice, p.originalPrice, p.discount ?? null, p.category ?? 'overig', p.campaignType ?? null, p.imageUrl ?? null]
+      ).catch(() => {})
+    ))
+  }
 }
 
 export async function getScraperStats() {
