@@ -239,3 +239,79 @@ export async function sendWatchlistAlert(email, products) {
   const html = buildWatchlistHtml(products)
   await sendTransactionalEmail(email, subject, html)
 }
+
+function buildDealAlertHtml(keywords, products, unsubToken) {
+  const keywordList = keywords.map(k => `<strong>${escapeHtml(k)}</strong>`).join(', ')
+  const itemsHtml = products.slice(0, 8).map(p => {
+    const hasDiscount = p.originalPrice > p.discountedPrice && p.originalPrice > 0
+    const pct = hasDiscount
+      ? (p.discount || Math.round(((p.originalPrice - p.discountedPrice) / p.originalPrice) * 100))
+      : 0
+    return `
+    <tr>
+      <td style="padding:14px 20px;border-bottom:1px solid #F0E6DE;vertical-align:middle">
+        <strong style="color:#1A1A1A;font-size:14px">${escapeHtml(p.name)}</strong><br>
+        <span style="color:#9C9389;font-size:12px">${escapeHtml(p.market)}</span>
+      </td>
+      <td style="padding:14px 20px;border-bottom:1px solid #F0E6DE;text-align:right;white-space:nowrap;vertical-align:middle">
+        <span style="color:#E33D26;font-weight:900;font-size:17px">€${p.discountedPrice.toFixed(2)}</span>
+        ${hasDiscount ? `<br><span style="color:#9C9389;font-size:12px;text-decoration:line-through">€${p.originalPrice.toFixed(2)}</span>
+        <span style="background:#E33D26;color:white;font-size:10px;font-weight:900;padding:1px 5px;border-radius:8px;margin-left:3px">-${pct}%</span>` : ''}
+      </td>
+    </tr>`
+  }).join('')
+
+  const unsubUrl = unsubToken
+    ? `https://www.dealhunter4u.nl/api/deal-alerts/unsubscribe?token=${encodeURIComponent(unsubToken)}`
+    : 'https://www.dealhunter4u.nl'
+
+  return `<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Deal alert: ${keywords[0]} in de aanbieding!</title>
+</head>
+<body style="margin:0;padding:0;background:#F5EDE3;font-family:Arial,Helvetica,sans-serif">
+  <div style="max-width:600px;margin:0 auto;padding:24px 16px">
+    <div style="background:#1A1A1A;border-radius:16px 16px 0 0;padding:24px 28px;text-align:center">
+      <div style="color:white;font-size:24px;font-weight:900;letter-spacing:-0.5px">
+        <span style="font-style:italic;font-family:Georgia,Times,serif">Deal</span>Hunter<span style="background:#C41230;padding:2px 8px;border-radius:5px;font-size:15px;margin-left:4px">4U</span>
+      </div>
+    </div>
+    <div style="background:white;border-radius:0 0 16px 16px;overflow:hidden;box-shadow:0 4px 0 #DDD0C4">
+      <div style="padding:24px 28px 16px">
+        <h2 style="color:#1A1A1A;margin:0 0 8px;font-size:20px;font-weight:900">🔔 Jouw deal alert!</h2>
+        <p style="color:#6B6259;margin:0;font-size:13px;line-height:1.6">
+          Er zijn actuele aanbiedingen voor ${keywordList}.
+        </p>
+      </div>
+      <table style="width:100%;border-collapse:collapse">
+        ${itemsHtml}
+      </table>
+      <div style="padding:24px 28px;text-align:center">
+        <a href="https://www.dealhunter4u.nl" style="background:#E33D26;color:white;padding:14px 32px;border-radius:30px;text-decoration:none;font-weight:900;font-size:15px;display:inline-block">
+          Bekijk alle deals →
+        </a>
+      </div>
+    </div>
+    <div style="text-align:center;padding:20px 16px;color:#9C9389;font-size:12px;line-height:1.8">
+      Je ontvangt dit bericht omdat je een deal alert hebt ingesteld bij DealHunter4U.<br>
+      <a href="${unsubUrl}" style="color:#E33D26;text-decoration:none">Alert uitschakelen</a>
+       ·
+      <a href="https://www.dealhunter4u.nl/privacy" style="color:#E33D26;text-decoration:none">Privacybeleid</a>
+    </div>
+  </div>
+</body>
+</html>`
+}
+
+export async function sendDealAlert(email, keywords, products, unsubToken) {
+  if (!process.env.BREVO_API_KEY || !email || !products?.length) return
+  const kw = keywords[0] ?? 'aanbieding'
+  const subject = products.length === 1
+    ? `🔔 ${products[0].name} in de aanbieding! — DealHunter4U`
+    : `🔔 ${products.length} aanbiedingen voor ${kw} — DealHunter4U`
+  const html = buildDealAlertHtml(keywords, products, unsubToken)
+  await sendTransactionalEmail(email, subject, html)
+}

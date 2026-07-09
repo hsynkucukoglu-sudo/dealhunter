@@ -3,8 +3,8 @@ import cors from 'cors'
 import rateLimit from 'express-rate-limit'
 import { initDatabase } from './db.js'
 import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, updateProductCategory, clearAllProducts, clearProductsByMarket } from './models.js'
-import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, archiveWeeklyDeals, getMinPriceMap, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts, updateSubscriptionPreferences, getUnsegmentedSubscriptions, getSegmentedSubscriptions, clearOrphanProducts, getProductCount, clearExpiredProducts, subscribeDealAlert, unsubscribeDealAlert } from './db.js'
-import { sendWeeklyNewsletter, sendWatchlistAlert } from './email.js'
+import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, archiveWeeklyDeals, getMinPriceMap, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts, updateSubscriptionPreferences, getUnsegmentedSubscriptions, getSegmentedSubscriptions, clearOrphanProducts, getProductCount, clearExpiredProducts, subscribeDealAlert, unsubscribeDealAlert, getMatchingAlerts, markAlertSent } from './db.js'
+import { sendWeeklyNewsletter, sendWatchlistAlert, sendDealAlert } from './email.js'
 import { sendPushToAll, sendPushToSubscriptions } from './push.js'
 import { scrapeFlyerProducts } from './scraper/index.js'
 import { categorize } from './categorize.js'
@@ -400,6 +400,58 @@ async function runScraperJob() {
           }
         })
         .catch(e => console.error('[Email] Watchlist email sorgulama hatası:', e.message))
+    }
+
+    // Deal alerts — keyword-based email notifications
+    if (process.env.BREVO_API_KEY) {
+      ;(async () => {
+        try {
+          const allProducts = await getProducts()
+          const productNames = allProducts.map(p => p.name)
+          const matchingAlerts = await getMatchingAlerts(productNames)
+          if (!matchingAlerts.length) return
+
+          // Group alerts by email — one email may match multiple keywords
+          const emailMap = new Map()
+          for (const alert of matchingAlerts) {
+            const kw = alert.keyword.toLowerCase()
+            const matched = allProducts.filter(p =>
+              p.name.toLowerCase().includes(kw) &&
+              (alert.market ? p.market === alert.market : true) &&
+              p.originalPrice > p.discountedPrice && p.originalPrice > 0
+            )
+            if (!matched.length) continue
+            if (!emailMap.has(alert.email)) emailMap.set(alert.email, [])
+            emailMap.get(alert.email).push({ alert, products: matched })
+          }
+
+          let sent = 0
+          for (const [email, entries] of emailMap) {
+            // Deduplicate products across multiple keyword matches
+            const seen = new Set()
+            const uniqueProducts = entries.flatMap(e => e.products).filter(p => {
+              if (seen.has(p.id)) return false
+              seen.add(p.id)
+              return true
+            })
+            const keywords = [...new Set(entries.map(e => e.alert.keyword))]
+            const unsubToken = entries[0].alert.token
+
+            try {
+              await sendDealAlert(email, keywords, uniqueProducts, unsubToken)
+              for (const { alert } of entries) await markAlertSent(alert.id)
+              sent++
+              await new Promise(r => setTimeout(r, 200))
+            } catch (e) {
+              console.error(`[Email] Deal alert hatası (${email}):`, e.message)
+            }
+          }
+
+          if (sent > 0) console.log(`🔔 Deal alerts: ${sent} kullanıcıya gönderildi`)
+        } catch (e) {
+          console.error('[Email] Deal alert sorgulama hatası:', e.message)
+        }
+      })()
     }
 
     return createdProducts
