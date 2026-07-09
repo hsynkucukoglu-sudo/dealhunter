@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getPost, getAllPosts, getRelatedPosts } from '@/lib/posts'
+import { EmbeddedDeals } from '@/components/EmbeddedDeals'
 import { getCategoryStyle } from '@/lib/postImages'
 import { buildBreadcrumbSchema, buildFaqSchema } from '@/lib/schema'
 import { MARKETS } from '@/lib/types'
@@ -156,6 +157,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           className="blog-content"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
+
+        {/* Canlı deal embed (post'ta dealEmbed config varsa) */}
+        {post.dealEmbed && <EmbeddedDeals config={post.dealEmbed} />}
 
         {/* Reklam — yazı gövdesinden sonra, in-content yerleşim */}
         <AdBanner slot="6629568666" format="auto" className="mt-8" minHeight={280} />

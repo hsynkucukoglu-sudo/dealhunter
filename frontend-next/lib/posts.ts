@@ -1,3 +1,13 @@
+export interface DealEmbedConfig {
+  title: string
+  category?: string
+  keyword?: string
+  markets?: string[]
+  limit?: number
+  ctaHref?: string
+  ctaLabel?: string
+}
+
 export interface BlogPost {
   slug: string
   title: string
@@ -8,6 +18,7 @@ export interface BlogPost {
   content: string
   relatedMarkets?: string[]
   faqs?: { question: string; answer: string }[]
+  dealEmbed?: DealEmbedConfig
 }
 
 export const POSTS: BlogPost[] = [
@@ -400,6 +411,13 @@ export const POSTS: BlogPost[] = [
 <p>Voor dagelijkse boodschappen zonder kortingen: <strong>Jumbo is goedkoper</strong>. Voor wie actief gebruik maakt van bonusaanbiedingen en de AH-app: <strong>Albert Heijn kan goedkoper uitpakken</strong> — zeker bij grote 1+1 acties op houdbare producten.</p>
 <p>De slimste strategie: <strong>combineer beide</strong>. Bekijk elke week welke supermarkt de beste aanbieding heeft op wat jij nodig hebt. Dat doe je eenvoudig op <a href="/supermarkt/albert-heijn">DealHunter4U — Albert Heijn aanbiedingen</a> en <a href="/supermarkt/jumbo">Jumbo aanbiedingen</a> naast elkaar.</p>
     `.trim(),
+    dealEmbed: {
+      title: 'Beste deals van AH, Jumbo & Lidl deze week',
+      markets: ['Albert Heijn', 'Jumbo', 'Lidl'],
+      limit: 3,
+      ctaHref: '/vergelijk/albert-heijn-vs-jumbo',
+      ctaLabel: 'Vergelijk Albert Heijn & Jumbo',
+    },
   },
   {
     slug: 'is-lidl-goedkoper-dan-albert-heijn',
