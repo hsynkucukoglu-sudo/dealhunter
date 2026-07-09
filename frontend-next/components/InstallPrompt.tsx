@@ -12,6 +12,10 @@ export function InstallPrompt() {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
+    if (window.matchMedia('(display-mode: standalone)').matches) return
+    const dismissed = localStorage.getItem('dh_install_dismissed')
+    if (dismissed && Date.now() - Number(dismissed) < 7 * 24 * 60 * 60 * 1000) return
+
     const handler = (e: Event) => {
       e.preventDefault()
       setPrompt(e as BeforeInstallPromptEvent)
@@ -43,7 +47,7 @@ export function InstallPrompt() {
       </p>
       <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
         <button
-          onClick={() => setVisible(false)}
+          onClick={() => { localStorage.setItem('dh_install_dismissed', String(Date.now())); setVisible(false) }}
           style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.6)', borderRadius: 6, padding: '5px 10px', cursor: 'pointer', fontSize: 12 }}
         >
           Nee

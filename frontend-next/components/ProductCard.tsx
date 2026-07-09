@@ -6,6 +6,7 @@ import { MARKET_COLORS } from '@/lib/types'
 import { useLanguage } from '@/context/LanguageContext'
 import { getAffiliateLink, getMarketDestination, isAllowedAffiliateUrl } from '@/lib/affiliate'
 import { useFavorites } from '@/context/FavoritesContext'
+import { useHotDeals } from '@/context/HotDealsContext'
 import { calcUnitPrice } from '@/lib/productMeta'
 import { detectCampaignType } from '@/lib/campaignType'
 import { usePriceHistory } from '@/context/PriceHistoryContext'
@@ -16,6 +17,7 @@ export function ProductCard({ product, priority = false }: { product: Product; p
 
   const affiliateLink = getAffiliateLink(product.market)
   const { isFavorite, isWatching, toggleFavorite, toggleWatch } = useFavorites()
+  const { isHot, toggleHot } = useHotDeals()
   const { isLowestPrice } = usePriceHistory()
   const hasValidDiscount = product.originalPrice > product.discountedPrice && product.originalPrice > 0
   const lowestEver = isLowestPrice(product.name, product.market, product.discountedPrice, product.unitSize, product.unitType)
@@ -128,6 +130,15 @@ export function ProductCard({ product, priority = false }: { product: Product; p
             <span className="material-symbols-outlined text-base" aria-hidden="true" style={{ color: isWatching(product.id) ? '#FF8C00' : '#8C8478', fontVariationSettings: isWatching(product.id) ? '"FILL" 1' : '"FILL" 0' }}>
               notifications
             </span>
+          </button>
+          <button
+            onClick={(e) => { e.stopPropagation(); toggleHot(product.id) }}
+            className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
+            style={{ background: 'rgba(255,255,255,0.9)' }}
+            aria-label={isHot(product.id) ? `${product.name} uit hot deals verwijderen` : `${product.name} markeren als hot deal`}
+            aria-pressed={isHot(product.id)}
+          >
+            <span style={{ fontSize: 15, lineHeight: 1 }}>{isHot(product.id) ? '🔥' : '🤍'}</span>
           </button>
         </div>
       </div>

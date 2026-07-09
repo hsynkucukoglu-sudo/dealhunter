@@ -13,6 +13,7 @@ import { AdBanner } from './AdBanner'
 import { buildComparisonGroups } from '@/lib/similarity'
 import { parseProductMeta } from '@/lib/productMeta'
 import { useFavorites } from '@/context/FavoritesContext'
+import { useHotDeals } from '@/context/HotDealsContext'
 import { PushNotificationButton } from './PushNotificationButton'
 import { AuthButton } from './AuthButton'
 import { detectCampaignType, CAMPAIGN_FILTERS, CampaignType } from '@/lib/campaignType'
@@ -126,6 +127,7 @@ export function ProductsPage({ initialProducts, initialSearch = '' }: { initialP
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [navScrolled, setNavScrolled] = useState(false)
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
+  const [showHotOnly, setShowHotOnly] = useState(false)
   const [selectedCampaign, setSelectedCampaign] = useState<CampaignType | 'all'>('all')
   const [watchlistToast, setWatchlistToast] = useState<string | null>(null)
   const [canInstall, setCanInstall] = useState(false)
@@ -147,17 +149,19 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
   const deferredCampaignsOnly = useDeferredValue(showCampaignsOnly)
   const deferredKassakoopjes = useDeferredValue(showKassakoopjes)
   const deferredFavoritesOnly = useDeferredValue(showFavoritesOnly)
+  const deferredHotOnly = useDeferredValue(showHotOnly)
   const deferredCampaign = useDeferredValue(selectedCampaign)
   const deferredSearch = useDeferredValue(debouncedSearch)
 
   // Reset pagination when any filter changes
   useEffect(() => {
     setVisibleCount(36)
-  }, [deferredMarket, deferredCategory, deferredCampaignsOnly, deferredFavoritesOnly, deferredCampaign, deferredSearch, deferredKassakoopjes])
+  }, [deferredMarket, deferredCategory, deferredCampaignsOnly, deferredFavoritesOnly, deferredCampaign, deferredSearch, deferredKassakoopjes, deferredHotOnly])
 
   const { itemCount, setIsCartOpen } = useShoppingList()
   const { t, lang, setLang } = useLanguage()
   const { favorites, watchlist } = useFavorites()
+  const { hotIds, hotCount } = useHotDeals()
 
   useEffect(() => {
     const handleScroll = () => setNavScrolled(window.scrollY > 20)
@@ -314,6 +318,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
       const matchesCategory = deferredCategory === 'all' || p.category === deferredCategory
       const matchesFavorites = deferredFavoritesOnly ? favorites.some(f => f.id === p.id || (f.name === p.name && f.market === p.market)) : true
       const matchesKassakoopjes = deferredKassakoopjes ? (p.discountedPrice > 0 && p.discountedPrice < 5) : true
+      const matchesHot = deferredHotOnly ? hotIds.has(p.id) : true
       const matchesCampaignType = (() => {
         if (deferredCampaign === 'all') return true
         const discountPct = p.originalPrice > p.discountedPrice && p.originalPrice > 0
@@ -321,7 +326,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           : 0
         return detectCampaignType(p.name, discountPct, p.campaignType).type === deferredCampaign
       })()
-      return notExpired && matchesCampaign && matchesMarket && matchesCategory && matchesFavorites && matchesKassakoopjes && matchesCampaignType
+      return notExpired && matchesCampaign && matchesMarket && matchesCategory && matchesFavorites && matchesKassakoopjes && matchesCampaignType && matchesHot
     }).sort((a, b) => {
       const pctA = a.originalPrice > a.discountedPrice && a.originalPrice > 0
         ? (a.discount || Math.round(((a.originalPrice - a.discountedPrice) / a.originalPrice) * 100))
@@ -331,7 +336,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         : 0
       return pctB - pctA
     })
-  }, [products, deferredSearch, searchProducts, deferredCampaignsOnly, deferredKassakoopjes, deferredMarket, deferredCategory, deferredFavoritesOnly, favorites, deferredCampaign])
+  }, [products, deferredSearch, searchProducts, deferredCampaignsOnly, deferredKassakoopjes, deferredMarket, deferredCategory, deferredFavoritesOnly, favorites, deferredCampaign, deferredHotOnly, hotIds])
 
   const displayedProducts = useMemo(() => {
     // Default view: ensure min. 2 products per market in the first visible slot
@@ -715,23 +720,31 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         {/* FILTER ROW — sadeleştirildi: markten showcase'e taşındı */}
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-2">
           <motion.button whileTap={{ scale: 0.95 }}
-            onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setShowKassakoopjes(false); setSelectedCampaign('all'); setSelectedCategory('all') })}
-            className={`market-pill flex-none ${selectedMarket === 'all' && !showCampaignsOnly && !showFavoritesOnly && !showKassakoopjes ? 'market-pill-active' : ''}`}>
+            onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setShowKassakoopjes(false); setShowHotOnly(false); setSelectedCampaign('all'); setSelectedCategory('all') })}
+            className={`market-pill flex-none ${selectedMarket === 'all' && !showCampaignsOnly && !showFavoritesOnly && !showKassakoopjes && !showHotOnly ? 'market-pill-active' : ''}`}>
             <span className="material-symbols-outlined text-base">bolt</span>
             {t.allMarkets}
           </motion.button>
           <motion.button whileTap={{ scale: 0.95 }}
-            onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(true); setSelectedCampaign('all'); setSelectedCategory('all'); setShowKassakoopjes(false) })}
+            onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(true); setSelectedCampaign('all'); setSelectedCategory('all'); setShowKassakoopjes(false); setShowHotOnly(false) })}
             className={`market-pill flex-none ${showCampaignsOnly ? 'market-pill-active' : ''}`}>
             <span className="material-symbols-outlined text-base">local_fire_department</span>
             {t.campaignsOnly}
           </motion.button>
           <motion.button whileTap={{ scale: 0.95 }}
-            onClick={() => startTransition(() => { setSelectedMarket('all'); setShowKassakoopjes(!showKassakoopjes); setShowCampaignsOnly(false); setSelectedCategory('all'); setSelectedCampaign('all') })}
+            onClick={() => startTransition(() => { setSelectedMarket('all'); setShowKassakoopjes(!showKassakoopjes); setShowCampaignsOnly(false); setShowHotOnly(false); setSelectedCategory('all'); setSelectedCampaign('all') })}
             className={`market-pill flex-none ${showKassakoopjes ? 'market-pill-active' : ''}`}>
             <span className="material-symbols-outlined text-base">payments</span>
             Kassakoopjes &lt;€5
           </motion.button>
+          {hotCount > 0 && (
+            <motion.button whileTap={{ scale: 0.95 }}
+              onClick={() => startTransition(() => { setShowHotOnly(!showHotOnly); setShowCampaignsOnly(false); setShowKassakoopjes(false); setSelectedMarket('all'); setSelectedCategory('all') })}
+              className={`market-pill flex-none ${showHotOnly ? 'market-pill-active' : ''}`}>
+              <span style={{ fontSize: 15 }}>🔥</span>
+              Mijn hot deals{hotCount > 0 ? ` (${hotCount})` : ''}
+            </motion.button>
+          )}
           {favorites.length > 0 && (
             <motion.button whileTap={{ scale: 0.95 }}
               onClick={() => startTransition(() => setShowFavoritesOnly(!showFavoritesOnly))}
@@ -1355,7 +1368,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           </span>
         </button>
         <button
-          onClick={() => startTransition(() => { setShowCampaignsOnly(!showCampaignsOnly); setShowKassakoopjes(false) })}
+          onClick={() => startTransition(() => { setShowCampaignsOnly(!showCampaignsOnly); setShowKassakoopjes(false); setShowHotOnly(false) })}
           className="flex flex-col items-center justify-center p-2 cursor-pointer"
           style={{ color: showCampaignsOnly ? '#E33D26' : '#6B6259' }}
         >
@@ -1365,16 +1378,26 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           </span>
         </button>
         <button
-          onClick={() => startTransition(() => { setShowKassakoopjes(!showKassakoopjes); setShowCampaignsOnly(false); setSelectedMarket('all'); setSelectedCategory('all') })}
+          onClick={() => startTransition(() => { setShowKassakoopjes(!showKassakoopjes); setShowCampaignsOnly(false); setShowHotOnly(false); setSelectedMarket('all'); setSelectedCategory('all') })}
           className="flex flex-col items-center justify-center p-2 cursor-pointer"
           style={{ color: showKassakoopjes ? '#1B9E4B' : '#6B6259' }}
         >
           <span className="material-symbols-outlined">payments</span>
           <span className="font-headline text-[10px] font-bold uppercase">&lt;€5</span>
         </button>
+        {hotCount > 0 && (
+          <button
+            onClick={() => startTransition(() => { setShowHotOnly(!showHotOnly); setShowCampaignsOnly(false); setShowKassakoopjes(false); setSelectedMarket('all'); setSelectedCategory('all') })}
+            className="flex flex-col items-center justify-center p-2 cursor-pointer"
+            style={{ color: showHotOnly ? '#E33D26' : '#6B6259' }}
+          >
+            <span style={{ fontSize: 20, lineHeight: '24px' }}>🔥</span>
+            <span className="font-headline text-[10px] font-bold uppercase">Hot</span>
+          </button>
+        )}
         <button
           onClick={() => {
-            startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setShowKassakoopjes(false); setSelectedCategory('all') })
+            startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setShowKassakoopjes(false); setShowHotOnly(false); setSelectedCategory('all') })
             window.scrollTo({ top: 700, behavior: 'smooth' })
           }}
           className="flex flex-col items-center justify-center p-2 cursor-pointer"

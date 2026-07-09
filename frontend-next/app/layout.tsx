@@ -10,6 +10,7 @@ import { LanguageProvider } from '@/context/LanguageContext'
 import { CookieBanner } from '@/components/CookieBanner'
 import { AdSenseScript } from '@/components/AdSenseScript'
 import { FavoritesProvider } from '@/context/FavoritesContext'
+import { HotDealsProvider } from '@/context/HotDealsContext'
 import { PriceHistoryProvider } from '@/context/PriceHistoryContext'
 import { SiteFooter } from '@/components/SiteFooter'
 import { InstallPrompt } from '@/components/InstallPrompt'
@@ -91,6 +92,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <LanguageProvider>
             <PriceHistoryProvider>
             <FavoritesProvider>
+              <HotDealsProvider>
               <ShoppingListProvider>
                 {children}
                 <SiteFooter />
@@ -98,6 +100,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <AdSenseScript />
                 <InstallPrompt />
               </ShoppingListProvider>
+              </HotDealsProvider>
             </FavoritesProvider>
             </PriceHistoryProvider>
           </LanguageProvider>

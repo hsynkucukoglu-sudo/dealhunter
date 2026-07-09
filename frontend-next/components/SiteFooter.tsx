@@ -136,6 +136,7 @@ export function SiteFooter() {
                 { href: '/energie', label: '⚡ Energie vergelijken' },
                 { href: '/zomeracties', label: '☀️ Zomeracties' },
                 { href: '/volgende-week', label: '📅 Aanbiedingen volgende week' },
+                { href: '/klantenkaarten', label: '🃏 Digitale klantenkaarten' },
                 { href: '/blog', label: 'Blog & Tips' },
                 { href: '/over-ons', label: 'Over ons' },
                 { href: '/pers', label: 'Pers' },
