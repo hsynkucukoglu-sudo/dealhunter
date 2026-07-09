@@ -162,6 +162,15 @@ export function SiteFooter() {
                 Taal
               </h3>
               <LanguageSwitcher />
+              <Link
+                href="/tr"
+                className="block mt-3 text-xs transition-colors"
+                style={{ color: '#6B6259', fontFamily: 'Hanken Grotesk' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#E33D26' }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#6B6259' }}
+              >
+                🇹🇷 Türkçe sayfa
+              </Link>
             </div>
           </div>
         </div>

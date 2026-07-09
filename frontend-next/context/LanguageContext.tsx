@@ -164,13 +164,16 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType>({ lang: 'nl', setLang: () => {}, t: translations.nl })
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = useState<Lang>('nl')
+export function LanguageProvider({ children, initialLang = 'nl' }: { children: React.ReactNode; initialLang?: Lang }) {
+  const [lang, setLangState] = useState<Lang>(initialLang)
 
   useEffect(() => {
+    // Dedicated locale routes (e.g. /tr) should show that language on first
+    // load regardless of a stale preference saved from a different route.
+    if (initialLang !== 'nl') return
     const saved = localStorage.getItem('lang') as Lang
     if (saved) setLangState(saved)
-  }, [])
+  }, [initialLang])
 
   const setLang = (l: Lang) => {
     setLangState(l)

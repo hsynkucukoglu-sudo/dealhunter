@@ -35,7 +35,16 @@ export async function generateMetadata({ searchParams }: { searchParams: Promise
   if (q) {
     return { robots: { index: false, follow: true } }
   }
-  return { alternates: { canonical: 'https://www.dealhunter4u.nl' } }
+  return {
+    alternates: {
+      canonical: 'https://www.dealhunter4u.nl',
+      languages: {
+        'nl-NL': 'https://www.dealhunter4u.nl',
+        'tr-TR': 'https://www.dealhunter4u.nl/tr',
+        'x-default': 'https://www.dealhunter4u.nl',
+      },
+    },
+  }
 }
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
