@@ -47,27 +47,56 @@ export const MARKET_CONTENT: Record<string, string> = {
 `,
 
   'jumbo': `
-<h2>Over Jumbo Aanbiedingen & Weekdeals</h2>
-<p><strong>Jumbo aanbiedingen</strong> vind je hier wekelijks bijgewerkt. Jumbo is met meer dan 700 filialen de op een na grootste supermarkt van Nederland. De keten staat bekend om zijn <strong>"7 zekerheden"</strong>: als een product goedkoper is bij de concurrent, krijg je het verschil terug. <strong>Aanbiedingen Jumbo</strong> wisselen elke woensdag.</p>
-<h3>Hoe bespaar je met de Jumbo folder?</h3>
-<p><strong>Jumbo aanbiedingen deze week</strong> bevatten wekelijks kortingen via <strong>1+1 gratis</strong>, <strong>2e halve prijs</strong> en procentuele acties op honderden producten. De Jumbo-klantenkaart geeft extra spaarpunten en toegang tot digitale kortingscoupons via de Jumbo-app. Huismerken (Jumbo-eigen lijn) zijn gemiddeld 15-25% goedkoper dan A-merken.</p>
-<h3>Jumbo versus Albert Heijn: wie wint?</h3>
-<p>Op basisprijzen is Jumbo gemiddeld <strong>2-5% goedkoper dan Albert Heijn</strong>. Bij een weekbudget van €150 scheelt dat ruim €150 per jaar. Maar AH heeft vaak diepere promoties (1+1 gratis op premium merken). De winnaar hangt af van wat jij koopt — DealHunter vergelijkt de <strong>aanbiedingen Jumbo</strong> en AH live, zodat je altijd de goedkoopste optie kiest.</p>
-<h3>Jumbo thuisbezorging</h3>
-<p>Jumbo bezorgt boodschappen aan huis via <strong>Jumbo.com</strong>. Alle weekaanbiedingen zijn ook online geldig. Minimumbestelwaarde en bezorgkosten variëren per regio. Via DealHunter zie je welke Jumbo-deals ook online beschikbaar zijn.</p>
+<h2>Aanbiedingen Jumbo — Complete Gids</h2>
+<p><strong>Jumbo aanbiedingen</strong> vind je hier wekelijks bijgewerkt. Jumbo is met meer dan 700 filialen de op een na grootste supermarkt van Nederland. De keten staat bekend om zijn <strong>"7 zekerheden"</strong> — als een product goedkoper is bij de concurrent, vergoedt Jumbo het verschil. <strong>Aanbiedingen Jumbo</strong> wisselen elke woensdag en lopen t/m dinsdag.</p>
+<h3>Hoe bespaar je maximaal met de Jumbo folder?</h3>
+<p>De <strong>Jumbo folder</strong> bevat wekelijks 60-100 producten in actie: <strong>1+1 gratis</strong>, <strong>2e halve prijs</strong> en procentuele kortingen van 20-50%. De gratis Jumbo-klantenkaart geeft toegang tot extra digitale kortingscoupons via de Jumbo-app. Huismerken (Jumbo-eigen lijn) zijn gemiddeld <strong>15-25% goedkoper</strong> dan A-merken. Combineer de klantenkaartdeals met de <strong>Jumbo aanbiedingen deze week</strong> op DealHunter voor maximale besparing.</p>
+<h3>Jumbo vlees en versproducten in de aanbieding</h3>
+<p>Jumbo is sterk in verse producten. De <strong>Jumbo vlees aanbieding</strong> bevat wekelijks kipfilet, gehakt en runderlapjes met kortingen van 25-40%. Vaste deals die regelmatig terugkomen:</p>
+<ul>
+<li><strong>Kipfilet (500g):</strong> wekelijks in actie, vaak 2+1 gratis of 30% korting — circa €2,49-€2,99</li>
+<li><strong>Rundergehakt (500g):</strong> regelmatig €2,79-€3,49 in de Jumbo weekaanbieding</li>
+<li><strong>Zalm (per 100g):</strong> structureel scherp geprijsd, ook als portiefilet</li>
+<li><strong>Kaas Jong Belegen (500g):</strong> 2e halve prijs of 25% korting vrijwel elke week</li>
+</ul>
+<h3>Jumbo versus Albert Heijn: wie wint op prijs?</h3>
+<p>Op basisprijzen is Jumbo gemiddeld <strong>2-5% goedkoper dan Albert Heijn</strong>. Bij een weekboodschappenbudget van €150 scheelt dit ruim <strong>€150 per jaar</strong>. AH heeft echter vaak diepere promoties op premium A-merken (1+1 gratis op Ariel, Pampers). Jumbo wint op de dagelijkse boodschappen, AH wint op grote merkpromoties. Op DealHunter zie je direct welke deal deze week goedkoper uitvalt.</p>
+<h3>Jumbo Samen aanbiedingen en combi-deals</h3>
+<p>Jumbo heeft de unieke <strong>Samen-aanbieding</strong>: meerdere producten samen voor een combinatieprijs. Denk aan: brood + beleg, soep + pasta of vlees + saus als weekpakket. Deze combi-deals leveren extra besparing op ten opzichte van los gekochte producten en zijn exclusief bij Jumbo in Nederland.</p>
+<h3>Jumbo thuisbezorging en afhalen</h3>
+<p>Jumbo bezorgt boodschappen aan huis via <strong>Jumbo.com</strong> en biedt afhalen via Jumbo Drive in geselecteerde filialen. Alle <strong>Jumbo weekaanbiedingen</strong> zijn ook online geldig — handig als je toch thuisbezorging verkiest. DealHunter toont de exacte vervaldatum per deal, zodat je tijdig kunt bestellen.</p>
+<h3>Jumbo 7 zekerheden: gratis product als concurrent goedkoper is</h3>
+<p>De bekende <strong>Jumbo 7 zekerheden</strong> omvatten onder andere de prijsgarantie: koopt iemand hetzelfde product goedkoper elders, dan geeft Jumbo het verschil terug als Jumbo punten. In de praktijk vergelijken veel Nederlanders eerst de <strong>Jumbo aanbieding</strong> met de AH Bonus op DealHunter voordat ze gaan winkelen — zo hoef je nooit meer te gokken.</p>
 `,
 
   'lidl': `
-<h2>Over Lidl Aanbiedingen</h2>
-<p>Lidl is een van de snelst groeiende supermarkten van Nederland met meer dan 450 filialen. Als discounter biedt Lidl <strong>15-25% lagere prijzen dan AH</strong> op huismerkproducten, gecombineerd met verrassende A-merk-acties en seizoensgebonden non-food artikelen.</p>
+<h2>Aanbiedingen Lidl Nederland — Complete Gids</h2>
+<p><strong>Aanbiedingen Lidl</strong> vind je hier wekelijks bijgewerkt. Lidl is een van de snelst groeiende supermarkten van Nederland met meer dan <strong>450 filialen</strong>. Als discounter biedt Lidl structureel <strong>15-25% lagere prijzen dan Albert Heijn</strong> op huismerkproducten, gecombineerd met verrassende A-merk-acties en seizoensgebonden non-food artikelen.</p>
 <h3>Wanneer wisselen Lidl-aanbiedingen?</h3>
-<p>Lidl heeft twee wisselingsmomenten per week: <strong>maandag</strong> starten de nieuwe weekaanbiedingen en <strong>donderdag</strong> komen er "Vers van de Week" deals bij op groente, fruit en vlees. Via de Lidl Plus-app ontvang je aanvullende kortingscoupons en cashback.</p>
-<h3>Lidl Plus app</h3>
-<p>De Lidl Plus-app biedt wekelijks gratis producten, digitale kortingscoupons en cashback op geselecteerde artikelen. Combineer de Lidl Plus-voordelen met de weekdeals op DealHunter voor maximale besparing — tot 40% extra korting bovenop de normale weekprijzen.</p>
+<p>Lidl heeft twee wisselingsmomenten per week: <strong>maandag</strong> starten de nieuwe weekaanbiedingen en <strong>donderdag</strong> komen de "Vers van de Week"-deals bij op groente, fruit en vlees. De volledige <strong>Lidl folder</strong> verschijnt zondag online via Lidl.nl en in de Lidl Plus-app. DealHunter laadt alle <strong>Lidl aanbiedingen deze week</strong> automatisch zodat je zonder folder bladeren direct kunt vergelijken.</p>
+<h3>Lidl Plus app: gratis producten en cashback</h3>
+<p>De gratis <strong>Lidl Plus-app</strong> biedt aanvullende voordelen bovenop de normale weekdeals:</p>
+<ul>
+<li><strong>Gratis product van de week:</strong> wekelijks een product dat je gratis meekrijgt bij aanschaf (waarde €1-4)</li>
+<li><strong>Digitale kortingscoupons:</strong> gepersonaliseerde kortingen op veelgekochte producten</li>
+<li><strong>Cashback:</strong> geselecteerde artikelen geven geld terug via de app na aankoop</li>
+<li><strong>Lidl Plus Scratch &amp; Win:</strong> kans op extra prijzen en kortingen</li>
+</ul>
+<p>Combineer de Lidl Plus-voordelen met de weekdeals op DealHunter voor tot <strong>40% extra korting</strong> bovenop de normale weekprijzen.</p>
 <h3>Lidl Deal van de Dag & dagaanbiedingen</h3>
-<p>Veel shoppers zoeken naar de <strong>Lidl deal van de dag</strong>. Lidl werkt niet met één vaste dagdeal zoals een webshop, maar heeft wel <strong>dagelijks wisselende aanbiedingen</strong>: de weekdeals starten op maandag en op donderdag komen de "Vers van de Week"-deals erbij op groente, fruit en vlees — vaak maar enkele dagen geldig. Daardoor is er praktisch elke dag een nieuwe scherpe <strong>deal van de dag bij Lidl</strong>. Op DealHunter zie je alle actuele Lidl dagaanbiedingen op één plek, met kortingspercentage en vervaldatum.</p>
+<p>Veel shoppers zoeken naar de <strong>Lidl deal van de dag</strong>. Lidl werkt niet met één vaste dagdeal, maar heeft wél <strong>dagelijks wisselende aanbiedingen</strong>: weekdeals starten maandag en donderdag komen de Vers-deals bij op groente, fruit en vlees — vaak maar enkele dagen geldig. Op DealHunter zie je alle actuele <strong>Lidl dagaanbiedingen</strong> met kortingspercentage en vervaldatum.</p>
+<h3>Lidl vlees en versafdeling</h3>
+<p>De <strong>Lidl vlees aanbieding</strong> is wekelijks sterk — met name op kipfilet, varkenshaas en seizoensvlees. Voorbeelden van terugkerende Lidl deals:</p>
+<ul>
+<li><strong>Kipfilet (600g):</strong> regelmatig €2,99-€3,49 — bij AH €4,49-€5,49</li>
+<li><strong>Varkensvlees (per kg):</strong> structureel €2-3 goedkoper dan AH Bonus-prijs</li>
+<li><strong>Biologisch vlees:</strong> Lidl heeft een uitgebreide bio-lijn (Bioland) met scherpe weekprijzen</li>
+</ul>
+<p>Op donderdag komen extra versdeals bij op groente en fruit — ideaal als je later in de week inkoopt.</p>
+<h3>Lidl non-food acties: kleding, elektronica en tuin</h3>
+<p>Net als Aldi heeft Lidl wekelijks <strong>non-food Lidl acties</strong>: kleding (Esmara, Lupilu kinderkleding), tuinartikelen, elektronica (inclusief audio en tablets) en keukenapparatuur. Deze items verschijnen donderdag — zolang de voorraad strekt. Populaire artikelen zijn snel uitverkocht.</p>
 <h3>Is Lidl goedkoper dan Jumbo en Albert Heijn?</h3>
-<p><strong>Lidl is goedkoper dan Jumbo</strong> op basisprijzen — gemiddeld 10-20% op huismerken, vers vlees en groente. Vergeleken met Albert Heijn is het verschil nog groter: <strong>15-25% goedkoper</strong>. Jumbo en AH winnen wel op assortiment en diepe bonusacties (1+1 gratis), maar voor budgetboodschappen is Lidl bijna altijd de voordeligste keuze. Vergelijk de actuele <strong>Lidl deals</strong> direct met Jumbo en AH op DealHunter.</p>
+<p><strong>Lidl is goedkoper dan Jumbo</strong> op basisprijzen — gemiddeld <strong>10-20% op huismerken</strong>, vers vlees en groente. Vergeleken met Albert Heijn is het verschil groter: <strong>15-25% goedkoper</strong> op vergelijkbare producten. Jumbo en AH winnen op assortiment en diepe bonusacties (1+1 gratis op premium merken). Voor budgetboodschappen is Lidl bijna altijd de voordeligste keuze. Vergelijk de actuele <strong>Lidl deals</strong> direct met alle andere supermarkten op DealHunter.</p>
 `,
 
   'dirk': `
@@ -101,10 +130,25 @@ export const MARKET_CONTENT: Record<string, string> = {
 `,
 
   'hoogvliet': `
-<h2>Over Hoogvliet Aanbiedingen</h2>
-<p>Hoogvliet is een regionale supermarktketen met meer dan 70 filialen, voornamelijk in Zuid-Holland, Noord-Holland en Utrecht. De keten combineert scherpe weekprijzen met een breed versassortiment en staat bekend om sterke aanbiedingen op vlees en zuivel.</p>
+<h2>Aanbiedingen Hoogvliet — Complete Gids</h2>
+<p><strong>Aanbiedingen Hoogvliet</strong> vind je hier wekelijks bijgewerkt. Hoogvliet is een regionale supermarktketen met meer dan 70 filialen, voornamelijk in Zuid-Holland, Noord-Holland en Utrecht. De keten combineert scherpe weekprijzen met een breed versassortiment en staat bekend om sterke <strong>Hoogvliet aanbiedingen</strong> op vers vlees, zuivel en seizoensfruit.</p>
 <h3>Wanneer wisselen Hoogvliet-aanbiedingen?</h3>
-<p>Hoogvliet weekaanbiedingen wisselen elke <strong>woensdag</strong> en zijn geldig t/m dinsdag. Met de Hoogvliet-klantenkaart profiteer je van extra spaarpunten en exclusieve kortingen op geselecteerde producten. DealHunter werkt de Hoogvliet-deals wekelijks bij.</p>
+<p>De <strong>Hoogvliet weekaanbiedingen</strong> wisselen elke <strong>woensdag</strong> en zijn geldig t/m dinsdag. Dat is een dag later dan Albert Heijn (woensdag start) maar gelijktijdig met Jumbo — handig als je beide folders wilt vergelijken. DealHunter laadt de nieuwe <strong>Hoogvliet aanbiedingen deze week</strong> automatisch zodat je zonder folder bladeren direct kunt vergelijken.</p>
+<h3>Hoogvliet-klantenkaart: extra voordelen</h3>
+<p>Met de gratis <strong>Hoogvliet-klantenkaart</strong> profiteer je van extra spaarpunten en exclusieve kortingen op geselecteerde producten die niet voor niet-pashouders beschikbaar zijn. Combineer de klantenkaartdeals met de weekaanbiedingen voor maximale besparing. De kaart is gratis aan te vragen bij elk filiaal of via hoogvliet.nl.</p>
+<h3>Hoogvliet vlees en versproducten</h3>
+<p>Hoogvliet staat in de regio bekend om zijn scherpe <strong>Hoogvliet vlees aanbieding</strong>. Kipfilet, rundergehakt en varkensvlees verschijnen wekelijks in de folder, vaak met kortingen van 25-40%. Voorbeelden die terugkomen:</p>
+<ul>
+<li><strong>Kipfilet (500g):</strong> regelmatig €2,49-€2,99 in de Hoogvliet weekaanbieding</li>
+<li><strong>Rundergehakt (500g):</strong> structureel €2,79-€3,29 — vergelijkbaar met Dirk</li>
+<li><strong>Verse zalm:</strong> wekelijks scherp geprijsd, inclusief portiefilets</li>
+<li><strong>Seizoensgroente:</strong> wekelijkse deals op aardappelen, tomaten en paprika</li>
+</ul>
+<p>De versafdeling is bij Hoogvliet sterk — een onderscheid ten opzichte van pure discounters als Aldi en Lidl.</p>
+<h3>Hoogvliet versus Albert Heijn en Jumbo</h3>
+<p>Hoogvliet positioneert zich als <strong>goedkoper dan AH en Jumbo</strong> met een vergelijkbaar assortiment. Op basisprijzen ligt Hoogvliet gemiddeld <strong>5-10% lager dan Albert Heijn</strong>. In de weekaanbiedingen zijn de kortingen op vers vlees en zuivel vaak scherper dan bij AH Bonus — met name op kipfilet en kaas. Voor mensen die wonen in het verzorgingsgebied van Hoogvliet (Randstad-regio) is het daarmee een sterk alternatief voor de grote twee.</p>
+<h3>Hoogvliet bier en dranken</h3>
+<p>Naast vlees staan <strong>Hoogvliet bier aanbiedingen</strong> wekelijks in de folder. Heineken, Grolsch en Hertog Jan verschijnen regelmatig met 20-35% korting, soms in combinatie met een gratis bijproduct. In het zomerseizoen zijn de bierprijzen bij Hoogvliet vaak scherper dan bij AH en vergelijkbaar met Dirk.</p>
 `,
 
   'dekamarkt': `
@@ -134,18 +178,24 @@ export const MARKET_CONTENT: Record<string, string> = {
 `,
 
   'vomar': `
-<h2>Over Vomar Aanbiedingen</h2>
-<p>Vomar Voordeelmarkt is een regionale supermarktketen met ruim <strong>60 filialen</strong>, vrijwel uitsluitend in <strong>Noord-Holland</strong> — van Alkmaar en Haarlem tot Zaandam, Purmerend en de regio Amsterdam-Noord. De keten positioneert zich als "Voordeelmarkt" met structureel lage dagprijzen, aangevuld met wekelijkse weekaanbiedingen.</p>
+<h2>Aanbiedingen Vomar Voordeelmarkt — Complete Gids</h2>
+<p><strong>Aanbiedingen Vomar</strong> vind je hier wekelijks bijgewerkt. Vomar Voordeelmarkt is een regionale supermarktketen met ruim <strong>60 filialen</strong>, vrijwel uitsluitend in <strong>Noord-Holland</strong> — van Alkmaar en Haarlem tot Zaandam, Purmerend en de regio Amsterdam-Noord. De keten positioneert zich als "Voordeelmarkt" met structureel lage dagprijzen en scherpe <strong>Vomar weekaanbiedingen</strong>.</p>
 <h3>Wanneer wisselen Vomar-aanbiedingen?</h3>
-<p>Vomar vernieuwt zijn weekaanbiedingen elke <strong>woensdag</strong>, geldig tot en met de volgende dinsdag. Daarnaast heeft Vomar <strong>dagknallers</strong> — extra scherpe kortingen die op elk moment kunnen verschijnen en gelden zolang de voorraad strekt. DealHunter werkt de Vomar-deals dagelijks bij zodat je geen dagknaller mist.</p>
-<h3>Wat maakt Vomar bijzonder?</h3>
+<p><strong>Vomar aanbiedingen deze week</strong> wisselen elke <strong>woensdag</strong>, geldig tot en met de volgende dinsdag. Via de Vomar-folder (online en in de winkel) verschijnen dinsdagavond al de nieuwe deals. Daarnaast heeft Vomar <strong>dagknallers</strong> — extra scherpe kortingen die snel uitverkocht zijn. DealHunter werkt de <strong>Vomar weekaanbieding</strong> dagelijks bij zodat je geen enkele deal mist.</p>
+<h3>Vomar N+M gratis: populairste actievorm</h3>
+<p>Vomar staat in Noord-Holland bekend om zijn <strong>N+M gratis</strong>-acties: koop 2 en krijg 1 gratis (of koop 3 voor de prijs van 2). Deze actievorm is bij Vomar vaker aanwezig dan bij de landelijke ketens en levert op grote pakketten flinke besparingen op:</p>
 <ul>
-<li><strong>Eigen merk (Vomar huismerk):</strong> gemiddeld 20-30% goedkoper dan A-merken, vergelijkbare kwaliteit op dagelijkse producten</li>
-<li><strong>Breed A-merk assortiment:</strong> ondanks de lage-prijspositionering voert Vomar veel A-merken zoals Coca-Cola, Heineken en Unilever tegen scherpe prijzen</li>
-<li><strong>Wekelijkse folder met 50+ deals:</strong> elke woensdag tientallen aanbiedingen op vlees, dranken, groente en zuivel</li>
+<li><strong>Frisdrank 6-pack:</strong> 2+1 gratis — effectief 33% korting per fles</li>
+<li><strong>Shampoo en verzorging:</strong> 3 voor de prijs van 2 op A-merken</li>
+<li><strong>Bier 24-pack:</strong> bij grotere verpakkingen regelmatig combi-deal of gratis-actie</li>
+<li><strong>Diepvriesproducten:</strong> N+M gratis op pizza, snacks en kant-en-klaar-maaltijden</li>
 </ul>
-<h3>Vomar versus AH en Jumbo</h3>
-<p>Voor inwoners van Noord-Holland is Vomar een directe concurrent van AH en Jumbo, met vergelijkbare of scherpere basisprijzen op vlees en dranken. Buiten Noord-Holland zijn er nauwelijks Vomar-winkels — vergelijk daarom altijd met de landelijke ketens op DealHunter om de beste deal in jouw regio te vinden.</p>
+<h3>Vomar vlees en vers</h3>
+<p>De <strong>Vomar vlees aanbieding</strong> is wekelijks sterk, met name op kipfilet en rundergehakt. Prijsniveau vergelijkbaar met Dirk en Hoogvliet — structureel lager dan Albert Heijn. Vomar heeft bovendien een brede versafdeling (groente, fruit, bakker) wat het voor dagelijkse boodschappen compleet maakt.</p>
+<h3>Vomar huismerk: goedkoop en goed</h3>
+<p>Het <strong>Vomar eigen merk</strong> omvat basisproducten als pasta, rijst, conserven, zuivel en verzorging — gemiddeld <strong>20-30% goedkoper</strong> dan A-merken op vergelijkbare producten. Handig voor grootverpakkingen die je snel verbruikt.</p>
+<h3>Vomar versus Albert Heijn en Jumbo</h3>
+<p>Voor inwoners van Noord-Holland is Vomar een directe concurrent van AH en Jumbo. Op vlees, dranken en huismerkproducten heeft Vomar structureel <strong>scherpere basisprijzen</strong> dan AH en is vergelijkbaar met Jumbo. De N+M gratis-acties geven extra voordeel bij grotere inkopen. Buiten Noord-Holland zijn er nauwelijks Vomar-winkels — vergelijk op DealHunter altijd ook met de landelijke aanbiedingen van Dirk en Aldi voor de beste deal.</p>
 `,
 
   'plus': `
@@ -184,20 +234,30 @@ export const MARKET_CONTENT: Record<string, string> = {
 `,
 
   'kruidvat': `
-<h2>Over Kruidvat Aanbiedingen</h2>
-<p>Kruidvat is de grootste drogisterij van Nederland met meer dan <strong>1.000 filialen</strong>. Van shampoo en parfum tot babyproducten en verzorging — Kruidvat heeft wekelijks scherpe aanbiedingen op het volledige assortiment.</p>
+<h2>Aanbiedingen Kruidvat — Complete Gids</h2>
+<p><strong>Aanbiedingen Kruidvat</strong> vind je hier wekelijks bijgewerkt. Kruidvat is de grootste drogisterij van Nederland met meer dan <strong>1.000 filialen</strong>. Van shampoo en parfum tot babyproducten en elektrische tandenborstels — Kruidvat heeft wekelijks scherpe <strong>Kruidvat aanbiedingen</strong> op het volledige verzorgings- en beautyassortiment.</p>
 <h3>Wanneer wisselen Kruidvat-aanbiedingen?</h3>
-<p>Kruidvat vernieuwt zijn weekaanbiedingen elke <strong>maandag</strong>, geldig tot en met zondag. Daarnaast heeft Kruidvat tussentijdse seizoensacties die op elk moment kunnen starten — met name rond feestdagen zoals Valentijn, moederdag en kerst.</p>
+<p><strong>Kruidvat weekaanbiedingen</strong> wisselen elke <strong>maandag</strong> en zijn geldig tot en met zondag. Naast de vaste weekdeals heeft Kruidvat tussentijdse seizoensacties die op elk moment kunnen starten — met name rond Valentijn, Pasen, moederdag, Back to School en Kerst. DealHunter laadt de <strong>Kruidvat aanbiedingen deze week</strong> dagelijks bij zodat je nooit een deal mist.</p>
 <h3>Kruidvat 50% korting: wanneer en waarop?</h3>
-<p>Kruidvat staat bekend om zijn <strong>50% kortingsacties</strong>, die meerdere keren per jaar terugkomen op:</p>
+<p>Kruidvat staat in Nederland bekend om zijn jaarlijkse <strong>50% kortingsacties</strong>. Deze terugkerende events zijn de meest populaire momenten om grote inkopen te doen:</p>
 <ul>
-<li><strong>Parfum en geuren:</strong> meest voorkomend rond moederdag, kerst en Valentijn</li>
-<li><strong>Haarkleur:</strong> Garnier, L'Oréal en Schwarzkopf — gemiddeld elke 6-8 weken</li>
-<li><strong>Elektrische tandenborstel en scheerapparaten:</strong> Philips en Oral-B regelmatig 40-50% korting</li>
+<li><strong>Parfum en geuren (50% korting):</strong> meest voorkomend rond moederdag, kerst en Valentijn — Chanel, Hugo Boss, Calvin Klein tot 50% goedkoper</li>
+<li><strong>Haarkleur (50% korting):</strong> Garnier, L'Oréal en Schwarzkopf — gemiddeld elke 6-8 weken in actie</li>
+<li><strong>Elektrische tandenborstel:</strong> Oral-B en Philips Sonicare regelmatig 40-50% korting — ideaal moment om een duurdere borstel te kopen</li>
+<li><strong>Scheerapparaten:</strong> Philips OneBlade en Braun elektrische scheerapparaten komen 2-4 keer per jaar in de 50% aanbieding</li>
 </ul>
-<h3>Kruidvat 2e halve prijs</h3>
-<p>Na 50% korting is <strong>2e halve prijs</strong> (effectief 25% korting op twee stuks) de populairste actievorm — vooral op shampoo, douchegel, huidverzorging en make-up van A-merken als Nivea, Dove en L'Oréal.</p>
+<p>DealHunter toont zodra een <strong>Kruidvat 50% korting</strong> actief is direct de exacte producten met kortingspercentage en vervaldatum.</p>
+<h3>Kruidvat 2e halve prijs en dagelijkse verzorging</h3>
+<p>Na 50% korting is <strong>2e halve prijs</strong> (effectief 25% korting op twee stuks) de populairste actievorm bij Kruidvat. Deze deal verschijnt wekelijks op:</p>
+<ul>
+<li><strong>Shampoo en conditioner:</strong> Head &amp; Shoulders, Pantene, Elsève — regelmatig 2e halve prijs</li>
+<li><strong>Douchegel en zeep:</strong> Dove, Nivea, Radox — elke paar weken in actie</li>
+<li><strong>Zonnebrand:</strong> in het voorjaar/zomer uitgebreide acties op SPF-producten</li>
+<li><strong>Babyproducten:</strong> Pampers, Huggies en Kruidvat-huismerk luiers met 20-40% korting</li>
+</ul>
+<h3>Kruidvat huismerk: goedkoper, vergelijkbare kwaliteit</h3>
+<p>Het Kruidvat-eigen merk omvat honderden producten: shampoo, crèmes, vitaminen en gezondheidsproducten. Op vitamines en supplementen (vitamine C, multivitamine, omega-3) is het Kruidvat-huismerk gemiddeld <strong>30-50% goedkoper</strong> dan A-merken als Davitamon of Orthica bij vergelijkbare dosering.</p>
 <h3>Kruidvat versus Etos</h3>
-<p>Kruidvat en Etos zijn directe concurrenten. Kruidvat heeft over het algemeen iets lagere dagprijzen op eigen merken en biedt vaker diepe 50% kortingsacties. Vergelijk de actuele Kruidvat-deals direct op DealHunter voor de beste beauty-besparing.</p>
+<p>Kruidvat en Etos zijn directe concurrenten in de Nederlandse drogisterijmarkt. Kruidvat heeft over het algemeen <strong>iets lagere dagprijzen op eigen merken</strong> en biedt vaker diepe seizoensacties (50% korting). Etos is iets exclusiever gepositioneerd met meer A-merk focus. Voor dagelijkse verzorgingsproducten wint Kruidvat op prijs; vergelijk de actuele deals direct op DealHunter.</p>
 `,
 }
