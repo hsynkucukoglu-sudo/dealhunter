@@ -106,19 +106,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </LanguageProvider>
         </SessionProvider>
         {/* Prevent Google OAuth (accounts.google.com) from being counted as referral.
-            Runs before GA4 loads so gtag('config') sees an empty referrer. */}
+            configurable:true prevents Clarity from hitting a non-configurable property error. */}
         <Script
           id="fix-oauth-referral"
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
-            __html: `try{if(document.referrer&&document.referrer.indexOf('accounts.google.com')!==-1){Object.defineProperty(document,'referrer',{get:function(){return ''}})}}catch(e){}`
+            __html: `try{if(document.referrer&&document.referrer.indexOf('accounts.google.com')!==-1){Object.defineProperty(document,'referrer',{get:function(){return ''},configurable:true})}}catch(e){}`
           }}
         />
         {enableAnalytics && <GoogleAnalytics gaId="G-Y253QH18ZH" />}
         {enableAnalytics && (
           <Script
             id="clarity"
-            strategy="afterInteractive"
+            strategy="lazyOnload"
             dangerouslySetInnerHTML={{
               __html: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","x232q20xdj");`,
             }}
