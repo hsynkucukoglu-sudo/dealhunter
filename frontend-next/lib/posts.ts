@@ -4632,6 +4632,293 @@ export const POSTS: BlogPost[] = [
 <p>Bekijk de actuele deals van <a href="/supermarkt/dekamarkt">DealHunter4U — DekaMarkt aanbiedingen</a> en <a href="/supermarkt/dirk">Dirk aanbiedingen</a> naast elkaar.</p>
     `.trim(),
   },
+  {
+    slug: 'is-jumbo-goedkoper-dan-albert-heijn',
+    relatedMarkets: ['jumbo', 'albert-heijn'],
+    title: 'Is Jumbo Goedkoper dan Albert Heijn? ✓ Vergelijking 2026',
+    description: '✓ Jumbo is gemiddeld 5–10% goedkoper dan Albert Heijn op basisprijzen. Vergelijking op vlees, zuivel en brood. Wanneer wint AH Bonus op Jumbo? Actuele prijscheck 2026.',
+    date: '2026-07-10',
+    readTime: 6,
+    category: 'Vergelijking',
+    faqs: [
+      {
+        question: 'Is Jumbo goedkoper dan Albert Heijn?',
+        answer: 'Ja, Jumbo is gemiddeld 5–10% goedkoper dan Albert Heijn op vergelijkbare basisproducten zonder kortingen. Op vlees, zuivel en brood is het verschil het duidelijkst. Bij een weekbudget van €150 bespaar je bij Jumbo al snel €8–15 per week vergeleken met reguliere AH-prijzen.',
+      },
+      {
+        question: 'Wat is goedkoper: Albert Heijn of Jumbo?',
+        answer: 'Jumbo is op reguliere (niet-actie) prijzen over het algemeen goedkoper dan Albert Heijn — gemiddeld 5–10%. Albert Heijn kan tijdelijk goedkoper uitvallen dankzij de wekelijkse Bonus-aanbiedingen. Wie slim combineert — basisboodschappen bij Jumbo, AH Bonus-aanbiedingen meenemen — betaalt het minst.',
+      },
+      {
+        question: 'Waarom is Albert Heijn duurder dan Jumbo?',
+        answer: 'Albert Heijn opereert als marktleider met een ander prijsstrategie: hogere basisprijs maar frequente Bonus-kortingen. Jumbo werkt met de "Altijd de laagste prijs"-garantie ten opzichte van AH en richt zich op structureel lage prijzen. AH heeft ook meer premium en biologisch assortiment wat de gemiddelde prijs verhoogt.',
+      },
+      {
+        question: 'Heeft Jumbo de "Altijd de laagste prijs"-garantie?',
+        answer: 'Ja. Jumbo garandeert dat hun prijs op 1000+ artikelen nooit hoger is dan bij Albert Heijn. Vind je hetzelfde product goedkoper bij AH, dan betaalt Jumbo het prijsverschil terug. Deze garantie geldt specifiek ten opzichte van AH, niet ten opzichte van Lidl of Aldi.',
+      },
+      {
+        question: 'Wanneer is Albert Heijn goedkoper dan Jumbo?',
+        answer: 'Albert Heijn is regelmatig goedkoper op specifieke producten dankzij de wekelijkse Bonus-aanbiedingen: tot 50% korting op wisselende producten. Daarnaast heeft AH persoonlijke Bonuskaart-kortingen die de prijs soms flink verlagen. Op aanbiedingsdagen kan AH tijdelijk 20–30% goedkoper zijn dan Jumbo op die specifieke producten.',
+      },
+    ],
+    content: `
+<p style="font-size:12px; color:#9C9389; margin-bottom:8px;">📅 Bijgewerkt: juli 2026 — actuele weekprijzen verwerkt</p>
+<p class="lead">Is Jumbo goedkoper dan Albert Heijn? Het korte antwoord: <strong>ja, Jumbo is gemiddeld 5–10% goedkoper</strong> dan AH op reguliere basisprijzen. Maar AH Bonus-aanbiedingen kunnen het verschil verkleinen — of zelfs omdraaien. In dit artikel vergelijken we beide supermarkten op prijs, kwaliteit en aanbiedingen.</p>
+
+<h2>Snel antwoord: is Jumbo goedkoper dan Albert Heijn?</h2>
+<table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
+  <thead>
+    <tr style="background:#f5f5f5;">
+      <th style="padding:10px; text-align:left; border:1px solid #ddd;">Supermarkt</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Basisprijzen</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Aanbiedingen</th>
+      <th style="padding:10px; border:1px solid #ddd;">Beste voor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;"><strong>Jumbo</strong></td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🥇 5–10% goedkoper</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">Samen aanbiedingen + 7 zekerheden</td>
+      <td style="padding:10px; border:1px solid #ddd;">Structureel laag, dagelijkse basis</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;"><strong>Albert Heijn</strong></td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🥈 Hogere basisprijs</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">Bonus-kaart tot 50% korting</td>
+      <td style="padding:10px; border:1px solid #ddd;">Actieprijzen, biologisch, premium</td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Conclusie in één zin:</strong> op reguliere prijzen is Jumbo goedkoper, maar wie de AH Bonus slim gebruikt, betaalt soms minder bij Albert Heijn.</p>
+
+<h2>Hoeveel goedkoper is Jumbo dan Albert Heijn?</h2>
+<p>Op basisprijzen — zonder kortingen — is <strong>Jumbo gemiddeld 5–10% goedkoper</strong> dan Albert Heijn. Bij een gemiddeld weekbudget van €150 scheelt dat <strong>€8–15 per week</strong>, oftewel €400–800 per jaar voor een gezin.</p>
+<p>Het prijsverschil wisselt per categorie:</p>
+<ul>
+  <li><strong>Vers vlees:</strong> Jumbo 8–15% goedkoper op vergelijkbare kwaliteit</li>
+  <li><strong>Zuivel (melk, kaas, yoghurt):</strong> Jumbo 5–10% goedkoper</li>
+  <li><strong>Brood en bakkerij:</strong> Jumbo 10–15% goedkoper op huismerken</li>
+  <li><strong>A-merken:</strong> Jumbo "Altijd de laagste prijs"-garantie vs AH — gelijk of iets goedkoper</li>
+</ul>
+
+<h2>Jumbo vs Albert Heijn: prijsvergelijking op veelgekochte producten</h2>
+<table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
+  <thead>
+    <tr style="background:#f5f5f5;">
+      <th style="padding:10px; text-align:left; border:1px solid #ddd;">Product</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Albert Heijn</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Jumbo</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Winnaar</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;">Kipfilet (500g)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€4,99</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€4,49</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Jumbo</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;">Halfvolle melk (1L)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€1,09</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€0,99</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Jumbo</td>
+    </tr>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;">Volkoren brood</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€2,09</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€1,79</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Jumbo</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;">Rundergehakt (500g)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€4,49</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€3,99</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Jumbo</td>
+    </tr>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;">Coca-Cola 6x1,5L</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€7,49</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€6,99</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Jumbo</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;">AH Bonus aanbieding</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">Tot -50% per week</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">Samen aanbieding</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Wisselend</td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Conclusie:</strong> op reguliere basisprijzen is Jumbo structureel €0,20–0,50 goedkoper per product. Bij een boodschappenkar van 50 producten bespaar je bij Jumbo gemiddeld €10–20 ten opzichte van AH.</p>
+
+<h2>De AH Bonus: wanneer is Albert Heijn tóch goedkoper?</h2>
+<p>Albert Heijn's sterkste wapen is de <strong>wekelijkse Bonus</strong>: elke week zijn 200–400 producten sterk afgeprijsd, tot 50% korting. Wie zijn boodschappenlijst aanpast op de Bonus-aanbiedingen, kan soms goedkoper uitkomen dan bij Jumbo.</p>
+<p>Bovendien heeft de AH Bonuskaart <strong>persoonlijke aanbiedingen</strong> — kortingen op producten die je regelmatig koopt. Loyale AH-klanten die die persoonlijke bonus goed benutten, kunnen op hun specifieke boodschappenlijst soms gunstigere prijzen bereiken dan bij Jumbo.</p>
+
+<h2>Jumbo's "Altijd de laagste prijs"-garantie vs Albert Heijn</h2>
+<p>Jumbo garandeert dat ze nooit duurder zijn dan Albert Heijn op <strong>1000+ producten</strong>. Vind je hetzelfde product aantoonbaar goedkoper bij AH, dan betaalt Jumbo het verschil terug. In de praktijk betekent dit dat Jumbo en AH op A-merken dicht bij elkaar zitten — het prijsverschil zit hem vooral in de huismerken.</p>
+
+<h2>Wat zijn de "7 zekerheden" van Jumbo?</h2>
+<p>Jumbo belooft klanten zeven garanties, waaronder altijd verse producten, geen lange rijen bij de kassa en altijd personeel om te helpen. Dit maakt Jumbo aantrekkelijk voor wie service net zo belangrijk vindt als prijs. Albert Heijn heeft een vergelijkbaar service-niveau maar formuleert dit minder expliciet.</p>
+
+<h2>Albert Heijn vs Jumbo: assortiment en bezorging</h2>
+<p>Beide supermarkten voeren een breed assortiment van 20.000+ producten, inclusief uitgebreide biologische en premium-lijnen. Het grootste verschil zit in de <strong>locatiedekking</strong>: AH heeft ruim 1.000 vestigingen door heel Nederland, Jumbo ongeveer 750. In kleinere steden is AH soms de enige optie.</p>
+<p>Op thuisbezorging zijn ze vergelijkbaar — beide hebben bezorgdienst met vergelijkbare tarieven. AH heeft iets meer bezorgslots beschikbaar in stedelijke gebieden dankzij het grotere netwerk.</p>
+
+<h2>Conclusie: is Jumbo goedkoper dan Albert Heijn?</h2>
+<p><strong>Ja — Jumbo is structureel 5–10% goedkoper dan Albert Heijn op basisprijzen.</strong> Op vlees, zuivel en brood is het verschil het duidelijkst. Wie elke week €150 uitgeeft, bespaart bij Jumbo gemiddeld €400–800 per jaar.</p>
+<p>De slimste strategie: <strong>doe je basisboodschappen bij Jumbo</strong> voor de laagste reguliere prijs, en <strong>check elke week de AH Bonus</strong> voor extra kortingen op producten die je toch al kocht. Vergelijk actuele deals op <a href="/supermarkt/jumbo">DealHunter4U — Jumbo aanbiedingen</a> en <a href="/supermarkt/albert-heijn">AH aanbiedingen</a> naast elkaar.</p>
+    `.trim(),
+  },
+  {
+    slug: 'is-kruidvat-goedkoper-dan-etos',
+    relatedMarkets: ['kruidvat'],
+    title: 'Is Kruidvat Goedkoper dan Etos? ✓ Drogist Vergelijking 2026',
+    description: '✓ Kruidvat is op basisprijzen 10–20% goedkoper dan Etos. Vergelijking op shampoo, verzorging, vitaminen en cosmetica. Wanneer is Etos goedkoper? Actuele prijscheck 2026.',
+    date: '2026-07-10',
+    readTime: 5,
+    category: 'Vergelijking',
+    faqs: [
+      {
+        question: 'Is Kruidvat goedkoper dan Etos?',
+        answer: 'Ja, Kruidvat is op basisprijzen gemiddeld 10–20% goedkoper dan Etos. Op verzorgingsproducten, shampoo, vitaminen en huismerk cosmetica is het verschil het grootst. Etos kan goedkoper uitvallen via persoonlijke Etos-pas kortingen en actie-aanbiedingen.',
+      },
+      {
+        question: 'Wat is goedkoper: Kruidvat of Etos?',
+        answer: 'Kruidvat heeft over het algemeen lagere basisprijzen dan Etos — gemiddeld 10–20%. Etos biedt via de Etos-pas regelmatig persoonlijke kortingen die de prijs kunnen drukken. Voor dagelijkse drogistartikelen zonder kortingen is Kruidvat structureel de goedkoopste keuze.',
+      },
+      {
+        question: 'Wanneer is Etos goedkoper dan Kruidvat?',
+        answer: 'Etos kan goedkoper zijn dankzij de persoonlijke Etos-pas kortingen, "2 voor de prijs van 1"-acties en tijdelijke huismerk-aanbiedingen. Ook heeft Etos soms exclusieve merken en producten die Kruidvat niet voert, waardoor een directe vergelijking niet altijd mogelijk is.',
+      },
+      {
+        question: 'Is Kruidvat betrouwbaar qua kwaliteit?',
+        answer: 'Ja. Kruidvat voert zowel bekende A-merken (Dove, Nivea, L\'Oréal) als een eigen huismerk. Het Kruidvat-huismerk scoort in onafhankelijke tests regelmatig goed op prijs-kwaliteitverhouding. Etos heeft een vergelijkbaar A-merk aanbod met een iets uitgebreidere eigen cosmetica-lijn.',
+      },
+      {
+        question: 'Welke drogist is het beste: Kruidvat of Etos?',
+        answer: 'Voor de laagste basisprijs op verzorgingsproducten, vitaminen en shampoo is Kruidvat de beste keuze. Etos scoort beter op winkelervaring, eigen cosmetica en persoonlijke service. De slimste aanpak: basisdrogistproducten bij Kruidvat, en Etos-pas gebruiken voor extra aanbiedingen op je favoriete merken.',
+      },
+    ],
+    content: `
+<p style="font-size:12px; color:#9C9389; margin-bottom:8px;">📅 Bijgewerkt: juli 2026 — actuele actieprijzen verwerkt</p>
+<p class="lead">Is Kruidvat goedkoper dan Etos? Het korte antwoord: <strong>ja, Kruidvat is op basisprijzen 10–20% goedkoper</strong> dan Etos. Op shampoo, vitaminen en verzorgingsproducten is het verschil het grootst. In dit artikel vergelijken we beide drogisten op prijs, assortiment en aanbiedingen.</p>
+
+<h2>Snel antwoord: Kruidvat vs Etos</h2>
+<table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
+  <thead>
+    <tr style="background:#f5f5f5;">
+      <th style="padding:10px; text-align:left; border:1px solid #ddd;">Drogist</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Basisprijzen</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Aanbiedingen</th>
+      <th style="padding:10px; border:1px solid #ddd;">Beste voor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;"><strong>Kruidvat</strong></td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🥇 10–20% goedkoper</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">50% korting acties, 2e halve prijs</td>
+      <td style="padding:10px; border:1px solid #ddd;">Budget, vitaminen, verzorging dagelijks</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;"><strong>Etos</strong></td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🥈 Hogere basisprijs</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">Etos-pas, persoonlijke kortingen</td>
+      <td style="padding:10px; border:1px solid #ddd;">Cosmetica, winkelervaring, service</td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Conclusie in één zin:</strong> voor dagelijkse drogistartikelen op laagste prijs wint Kruidvat; voor cosmetica-kwaliteit en winkelbeleving scoort Etos beter.</p>
+
+<h2>Hoeveel goedkoper is Kruidvat dan Etos?</h2>
+<p>Op vergelijkbare basisprijzen is <strong>Kruidvat gemiddeld 10–20% goedkoper</strong> dan Etos. Het verschil wisselt per categorie:</p>
+<ul>
+  <li><strong>Shampoo en haarverzorging:</strong> Kruidvat 10–15% goedkoper op A-merken (Dove, Head &amp; Shoulders)</li>
+  <li><strong>Vitaminen en supplementen:</strong> Kruidvat huismerk 30–50% goedkoper dan Etos-equivalenten</li>
+  <li><strong>Huidverzorging (Nivea, Vaseline):</strong> Kruidvat 10–20% goedkoper op reguliere prijs</li>
+  <li><strong>Haarkleur en parfum:</strong> Kruidvat biedt regelmatig 50%-kortingsacties</li>
+</ul>
+
+<h2>Kruidvat vs Etos: prijsvergelijking op veelgekochte producten</h2>
+<table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
+  <thead>
+    <tr style="background:#f5f5f5;">
+      <th style="padding:10px; text-align:left; border:1px solid #ddd;">Product</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Etos</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Kruidvat</th>
+      <th style="padding:10px; text-align:center; border:1px solid #ddd;">Winnaar</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;">Dove douchegel (250ml)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€2,29</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€1,99</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Kruidvat</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;">Head &amp; Shoulders shampoo (300ml)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€4,49</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€3,79</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Kruidvat</td>
+    </tr>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;">Vitamine C 500mg (60 tabletten)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€6,99</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€3,49</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Kruidvat</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;">Nivea body lotion (400ml)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€5,29</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€4,49</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Kruidvat</td>
+    </tr>
+    <tr>
+      <td style="padding:10px; border:1px solid #ddd;">Zonnebrand SPF50 (200ml)</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€9,99</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">€7,99</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Kruidvat</td>
+    </tr>
+    <tr style="background:#f9f9f9;">
+      <td style="padding:10px; border:1px solid #ddd;">Cosmetica eigen merk</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">Etos: uitgebreid</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">Kruidvat: basis</td>
+      <td style="padding:10px; text-align:center; border:1px solid #ddd;">🏆 Etos</td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Conclusie:</strong> op dagelijkse drogistartikelen is Kruidvat structureel €0,50–3,50 goedkoper per product. Vitaminen en supplementen zijn bij Kruidvat soms 50% goedkoper op huismerk.</p>
+
+<h2>Kruidvat 50%-kortingsacties: wanneer profiteer je het meest?</h2>
+<p>Kruidvat voert meerdere keren per jaar <strong>50%-korting op hele categorieën</strong> — parfum, haarkleur, elektrische tandenborstels. Op zulke actiedagen zijn de prijzen zelfs lager dan de reguliere Kruidvat-prijs, en ver onder Etos. Wie niet haast heeft, wacht op deze acties voor de biggest savings:</p>
+<ul>
+  <li><strong>Parfum 50% korting:</strong> 2–3x per jaar, ook op populaire merken</li>
+  <li><strong>Haarkleur 50% korting:</strong> regelmatig, inclusief Garnier en L'Oréal</li>
+  <li><strong>Elektrische tandenborstel 50% korting:</strong> vaak rond seizoensveranderingen</li>
+  <li><strong>2e halve prijs</strong> op Dove, Nivea, Head &amp; Shoulders: bijna wekelijks wisselend</li>
+</ul>
+
+<h2>Etos-pas: wanneer is Etos tóch de betere keuze?</h2>
+<p>De <strong>Etos-pas</strong> geeft klanten gepersonaliseerde kortingen op producten die ze regelmatig kopen. Loyale Etos-klanten kunnen via de pas soms kortingen van 25–40% ontvangen op specifieke producten — op dat moment kan Etos goedkoper uitvallen dan Kruidvat. Etos heeft ook een uitgebreidere eigen cosmetica-lijn (foundation, mascara, lipstick) die Kruidvat niet evenaart.</p>
+
+<h2>Kruidvat vs Etos: welk huismerk is beter?</h2>
+<p>Beide ketens hebben een uitgebreid huismerk, maar richten zich op iets andere segmenten:</p>
+<ul>
+  <li><strong>Kruidvat huismerk:</strong> breed basisaanbod — vitaminen, verzorging, medicijnen. Sterk op prijs-kwaliteit, gemiddeld 30–50% goedkoper dan A-merken.</li>
+  <li><strong>Etos huismerk:</strong> meer gericht op cosmetica en huidverzorging. Heeft een bredere make-up lijn (oogschaduw, foundation, lip). Hogere prijs dan Kruidvat huismerk, maar betere cosmetica-kwaliteit.</li>
+</ul>
+<p>Voor vitaminen en dagelijkse verzorging is het Kruidvat huismerk de betere keuze. Voor make-up en premium huidverzorging scoort Etos hoger.</p>
+
+<h2>Conclusie: is Kruidvat goedkoper dan Etos?</h2>
+<p><strong>Ja — Kruidvat is structureel 10–20% goedkoper dan Etos op basisprijzen.</strong> Op vitaminen, shampoo en verzorgingsproducten is het verschil het grootst. Etos compenseert via de Etos-pas en een sterker cosmetica-aanbod.</p>
+<p>De slimste strategie: <strong>koop dagelijkse drogistartikelen bij Kruidvat</strong> voor de laagste basisprijs, en <strong>wacht op Kruidvat 50%-kortingsacties</strong> voor grote aankopen als parfum of elektrische tandenborstel. Bekijk de actuele Kruidvat-deals op <a href="/supermarkt/kruidvat">DealHunter4U — Kruidvat aanbiedingen</a>.</p>
+    `.trim(),
+  },
 ]
 
 export function getPost(slug: string): BlogPost | undefined {
