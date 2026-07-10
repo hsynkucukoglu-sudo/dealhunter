@@ -10,6 +10,7 @@ import { LanguageSwitcher } from './LanguageSwitcher'
 import { DealHunterLogo } from './DealHunterLogo'
 import { useShoppingList } from '@/context/ShoppingListContext'
 import { MarketFAQ } from './MarketFAQ'
+import { NewsletterCTA } from './NewsletterCTA'
 import { MarketLogo } from './MarketLogo'
 import { MARKET_FAQS, FAQ } from '@/lib/marketFaqs'
 import { MARKET_CONTENT } from '@/lib/marketContent'
@@ -281,6 +282,8 @@ export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
             </div>
           </section>
         )}
+
+        <NewsletterCTA variant="market" marketName={market.name} />
 
         {/* Andere supermarkten */}
         <section className="mt-20">

@@ -72,23 +72,32 @@ export const MARKET_CONTENT: Record<string, string> = {
 
   'dirk': `
 <h2>Aanbiedingen Dirk van den Broek — Complete Gids</h2>
-<p><strong>Aanbiedingen Dirk van den Broek</strong> vind je elke week op DealHunter — actueel bijgewerkt, zonder dat je de folder hoeft te bladeren. Dirk van den Broek is een van de <strong>goedkoopste supermarkten van Nederland</strong>, met meer dan 120 filialen voornamelijk in de Randstad. Dirk staat al decennia bekend om de laagste vleesprijzen en scherpe bieraanbiedingen — structureel lager dan AH, Jumbo en Lidl.</p>
+<p><strong>Aanbiedingen Dirk van den Broek</strong> vind je elke week op DealHunter — actueel bijgewerkt, zonder dat je de folder hoeft te bladeren. Dirk van den Broek is een van de <strong>goedkoopste supermarkten van Nederland</strong>, met meer dan 120 filialen voornamelijk in de Randstad (Amsterdam, Rotterdam, Den Haag, Utrecht). Dirk staat al decennia bekend om de laagste vleesprijzen en scherpe bieraanbiedingen — structureel lager dan AH, Jumbo en Lidl.</p>
 <h3>Wanneer beginnen de Dirk van den Broek aanbiedingen?</h3>
-<p>De <strong>dirk van den broek aanbiedingen</strong> starten elke <strong>zondag</strong> en zijn geldig tot en met zaterdag. De Dirkvandenbroek folder verschijnt online op zaterdag. DealHunter werkt alle <strong>aanbieding Dirk van den Broek</strong> wekelijks bij zodat je altijd de actuele kortingen in één overzicht ziet — ook aanbiedingen van Dirk van de Broek deze week worden direct getoond.</p>
-<h3>Dirk vlees aanbiedingen: structureel de laagste vleesprijzen</h3>
-<p>De <strong>dirk vlees aanbieding</strong> is het paradepaardje van de keten. Rundergehakt, kipfilet, varkenshaas en riblappen zijn bij Dirk van den Broek wekelijks in de aanbieding — gemiddeld <strong>€1-3 goedkoper</strong> per kilo dan bij Albert Heijn of Jumbo. Enkele vaste patronen:</p>
+<p>De <strong>Dirk van den Broek aanbiedingen</strong> starten elke <strong>zondag</strong> en zijn geldig tot en met zaterdag. De Dirkvandenbroek folder verschijnt online op zaterdag — DealHunter laadt de nieuwe <strong>aanbieding Dirk van den Broek</strong> automatisch, zodat je direct zaterdag kunt vergelijken zonder de app te openen.</p>
+<h3>Dirk vlees aanbiedingen: structureel de laagste vleesprijzen van Nederland</h3>
+<p>De <strong>Dirk vlees aanbieding</strong> is het paradepaardje van de keten. Rundergehakt, kipfilet, varkenshaas en riblappen zijn bij Dirk van den Broek wekelijks in de aanbieding — gemiddeld <strong>€1-3 goedkoper per kilo</strong> dan bij Albert Heijn of Jumbo. Vaste patronen die keer op keer terugkomen:</p>
 <ul>
-<li><strong>Rundergehakt:</strong> regelmatig ≤ €5/kg (vs. €7+ bij AH)</li>
-<li><strong>Kipfilet:</strong> vaak 2 voor 1 of met 30-40% korting</li>
-<li><strong>Procureur en riblappen:</strong> Dirk heeft structureel de scherpste weekprijzen</li>
+<li><strong>Rundergehakt (500g):</strong> regelmatig €2,49-€2,99 — bij AH of Jumbo €3,49-€4,49</li>
+<li><strong>Kipfilet (per kg):</strong> vaak 2 voor 1 of 30-40% korting — effectief onder €5/kg</li>
+<li><strong>Procureur en riblappen:</strong> Dirk heeft structureel de scherpste weekprijzen op langzaam-gaar vlees</li>
+<li><strong>Gehakt mix (500g):</strong> regelmatig €1,99-€2,49 — minstens €1 goedkoper dan de concurrentie</li>
 </ul>
-<p>Geen enkel ander Nederlands supermarktketensupermarkt biedt zo consistent lage vleesprijzen als Dirk van den Broek. DealHunter toont de actuele <strong>dirk acties</strong> op vlees direct — zonder folder bladeren.</p>
-<h3>Dranken en bier bij Dirk</h3>
-<p>Naast vlees zijn de <strong>Dirk aanbiedingen</strong> op dranken bijzonder sterk. Heineken 24-pack, Grolsch 12-pack en grote frisdrankverpakkingen (Coca-Cola 6x1,5L) verschijnen regelmatig met kortingen van 20-40%. In de zomer en rond feestdagen zijn de bierprijzen bij Dirk structureel de laagste van alle Nederlandse supermarkten.</p>
-<h3>Dirk van den Broek folder: zo werkt het</h3>
-<p>De officiële Dirk van den Broek folder wisselt wekelijks op zondag. Via DealHunter hoef je de papieren folder of de Dirk-app niet te openen: alle <strong>dirk van den broek aanbiedingen deze week</strong> staan direct doorzoekbaar op deze pagina. Filter op categorie (vlees, dranken, diepvries) of zoek op productnaam voor snelle resultaten.</p>
-<h3>Dirk versus AH, Jumbo en Lidl</h3>
-<p>Op vleesproducten en dranken zijn <strong>aanbiedingen Dirk</strong> structureel €0,50-2,00 goedkoper dan AH en Jumbo. Vergeleken met Lidl en Aldi scoort Dirk vergelijkbaar op huismerken, maar beter op A-merk bier en vers vlees. Combineer Dirk-deals met aanbiedingen van andere supermarkten op DealHunter voor maximale besparing elke week.</p>
+<p>Geen enkele andere grote Nederlandse supermarkt biedt zo consistent lage vleesprijzen als Dirk van den Broek. DealHunter toont alle actuele <strong>Dirk acties</strong> op vlees direct — zonder folder bladeren.</p>
+<h3>Dranken en bier bij Dirk: de goedkoopste bierprijzen</h3>
+<p>Naast vlees zijn de <strong>Dirk aanbiedingen</strong> op dranken bijzonder sterk. Heineken 24-pack, Grolsch 12-pack en grote frisdrankverpakkingen verschijnen regelmatig met kortingen van 20-40%. Voorbeelden:</p>
+<ul>
+<li><strong>Heineken 24x33cl:</strong> bij Dirk gemiddeld €2-4 goedkoper dan bij AH of Jumbo</li>
+<li><strong>Coca-Cola 6x1,5L:</strong> structureel rond €4,50-€5,50 (vs. €6-7 bij AH)</li>
+<li><strong>Grolsch fust 50L:</strong> in BBQ-seizoen scherp geprijsd — vergelijk direct op DealHunter</li>
+</ul>
+<p>In de zomer en rond feestdagen zijn de bierprijzen bij Dirk structureel de laagste van alle Nederlandse supermarkten. Ideaal als je een feest, BBQ of verjaardag organiseert.</p>
+<h3>Dirk van den Broek folder en app</h3>
+<p>De officiële <strong>Dirk van den Broek folder</strong> wisselt wekelijks op zondag. Via de Dirk-app kun je de folder bekijken, boodschappenlijstjes aanmaken en pushmeldingen ontvangen voor nieuwe deals. Op DealHunter zijn alle <strong>Dirk van den Broek aanbiedingen deze week</strong> direct doorzoekbaar — filter op vlees, dranken of diepvries zonder de app te openen.</p>
+<h3>Is Dirk van den Broek de goedkoopste supermarkt?</h3>
+<p>Op de categorieën vlees en dranken is Dirk van den Broek de onbetwiste prijsleider onder de grote Nederlandse ketens. Onafhankelijke vergelijkingen (Radar, Consumentenbond) plaatsen Dirk structureel in de top-3 goedkoopste supermarkten — samen met Aldi en Lidl. Op basisprijzen (zuivel, groente, droogwaren) zijn <strong>Aldi en Lidl gemiddeld 5-10% goedkoper</strong> dan Dirk, maar Dirk wint op A-merk bier, vers vlees en service. Combineer <strong>aanbiedingen Dirk</strong> met deals van Aldi en Lidl op DealHunter voor maximale besparing elke week.</p>
+<h3>Dirk aanbiedingen zaterdag: vroeg erbij zijn loont</h3>
+<p>Populaire Dirk-deals op vlees en dranken zijn soms al zaterdag of zondag uitverkocht in drukke filialen. Check DealHunter op <strong>zaterdag</strong> wanneer de nieuwe <strong>Dirk van den Broek aanbieding</strong> live gaat — zo weet je vóór het weekend welke deals het waard zijn om vroeg voor te gaan.</p>
 `,
 
   'hoogvliet': `
@@ -140,21 +149,38 @@ export const MARKET_CONTENT: Record<string, string> = {
 `,
 
   'plus': `
-<h2>Over PLUS Aanbiedingen</h2>
-<p>PLUS is een coöperatieve supermarktketen die kwaliteit en voordeel combineert — van een breed biologisch assortiment tot scherpe weekaanbiedingen op A-merken. De <strong>PLUS aanbiedingen</strong> staan hier wekelijks bijgewerkt, zonder dat je de folder hoeft te bladeren.</p>
-<h3>Wanneer wisselen PLUS-aanbiedingen?</h3>
-<p>PLUS vernieuwt zijn weekaanbiedingen elke <strong>woensdag</strong>, geldig tot en met de volgende dinsdag. Daarnaast heeft PLUS kortlopende acties op verse producten die tussentijds kunnen wisselen — check daarom regelmatig de actuele deals.</p>
-<h3>PLUS 1+1 gratis en 2e halve prijs</h3>
-<p>PLUS is sterk in combinatie-aanbiedingen. Elke week vind je meerdere <strong>1+1 gratis</strong> en <strong>2e halve prijs</strong> deals, met name op:</p>
+<h2>PLUS Aanbiedingen — Complete Gids</h2>
+<p><strong>PLUS aanbiedingen</strong> vind je hier wekelijks bijgewerkt. PLUS is een coöperatieve supermarktketen van zelfstandige ondernemers met meer dan <strong>260 filialen</strong> in heel Nederland. De keten combineert kwaliteit, biologisch assortiment en scherpe weekdeals — en is daarmee een sterk alternatief voor AH en Jumbo.</p>
+<h3>Wanneer beginnen de PLUS aanbiedingen?</h3>
+<p>De <strong>PLUS aanbiedingen deze week</strong> starten elke <strong>woensdag</strong> en zijn geldig tot en met de volgende dinsdag. Via de PLUS-app en website verschijnt de nieuwe folder dinsdagavond al online. DealHunter werkt alle <strong>aanbieding PLUS</strong> wekelijks bij — geen folder bladeren nodig.</p>
+<h3>PLUS Pas: extra voordeel met de klantenkaart</h3>
+<p>Met de gratis <strong>PLUS Pas</strong> profiteer je van aanvullende kortingen bovenop de normale weekdeals. Voordelen van de PLUS Pas:</p>
 <ul>
-<li><strong>Vlees:</strong> kipfilet, biefstuk en gehakt — 1+1 gratis is effectief 50% korting</li>
-<li><strong>Zuivel:</strong> yoghurt, kwark en kaas van biologische merken</li>
-<li><strong>Dranken:</strong> Coca-Cola, Spa en sportdranken</li>
+<li><strong>Persoonlijke aanbiedingen:</strong> kortingscoupons gebaseerd op jouw aankoopgeschiedenis</li>
+<li><strong>PLUS Pas Nieuws:</strong> wekelijkse email met exclusieve pashouder-deals</li>
+<li><strong>Spaarvoordeel:</strong> soms spaarpunten of directe cash-back op geselecteerde producten</li>
+<li><strong>Digitale bon:</strong> scan de pas of PLUS-app aan de kassa voor automatische korting</li>
 </ul>
-<h3>PLUS biologische aanbiedingen</h3>
-<p>PLUS heeft het grootste biologische assortiment van de Nederlandse middensegment-supermarkten, regelmatig met <strong>20-40% korting</strong>. Bij AH en Jumbo zijn biologische producten minder vaak in de weekaanbieding — hierin onderscheidt PLUS zich duidelijk.</p>
+<h3>PLUS 1+1 gratis en 2e halve prijs</h3>
+<p>PLUS is sterk in combinatieaanbiedingen. Elke week vind je meerdere <strong>1+1 gratis</strong> en <strong>2e halve prijs</strong> deals op:</p>
+<ul>
+<li><strong>Vlees:</strong> kipfilet, biefstuk en rundergehakt — 1+1 gratis is effectief 50% korting</li>
+<li><strong>Zuivel:</strong> yoghurt, kwark en biologische kaas regelmatig met 30-40% korting</li>
+<li><strong>Dranken:</strong> Coca-Cola, Spa Blauw en sportdranken elke 3-4 weken in de aanbieding</li>
+</ul>
+<h3>PLUS biologische aanbiedingen: uniek in het middensegment</h3>
+<p>PLUS heeft het grootste biologische assortiment van de Nederlandse middensegment-supermarkten. Biologische producten zijn regelmatig <strong>20-40% in de aanbieding</strong> — duidelijk vaker dan bij AH of Jumbo. Vaste biologische categorieën in de PLUS weekdeal:</p>
+<ul>
+<li><strong>Biologisch vlees:</strong> kip, varken en rund van het Ja! biologisch huismerk</li>
+<li><strong>Biologische zuivel:</strong> yoghurt, melk en kwark van Campina Bio en Organic Valley</li>
+<li><strong>Biologisch brood & beleg:</strong> ontbijtproducten uit de biologische lijn elke 2-3 weken scherp geprijsd</li>
+</ul>
+<h3>Ja! — het PLUS-huismerk</h3>
+<p>Het <strong>Ja! huismerk</strong> is het eigen merk van PLUS, beschikbaar in een reguliere én biologische variant. Ja! producten zijn gemiddeld <strong>15-25% goedkoper</strong> dan A-merken met vergelijkbare kwaliteit. Vlees, zuivel, groente en brood zijn de sterkste categorieën van het Ja! assortiment.</p>
+<h3>PLUS bezorging: boodschappen aan huis</h3>
+<p>Via <strong>plus.nl</strong> bestel je boodschappen voor thuisbezorging of afhalen. Alle <strong>PLUS aanbiedingen</strong> zijn ook online geldig. Bezorgkosten en minimumbestelling variëren per regio; in veel gebieden is avondbezorging mogelijk.</p>
 <h3>PLUS versus Albert Heijn en Jumbo</h3>
-<p>PLUS en AH zitten in hetzelfde marktsegment met vergelijkbare prijsniveaus. Het verschil zit in de focus: PLUS wint op biologisch assortiment en regionale producten, AH wint op diepere bonusacties via de app. Vergelijk beide wekelijks op DealHunter voor de slimste keuze.</p>
+<p>PLUS en AH zitten in hetzelfde marktsegment met vergelijkbare prijsniveaus. PLUS wint op biologisch assortiment, regionale producten en persoonlijk contact (zelfstandige ondernemer). AH wint op Bonus-diepte (1+1 gratis op grote A-merken) en app-personalisatie. Jumbo is gemiddeld <strong>2-3% goedkoper</strong> dan PLUS op basisprijzen, maar PLUS compenseert met sterkere biologische deals. Vergelijk de actuele <strong>PLUS supermarkt aanbiedingen</strong> op DealHunter voor de slimste weekkeuze.</p>
 `,
 
   'kruidvat': `

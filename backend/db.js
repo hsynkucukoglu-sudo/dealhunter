@@ -282,6 +282,22 @@ export async function getMinPriceMap() {
   return map
 }
 
+export async function getPriceHistory(productName, productMarket) {
+  const { rows } = await pool.query(
+    `SELECT discounted_price, original_price, recorded_week
+     FROM price_history
+     WHERE product_name = $1 AND product_market = $2
+     ORDER BY recorded_week ASC
+     LIMIT 12`,
+    [productName, productMarket]
+  )
+  return rows.map(r => ({
+    price: parseFloat(r.discounted_price),
+    originalPrice: parseFloat(r.original_price),
+    week: r.recorded_week,
+  }))
+}
+
 export async function getSubscriptionsForFavoritedProducts() {
   const { rows } = await pool.query(`
     SELECT

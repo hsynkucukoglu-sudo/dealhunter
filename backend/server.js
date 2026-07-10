@@ -3,7 +3,7 @@ import cors from 'cors'
 import rateLimit from 'express-rate-limit'
 import { initDatabase } from './db.js'
 import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, updateProductCategory, clearAllProducts, clearProductsByMarket } from './models.js'
-import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, archiveWeeklyDeals, getMinPriceMap, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts, updateSubscriptionPreferences, getUnsegmentedSubscriptions, getSegmentedSubscriptions, clearOrphanProducts, getProductCount, clearExpiredProducts, subscribeDealAlert, unsubscribeDealAlert, getMatchingAlerts, markAlertSent } from './db.js'
+import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, archiveWeeklyDeals, getMinPriceMap, getPriceHistory, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts, updateSubscriptionPreferences, getUnsegmentedSubscriptions, getSegmentedSubscriptions, clearOrphanProducts, getProductCount, clearExpiredProducts, subscribeDealAlert, unsubscribeDealAlert, getMatchingAlerts, markAlertSent } from './db.js'
 import { sendWeeklyNewsletter, sendWatchlistAlert, sendDealAlert } from './email.js'
 import { sendPushToAll, sendPushToSubscriptions } from './push.js'
 import { scrapeFlyerProducts } from './scraper/index.js'
@@ -564,6 +564,14 @@ app.delete('/api/favorites', asyncHandler(async (req, res) => {
 app.get('/api/price-history-min', asyncHandler(async (req, res) => {
   const map = await getMinPriceMap()
   res.json(map)
+}))
+
+// GET /api/price-history?name=...&market=... - Tek ürünün haftalık fiyat geçmişi
+app.get('/api/price-history', asyncHandler(async (req, res) => {
+  const { name, market } = req.query
+  if (!name || !market) return res.status(400).json({ error: 'name and market required' })
+  const history = await getPriceHistory(name, market)
+  res.json(history)
 }))
 
 // GET /api/compare - SQL tabanlı fiyat karşılaştırma grupları (isim + boyut kombinasyonu)

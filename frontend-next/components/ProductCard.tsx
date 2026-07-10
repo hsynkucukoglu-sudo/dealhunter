@@ -11,6 +11,7 @@ import { calcUnitPrice } from '@/lib/productMeta'
 import { detectCampaignType } from '@/lib/campaignType'
 import { usePriceHistory } from '@/context/PriceHistoryContext'
 import { trackDealClick, trackAddFavorite, trackAddWatchlist } from '@/lib/analytics'
+import { PriceHistoryChart } from './PriceHistoryChart'
 
 export function ProductCard({ product, priority = false }: { product: Product; priority?: boolean }) {
   const { t } = useLanguage()
@@ -196,6 +197,14 @@ export function ProductCard({ product, priority = false }: { product: Product; p
             )}
           </div>
         </div>
+
+        {hasValidDiscount && (
+          <PriceHistoryChart
+            name={product.name}
+            market={product.market}
+            currentPrice={product.discountedPrice}
+          />
+        )}
 
         <div className="flex items-center justify-between mt-1.5">
           {expiryStatus ? (

@@ -7,6 +7,7 @@ import { getCategoryStyle } from '@/lib/postImages'
 import { buildBreadcrumbSchema, buildFaqSchema } from '@/lib/schema'
 import { MARKETS } from '@/lib/types'
 import { AdBanner } from '@/components/AdBanner'
+import { NewsletterCTA } from '@/components/NewsletterCTA'
 
 export async function generateStaticParams() {
   return getAllPosts().map(p => ({ slug: p.slug }))
@@ -235,6 +236,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </div>
           </div>
         )}
+
+        <NewsletterCTA variant="blog" />
 
         {/* Back */}
         <div style={{ marginTop: 24 }}>
