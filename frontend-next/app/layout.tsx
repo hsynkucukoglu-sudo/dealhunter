@@ -114,14 +114,25 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             __html: `try{if(document.referrer&&document.referrer.indexOf('accounts.google.com')!==-1){Object.defineProperty(document,'referrer',{get:function(){return ''},configurable:true})}}catch(e){}`
           }}
         />
+        {/* Clarity queue setup must be beforeInteractive so window.clarity is a function
+            before the tag script (clarity.ms/tag/...) executes — that script calls
+            window.clarity("metadata",...) as its very first line. Without this the tag
+            script throws "a[c] is not a function" and no sessions are recorded. */}
+        {enableAnalytics && (
+          <Script
+            id="clarity-init"
+            strategy="beforeInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `window.clarity=window.clarity||function(){(window.clarity.q=window.clarity.q||[]).push(arguments)};`,
+            }}
+          />
+        )}
         {enableAnalytics && <GoogleAnalytics gaId="G-Y253QH18ZH" />}
         {enableAnalytics && (
           <Script
             id="clarity"
-            strategy="lazyOnload"
-            dangerouslySetInnerHTML={{
-              __html: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","x232q20xdj");`,
-            }}
+            strategy="afterInteractive"
+            src="https://www.clarity.ms/tag/x232q20xdj"
           />
         )}
       </body>
