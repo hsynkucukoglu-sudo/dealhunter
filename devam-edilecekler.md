@@ -21,6 +21,8 @@ status: active
 
 - [x] **Adım 3 uygulandı — ilk AdSense slotu görünür bölgeye taşındı** (`ProductsPage.tsx`): slot `7882410354` (horizontal, 90px) önceden Verloopt Binnenkort + MarketIndex + Combinatie widget'larının altındaydı — canlı ölçümde %31 derinlik, ortalama ziyaretçi (%21 kaydırma) hiç görmüyordu. Stats bölümünün hemen altına taşındı (~%11-12 bandı). Diğer slotlar (%47, %61) yerinde bırakıldı — sayfa aşırı reklam yüklemesin. AdSense hâlâ "Hazırlanıyor" olduğu için etki onay sonrası görülecek; yerleşim şimdiden hazır.
 
+- [x] **Adım 4 (faz 1) uygulandı — ana sayfa mobil performans** (`ProductsPage.tsx` + `globals.css`): PSI teşhisi — ana JS chunk'ı 2.059ms script eval, mount'ta tam ürün fetch'i (151KB + 1689 ürün state churn) hidrasyonun ortasında, 22k px DOM'un tamamı ilk yüklemede render (Style&Layout 616ms), Material Symbols 447KB (dokunulmadı — ayrı iş), AdSense/gtag ~380KB (review beklerken dokunulmaz). İki cerrahi fix: (1) tam ürün fetch'i idle'a ertelendi (`requestIdleCallback` timeout 4sn + scroll/pointerdown erken tetikleme, eski Safari fallback'li) — SSR'daki top 60 görsel olarak yeterli; (2) fold-altı 5 büyük bölüme `content-visibility: auto` (`.cv-auto`: MarktenShowcase, Verloopt Binnenkort, MarketIndex, CombinatieDeals, alt SEO bloğu) — HTML DOM'da kalıyor (SEO güvenli), render maliyeti görünene kadar erteleniyor. Build ✅. Önce/sonra PSI ölçümü deploy sonrası yapılacak.
+
 ## ✅ Tamamlanan (2026-07-11)
 
 - [x] **Repo toparlama**: birikmiş commit'lenmemiş dosyalar temizlendi. `qa-check.js` (API veri kalitesi + Playwright browser QA) ve `frontend-next/scripts/site-audit.mjs` (24 sayfa/API health-check) git'e eklendi, alakasız/kullanılmayan bir ekran görüntüsü (`public/Ekran görüntüsü 2026-06-21 203814.png`) silindi.

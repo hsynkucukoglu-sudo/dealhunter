@@ -284,3 +284,10 @@
   .blog-content ul         { padding-left: 20px; margin-bottom: 18px; }
   .blog-content li         { color: #3D3530; font-size: 16px; line-height: 1.7; margin-bottom: 6px; }
 }
+
+/* Fold-altı bölümler: render maliyeti görünene kadar ertelenir (mobil TBT/LCP fix,
+   bkz. docs/ctr-takip.md monetizasyon analizi 2026-07-12). HTML DOM'da kalır — SEO etkilenmez. */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
+}

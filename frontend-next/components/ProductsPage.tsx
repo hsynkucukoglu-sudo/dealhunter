@@ -179,9 +179,32 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
     return () => document.removeEventListener('mousedown', handleOutside)
   }, [])
 
-  // SSR'da sadece top 60 ürün gelir; mount sonrası tüm ürünleri çek
+  // SSR'da sadece top 60 ürün gelir. Tam listeyi (151KB + 1689 ürünle state
+  // güncellemesi) hidrasyonun ORTASINDA çekmek mobil TBT/LCP'yi şişiriyordu
+  // (PSI 25/100, bkz. docs/ctr-takip.md monetizasyon analizi) — idle'a ertelendi.
+  // İlk kullanıcı etkileşimi (dokunma/kaydırma) beklemeden erken tetikler.
   useEffect(() => {
-    refreshProducts()
+    let done = false
+    const load = () => {
+      if (done) return
+      done = true
+      refreshProducts()
+      window.removeEventListener('scroll', load)
+      window.removeEventListener('pointerdown', load)
+    }
+    window.addEventListener('scroll', load, { passive: true, once: true })
+    window.addEventListener('pointerdown', load, { passive: true, once: true })
+    // Eski Safari'de requestIdleCallback yok — runtime fallback
+    const ric = typeof window.requestIdleCallback === 'function'
+    const idleId = ric
+      ? window.requestIdleCallback(load, { timeout: 4000 })
+      : (setTimeout(load, 2500) as unknown as number)
+    return () => {
+      window.removeEventListener('scroll', load)
+      window.removeEventListener('pointerdown', load)
+      if (ric) window.cancelIdleCallback(idleId)
+      else clearTimeout(idleId)
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -1103,15 +1126,17 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
 
         {/* MARKTEN SHOWCASE — ana vitrin, sadece default view'da, Top 5'ten sonra */}
         {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && !showFavoritesOnly && (
-          <MarktenShowcase
-            products={products}
-            onSelectMarket={(m) => { trackMarketFilter(m); startTransition(() => { setSelectedMarket(m); setShowCampaignsOnly(false); setSelectedCategory('all') }) }}
-          />
+          <div className="cv-auto">
+            <MarktenShowcase
+              products={products}
+              onSelectMarket={(m) => { trackMarketFilter(m); startTransition(() => { setSelectedMarket(m); setShowCampaignsOnly(false); setSelectedCategory('all') }) }}
+            />
+          </div>
         )}
 
         {/* SON GEÇERLİLİK TARİHİ UYARISI */}
         {expiringSoon.length > 0 && searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
-          <section className="mb-10">
+          <section className="mb-10 cv-auto">
             <div className="flex items-center gap-2 mb-4">
               <span className="material-symbols-outlined material-filled animate-pulse" style={{ color: '#E33D26' }}>alarm</span>
               <h2 className="text-xl font-headline font-bold" style={{ color: '#1A1A1A' }}>
@@ -1148,12 +1173,12 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
 
         {/* MARKET INDEX WIDGET */}
         {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
-          <MarketIndexWidget products={products} />
+          <div className="cv-auto"><MarketIndexWidget products={products} /></div>
         )}
 
         {/* COMBINATIE DEALS WIDGET */}
         {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
-          <CombinatieDealsWidget products={products} />
+          <div className="cv-auto"><CombinatieDealsWidget products={products} /></div>
         )}
 
         {/* ANA LAYOUT: sol içerik + sağ Prijsvergelijking sidebar */}
@@ -1417,7 +1442,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
 
       {/* SEO / editorial content — unieke inhoud onderaan de homepage */}
       <section
-        className="max-w-4xl mx-auto px-4 md:px-8 mt-20"
+        className="max-w-4xl mx-auto px-4 md:px-8 mt-20 cv-auto"
         style={{ color: '#3A352F' }}
       >
         <div
