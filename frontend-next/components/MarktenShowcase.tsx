@@ -7,10 +7,14 @@ import { MarketLogo } from './MarketLogo'
 
 interface Props {
   products: Product[]
+  /** Sunucudan gelen gerçek market→ürün sayıları. Client state başlangıçta sadece
+      top 60 ürün içerdiğinden, bunlar olmadan "Aldi 1 deals" / eksik market
+      kartı ("9 winkels") görünüyordu. */
+  serverCounts?: Record<string, number>
   onSelectMarket: (market: string) => void
 }
 
-export function MarktenShowcase({ products, onSelectMarket }: Props) {
+export function MarktenShowcase({ products, serverCounts, onSelectMarket }: Props) {
   const marketStats = useMemo(() => {
     return VISIBLE_MARKETS.map(m => {
       const mProducts = products.filter(p => p.market === m.name)
@@ -20,12 +24,12 @@ export function MarktenShowcase({ products, onSelectMarket }: Props) {
         : null
       return {
         ...m,
-        count: mProducts.length,
+        count: Math.max(mProducts.length, serverCounts?.[m.name] ?? 0),
         dealCount: withDiscount.length,
         bestDeal,
       }
     }).filter(m => m.count > 0)
-  }, [products])
+  }, [products, serverCounts])
 
   if (marketStats.length === 0) return null
 

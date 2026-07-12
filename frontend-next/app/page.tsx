@@ -64,6 +64,13 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
   // Top 20 ürün — Google rich snippet (ItemList + Product + Offer)
   const homeDealsSchema = buildHomeDealsSchema(initialProducts)
 
+  // Gerçek market sayıları — client'ta top 60 yüklüyken market kartlarının
+  // "Aldi 1 deals" / eksik market ("9 winkels") göstermemesi için sunucudan geçirilir.
+  const marketCounts: Record<string, number> = {}
+  for (const p of allProducts) {
+    marketCounts[p.market] = (marketCounts[p.market] ?? 0) + 1
+  }
+
   return (
     <>
       <script
@@ -78,7 +85,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homeDealsSchema) }}
       />
-      <ProductsPage initialProducts={initialProducts} initialSearch={q ?? ''} />
+      <ProductsPage initialProducts={initialProducts} initialSearch={q ?? ''} marketCounts={marketCounts} totalCount={allProducts.length} />
     </>
   )
 }

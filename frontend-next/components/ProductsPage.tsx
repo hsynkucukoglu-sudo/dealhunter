@@ -115,7 +115,15 @@ function PushPromptBanner() {
   )
 }
 
-export function ProductsPage({ initialProducts, initialSearch = '' }: { initialProducts: Product[], initialSearch?: string }) {
+export function ProductsPage({ initialProducts, initialSearch = '', marketCounts, totalCount }: {
+  initialProducts: Product[]
+  initialSearch?: string
+  /** Sunucudan gelen gerçek market→ürün sayıları — client'ta sadece top 60 yüklüyken
+      MarktenShowcase'in "Aldi 1 deals" / "9 winkels" göstermesini önler. */
+  marketCounts?: Record<string, number>
+  /** Sunucudan gelen gerçek toplam ürün sayısı (Stats bölümü için). */
+  totalCount?: number
+}) {
   const [products, setProducts] = useState<Product[]>(initialProducts)
   const [fetchError, setFetchError] = useState(false)
   const [isScraping, setIsScraping] = useState(false)
@@ -372,7 +380,24 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         if (c < 2) { guaranteed.push(p); counts[p.market] = c + 1 }
         else rest.push(p)
       }
-      return [...guaranteed, ...rest].slice(0, visibleCount)
+      // "rest" de market bazlı round-robin: aksi halde indirim sıralaması yüzünden
+      // ilk sayfalar tek markete (Kruidvat parfümleri) yığılıyordu.
+      const queues = new Map<string, typeof filteredProducts>()
+      for (const p of rest) {
+        const q = queues.get(p.market) ?? []
+        q.push(p)
+        queues.set(p.market, q)
+      }
+      const interleaved: typeof filteredProducts = []
+      let added = true
+      while (added) {
+        added = false
+        for (const q of queues.values()) {
+          const next = q.shift()
+          if (next) { interleaved.push(next); added = true }
+        }
+      }
+      return [...guaranteed, ...interleaved].slice(0, visibleCount)
     }
     return filteredProducts.slice(0, visibleCount)
   }, [filteredProducts, visibleCount, deferredMarket, deferredCategory, deferredSearch, deferredCampaignsOnly, deferredFavoritesOnly])
@@ -1075,7 +1100,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             <div className="grid grid-cols-2 gap-0 max-w-[1280px] mx-auto px-4 md:px-16 py-8 md:py-12 relative z-10">
               <div className="flex flex-col items-center justify-center text-center">
                 <span className="font-headline font-bold mb-1" style={{ fontSize: 'clamp(1.75rem, 4vw, 2.75rem)', color: '#1A1A1A', fontFamily: 'Space Grotesk' }}>
-                  {products.length.toLocaleString('nl-NL')}
+                  {Math.max(products.length, totalCount ?? 0).toLocaleString('nl-NL')}
                 </span>
                 <span className="text-xs font-medium uppercase tracking-widest" style={{ color: '#9C9389', fontFamily: 'Hanken Grotesk' }}>
                   {lang === 'nl' ? 'Aanbiedingen Vandaag' : lang === 'en' ? 'Deals Found Today' : 'Bugün Fırsatlar'}
@@ -1129,6 +1154,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           <div className="cv-auto">
             <MarktenShowcase
               products={products}
+              serverCounts={marketCounts}
               onSelectMarket={(m) => { trackMarketFilter(m); startTransition(() => { setSelectedMarket(m); setShowCampaignsOnly(false); setSelectedCategory('all') }) }}
             />
           </div>
