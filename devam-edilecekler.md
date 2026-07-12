@@ -19,6 +19,8 @@ status: active
 
 - [x] **Adım 2 uygulandı — niyet-uyumlu Flink kartı market sayfalarında** (`components/FlinkDeliveryCard.tsx` + `MarketPage.tsx`): stats bloğunun hemen altında, grid'in üstünde ince bir kart — "Geen tijd om naar {market} te gaan? Boodschappen in minuten thuisbezorgd → Bekijk Flink". `getAffiliateLink('Flink')` tek doğruluk kaynağından (komisyonlu Daisycon linki), GA4 `affiliate_click` eventi (`source_page` ile hangi market sayfasından geldiği izlenebilir). Mantık: market sayfası ziyaretçisi zaten boodschappen niyetiyle geliyor, market butonları komisyonsuz — Flink niyetle birebir uyumlu tek komisyonlu dokunuş. Etki takibi: GA4'te `affiliate_click{affiliate_name: Flink}` eventleri.
 
+- [x] **Adım 3 uygulandı — ilk AdSense slotu görünür bölgeye taşındı** (`ProductsPage.tsx`): slot `7882410354` (horizontal, 90px) önceden Verloopt Binnenkort + MarketIndex + Combinatie widget'larının altındaydı — canlı ölçümde %31 derinlik, ortalama ziyaretçi (%21 kaydırma) hiç görmüyordu. Stats bölümünün hemen altına taşındı (~%11-12 bandı). Diğer slotlar (%47, %61) yerinde bırakıldı — sayfa aşırı reklam yüklemesin. AdSense hâlâ "Hazırlanıyor" olduğu için etki onay sonrası görülecek; yerleşim şimdiden hazır.
+
 ## ✅ Tamamlanan (2026-07-11)
 
 - [x] **Repo toparlama**: birikmiş commit'lenmemiş dosyalar temizlendi. `qa-check.js` (API veri kalitesi + Playwright browser QA) ve `frontend-next/scripts/site-audit.mjs` (24 sayfa/API health-check) git'e eklendi, alakasız/kullanılmayan bir ekran görüntüsü (`public/Ekran görüntüsü 2026-06-21 203814.png`) silindi.

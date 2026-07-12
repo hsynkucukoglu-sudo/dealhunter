@@ -1070,6 +1070,11 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           </section>
         )}
 
+        {/* AD #1 — Stats altı, ortalama kaydırma derinliği (%21) İÇİNDE kalsın diye
+            burada: önceden Verloopt Binnenkort + widget'ların altındaydı (%31 derinlik),
+            ortalama ziyaretçi hiç görmüyordu (bkz. docs/ctr-takip.md monetizasyon analizi) */}
+        <AdBanner slot="7882410354" format="horizontal" className="mb-6" minHeight={90} />
+
         {/* FLINK AFFILIATE BANNER */}
         <a
           href="https://jf79.net/c/?si=16070&li=1878997&wi=420902&ws="
@@ -1150,9 +1155,6 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
           <CombinatieDealsWidget products={products} />
         )}
-
-        {/* AD — Hero altı */}
-        <AdBanner slot="7882410354" format="horizontal" className="mb-10" minHeight={90} />
 
         {/* ANA LAYOUT: sol içerik + sağ Prijsvergelijking sidebar */}
         <div className="flex gap-8 items-start">
