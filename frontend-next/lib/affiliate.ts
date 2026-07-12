@@ -112,6 +112,14 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   Westwing: { destinationUrl: 'https://www.westwing.nl/', network: 'daisycon', rel: REL }, // si=17294
   Sembo:    { destinationUrl: 'https://www.sembo.nl/',    network: 'daisycon', rel: REL }, // si=20811
 
+  // ── Daisycon — 2026-07-12 onaylı, deeplink Daisycon panelinden (Materialen > Deeplinks) alındı ──
+  Vandebron:             { destinationUrl: 'https://vandebron.nl/',               network: 'daisycon', trackingBase: 'https://lt45.net/c/?si=12134&li=1535052&wi=420902', rel: REL },
+  'Beddengoeddirect.nl': { destinationUrl: 'https://www.beddengoeddirect.nl/',     network: 'daisycon', trackingBase: 'https://rkn3.net/c/?si=14527&li=1624333&wi=420902', rel: REL },
+  'Kameo Sleep (NL)':    { destinationUrl: 'https://www.kameosleep.nl/',           network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=21324&li=1907610&wi=420902', rel: REL },
+  'LEDshop Groenovatie': { destinationUrl: 'https://www.ledshop-groenovatie.com/', network: 'daisycon', trackingBase: 'https://lt45.net/c/?si=10385&li=1459831&wi=420902', rel: REL },
+  'Sif Jakobs':          { destinationUrl: 'https://sifjakobs.com/',              network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=21808&li=1918860&wi=420902', rel: REL },
+  'Freewear.nl':         { destinationUrl: 'https://www.freewear.nl/',            network: 'daisycon', trackingBase: 'https://lt45.net/c/?si=13066&li=1574630&wi=420902', rel: REL },
+
   // ── Energie — widget'tan (MeerBesparenWidget) taşındı, /energie pilot sayfası için tek kaynak ──
   // ENGIE/Oxxio/Pure Energie: dl= (deeplink) parametresi bu 3 programın kendi redirect'inde
   // çift URL'e yol açıp 404/hata sayfasına düşürüyordu (Kwantum/Levi's ile aynı bug, canlı

@@ -1,12 +1,20 @@
 ---
-date: 2026-07-11
+date: 2026-07-12
 tags: [dealhunter, seo, adsense, affiliate, scraper]
 status: active
 ---
 
 # DealHunter4U — Devam Edilecekler
 
-## ✅ Bugün tamamlanan (2026-07-11)
+## ✅ Bugün tamamlanan (2026-07-12)
+
+- [x] **Kalıcı panel erişimi kuruldu (Daisycon + AdSense + GSC + Clarity)**: gstack browse `state save/load` ile oturum çerezleri vault kökünde `.gstack/browse-states/` altında saklanıyor (`daisycon.json`, `google.json` — AdSense+GSC birlikte, `clarity.json`). Artık her seferinde giriş/CSV istemeye gerek yok. **Not:** çerezler düz metin — repo İÇİNE kopyalanmamalı; `state load` komutu vault kökünden çalıştırılmalı (cwd'ye göre çözümleniyor). Google girişi headless engellendiği için `connect` + `handoff` ile kullanıcı kendisi giriş yaptı, çerez/parola transcript'e hiç girmedi.
+- [x] **6 yeni Daisycon merchant eklendi — deeplink'ler panelden otomatik alındı**: Vandebron (si=12134, Energie), Beddengoeddirect.nl (si=14527), Kameo Sleep NL (si=21324), LEDshop Groenovatie (si=10385) → Thuis & Wonen; Sif Jakobs (si=21808), Freewear.nl (si=13066) → Sport & Mode. `affiliate.ts` + `MeerBesparenWidget.tsx`, tsc temiz. Editoryal uyumu zayıf onaylar (Avalon/Amsterdam Genetics/Disposables.bio/3 vitamin sitesi vb.) kullanıcı kararıyla atlandı. Awin tarafında 5 program kapanışı vardı, hiçbiri sitede yoktu — aksiyon gerekmedi.
+- [x] **AdSense durumu kontrol edildi (panel, canlı)**: dealhunter4u.nl hâlâ **"Hazırlanıyor"**; "Site sahipliği doğrulandı" ✓ ve "İnceleme istendi" ✓. Paneldeki "Ads.txt: Bulunamadı" 1 Temmuz tarihli bayat tarama — dosya canlıda doğru (200, doğru pub-ID). Manuel "yeniden tara" butonu YOK, Google kendi zamanlamasıyla tarıyor — yapılacak bir şey yok, bekleme aşaması.
+- [x] 🔬 **GSC derin analiz — CTR teşhisi değişti** (detay: `docs/ctr-takip.md`): site geneli %0,2 TO bir karışım yanılsaması; `/supermarkt/aldi` tek başına gösterimlerin %62'si. Navigasyonel marka sorguları (aldi, plus aanbiedingen...) ~%0,036 TO ile kazanılamaz; karşılaştırma/soru sorguları %3-14 TO ile kanıtlanmış format. **Karar: marka sorguları için title optimizasyonu bırakılıyor, büyüme kaldıracı karşılaştırma içeriği.**
+- [x] 🔬 **Clarity derin analiz (8-12 Tem, 39 oturum — proje 8 Tem'den beri doğru veri alıyor)**: oturum başına 1,0 sayfa, %21 kaydırma derinliği, 21 sn etkin süre — gelen ziyaretçi tek sayfada çıkıyor. JS hatası 0 ✅ (hydration fix'leri tutmuş). Ölü tıklama %12,8 (5 oturum, örneklem küçük — takipte). "Geri dönen kullanıcı %0" alarmı büyük ölçüde artefakt: proje 4 günlük, dönecek vakit olmadı. **2-3 hafta sonra aynı analiz tekrarlanmalı** (retention + ölü tıklama o zaman gerçekten ölçülebilir).
+
+## ✅ Tamamlanan (2026-07-11)
 
 - [x] **Repo toparlama**: birikmiş commit'lenmemiş dosyalar temizlendi. `qa-check.js` (API veri kalitesi + Playwright browser QA) ve `frontend-next/scripts/site-audit.mjs` (24 sayfa/API health-check) git'e eklendi, alakasız/kullanılmayan bir ekran görüntüsü (`public/Ekran görüntüsü 2026-06-21 203814.png`) silindi.
 - [x] 🐛 **`site-audit.mjs`'te gerçek script bug'ı bulundu ve düzeltildi**: script API sağlık kontrollerini (`/api/push/preferences` vb.) frontend domain'ine (`www.dealhunter4u.nl`) atıyordu, ama bu uçlar sadece Railway backend'inde var — frontend `/api/push/*`'i proxy'lemiyor, tarayıcı doğrudan backend'e gidiyor (`PushNotificationButton.tsx:6`, `NEXT_PUBLIC_API_URL`). Script her çalıştırıldığında yanlış 404 raporluyordu. Backend URL'i ayrı sabit (`API_ORIGIN`) olarak eklendi, ilgili kontroller oraya yönlendirildi — artık 24/24 gerçek sonuç veriyor.

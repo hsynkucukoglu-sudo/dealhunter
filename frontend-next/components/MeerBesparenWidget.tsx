@@ -30,6 +30,8 @@ const DEALS = [
       { name: 'Frank Energie',    tagline: 'Dynamische energietarieven',        cta: 'Vergelijk tarief', color: '#1A1A2E', url: DC('https://jf79.net/c/?si=16978&li=1731992&wi=420902', 'https://www.frankenergie.nl/') },
       { name: 'Gewoon Energie',   tagline: 'Eerlijke energie zonder poespas',   cta: 'Vergelijk tarief', color: '#00A99D', url: DC('https://partners.gewoonenergie.nl/c/?si=16832&li=1724962&wi=420902', 'https://www.gewoonenergie.nl/') },
       { name: 'Powerpeers',       tagline: 'Deel lokale groene stroom',         cta: 'Bekijk aanbod',    color: '#6FCF97', url: DC('https://lt45.net/c/?si=12400&li=1544330&wi=420902', 'https://www.powerpeers.nl/') },
+      // 2026-07-12 onaylı
+      { name: 'Vandebron',        tagline: 'Groene stroom van eigen bodem',     cta: 'Vergelijk tarief', color: '#00A651', url: DC('https://lt45.net/c/?si=12134&li=1535052&wi=420902', 'https://vandebron.nl/') },
     ],
   },
   {
@@ -114,6 +116,10 @@ const DEALS = [
       { name: 'buttinette NL',     tagline: 'Knutselen & handwerk',         cta: 'Bekijk aanbod',    color: '#C2185B', url: AW(122862, 'https://creatief-nl.buttinette.com/') },
       { name: 'Hermie',            tagline: 'Huis, tuin & dierenbenodigdheden', cta: 'Bekijk aanbod', color: '#4E7C31', url: DC('https://glp8.net/c/?si=20097&li=1858135&wi=420902', 'https://hermie.com/') },
       { name: 'VVVCadeaukaarten.nl', tagline: 'Cadeaukaarten voor elke gelegenheid', cta: 'Bekijk aanbod', color: '#F4B400', url: DC('https://fr135.net/c/?si=15261&li=1660848&wi=420902', 'https://www.vvvcadeaukaarten.nl/') },
+      // 2026-07-12 onaylı
+      { name: 'Beddengoeddirect.nl', tagline: 'Bedden, matrassen & beddengoed', cta: 'Bekijk aanbod', color: '#3E5C76', url: DC('https://rkn3.net/c/?si=14527&li=1624333&wi=420902', 'https://www.beddengoeddirect.nl/') },
+      { name: 'Kameo Sleep',       tagline: 'Slaapkamer & matrassen',        cta: 'Bekijk aanbod', color: '#264653', url: DC('https://glp8.net/c/?si=21324&li=1907610&wi=420902', 'https://www.kameosleep.nl/') },
+      { name: 'LEDshop Groenovatie', tagline: 'LED-verlichting voor binnen & buiten', cta: 'Bekijk aanbod', color: '#F4A300', url: DC('https://lt45.net/c/?si=10385&li=1459831&wi=420902', 'https://www.ledshop-groenovatie.com/') },
     ],
   },
   {
@@ -144,6 +150,9 @@ const DEALS = [
       { name: 'Dr. Martens',     tagline: 'Iconische boots & schoenen',    cta: 'Bekijk collectie', color: '#FFC72C', url: DC('https://fr135.net/c/?si=15138&li=1656908&wi=420902', 'https://www.drmartens.com/nl/nl/') },
       { name: 'Eastpak',         tagline: 'Rugzakken & tassen sale',       cta: 'Bekijk collectie', color: '#FF6B00', url: DC('https://glp8.net/c/?si=20076&li=1857675&wi=420902',  'https://www.eastpak.com/nl-nl/') },
       { name: 'Foreo',           tagline: 'Gezichtsreiniging & beauty tech', cta: 'Bekijk aanbod',  color: '#00BCD4', url: DC('https://jf79.net/c/?si=16254&li=1697784&wi=420902',  'https://www.foreo.com/nl') },
+      // 2026-07-12 onaylı
+      { name: 'Sif Jakobs',      tagline: 'Sieraden uit Denemarken',       cta: 'Bekijk collectie', color: '#B08D57', url: DC('https://glp8.net/c/?si=21808&li=1918860&wi=420902', 'https://sifjakobs.com/') },
+      { name: 'Freewear.nl',     tagline: 'Kleding & accessoires',         cta: 'Shop collectie',   color: '#2D2D2D', url: DC('https://lt45.net/c/?si=13066&li=1574630&wi=420902', 'https://www.freewear.nl/') },
     ],
   },
   {
