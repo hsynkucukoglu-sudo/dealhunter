@@ -410,6 +410,14 @@ export const POSTS: BlogPost[] = [
 <h2>Conclusie: wie is goedkoper, AH of Jumbo?</h2>
 <p>Voor dagelijkse boodschappen zonder kortingen: <strong>Jumbo is goedkoper</strong>. Voor wie actief gebruik maakt van bonusaanbiedingen en de AH-app: <strong>Albert Heijn kan goedkoper uitpakken</strong> — zeker bij grote 1+1 acties op houdbare producten.</p>
 <p>De slimste strategie: <strong>combineer beide</strong>. Bekijk elke week welke supermarkt de beste aanbieding heeft op wat jij nodig hebt. Dat doe je eenvoudig op <a href="/supermarkt/albert-heijn">DealHunter4U — Albert Heijn aanbiedingen</a> en <a href="/supermarkt/jumbo">Jumbo aanbiedingen</a> naast elkaar.</p>
+
+<h2>Verder lezen: één-op-één vergelijkingen</h2>
+<p>Wil je dieper ingaan op een specifiek duel? We hebben elke vergelijking apart uitgewerkt met actuele prijschecks:</p>
+<ul>
+<li><a href="/blog/is-jumbo-goedkoper-dan-albert-heijn">Is Jumbo goedkoper dan Albert Heijn?</a> — inclusief de "Altijd de laagste prijs"-garantie uitgelegd</li>
+<li><a href="/blog/is-lidl-goedkoper-dan-albert-heijn">Is Lidl goedkoper dan Albert Heijn?</a> — huismerk vs A-merk prijsverschillen</li>
+<li><a href="/blog/is-lidl-goedkoper-dan-jumbo">Is Lidl goedkoper dan Jumbo?</a> — waar de budgetformule wint en verliest</li>
+</ul>
     `.trim(),
     dealEmbed: {
       title: 'Beste deals van AH, Jumbo & Lidl deze week',
@@ -4930,7 +4938,16 @@ export function getAllPosts(): BlogPost[] {
 }
 
 export function getPostsByMarket(marketSlug: string): BlogPost[] {
-  return POSTS.filter(p => p.relatedMarkets?.includes(marketSlug))
+  // Vergelijking-posts eerst (bewezen hoogste CTR in Search — zie docs/ctr-takip.md),
+  // daarbinnen nieuwste eerst zodat verse posts interne links krijgen.
+  return POSTS
+    .filter(p => p.relatedMarkets?.includes(marketSlug))
+    .sort((a, b) => {
+      const aCmp = a.category === 'Vergelijking' ? 0 : 1
+      const bCmp = b.category === 'Vergelijking' ? 0 : 1
+      if (aCmp !== bCmp) return aCmp - bCmp
+      return b.date.localeCompare(a.date)
+    })
 }
 
 const CATEGORY_POSTS_MAP: Record<string, string[]> = {
@@ -4952,13 +4969,14 @@ export function getPostsByCategory(categoryId: string): BlogPost[] {
 }
 
 export function getRelatedPosts(post: BlogPost, limit = 3): BlogPost[] {
+  // Nieuwste eerst: verse posts hebben interne links het hardst nodig voor indexatie.
   const sameCat = POSTS.filter(p =>
     p.slug !== post.slug && p.category === post.category
-  )
+  ).sort((a, b) => b.date.localeCompare(a.date))
   const sameMarkets = POSTS.filter(p =>
     p.slug !== post.slug &&
     !sameCat.find(s => s.slug === p.slug) &&
     p.relatedMarkets?.some(m => post.relatedMarkets?.includes(m))
-  )
+  ).sort((a, b) => b.date.localeCompare(a.date))
   return [...sameCat, ...sameMarkets].slice(0, limit)
 }
