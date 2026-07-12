@@ -10,6 +10,7 @@ import { LanguageSwitcher } from './LanguageSwitcher'
 import { DealHunterLogo } from './DealHunterLogo'
 import { useShoppingList } from '@/context/ShoppingListContext'
 import { MarketFAQ } from './MarketFAQ'
+import { FlinkDeliveryCard } from './FlinkDeliveryCard'
 import { NewsletterCTA } from './NewsletterCTA'
 import { MarketLogo } from './MarketLogo'
 import { MARKET_FAQS, FAQ } from '@/lib/marketFaqs'
@@ -171,6 +172,9 @@ export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
             </span>
           </div>
         )}
+
+        {/* Intent-uyumlu affiliate: bezorging (komisyonlu) */}
+        <FlinkDeliveryCard marketName={market.name} />
 
         {/* Grid */}
         {filtered.length === 0 ? (
