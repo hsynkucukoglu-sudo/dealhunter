@@ -126,7 +126,10 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   // test edildi 2026-07-06) — destinationUrl doğrudan tam tracking linki, trackingBase KULLANILMIYOR.
   ENGIE:          { destinationUrl: 'https://ds1.nl/c/?si=16070&li=20757&wi=420902',   network: 'daisycon', rel: REL },
   Oxxio:          { destinationUrl: 'https://ds1.nl/c/?si=16070&li=119834&wi=420902',  network: 'daisycon', rel: REL },
-  'Pure Energie': { destinationUrl: 'https://ds1.nl/c/?si=16070&li=1420973&wi=420902', network: 'daisycon', rel: REL },
+  // 2026-07-13: Pure Energie'nin KENDİ programı (9321) onaylandı — legacy toplu
+  // linkten (si=16070) yükseltildi. dl= hâlâ çift-URL 404'ü veriyor (canlı test
+  // edildi), o yüzden ENGIE/Oxxio deseni: tam tracking linki, trackingBase yok.
+  'Pure Energie': { destinationUrl: 'https://jdt8.net/c/?si=9321&li=1420973&wi=420902', network: 'daisycon', rel: REL },
   noSun:          { destinationUrl: 'https://www.nosun.nl/',      network: 'daisycon', trackingBase: 'https://dt51.net/c/?si=19142&li=1877489&wi=420902', rel: REL },
   Renogy:         { destinationUrl: 'https://www.renogy.com/eu/', network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=21168&li=1901324&wi=420902', rel: REL },
 

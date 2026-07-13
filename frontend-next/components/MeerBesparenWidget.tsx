@@ -21,7 +21,7 @@ const DEALS = [
       // dl= parameter breekt bij deze 3 (dubbele URL → 404/foutpagina, canlı test 2026-07-06) — geen dl
       { name: 'ENGIE',        tagline: 'Gas & stroom vergelijken', cta: 'Vergelijk tarief', color: '#0064A8', url: 'https://ds1.nl/c/?si=16070&li=20757&wi=420902' },
       { name: 'Oxxio',        tagline: 'Vaste lage tarieven',      cta: 'Vergelijk tarief', color: '#E4002B', url: 'https://ds1.nl/c/?si=16070&li=119834&wi=420902' },
-      { name: 'Pure Energie', tagline: 'Goedkoop & transparant',   cta: 'Vergelijk tarief', color: '#F7941D', url: 'https://ds1.nl/c/?si=16070&li=1420973&wi=420902' },
+      { name: 'Pure Energie', tagline: 'Goedkoop & transparant',   cta: 'Vergelijk tarief', color: '#F7941D', url: 'https://jdt8.net/c/?si=9321&li=1420973&wi=420902' },
       { name: 'noSun',   tagline: 'Zonnepanelen voor thuis',      cta: 'Bekijk aanbod', color: '#F59B00', url: DC('https://dt51.net/c/?si=19142&li=1877489&wi=420902',  'https://www.nosun.nl/') },
       { name: 'Renogy', tagline: 'Zonnepanelen & accu\'s voor thuis', cta: 'Bekijk aanbod', color: '#E87722', url: DC('https://glp8.net/c/?si=21168&li=1901324&wi=420902', 'https://www.renogy.com/eu/') },
       // 2026-07-02/05 onaylı, trackingBase 2026-07-06 CSV export'undan doğrulandı
