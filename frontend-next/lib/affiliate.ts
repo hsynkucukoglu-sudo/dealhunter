@@ -49,7 +49,7 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   Plus: { destinationUrl: 'https://www.plus.nl/aanbiedingen', network: 'direct', rel: REL },
   Kruidvat: { destinationUrl: 'https://www.kruidvat.nl/aanbiedingen', network: 'direct', rel: REL },
   // Flink App (NL) — Daisycon onaylı (si=16070=program ID, li=1691645, jf79.net)
-  Flink: { destinationUrl: 'https://www.goflink.com/', network: 'daisycon', trackingBase: 'https://jf79.net/c/?si=16070&li=1691645&wi=420902', rel: REL },
+  Flink: { destinationUrl: 'https://jf79.net/c/?si=16070&li=1691645&wi=420902', network: 'daisycon', rel: REL },
   // Holland & Barrett NL — Awin onaylı (merchant ID 8108)
   'Holland & Barrett': { destinationUrl: 'https://www.hollandandbarrett.nl/aanbiedingen', network: 'awin', programId: '8108', rel: REL },
   // Bol.com — kendi partner ağı (site ID 1527078)
@@ -73,27 +73,27 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   'Erverte Paris':  { destinationUrl: 'https://erverte.com/',                network: 'awin', programId: '87255',  rel: REL },
 
   // ── Daisycon — CSV'den doğrulanmış trackingBase (si=program_id, li=link_id) ──
-  'Plein.nl':           { destinationUrl: 'https://www.plein.nl/',                 network: 'daisycon', trackingBase: 'https://fr135.net/c/?si=3366&li=1161224&wi=420902',  rel: REL },
+  'Plein.nl':           { destinationUrl: 'https://fr135.net/c/?si=3366&li=1161224&wi=420902',                 network: 'daisycon',  rel: REL },
   'Plein.be':           { destinationUrl: 'https://www.plein.be/',                 network: 'direct',   rel: REL },
-  Petgamma:             { destinationUrl: 'https://www.petgamma.com/',             network: 'daisycon', trackingBase: 'https://fr135.net/c/?si=20686&li=1877039&wi=420902', rel: REL },
-  Leukstetickets:       { destinationUrl: 'https://www.leukstetickets.nl/',        network: 'daisycon', trackingBase: 'https://lt45.net/c/?si=15805&li=1684191&wi=420902',  rel: REL },
-  'AD Webwinkel':       { destinationUrl: 'https://adwebwinkel.nl/',               network: 'daisycon', trackingBase: 'https://lt45.net/c/?si=13048&li=1574297&wi=420902',  rel: REL },
-  'Volkskrant Webwinkel': { destinationUrl: 'https://webwinkel.volkskrant.nl/',    network: 'daisycon', trackingBase: 'https://lt45.net/c/?si=15810&li=1684197&wi=420902',  rel: REL },
-  'Nu.nl Shop':         { destinationUrl: 'https://shop.nu.nl/',                   network: 'daisycon', trackingBase: 'https://lt45.net/c/?si=15818&li=1684335&wi=420902',  rel: REL },
+  Petgamma:             { destinationUrl: 'https://fr135.net/c/?si=20686&li=1877039&wi=420902',             network: 'daisycon', rel: REL },
+  Leukstetickets:       { destinationUrl: 'https://lt45.net/c/?si=15805&li=1684191&wi=420902',        network: 'daisycon',  rel: REL },
+  'AD Webwinkel':       { destinationUrl: 'https://lt45.net/c/?si=13048&li=1574297&wi=420902',               network: 'daisycon',  rel: REL },
+  'Volkskrant Webwinkel': { destinationUrl: 'https://lt45.net/c/?si=15810&li=1684197&wi=420902',    network: 'daisycon',  rel: REL },
+  'Nu.nl Shop':         { destinationUrl: 'https://lt45.net/c/?si=15818&li=1684335&wi=420902',                   network: 'daisycon',  rel: REL },
   'Libelle Shop':       { destinationUrl: 'https://shop.libelle.nl/',              network: 'daisycon', trackingBase: 'https://lt45.net/c/?si=15819&li=1684336&wi=420902',  rel: REL },
-  XLLease:              { destinationUrl: 'https://www.xllease.nl/',               network: 'daisycon', trackingBase: 'https://fr135.net/c/?si=20255&li=1864272&wi=420902', rel: REL },
-  DutchLease:           { destinationUrl: 'https://www.dutchlease.nl/',            network: 'daisycon', trackingBase: 'https://fr135.net/c/?si=20456&li=1868213&wi=420902', rel: REL },
-  XLEasy:               { destinationUrl: 'https://www.xleasy.nl/',               network: 'daisycon', trackingBase: 'https://fr135.net/c/?si=15775&li=1682823&wi=420902', rel: REL },
-  Ziggo:                { destinationUrl: 'https://www.meervoordeel.nl/',          network: 'daisycon', trackingBase: 'https://jf79.net/c/?si=17174&li=1742299&wi=420902',  rel: REL },
+  XLLease:              { destinationUrl: 'https://fr135.net/c/?si=20255&li=1864272&wi=420902',               network: 'daisycon', rel: REL },
+  DutchLease:           { destinationUrl: 'https://fr135.net/c/?si=20456&li=1868213&wi=420902',            network: 'daisycon', rel: REL },
+  XLEasy:               { destinationUrl: 'https://fr135.net/c/?si=15775&li=1682823&wi=420902',               network: 'daisycon', rel: REL },
+  Ziggo:                { destinationUrl: 'https://jf79.net/c/?si=17174&li=1742299&wi=420902',          network: 'daisycon',  rel: REL },
   Vattenfall:           { destinationUrl: 'https://www.vattenfall.nl/',            network: 'direct',   rel: REL },
-  hollandsnieuwe:       { destinationUrl: 'https://www.hollandsnieuwe.nl/',        network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=21994&li=1927639&wi=420902',  rel: REL },
+  hollandsnieuwe:       { destinationUrl: 'https://glp8.net/c/?si=21994&li=1927639&wi=420902',        network: 'daisycon',  rel: REL },
 
   // ── Daisycon — 2026-06-26 onaylı, trackingBase Daisycon'dan alınacak ───────
   // Daisycon > Campagnes > [program] > Link ophalen → si/li/domain al, network: 'daisycon' + trackingBase ekle
-  'Verfuitverkoop.nl':  { destinationUrl: 'https://www.verfuitverkoop.nl/',  network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=21219&li=1904818&wi=420902', rel: REL },
-  'Wixx Coatings':      { destinationUrl: 'https://www.wixxcoatings.nl/',    network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=21467&li=1913625&wi=420902', rel: REL },
-  'Weightworld.nl':     { destinationUrl: 'https://www.weightworld.nl/',     network: 'daisycon', trackingBase: 'https://fr135.net/c/?si=15441&li=1670530&wi=420902', rel: REL },
-  'Oakley':             { destinationUrl: 'https://www.oakley.com/nl-nl/',   network: 'daisycon', trackingBase: 'https://bdt9.net/c/?si=18433&li=1819889&wi=420902', rel: REL },
+  'Verfuitverkoop.nl':  { destinationUrl: 'https://glp8.net/c/?si=21219&li=1904818&wi=420902',  network: 'daisycon', rel: REL },
+  'Wixx Coatings':      { destinationUrl: 'https://glp8.net/c/?si=21467&li=1913625&wi=420902',    network: 'daisycon', rel: REL },
+  'Weightworld.nl':     { destinationUrl: 'https://fr135.net/c/?si=15441&li=1670530&wi=420902',     network: 'daisycon', rel: REL },
+  'Oakley':             { destinationUrl: 'https://bdt9.net/c/?si=18433&li=1819889&wi=420902',   network: 'daisycon', rel: REL },
 
   // ── Daisycon — 2026-07-02 onaylı ────────────────────────────────────────────
   // Housefinan/Kredanta: bu programlar deeplink desteklemiyor (Daisycon "Advertisements"
@@ -102,12 +102,12 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   // &dl= eklemesin (eklerse redirect zinciri bozulabilir).
   'Housefinan (DE)':     { destinationUrl: 'https://glp8.net/c/?si=21988&li=1926905&wi=420902', network: 'daisycon', rel: REL },
   'Kredanta (DACH)':     { destinationUrl: 'https://glp8.net/c/?si=21987&li=1926881&wi=420902', network: 'daisycon', rel: REL },
-  Hermie:                { destinationUrl: 'https://hermie.com/',              network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=20097&li=1858135&wi=420902', rel: REL },
-  'Minisforum (FR)':     { destinationUrl: 'https://minisforum-store.com/fr/', network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=20763&li=1880752&wi=420902', rel: REL },
-  'VVVCadeaukaarten.nl': { destinationUrl: 'https://www.vvvcadeaukaarten.nl/', network: 'daisycon', trackingBase: 'https://fr135.net/c/?si=15261&li=1660848&wi=420902', rel: REL },
+  Hermie:                { destinationUrl: 'https://glp8.net/c/?si=20097&li=1858135&wi=420902',              network: 'daisycon', rel: REL },
+  'Minisforum (FR)':     { destinationUrl: 'https://glp8.net/c/?si=20763&li=1880752&wi=420902', network: 'daisycon', rel: REL },
+  'VVVCadeaukaarten.nl': { destinationUrl: 'https://fr135.net/c/?si=15261&li=1660848&wi=420902', network: 'daisycon', rel: REL },
   // 2026-07-03 onaylı — ayrı program, Minisforum (FR)'den farklı si
-  'Minisforum (EU)':     { destinationUrl: 'https://www.minisforum.com/', network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=20771&li=1880782&wi=420902', rel: REL },
-  Jwverzekeringen:       { destinationUrl: 'https://www.jwverzekeringen.nl/', network: 'daisycon', trackingBase: 'https://partners.jwverzekeringen.nl/c/?si=21167&li=1901301&wi=420902', rel: REL },
+  'Minisforum (EU)':     { destinationUrl: 'https://glp8.net/c/?si=20771&li=1880782&wi=420902', network: 'daisycon', rel: REL },
+  Jwverzekeringen:       { destinationUrl: 'https://partners.jwverzekeringen.nl/c/?si=21167&li=1901301&wi=420902', network: 'daisycon', rel: REL },
   // 2026-07-07 onaylı — trackingBase Daisycon CSV export'undan alınacak
   Westwing: { destinationUrl: 'https://www.westwing.nl/', network: 'daisycon', rel: REL }, // si=17294
   Sembo:    { destinationUrl: 'https://www.sembo.nl/',    network: 'daisycon', rel: REL }, // si=20811
@@ -120,12 +120,12 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   'Sneakids NL':     { destinationUrl: 'https://sneakids.nl/',             network: 'awin', programId: '103061', rel: REL },
 
   // ── Daisycon — 2026-07-12 onaylı, deeplink Daisycon panelinden (Materialen > Deeplinks) alındı ──
-  Vandebron:             { destinationUrl: 'https://vandebron.nl/',               network: 'daisycon', trackingBase: 'https://lt45.net/c/?si=12134&li=1535052&wi=420902', rel: REL },
-  'Beddengoeddirect.nl': { destinationUrl: 'https://www.beddengoeddirect.nl/',     network: 'daisycon', trackingBase: 'https://rkn3.net/c/?si=14527&li=1624333&wi=420902', rel: REL },
-  'Kameo Sleep (NL)':    { destinationUrl: 'https://www.kameosleep.nl/',           network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=21324&li=1907610&wi=420902', rel: REL },
-  'LEDshop Groenovatie': { destinationUrl: 'https://www.ledshop-groenovatie.com/', network: 'daisycon', trackingBase: 'https://lt45.net/c/?si=10385&li=1459831&wi=420902', rel: REL },
-  'Sif Jakobs':          { destinationUrl: 'https://sifjakobs.com/',              network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=21808&li=1918860&wi=420902', rel: REL },
-  'Freewear.nl':         { destinationUrl: 'https://www.freewear.nl/',            network: 'daisycon', trackingBase: 'https://lt45.net/c/?si=13066&li=1574630&wi=420902', rel: REL },
+  Vandebron:             { destinationUrl: 'https://lt45.net/c/?si=12134&li=1535052&wi=420902',               network: 'daisycon', rel: REL },
+  'Beddengoeddirect.nl': { destinationUrl: 'https://rkn3.net/c/?si=14527&li=1624333&wi=420902',     network: 'daisycon', rel: REL },
+  'Kameo Sleep (NL)':    { destinationUrl: 'https://glp8.net/c/?si=21324&li=1907610&wi=420902',           network: 'daisycon', rel: REL },
+  'LEDshop Groenovatie': { destinationUrl: 'https://lt45.net/c/?si=10385&li=1459831&wi=420902', network: 'daisycon', rel: REL },
+  'Sif Jakobs':          { destinationUrl: 'https://glp8.net/c/?si=21808&li=1918860&wi=420902',              network: 'daisycon', rel: REL },
+  'Freewear.nl':         { destinationUrl: 'https://lt45.net/c/?si=13066&li=1574630&wi=420902',            network: 'daisycon', rel: REL },
 
   // ── Energie — widget'tan (MeerBesparenWidget) taşındı, /energie pilot sayfası için tek kaynak ──
   // ENGIE/Oxxio/Pure Energie: dl= (deeplink) parametresi bu 3 programın kendi redirect'inde
@@ -137,16 +137,16 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   // linkten (si=16070) yükseltildi. dl= hâlâ çift-URL 404'ü veriyor (canlı test
   // edildi), o yüzden ENGIE/Oxxio deseni: tam tracking linki, trackingBase yok.
   'Pure Energie': { destinationUrl: 'https://jdt8.net/c/?si=9321&li=1420973&wi=420902', network: 'daisycon', rel: REL },
-  noSun:          { destinationUrl: 'https://www.nosun.nl/',      network: 'daisycon', trackingBase: 'https://dt51.net/c/?si=19142&li=1877489&wi=420902', rel: REL },
-  Renogy:         { destinationUrl: 'https://www.renogy.com/eu/', network: 'daisycon', trackingBase: 'https://glp8.net/c/?si=21168&li=1901324&wi=420902', rel: REL },
+  noSun:          { destinationUrl: 'https://dt51.net/c/?si=19142&li=1877489&wi=420902',      network: 'daisycon', rel: REL },
+  Renogy:         { destinationUrl: 'https://glp8.net/c/?si=21168&li=1901324&wi=420902', network: 'daisycon', rel: REL },
 
   // ── Energie — 2026-07-02/05 onaylı, trackingBase 2026-07-06 CSV export'undan doğrulandı ──
-  Essent:              { destinationUrl: 'https://www.essent.nl/',         network: 'daisycon', trackingBase: 'https://lt45.net/c/?si=9787&li=1437653&wi=420902', rel: REL },
-  'Essent Zakelijk':   { destinationUrl: 'https://www.essent.nl/zakelijk', network: 'daisycon', trackingBase: 'https://lt45.net/c/?si=13190&li=1579477&wi=420902', rel: REL },
-  energiedirect:       { destinationUrl: 'https://www.energiedirect.nl/', network: 'daisycon', trackingBase: 'https://lt45.net/c/?si=924&li=55221&wi=420902', rel: REL },
-  'Frank Energie':     { destinationUrl: 'https://www.frankenergie.nl/',  network: 'daisycon', trackingBase: 'https://jf79.net/c/?si=16978&li=1731992&wi=420902', rel: REL },
-  'Gewoon Energie':    { destinationUrl: 'https://www.gewoonenergie.nl/', network: 'daisycon', trackingBase: 'https://partners.gewoonenergie.nl/c/?si=16832&li=1724962&wi=420902', rel: REL },
-  Powerpeers:          { destinationUrl: 'https://www.powerpeers.nl/',    network: 'daisycon', trackingBase: 'https://lt45.net/c/?si=12400&li=1544330&wi=420902', rel: REL },
+  Essent:              { destinationUrl: 'https://lt45.net/c/?si=9787&li=1437653&wi=420902',         network: 'daisycon', rel: REL },
+  'Essent Zakelijk':   { destinationUrl: 'https://lt45.net/c/?si=13190&li=1579477&wi=420902', network: 'daisycon', rel: REL },
+  energiedirect:       { destinationUrl: 'https://lt45.net/c/?si=924&li=55221&wi=420902', network: 'daisycon', rel: REL },
+  'Frank Energie':     { destinationUrl: 'https://jf79.net/c/?si=16978&li=1731992&wi=420902',  network: 'daisycon', rel: REL },
+  'Gewoon Energie':    { destinationUrl: 'https://partners.gewoonenergie.nl/c/?si=16832&li=1724962&wi=420902', network: 'daisycon', rel: REL },
+  Powerpeers:          { destinationUrl: 'https://lt45.net/c/?si=12400&li=1544330&wi=420902',    network: 'daisycon', rel: REL },
 }
 
 /** Hedef URL'i yapılandırılmış ağın tracking deeplink'ine sarar. */
