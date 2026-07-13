@@ -1,0 +1,9 @@
+{
+  "name": "dealhunter-tiktok-video",
+  "private": true,
+  "type": "module",
+  "description": "Haftalık TikTok deal videosu üretici — node make-video.mjs",
+  "dependencies": {
+    "ffmpeg-static": "^5.2.0"
+  }
+}

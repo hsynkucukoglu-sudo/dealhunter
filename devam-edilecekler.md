@@ -1,10 +1,14 @@
 ---
-date: 2026-07-12
+date: 2026-07-13
 tags: [dealhunter, seo, adsense, affiliate, scraper]
 status: active
 ---
 
 # DealHunter4U — Devam Edilecekler
+
+## ✅ Bugün tamamlanan (2026-07-13)
+
+- [x] **TikTok video pipeline kalıcılaştırıldı** (`tools/tiktok-video/`): dün scratchpad'de prototiplenen "Top 5 Supermarkt Deals" video üreticisi tek dosyada birleştirilip repoya taşındı (`make-video.mjs` — veri çek → animasyonlu HTML → Playwright 1080x1920 kaydı → ffmpeg mp4). Repodan uçtan uca test edildi, taze veriyle çalıştı (bugünün top 5'i: Dirk Robijn -74% #1). Kullanım: `cd tools/tiktok-video && npm i && node make-video.mjs` → `out/dealhunter-top5-weekNN.mp4`. Bağımlılık sadece ffmpeg-static (playwright global'den çözülür, browser indirilmez); `out/` ve `node_modules/` gitignore'da. İlk örnek video masaüstünde: `dealhunter-top5-week28.mp4` — kullanıcı TikTok hesabı açıp yükleyecek, ses uygulama içinden eklenecek.
 
 ## ✅ Bugün tamamlanan (2026-07-12)
 
