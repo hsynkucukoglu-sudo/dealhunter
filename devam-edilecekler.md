@@ -8,6 +8,8 @@ status: active
 
 ## ✅ Bugün tamamlanan (2026-07-13)
 
+- [x] 🐛 **"Albert gitti" kök nedeni bulundu ve yapısal olarak düzeltildi**: Kullanıcı sabah AH'nin sitede olmadığını gördü; teşhis anında her şey yerindeydi (648 ürün, 08:02 taraması) → geçici pencere. Kök neden: haftalık ürünler Pazar gecesi topluca "expired" düşüyor + **başlangıç temizliği her sunucu restart'ında (yani her deploy'da!) çalışıyor** → Pazartesi 00:00-08:00 (yeni tarama) arasındaki herhangi bir restart tüm haftalık marketleri boşaltıyor. Dün akşamki deploy'lar bunu tetikledi. **Fix:** `clearExpiredProducts(graceDays)` parametresi — başlangıç temizliği 1 gün tolerans kullanıyor (dün biten ürünler taze tarama gelene kadar kalır), tarama-sonrası temizlik sıkı (graceDays=0). Trade-off: haftada birkaç sabah saati market sayfalarında "Aanbieding verlopen" etiketli dünkü ürünler görünebilir — boş market sayfasından hem kullanıcı hem AdSense incelemecisi için çok daha iyi. Ana sayfa gridi zaten expired'ı client-side filtreliyor.
+
 - [x] **TikTok video pipeline kalıcılaştırıldı** (`tools/tiktok-video/`): dün scratchpad'de prototiplenen "Top 5 Supermarkt Deals" video üreticisi tek dosyada birleştirilip repoya taşındı (`make-video.mjs` — veri çek → animasyonlu HTML → Playwright 1080x1920 kaydı → ffmpeg mp4). Repodan uçtan uca test edildi, taze veriyle çalıştı (bugünün top 5'i: Dirk Robijn -74% #1). Kullanım: `cd tools/tiktok-video && npm i && node make-video.mjs` → `out/dealhunter-top5-weekNN.mp4`. Bağımlılık sadece ffmpeg-static (playwright global'den çözülür, browser indirilmez); `out/` ve `node_modules/` gitignore'da. İlk örnek video masaüstünde: `dealhunter-top5-week28.mp4` — kullanıcı TikTok hesabı açıp yükleyecek, ses uygulama içinden eklenecek.
 
 ## ✅ Bugün tamamlanan (2026-07-12)

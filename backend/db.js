@@ -459,18 +459,23 @@ export async function clearOrphanProducts() {
   await pool.query("DELETE FROM products WHERE market IS NULL OR market = ''")
 }
 
-export async function clearExpiredProducts() {
+export async function clearExpiredProducts(graceDays = 0) {
   // expiresAt sadece tarih (saat yok, ör. '2026-07-07') olarak saklanıyor. TIMESTAMPTZ'e
   // cast edilince gece yarısına (00:00 UTC) denk geliyordu — cron gün içinde herhangi bir
   // saatte çalıştığında "bugün biten" ürünler daha gün bitmeden siliniyordu (2026-07-07
   // regresyonu: Plus 136→21 ürüne düştü). Gün bazlı karşılaştırma: sadece expiresAt
   // TARİHİ bugünden kesinlikle önceyse sil, "bugün biten" ürün gün sonuna kadar kalır.
+  //
+  // graceDays: sunucu açılış temizliği 1 gün tolerans kullanır — haftalık ürünler
+  // Pazar gecesi topluca "expired" düştüğü için, Pazartesi 00:00-08:00 (yeni tarama)
+  // arasındaki HERHANGİ bir restart tüm marketi boşaltıyordu (2026-07-13: AH kayboldu).
+  // Taze veri geldikten sonra çalışan tarama-sonrası temizlik sıkı kalır (graceDays=0).
   const res = await pool.query(`
     DELETE FROM products
     WHERE "expiresAt" IS NOT NULL
       AND "expiresAt" != ''
-      AND "expiresAt"::DATE < CURRENT_DATE
-  `)
+      AND "expiresAt"::DATE < CURRENT_DATE - $1::int
+  `, [graceDays])
   return res.rowCount
 }
 

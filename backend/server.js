@@ -758,11 +758,13 @@ async function startServer() {
     })
     server.setTimeout(600000)
 
-    // Açılışta expired ürünleri temizle + orphan temizle
+    // Açılışta expired ürünleri temizle + orphan temizle.
+    // 1 gün tolerans: dün biten ürünler yeni tarama gelene kadar kalır — aksi halde
+    // Pazartesi 00:00-08:00 arası her restart (deploy!) haftalık marketleri boşaltıyordu.
     setTimeout(async () => {
       try {
         await clearOrphanProducts()
-        const deleted = await clearExpiredProducts()
+        const deleted = await clearExpiredProducts(1)
         if (deleted > 0) console.log(`🧹 ${deleted} tarihi geçmiş ürün DB'den silindi.`)
         const count = await getProductCount()
         if (count > 100) {
