@@ -1329,6 +1329,15 @@ export const POSTS: BlogPost[] = [
 <h2>Conclusie</h2>
 <p>Jumbo biedt een sterke combinatie van lage basisprijzen en wekelijkse aanbiedingen. Met de Bonus Card, persoonlijke kortingen en een slimme boodschappenstrategie bespaar je gemakkelijk <strong>€8–15 per week</strong>. Vergelijk de Jumbo-deals altijd met andere supermarkten voor de beste combinatie.</p>
 
+<h2>Jumbo Extra's: zo werkt het spaarprogramma</h2>
+<p>Met <strong>Jumbo Extra's</strong> (gratis via de Jumbo-app) spaar je automatisch bij elke aankoop en krijg je persoonlijke aanbiedingen bovenop de weekacties. De Extra's-deals zijn per klant verschillend en gebaseerd op je koopgedrag — check ze vóór elk winkelbezoek in de app, want ze moeten vaak actief "geactiveerd" worden om te gelden. Wie zonder app winkelt, mist deze laag korting volledig; de reguliere weekaanbiedingen gelden wél voor iedereen.</p>
+
+<h2>De "Altijd de laagste prijs"-garantie uitgelegd</h2>
+<p>Jumbo garandeert op ruim duizend basisproducten dat de prijs nooit hoger is dan bij Albert Heijn. Vind je hetzelfde artikel elders (bij AH) goedkoper, dan past Jumbo de prijs aan en krijg je het verschil terug. Twee kanttekeningen: de garantie geldt ten opzichte van AH — niet van Aldi of Lidl, die op huismerken alsnog goedkoper zijn — en hij geldt voor reguliere prijzen, niet voor Bonus-acties. Voor de praktijk betekent dit: basisboodschappen bij Jumbo zijn nooit duurder dan AH, maar A-merk stunts bij AH Bonus kunnen alsnog winnen. Lees de volledige vergelijking in <a href="/blog/is-jumbo-goedkoper-dan-albert-heijn">Is Jumbo goedkoper dan Albert Heijn?</a></p>
+
+<h2>Wanneer is Jumbo op zijn goedkoopst?</h2>
+<p>Jumbo vernieuwt de weekaanbiedingen op <strong>woensdag</strong>. De sterkste weken zijn rond feestdagen en tijdens de "Weekendknallers" — extra diepe kortingen die alleen vrijdag t/m zondag gelden. Wie zijn grote weekinkoop op vrijdag of zaterdag doet, pakt beide lagen mee: de reguliere weekactie plus de weekendknaller. Combineer dat met de Extra's uit de app en je haalt structureel het maximale uit Jumbo.</p>
+
 <p>Bekijk alle actuele <a href="/supermarkt/jumbo">Jumbo aanbiedingen op DealHunter4U</a> naast die van andere supermarkten.</p>
     `.trim(),
   },
@@ -1422,6 +1431,15 @@ export const POSTS: BlogPost[] = [
 
 <h2>Conclusie</h2>
 <p>Lidl combineert lage prijzen met een verrassend breed en kwalitatief assortiment. Met de Lidl Plus app, slimme timing en gebruik van de internationale weken bespaar je <strong>€12–20 per week</strong> vergeleken met een gemiddeld AH-bezoek.</p>
+
+<h2>Lidl Plus app: wat levert die echt op?</h2>
+<p>De gratis <strong>Lidl Plus app</strong> geeft coupons bovenop de weekaanbiedingen — typisch 2–4 kortingscoupons per week op wisselende categorieën, plus een kortingskraskaart na elke aankoop. De coupons moeten vóór het afrekenen geactiveerd worden en gelden vaak maar enkele dagen. Realistische opbrengst voor een vaste Lidl-klant: €3–8 per maand extra korting. Niet spectaculair, maar structureel — en de app toont ook de digitale folder eerder dan de papieren versie.</p>
+
+<h2>Lidl themaweken: het geheime wapen</h2>
+<p>Lidl draait door het jaar heen terugkerende <strong>themaweken</strong> — de Griekse week, Italiaanse week, Aziatische week, XXL-week — waarin tijdelijk assortiment tegen scherpe prijzen ligt. Deze producten komen níet terug: op is echt op. Wie een favoriet ontdekt (Griekse feta, Italiaanse pasta's), slaat tijdens de themaweek in. De themaweken starten vrijwel altijd op maandag en worden in de folder een week vooruit aangekondigd — check de <a href="/volgende-week">volgende-week pagina</a> om ze voor te zijn.</p>
+
+<h2>Non-food bij Lidl: gereedschap tot sportkleding</h2>
+<p>De non-food middenpaden ("Lidl-verrassingen") zijn berucht en geliefd: gereedschap (Parkside), keukenapparatuur (Silvercrest), sportkleding — kwaliteit die in tests regelmatig verrassend goed scoort tegen een fractie van merkproducten. De aanbiedingen starten op maandag en donderdag; populaire items (gereedschap, keukenmachines) zijn vaak binnen een dag uitverkocht. Vuistregel: sta bij een geplande aankoop op de startdag vroeg in de winkel, of bestel online via de Lidl-webshop waar de voorraad iets ruimer is.</p>
 
 <p>Bekijk de actuele <a href="/supermarkt/lidl">Lidl aanbiedingen op DealHunter4U</a> en vergelijk direct met alle andere supermarkten.</p>
     `.trim(),
@@ -1688,6 +1706,20 @@ export const POSTS: BlogPost[] = [
 
 <h2>Conclusie</h2>
 <p>De beste dagen zijn <strong>maandag</strong> (Aldi/Lidl) en <strong>woensdag</strong> (AH/Jumbo). Ga vroeg in de ochtend voor de volledige voorraad. Vermijd weekenden voor aanbiedingsproducten. Combineer supermarkten slim op basis van de actuele deals op <a href="https://www.dealhunter4u.nl">DealHunter4U</a> voor de maximale besparing.</p>
+
+<h2>Beste tijdstip op de dag: ochtend vs. avond</h2>
+<p>Naast de dag maakt ook het tijdstip uit:</p>
+<ul>
+  <li><strong>Vroege ochtend (8–10 uur):</strong> volle schappen, alle aanbiedingen nog op voorraad, rustige winkel. De beste keuze voor de grote weekinkoop op de eerste actiedag.</li>
+  <li><strong>Einde middag (16–18 uur):</strong> de drukste periode — vermijd deze als het kan; lange rijen verleiden tot de "snelle greep" bij de kassa.</li>
+  <li><strong>Laatste uur voor sluiting:</strong> hét moment voor afprijsstickers op vers (brood, vlees, maaltijden) — kortingen van 25–50% op producten die de houdbaarheidsdatum naderen. Perfect voor wie direct kookt of invriest.</li>
+</ul>
+
+<h2>Afprijsstickers: wanneer loont jagen?</h2>
+<p>De 35%- en 50%-stickers op versproducten zijn reële besparingen, maar met twee spelregels. Eén: koop alleen wat je vandaag of morgen daadwerkelijk gebruikt (of direct invriest) — een afgeprijsd product dat je weggooit is 100% verlies. Twee: laat je route niet bepalen door de stickerhoek; het is een bonus op je gewone boodschappen, geen doel op zich. Wie zijn avondmaaltijd flexibel houdt ("wat is er afgeprijsd?") en kan invriezen, haalt hier wekelijks een paar euro extra uit.</p>
+
+<h2>Online bestellen: welke dag is het slimst?</h2>
+<p>Voor thuisbezorging en afhalen geldt een eigen ritme: bezorgslots aan het begin van de week zijn goedkoper en ruimer beschikbaar dan donderdag–zaterdag. Bestel je online, plaats de bestelling dan direct na de folderwissel (woensdag bij de meeste ketens, maandag bij Lidl/Aldi-achtigen) — dan zijn actieproducten nog leverbaar. Populaire aanbiedingen zijn online vaak eerder "op" dan in de fysieke winkel.</p>
     `.trim(),
   },
   {
@@ -2465,6 +2497,15 @@ export const POSTS: BlogPost[] = [
   <li><strong>Filter op "Dranken"</strong> in DealHunter4U voor alle actuele deals tegelijk</li>
 </ol>
 
+<h2>Statiegeld meerekenen: de verborgen prijscomponent</h2>
+<p>Sinds statiegeld op blikjes (€0,15) en kleine flesjes (€0,15) geldt, vertekent het schapprijsvergelijk: een krat pils van 24 blikjes draagt €3,60 statiegeld die je terugkrijgt — mits je inlevert. Vergelijk dranken daarom altijd op de <strong>prijs exclusief statiegeld per liter</strong>. En lever consequent in: een gezin dat blikjes en flesjes weggooit in plaats van inlevert, gooit al snel €50–100 per jaar weg.</p>
+
+<h2>Krat, blik of fles: wat is per liter het goedkoopst?</h2>
+<p>Voor bier is het krat vrijwel altijd de goedkoopste vorm per liter — mits van een A-merk in de aanbieding (kratacties van 25–40% komen wekelijks voorbij, zie ook de <a href="/supermarkt/dekamarkt">DekaMarkt aanbiedingen</a> die hierin regionaal uitblinken). Voor frisdrank wint de grote fles (1,5–2L) ruim van blikjes: per liter betaal je voor blik vaak het dubbele. Blikjes winnen alleen op portiecontrole en koeling. Vuistregel: blik voor onderweg, fles voor thuis, krat voor de borrel.</p>
+
+<h2>Alcoholvrij: de snelst groeiende categorie in de folders</h2>
+<p>Alcoholvrij bier en 0.0-varianten zijn inmiddels vaste gasten in de weekaanbiedingen — de prijzen liggen per krat/sixpack vrijwel gelijk aan het alcoholhoudende origineel, en de acties volgen hetzelfde ritme. Ook alcoholvrije wijn en mocktail-ingrediënten (alcoholvrije gin-alternatieven, tonic) duiken steeds vaker op, vooral rond januari (Dry January) en de zomer. Wie alcoholvrij drinkt, hoeft dus niet meer te betalen — mits je net als bij gewoon bier alleen in de actie koopt.</p>
+
 <p>→ <a href="/categorie/dranken">Bekijk alle actuele dranken-aanbiedingen</a> bij 10 supermarkten</p>
     `.trim(),
   },
@@ -2553,6 +2594,23 @@ export const POSTS: BlogPost[] = [
 
 <h2>Conclusie</h2>
 <p>Er is geen absolute winnaar — het hangt af van regio, gezinssamenstelling en koopgedrag. Maar de gulden regel: <strong>voor de allerlaagste prijs kies Aldi of Lidl; voor het beste totaalpakket in de Randstad is Dirk de winner; voor A-merk deals profiteer je van AH Bonus en Jumbo weekacties.</strong></p>
+
+<h2>Goedkoopste supermarkt per categorie</h2>
+<p>"De goedkoopste supermarkt" bestaat eigenlijk niet — per categorie wint een andere keten. De praktische vuistregels:</p>
+<ul>
+  <li><strong>Vlees:</strong> Dirk van den Broek — structureel de laagste vleesprijzen, met Aldi als goede tweede.</li>
+  <li><strong>Groente en fruit:</strong> Lidl en Aldi, zeker op seizoensproducten; de markt kan lokaal nog scherper zijn.</li>
+  <li><strong>Huismerk basisboodschappen (pasta, rijst, zuivel):</strong> Aldi en Lidl vrijwel gelijkwaardig aan de top.</li>
+  <li><strong>A-merken:</strong> nergens structureel goedkoop — koop ze uitsluitend in de actie (AH Bonus, Jumbo weekacties) en betaal nooit de volle prijs.</li>
+  <li><strong>Drogisterij en verzorging:</strong> Kruidvat, met ruime afstand.</li>
+</ul>
+
+<h2>Regionale kampioenen: woonplaats bepaalt je opties</h2>
+<p>De landelijke top-3 zegt weinig als de winkel niet bij jou in de buurt zit. Regionale ketens zijn vaak verrassend scherp: <strong>Dirk en Hoogvliet</strong> domineren Zuid-Holland, <strong>DekaMarkt</strong> is sterk in Noord-Holland (zelfde moederbedrijf als Dirk, zelfde scherpe inkoop), <strong>Vomar</strong> bedient Noord-Holland met agressieve weekfolders, en <strong>Plus</strong> zit landelijk maar wint vooral op service en versafdelingen. Wie buiten de Randstad woont en geen Dirk in de buurt heeft, komt met de combinatie Aldi/Lidl + één full-service keten vrijwel altijd het voordeligst uit.</p>
+
+<h2>Boodschappenprijzen in 2026: wat is er veranderd?</h2>
+<p>Na de forse stijgingen van de afgelopen jaren is de prijzenoorlog tussen de ketens weer opgelaaid — zichtbaar in diepere weekacties (regelmatig 40–50% op A-merken), agressievere huismerk-positionering en prijsgaranties zoals die van Jumbo. Voor de consument betekent dit: het verschil tussen "slim" en "gewoon" boodschappen doen is groter dan ooit. Wie weekaanbiedingen actief volgt en per categorie de juiste winkel kiest, bespaart op een gemiddeld gezinsbudget honderden euro's per jaar ten opzichte van trouw blijven aan één keten.</p>
+
 <p>→ <a href="/">Vergelijk vandaag alle supermarktdeals op DealHunter4U</a></p>
     `.trim(),
   },
@@ -2675,6 +2733,15 @@ export const POSTS: BlogPost[] = [
   <li><strong>Koningsdag (27 april):</strong> structureel de eerste grote bier+BBQ deals</li>
   <li><strong>Augustus (uitverkoop):</strong> BBQ-artikelen en kolen -50% aan het einde van het seizoen</li>
 </ul>
+
+<h2>BBQ-vlees slim inkopen: marineren en invriezen</h2>
+<p>De diepste vleeskortingen vallen niet altijd samen met jouw BBQ-weekend. De oplossing: koop bij een sterke actie voor twee of drie sessies tegelijk. Ongemarineerd vlees (kipdijen, spareribs, karbonades) vriest uitstekend in — tot 3 maanden zonder kwaliteitsverlies. Zelf marineren na het ontdooien is bovendien goedkoper én lekkerder dan voorgemarineerd actievlees: kant-en-klare marinade maskeert vaak mindere kwaliteit en kost per kilo meer. Basismarinade van olie, knoflook, paprikapoeder en honing kost centen.</p>
+
+<h2>Vegetarische BBQ: steeds vaker in de aanbieding</h2>
+<p>Vegetarische BBQ-producten (groenteburgers, vegaspiesen, halloumi) zijn de snelst groeiende categorie in de zomerfolders. Huismerk vegaburgers kosten ±€2,50–3,50 per verpakking en verschijnen bij AH, Jumbo en Lidl regelmatig in 1+1 acties. Goedkoopste route blijft zelf doen: maïskolven, portobello's, courgette en halloumi van de groenteafdeling — vrijwel elke week is minstens één van deze in de aanbieding, en ze zijn op de BBQ minstens zo dankbaar als vlees.</p>
+
+<h2>Houtskool, briketten en accessoires: waar koop je die het goedkoopst?</h2>
+<p>Houtskool en briketten zijn bij supermarkten alleen rond piekmomenten scherp geprijsd — Aldi en Lidl stunten aan het begin van het seizoen (april/mei) en rond hittegolven. Buiten die momenten zijn bouwmarkten doorgaans goedkoper. De gouden tip: <strong>eind augustus/september</strong> ruimen supermarkten het hele BBQ-assortiment op met 50–70% korting — hét moment om houtskool, gereedschap en accessoires voor volgend seizoen in te slaan.</p>
 
 <p>→ <a href="/categorie/vlees-vis">Bekijk alle actuele vlees-aanbiedingen</a> bij 10 supermarkten voor de beste BBQ-deals van vandaag.</p>
     `.trim(),
@@ -3017,6 +3084,20 @@ export const POSTS: BlogPost[] = [
 <h2>Conclusie: welke app moet je gebruiken?</h2>
 <p>Als je bij AH of Jumbo boodschappen doet: installeer hun app — de persoonlijke aanbiedingen leveren direct op. Als je bij Lidl shopt: de Lidl Plus-coupons zijn gratis geld. Als je bij Aldi gaat: de app voegt weinig toe, maar de dagprijzen zijn al laag genoeg.</p>
 <p><strong>Slim systeem:</strong> gebruik de AH-app voor persoonlijke deals, en check <a href="/">DealHunter4U</a> voor een overzicht van alle supermarktdeals in één app — zonder meerdere apps te installeren.</p>
+
+<h2>Privacy: wat delen supermarkt-apps eigenlijk?</h2>
+<p>Persoonlijke aanbiedingen zijn niet gratis — je betaalt met je aankoopdata. Supermarkt-apps registreren wat je koopt, wanneer, hoe vaak en in welke winkel, en bouwen daarmee een gedetailleerd profiel. Daar staat reële korting tegenover, maar het is goed om bewust te kiezen:</p>
+<ul>
+  <li><strong>Minimale gegevens delen:</strong> vrijwel elke app werkt ook zonder adres of geboortedatum in te vullen — alleen een e-mailadres is meestal verplicht.</li>
+  <li><strong>Aparte e-mail gebruiken:</strong> een los adres voor supermarkt-accounts houdt je hoofdinbox schoon en beperkt koppeling van profielen.</li>
+  <li><strong>Persoonlijke korting is gestuurde korting:</strong> de "voor jou geselecteerde" deals sturen je naar producten met marge. De folderaanbiedingen zijn voor iedereen gelijk en vaak scherper.</li>
+</ul>
+
+<h2>Klantenkaarten digitaal: geen pasjes meer in je portemonnee</h2>
+<p>Naast de apps van de ketens zelf kun je alle fysieke klantenkaarten (AH Bonuskaart, Jumbo Extra's, Lidl Plus, DekaMarkt-kaart) digitaal bewaren. Op onze <a href="/klantenkaarten">klantenkaarten-pagina</a> voeg je de barcode van elke pas één keer toe en scan je hem voortaan vanaf je telefoon aan de kassa — werkt bij elke keten en scheelt zoeken bij de kassa.</p>
+
+<h2>App vs. papieren folder: wat mis je zonder app?</h2>
+<p>Steeds meer ketens verschuiven exclusieve korting naar de app (persoonlijke Bonus bij AH, Lidl Plus coupons). De papieren folder toont het algemene weekaanbod, maar app-only deals kunnen daar 5–15% bovenop leggen. Wie principieel geen apps wil: de universele weekaanbiedingen — het grootste deel van de korting — blijven gewoon voor iedereen gelden en zijn allemaal terug te vinden op <a href="/">DealHunter4U</a>.</p>
     `.trim(),
   },
   {
@@ -3113,6 +3194,20 @@ export const POSTS: BlogPost[] = [
   <li>Minder kant-en-klaar: €20–€40/maand</li>
   <li><strong>Totaal mogelijk: €170–€290/maand</strong></li>
 </ul>
+
+<h2>Batch cooking: de gezinsversie van slim koken</h2>
+<p>Voor gezinnen is groot koken de grootste hefboom: één kookmoment, drie tot vier maaltijden. Volumeaanbiedingen (kilo-verpakkingen gehakt, grootverpakking pasta, 1+1 op groente) zijn per portie fors goedkoper — maar alleen nuttig als je ze direct verwerkt of invriest. Praktisch ritme: kook in het weekend twee grote basisgerechten (pastasaus, curry, soep), vries in per gezinsportie, en vul doordeweeks alleen vers aan. Scheelt naast geld ook de dagelijkse "wat eten we vandaag"-stress.</p>
+
+<h2>Kinderen mee naar de winkel: kostenpost of leermoment?</h2>
+<p>Elke ouder kent het: met kinderen erbij komt er meer in de kar. Twee aanpakken die werken:</p>
+<ul>
+  <li><strong>Geef ze een taak:</strong> laat kinderen zelf de huismerk-variant zoeken of prijzen per kilo vergelijken — het houdt ze bezig én leert prijsbewustzijn.</li>
+  <li><strong>Eén-keuze-regel:</strong> spreek vooraf af dat ze één ding mogen kiezen. Duidelijke grens, geen onderhandeling bij elk schap.</li>
+</ul>
+<p>En de eerlijkste tip: de grootste besparing is boodschappen doen zónder kinderen als het even kan — online bestellen met afhalen is voor gezinnen vaak per saldo goedkoper dan een winkelbezoek vol impulsaankopen.</p>
+
+<h2>Schoolweken vs. vakanties: budgetteer verschillend</h2>
+<p>Gezinsuitgaven aan boodschappen pieken voorspelbaar in schoolvakanties: alle lunches thuis, meer tussendoortjes, meer drinken. Reken in vakantieweken op 15–25% hogere boodschappenkosten en plan daarop: sla houdbare lunch-basics (crackers, beleg, fruit in blik) in tijdens de aanbiedingen vóór de vakantie, en zet het weekmenu in vakanties zwaarder in op goedkope zelfmaakklassiekers (pannenkoeken, soep, pasta) in plaats van kant-en-klaar gemak.</p>
 
 <p>→ <a href="/">DealHunter4U</a>: vergelijk alle supermarktdeals wekelijks — de basis van slimme gezinsboodschappen.</p>
     `.trim(),
@@ -3511,6 +3606,12 @@ export const POSTS: BlogPost[] = [
   <li><strong>Aldi/Lidl voor basis-snacks</strong> — huismerkchocolade, koeken en rijstwafels voor regulier gebruik</li>
   <li><strong>A-merken alleen in aanbieding</strong> — Lay's, Pringles, Oreo zijn elke 3-4 weken in de aanbieding bij AH of Jumbo</li>
 </ol>
+
+<h2>Prijs per 100 gram: de enige eerlijke vergelijking</h2>
+<p>Snackfabrikanten zijn meesters in verpakkingsillusie: de zak blijft even groot, de inhoud krimpt ("shrinkflation"). Een chipszak van 225 gram werd stilletjes 200 en toen 185 gram, terwijl de prijs gelijk bleef. De enige verdediging: kijk altijd naar de <strong>prijs per 100 gram</strong> op het schapkaartje, nooit naar de zakprijs. Ook bij acties: een "2e halve prijs" op een kleine dure zak kan per 100 gram alsnog duurder zijn dan de grote zak zonder korting. Dit ene ritueel — schapkaartje checken — bespaart bij snacks meer dan welke actie dan ook.</p>
+
+<h2>Diepvries vs. vers gebak: het vergeten prijsverschil</h2>
+<p>Vers gebak van de supermarktbakkerij is verleidelijk, maar diepvriesgebak (roomboterappeltaart, gebaksstukjes) kost per portie vaak de helft en is qua kwaliteit verrassend goed — het wordt immers direct na het bakken ingevroren. Voor verjaardagen en bezoek: haal diepvries in huis tijdens een actie en ontdooi op de dag zelf. Voor de dagelijkse koek bij de koffie geldt hetzelfde: huismerk-koekjes uit het schap kosten per stuk een fractie van verse bakkerijkoeken.</p>
 
 <p>→ <a href="/categorie/snacks">Bekijk alle actuele snacks-aanbiedingen</a> bij 10 supermarkten</p>
     `.trim(),
@@ -4274,6 +4375,16 @@ export const POSTS: BlogPost[] = [
 </ol>
 
 <p>→ <a href="/categorie/huishouden">Bekijk alle actuele huishoud-aanbiedingen</a> van 10 supermarkten</p>
+
+<h2>Doseren: de stille kostenpost van wasmiddel</h2>
+<p>De grootste wasmiddel-besparing zit niet in de aanbieding maar in de dosering. Vrijwel iedereen doseert te veel — de doseerdop nodigt ertoe uit, en meer zeep betekent níet schonere was. Voor een normaal bevuilde was met gemiddeld hard water volstaat vaak de laagste aanduiding op de verpakking. Wie standaard een halve dop minder gebruikt, doet 30–50% langer met dezelfde fles zonder zichtbaar verschil. Bijkomend voordeel: minder zeepresten in de machine en in de kleding.</p>
+
+<h2>Voorraad aanleggen: hoeveel is slim?</h2>
+<p>Wasmiddel, vaatwastabletten en toiletpapier zijn de ideale voorraadproducten: onbeperkt houdbaar, elke 4–6 weken ergens diep in de aanbieding (regelmatig 40–50% korting of 1+1). De regel: <strong>koop nooit tegen de volle prijs, en sla bij een diepe actie 2–3 maanden voorraad in</strong> — meer niet, want de volgende actie komt gegarandeerd. Let bij de vergelijking altijd op de <em>prijs per wasbeurt</em> (staat klein op het schapkaartje), niet op de literprijs: geconcentreerde varianten lijken duurder maar zijn per wasbeurt vaak juist goedkoper.</p>
+
+<h2>Huismerk vs. A-merk in verzorging: waar zit het echte verschil?</h2>
+<p>Bij verzorgingsproducten is het prijsverschil tussen huismerk en A-merk vaak nog groter dan bij eten — tandpasta, shampoo en deodorant van het huismerk kosten regelmatig een derde van het A-merk. De werkzame bestanddelen (fluoride in tandpasta bijvoorbeeld) zijn wettelijk genormeerd en zitten in beide. A-merken winnen vooral op geur, textuur en beleving; wie daar niet aan hecht, bespaart hier per jaar tientallen euro's. Kruidvat-huismerken zijn in deze categorie doorgaans de scherpste van Nederland — zie de actuele <a href="/supermarkt/kruidvat">Kruidvat aanbiedingen</a>.</p>
+
 <p>→ <a href="/categorie/verzorging">Bekijk alle actuele verzorgingsproducten in aanbieding</a></p>
     `.trim(),
   },
