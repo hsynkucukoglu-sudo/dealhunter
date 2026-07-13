@@ -116,8 +116,10 @@ const DEALS = [
       { name: 'buttinette NL',     tagline: 'Knutselen & handwerk',         cta: 'Bekijk aanbod',    color: '#C2185B', url: AW(122862, 'https://creatief-nl.buttinette.com/') },
       { name: 'Hermie',            tagline: 'Huis, tuin & dierenbenodigdheden', cta: 'Bekijk aanbod', color: '#4E7C31', url: DC('https://glp8.net/c/?si=20097&li=1858135&wi=420902', 'https://hermie.com/') },
       { name: 'VVVCadeaukaarten.nl', tagline: 'Cadeaukaarten voor elke gelegenheid', cta: 'Bekijk aanbod', color: '#F4B400', url: DC('https://fr135.net/c/?si=15261&li=1660848&wi=420902', 'https://www.vvvcadeaukaarten.nl/') },
-      // 2026-07-12 onaylı
+      // 2026-07-12/13 onaylı
       { name: 'Beddengoeddirect.nl', tagline: 'Bedden, matrassen & beddengoed', cta: 'Bekijk aanbod', color: '#3E5C76', url: DC('https://rkn3.net/c/?si=14527&li=1624333&wi=420902', 'https://www.beddengoeddirect.nl/') },
+      // dl= breekt (dubbele URL → 404, canlı test 2026-07-13) — geen dl
+      { name: 'Degrootmeesters',     tagline: 'Kunst & canvas voor aan de muur', cta: 'Bekijk collectie', color: '#5D4037', url: 'https://rkn3.net/c/?si=14804&li=1639024&wi=420902' },
       { name: 'Kameo Sleep',       tagline: 'Slaapkamer & matrassen',        cta: 'Bekijk aanbod', color: '#264653', url: DC('https://glp8.net/c/?si=21324&li=1907610&wi=420902', 'https://www.kameosleep.nl/') },
       { name: 'LEDshop Groenovatie', tagline: 'LED-verlichting voor binnen & buiten', cta: 'Bekijk aanbod', color: '#F4A300', url: DC('https://lt45.net/c/?si=10385&li=1459831&wi=420902', 'https://www.ledshop-groenovatie.com/') },
     ],
@@ -153,6 +155,10 @@ const DEALS = [
       // 2026-07-12 onaylı
       { name: 'Sif Jakobs',      tagline: 'Sieraden uit Denemarken',       cta: 'Bekijk collectie', color: '#B08D57', url: DC('https://glp8.net/c/?si=21808&li=1918860&wi=420902', 'https://sifjakobs.com/') },
       { name: 'Freewear.nl',     tagline: 'Kleding & accessoires',         cta: 'Shop collectie',   color: '#2D2D2D', url: DC('https://lt45.net/c/?si=13066&li=1574630&wi=420902', 'https://www.freewear.nl/') },
+      // 2026-07-13 onaylı
+      // dl= breekt (dubbele URL → 404, canlı test 2026-07-13) — geen dl
+      { name: 'Zwemshop.com',    tagline: 'Zwemkleding & accessoires',     cta: 'Bekijk aanbod',    color: '#0077C8', url: 'https://rkn3.net/c/?si=14485&li=1622288&wi=420902' },
+      { name: 'Sneakids',        tagline: 'Kindersneakers & schoenen',     cta: 'Bekijk collectie', color: '#FF6B35', url: AW(103061, 'https://sneakids.nl/') },
     ],
   },
   {

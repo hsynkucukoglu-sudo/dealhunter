@@ -112,6 +112,13 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   Westwing: { destinationUrl: 'https://www.westwing.nl/', network: 'daisycon', rel: REL }, // si=17294
   Sembo:    { destinationUrl: 'https://www.sembo.nl/',    network: 'daisycon', rel: REL }, // si=20811
 
+  // ── Daisycon/Awin — 2026-07-13 onaylı, deeplink panelden alındı ──
+  // Zwemshop + Degrootmeesters: dl= çift-URL 404'ü veriyor (canlı test) —
+  // ENGIE/Kwantum deseni: tam tracking linki, trackingBase yok.
+  'Zwemshop.com':    { destinationUrl: 'https://rkn3.net/c/?si=14485&li=1622288&wi=420902', network: 'daisycon', rel: REL },
+  Degrootmeesters:   { destinationUrl: 'https://rkn3.net/c/?si=14804&li=1639024&wi=420902', network: 'daisycon', rel: REL },
+  'Sneakids NL':     { destinationUrl: 'https://sneakids.nl/',             network: 'awin', programId: '103061', rel: REL },
+
   // ── Daisycon — 2026-07-12 onaylı, deeplink Daisycon panelinden (Materialen > Deeplinks) alındı ──
   Vandebron:             { destinationUrl: 'https://vandebron.nl/',               network: 'daisycon', trackingBase: 'https://lt45.net/c/?si=12134&li=1535052&wi=420902', rel: REL },
   'Beddengoeddirect.nl': { destinationUrl: 'https://www.beddengoeddirect.nl/',     network: 'daisycon', trackingBase: 'https://rkn3.net/c/?si=14527&li=1624333&wi=420902', rel: REL },
