@@ -77,7 +77,42 @@ export const POSTS: BlogPost[] = [
   <li>→ <a href="/supermarkt/aldi">Alle actuele Aldi aanbiedingen</a> (update elke maandag)</li>
   <li>→ <a href="/supermarkt/lidl">Alle actuele Lidl aanbiedingen</a> (update elke donderdag)</li>
 </ul>
+
+<h2>Wanneer slaan supermarkten toe met snack-acties?</h2>
+<p>Snack-aanbiedingen volgen een voorspelbaar seizoenspatroon. Wie dit kent, koopt op het juiste moment in:</p>
+<ul>
+  <li><strong>Borrelseizoen (mei–augustus):</strong> chips, nootjes, dips en borrelhapjes wisselen elkaar wekelijks af in de folders. De diepste kortingen op grote zakken chips vallen rond feestdagen en zonnige weekenden.</li>
+  <li><strong>Sportevenementen (EK, WK, Formule 1):</strong> tijdens grote toernooien stunten vrijwel alle ketens met bier + chips combideals — vaak de beste prijs per kilo van het jaar.</li>
+  <li><strong>Sinterklaas & kerst (november–december):</strong> chocolade, pepernoten en gebak — koop ná 5 december voor kortingen tot 50–70% op restpartijen.</li>
+  <li><strong>Terug-naar-school (augustus/september):</strong> tussendoortjes, mueslirepen en kleinverpakkingen voor de broodtrommel.</li>
+</ul>
+
+<h2>Snacks bewaren en invriezen: minder weggooien, meer besparen</h2>
+<p>Grootverpakkingen zijn per 100 gram bijna altijd goedkoper — maar alleen als je ze niet laat verpieteren. Praktische bewaartips:</p>
+<ul>
+  <li><strong>Chips:</strong> geopende zak met knijper luchtdicht afsluiten en donker bewaren — blijft 2–3 weken krokant.</li>
+  <li><strong>Diepvriessnacks (kipdonuts, bitterballen):</strong> 3 maanden houdbaar in de vriezer; verdeel grote zakken direct in porties.</li>
+  <li><strong>Vers gebak en donuts:</strong> per stuk invriezen en 20–30 minuten op kamertemperatuur laten ontdooien — smaakt vrijwel als vers.</li>
+  <li><strong>Noten:</strong> in een afgesloten pot koel bewaren; in de koelkast blijven ze maanden goed zonder ranzig te worden.</li>
+</ul>
+
+<h2>Gezondere snack-alternatieven die óók in de aanbieding komen</h2>
+<p>Snacken hoeft niet ongezond of duur: rijstwafels, ongezouten noten, popcorn(maïs) en Griekse yoghurt met fruit verschijnen net zo vaak in de weekfolders als chips. Popcornmaïs is de grootste prijswinnaar — een zak van €1,50 levert evenveel porties als vier zakken kant-en-klare chips. Bij zowel <a href="/supermarkt/aldi">Aldi</a> als <a href="/supermarkt/lidl">Lidl</a> zijn noten en gedroogd fruit structureel 20–30% goedkoper dan bij full-service supermarkten.</p>
     `.trim(),
+    faqs: [
+      {
+        question: 'Wanneer zijn kipdonuts bij Aldi in de aanbieding?',
+        answer: 'Aldi vernieuwt haar aanbiedingen elke maandag. Kipsnacks zoals kipdonuts verschijnen het vaakst in actie rond feestdagen en het BBQ-seizoen, met kortingen van 20–30%. Tip: koop dubbel bij een actie en vries in — kipdonuts blijven 3 maanden goed in de vriezer.',
+      },
+      {
+        question: 'Is Aldi of Lidl goedkoper voor snacks?',
+        answer: 'Ze ontlopen elkaar weinig op reguliere prijzen. Lidl wint op verse bakkerijproducten (donuts, croissants), Aldi vaker op diepvriessnacks en noten. De weekacties maken het verschil: check beide folders — de diepste snack-korting wisselt per week tussen de twee.',
+      },
+      {
+        question: 'Wat is de goedkoopste gezonde snack uit de supermarkt?',
+        answer: 'Popcornmaïs is de grootste prijswinnaar: een zak van ±€1,50 levert evenveel porties als vier zakken kant-en-klare chips. Daarnaast zijn rijstwafels, huismerk noten en Griekse yoghurt met fruit betaalbare alternatieven die ook regelmatig in de weekaanbiedingen staan.',
+      },
+    ],
   },
   {
     slug: 'wie-is-dealhunter4u',
@@ -193,8 +228,38 @@ export const POSTS: BlogPost[] = [
 <h2>Conclusie</h2>
 <p>Besparen op boodschappen hoeft geen kunst te zijn. Vergelijk aanbiedingen, koop in bulk tijdens acties en maak gebruik van tools zoals DealHunter4U om altijd de beste prijs te vinden. Kleine aanpassingen in je boodschappenroutine kunnen op jaarbasis honderden euro's schelen.</p>
 
+<h2>De 3 grootste valkuilen (die je besparing tenietdoen)</h2>
+<ul>
+  <li><strong>Korting kopen die je niet nodig hebt.</strong> "3 halen 2 betalen" op iets dat je anders nooit koopt is geen besparing maar een uitgave. Vraag jezelf af: stond dit op mijn lijstje?</li>
+  <li><strong>Voor één aanbieding omrijden.</strong> Wie 5 kilometer omrijdt voor €1,50 korting, rijdt de besparing letterlijk op. Combineer supermarktbezoeken met routes die je toch al rijdt, of kies één vaste combinatie van twee winkels dicht bij elkaar.</li>
+  <li><strong>Honger + geen lijstje.</strong> De duurste combinatie die er bestaat. Boodschappen na het eten doen met een lijstje scheelt aantoonbaar impulsaankopen — vaak de stilste kostenpost van het huishoudbudget.</li>
+</ul>
+
+<h2>Rekenvoorbeeld: wat levert het concreet op?</h2>
+<p>Stel: een huishouden geeft €120 per week uit aan boodschappen. Wat doen de tips uit dit artikel dan in de praktijk?</p>
+<ul>
+  <li>Weekaanbiedingen actief volgen en menu aanpassen: <strong>5–10% minder</strong> (±€6–12/week)</li>
+  <li>A-merken vervangen door huismerk waar het smaakverschil klein is: <strong>10–15% minder</strong> op die producten</li>
+  <li>Impulsaankopen halveren met een vast lijstje: <strong>±€5–10/week</strong></li>
+</ul>
+<p>Opgeteld is <strong>€15–25 per week</strong> een realistische, vol te houden besparing zonder in te leveren op kwaliteit — dat is <strong>€780–1.300 per jaar</strong>. Niet door één truc, maar door drie kleine gewoontes te stapelen.</p>
+
 <p><strong>Bekijk deze week de beste deals →</strong> <a href="https://www.dealhunter4u.nl">www.dealhunter4u.nl</a></p>
     `.trim(),
+    faqs: [
+      {
+        question: 'Hoeveel kun je realistisch besparen op boodschappen?',
+        answer: 'Voor een huishouden dat €120 per week uitgeeft is €15–25 per week haalbaar — dat is €780–1.300 per jaar. Niet door één truc, maar door drie gewoontes te stapelen: weekaanbiedingen volgen, huismerk als standaard nemen en impulsaankopen beperken met een vast boodschappenlijstje.',
+      },
+      {
+        question: 'Wat is de grootste valkuil bij besparen op boodschappen?',
+        answer: 'Korting kopen die je niet nodig hebt. Een "3 halen 2 betalen"-actie op iets dat je anders nooit koopt is geen besparing maar een extra uitgave. Vraag jezelf bij elke actie af: stond dit op mijn lijstje?',
+      },
+      {
+        question: 'Loont het om naar meerdere supermarkten te gaan?',
+        answer: 'Alleen als ze dicht bij elkaar liggen. Wie kilometers omrijdt voor één aanbieding, rijdt de besparing letterlijk op aan brandstof en tijd. Kies één vaste combinatie van twee winkels op je route en vergelijk de folders vooraf online.',
+      },
+    ],
   },
   {
     slug: 'albert-heijn-vs-jumbo-vs-lidl-wie-is-goedkoper',
@@ -1910,8 +1975,29 @@ export const POSTS: BlogPost[] = [
 
 <h2>Conclusie</h2>
 <p>DekaMarkt is de ideale supermarkt als je een volledig assortiment wil voor een scherpe prijs — zeker voor dranken, vers vlees en A-merk combi-deals. Met de wekelijkse aanbiedingen bespaar je als gezin <strong>€10–20 per week</strong> vergeleken met alleen AH of Jumbo shoppen.</p>
+
+<h2>DekaMarkt klantenkaart: hoe werkt die?</h2>
+<p>DekaMarkt werkt met een eigen <strong>klantenkaart</strong> die je gratis in de winkel of via de app aanvraagt. De kaart geeft toegang tot kaart-exclusieve aanbiedingen (herkenbaar in de folder aan de klantenkaart-vermelding) en digitale zegel-/spaaracties. Belangrijk om te weten: sommige van de diepste weekaanbiedingen zijn <em>alleen</em> geldig met de kaart — zonder kaart betaal je aan de kassa gewoon de reguliere prijs. Scan de kaart dus standaard bij elke boodschap, ook als je denkt niets "speciaals" te kopen. Beheer je kaarten digitaal? Op <a href="/klantenkaarten">onze klantenkaarten-pagina</a> bewaar je al je supermarktpassen in één overzicht op je telefoon.</p>
+
+<h2>Bier- en slijterijaanbiedingen: het geheime wapen van DekaMarkt</h2>
+<p>DekaMarkt staat regionaal bekend om opvallend scherpe <strong>bieraanbiedingen</strong> — kratten en multipacks van A-merken (Heineken, Amstel, Grolsch) wisselen elkaar vrijwel wekelijks af, regelmatig met kortingen van 25–40%. Ook de slijterij-afdeling (in grotere filialen) draait eigen acties op wijn en gedistilleerd die niet altijd in de hoofdfolder staan. Voor wie in Noord-Holland of de regio Velsen/Haarlem woont, is DekaMarkt daarmee vaak het goedkoopste adres voor de borrelinkoop — check de <a href="/categorie/dranken">actuele drank-aanbiedingen</a> voordat je standaard naar de grootste keten rijdt.</p>
+
 <p>Bekijk de actuele <a href="/supermarkt/dekamarkt">DekaMarkt aanbiedingen op DealHunter4U</a> en vergelijk direct met de rest.</p>
     `.trim(),
+    faqs: [
+      {
+        question: 'Hoe werkt de DekaMarkt klantenkaart?',
+        answer: 'De klantenkaart is gratis aan te vragen in de winkel of via de app. Sommige weekaanbiedingen zijn alleen geldig met de kaart — zonder kaart betaal je de reguliere prijs. Scan de kaart daarom standaard bij elke boodschap, ook bij kleine aankopen.',
+      },
+      {
+        question: 'Wanneer heeft DekaMarkt bier in de aanbieding?',
+        answer: 'Vrijwel wekelijks wisselen kratten en multipacks van A-merken (Heineken, Amstel, Grolsch) elkaar af in de folder, regelmatig met 25–40% korting. Grotere filialen hebben daarnaast een slijterij-afdeling met eigen acties op wijn en gedistilleerd die niet altijd in de hoofdfolder staan.',
+      },
+      {
+        question: 'In welke regio zit DekaMarkt?',
+        answer: 'DekaMarkt is vooral actief in Noord-Holland (regio Velsen, Haarlem, Zaanstreek en omgeving), met tientallen filialen. De keten hoort bij hetzelfde moederbedrijf als Dirk van den Broek en profiteert van dezelfde scherpe inkoop.',
+      },
+    ],
   },
   {
     slug: 'dirk-aanbiedingen-gids',
@@ -2072,8 +2158,32 @@ export const POSTS: BlogPost[] = [
 
 <h2>Conclusie</h2>
 <p>Hoogvliet is een uitstekende keuze als je in Zuid-Holland woont en een supermarkt zoekt met een breed assortiment voor een scherpe prijs. Met wekelijkse aanbiedingen en goede huismerken bespaar je als gezin gemakkelijk <strong>€8–15 per week</strong> vergeleken met volledig bij AH winkelen.</p>
+
+<h2>Hoogvliet kortingscode: bestaat die eigenlijk?</h2>
+<p>Veel mensen zoeken naar een "Hoogvliet kortingscode" — maar Hoogvliet werkt, net als de meeste Nederlandse supermarkten, <strong>niet met online kortingscodes</strong>. De korting zit in de weekaanbiedingen zelf en in de spaaracties in de winkel. Kom je op een website die Hoogvliet-kortingscodes belooft, dan is dat vrijwel altijd een lege belofte of verouderde informatie. De betrouwbare route: check elke woensdag de nieuwe weekfolder of de <a href="/supermarkt/hoogvliet">actuele Hoogvliet deals op DealHunter4U</a>.</p>
+
+<h2>Hoogvliet dagdeals: de snelle beslissers winnen</h2>
+<p>Naast de weekaanbiedingen heeft Hoogvliet regelmatig <strong>dagdeals</strong> — aanbiedingen die maar één dag geldig zijn, vaak op versproducten zoals vlees, vis of fruit. Deze dagknallers halen kortingen tot 40–50% en zijn typisch bedoeld om voorraad te bewegen. Omdat ze zo kort lopen, staan ze niet altijd prominent in de folder; de winkel zelf en de website tonen ze het betrouwbaarst. Wie flexibel boodschappen doet, plant zijn versinkopen rond deze dagdeals.</p>
+
+<h2>Slim combineren: Hoogvliet + Dirk in Zuid-Holland</h2>
+<p>Hoogvliet en Dirk van den Broek overlappen sterk in verzorgingsgebied — beide ketens zijn geconcentreerd in Zuid-Holland. Dat maakt een combinatiestrategie praktisch haalbaar: <strong>Dirk voor structureel lage vleesprijzen en basisboodschappen, Hoogvliet voor de weekaanbiedingen en het bredere A-merk assortiment</strong>. Woon je in Rotterdam, Dordrecht of Zoetermeer, dan liggen beide winkels vaak binnen een paar minuten van elkaar. Vergelijk beide folders wekelijks — <a href="/vergelijk/dirk-vs-hoogvliet">Dirk vs Hoogvliet op DealHunter4U</a> zet ze automatisch naast elkaar.</p>
+
 <p>Bekijk de actuele <a href="/supermarkt/hoogvliet">Hoogvliet aanbiedingen op DealHunter4U</a> en vergelijk direct met Albert Heijn, Jumbo en andere supermarkten.</p>
     `.trim(),
+    faqs: [
+      {
+        question: 'Wanneer komen de nieuwe Hoogvliet aanbiedingen online?',
+        answer: 'Elke woensdag. De weekaanbiedingen lopen van woensdag tot en met dinsdag — zeven dagen per actieperiode. Dagdeals op versproducten komen daar tussendoor bovenop en gelden maar één dag.',
+      },
+      {
+        question: 'Bestaat er een Hoogvliet kortingscode?',
+        answer: 'Nee. Hoogvliet werkt, zoals vrijwel alle Nederlandse supermarkten, niet met online kortingscodes. De korting zit in de weekaanbiedingen en spaaracties zelf. Websites die Hoogvliet-kortingscodes beloven, bieden vrijwel altijd verouderde of lege beloftes.',
+      },
+      {
+        question: 'In welke regio zit Hoogvliet?',
+        answer: 'Hoogvliet heeft ruim 70 filialen, vrijwel allemaal in Zuid-Holland — onder meer in Rotterdam, Dordrecht, Zoetermeer en Delft. Buiten deze regio is de keten niet actief, maar de aanbiedingen zijn online voor iedereen te vergelijken.',
+      },
+    ],
   },
   {
     slug: 'vomar-aanbiedingen-gids',
@@ -2656,6 +2766,19 @@ export const POSTS: BlogPost[] = [
 </ol>
 <p>Dit systeem levert een doorsnee gezin ±€800–€1000 besparing per jaar op.</p>
 
+<h2>Wanneer wint het A-merk wél?</h2>
+<p>Eerlijk is eerlijk: er zijn categorieën waar het verschil merkbaar blijft en het A-merk zijn meerprijs (deels) waarmaakt:</p>
+<ul>
+  <li><strong>Cola:</strong> het bekendste voorbeeld — de smaak van het origineel is voor veel mensen niet vervangbaar. Strategie: A-merk alleen bij actie kopen (en die is er vrijwel elke week ergens).</li>
+  <li><strong>Chocoladepasta en pindakaas:</strong> textuur en smeuïgheid verschillen echt tussen merken; hier is proberen de enige rechter.</li>
+  <li><strong>Wasmiddel voor specifieke behoeften:</strong> voor gevoelige huid of zwarte was presteren gespecialiseerde A-merk varianten soms aantoonbaar beter.</li>
+  <li><strong>Koffie:</strong> sterk persoonlijk — maar juist hier zijn de A-merk aanbiedingen zó frequent dat je zelden de volle prijs hoeft te betalen.</li>
+</ul>
+<p>De middenweg: koop het A-merk uitsluitend wanneer het in de aanbieding is en het huismerk als standaard. Zo betaal je nooit de volle merkpremie.</p>
+
+<h2>Zelf blind proeven: zo pak je het aan</h2>
+<p>Overtuig jezelf (of je huisgenoten) met een simpele blindproef: koop van één product het A-merk en het huismerk, laat iemand anders ze in identieke bakjes doen, en proef zonder te weten welke welke is. Begin met producten waar je "nooit huismerk" zou kopen — yoghurt, hagelslag, chips. De uitkomst verrast vrijwel altijd: bij een groot deel van de basisproducten is het verschil niet of nauwelijks te proeven, en soms wint het huismerk zelfs. Elke "geslaagde" omzetting is een permanente besparing die geen enkele moeite meer kost.</p>
+
 <p>→ <a href="/">Vergelijk deze week de beste supermarktdeals</a> op DealHunter4U — zie direct wanneer jouw favoriete A-merk goedkoper is dan normaal.</p>
     `.trim(),
   },
@@ -3061,8 +3184,43 @@ export const POSTS: BlogPost[] = [
 
 <h2>Conclusie: goedkoop bio is mogelijk</h2>
 <p>Voor de meest impactvolle biologische producten (eieren, zuivel, aardbeien, spinazie) is Aldi of Lidl structureel goedkoper dan AH of Jumbo. Combineer dat met AH Biologisch Bonus-aanbiedingen voor een complete bio-strategie voor minimale meerprijs.</p>
+
+<h2>Bio-keurmerken herkennen: waar betaal je écht voor?</h2>
+<p>Niet elk "natuurlijk" of "puur" label betekent biologisch. Alleen deze keurmerken garanderen gecontroleerde biologische productie:</p>
+<ul>
+  <li><strong>EU-Bio (groen blaadje):</strong> het wettelijke Europese keurmerk. Verplicht op elk biologisch product. Minimaal 95% biologische ingrediënten, geen kunstmatige bestrijdingsmiddelen of kunstmest.</li>
+  <li><strong>EKO-keurmerk:</strong> Nederlands keurmerk dat bovenop de EU-eisen extra duurzaamheidseisen stelt. Vaak op producten van speciaalzaken.</li>
+  <li><strong>Demeter:</strong> het strengste keurmerk (biodynamische landbouw). Vooral op zuivel en groenten in natuurwinkels — en duurder.</li>
+</ul>
+<p><strong>Belangrijk voor je portemonnee:</strong> een Lidl- of Aldi-product met EU-Bio logo voldoet aan exact dezelfde wettelijke eisen als een duurder A-merk met hetzelfde logo. Je betaalt bij het A-merk voor de merknaam, niet voor strengere controle.</p>
+
+<h2>Wanneer loont biologisch wél — en wanneer niet?</h2>
+<p>Wil je selectief biologisch kopen met maximaal effect, richt je dan op producten waar het verschil in teeltwijze het grootst is:</p>
+<ul>
+  <li><strong>Vaakst bespoten (bio loont):</strong> aardbeien, spinazie, boerenkool, druiven, appels, paprika — dunne schil, direct gegeten.</li>
+  <li><strong>Minst bespoten (regulier is prima):</strong> avocado, ui, ananas, banaan, kool — dikke schil die je toch niet eet.</li>
+</ul>
+<p>Met deze aanpak koop je alleen bio waar het er echt toe doet en bespaar je 30–50% ten opzichte van een volledig biologisch mandje.</p>
+
+<h2>Bio buiten de supermarkt: soms goedkoper</h2>
+<p>De weekmarkt en boerderijwinkels verkopen vaak lokaal biologisch fruit en groente zonder tussenhandel — vooral in het seizoen kan dat goedkoper zijn dan de supermarkt. Ook verspakketten van lokale telers (via buurtinitiatieven) zijn per kilo regelmatig scherper geprijsd dan bio-groente in het schap. Combineer: houdbare bio-producten (pasta, rijst, zuivel) bij Aldi/Lidl, vers seizoensgebonden bio op de markt.</p>
+
 <p>→ <a href="/">Check DealHunter4U</a> voor alle biologische producten die deze week in de aanbieding zijn.</p>
     `.trim(),
+    faqs: [
+      {
+        question: 'Waar zijn biologische producten het goedkoopst?',
+        answer: 'Bij Aldi en Lidl. Hun biologische huismerken (met hetzelfde EU-Bio keurmerk als duurdere merken) zijn gemiddeld 15–30% goedkoper dan AH Biologisch of Jumbo Biologisch. Voor vers biologisch fruit en groente is de weekmarkt in het seizoen soms nog goedkoper.',
+      },
+      {
+        question: 'Is bio van Aldi of Lidl net zo goed als van Albert Heijn?',
+        answer: 'Ja, qua certificering wel. Het EU-Bio keurmerk (groen blaadje) stelt wettelijke eisen die voor elke aanbieder identiek zijn — geen kunstmatige bestrijdingsmiddelen, geen kunstmest, gecontroleerde productie. Een goedkoper bio-product voldoet aan exact dezelfde regels als een duurder merk met hetzelfde logo.',
+      },
+      {
+        question: 'Welke producten kun je het beste biologisch kopen?',
+        answer: 'Producten met een dunne schil die je direct eet: aardbeien, spinazie, appels, druiven en paprika. Bij producten met een dikke schil die je verwijdert (banaan, avocado, ui, ananas) is het verschil tussen bio en regulier veel kleiner — daar kun je prima regulier kopen en besparen.',
+      },
+    ],
   },
   {
     slug: 'ontbijt-producten-aanbieding-supermarkt',
@@ -3459,6 +3617,21 @@ export const POSTS: BlogPost[] = [
   <li>Brood bijna op? French toast of tosti als avondmaaltijd</li>
 </ul>
 
+<h2>Voorbeeld: budget-weekmenu voor 2 personen</h2>
+<p>Zo ziet een week koken op aanbiedingsbasis er concreet uit (avondmaaltijden, ±€25–35 voor twee personen afhankelijk van de weekfolders):</p>
+<ul>
+  <li><strong>Maandag:</strong> pasta met seizoensgroente uit de aanbieding + huismerk passata</li>
+  <li><strong>Dinsdag:</strong> kip uit de weekactie met rijst en wokgroente</li>
+  <li><strong>Woensdag:</strong> maaltijdsoep van aanbieding-groenten, dubbele portie voor donderdag lunch</li>
+  <li><strong>Donderdag:</strong> vegetarische curry met peulvruchten (blik — vrijwel altijd ergens in actie)</li>
+  <li><strong>Vrijdag:</strong> wat over is uit de week: restjesdag of omeletten</li>
+  <li><strong>Weekend:</strong> één uitgebreider gerecht rond de diepste vlees/vis-aanbieding van de week + één goedkope klassieker (pannenkoeken, stamppot in het seizoen)</li>
+</ul>
+<p>De volgorde is bewust: versproducten met korte houdbaarheid eet je vroeg in de week, houdbare basis (pasta, rijst, blik) vult de rest.</p>
+
+<h2>Meal preppen met aanbiedingen: dubbel voordeel</h2>
+<p>Aanbiedingen zijn vaak volumedeals (1+1, 2e halve prijs) — precies wat je voor meal prep nodig hebt. Kook zondag twee of drie basisrecepten in grote porties en vries in per maaltijd. Zo profiteer je maximaal van volumekortingen zonder dat er iets bederft, en vervalt de verleiding van dure kant-en-klaarmaaltijden op drukke dagen. Investering: 2 uur op zondag. Besparing: al snel €15–25 per week ten opzichte van los koken en impulsaankopen.</p>
+
 <p>→ <a href="/">Bekijk deze week de goedkoopste producten</a> op DealHunter4U en pas je weekmenu aan op de aanbiedingen.</p>
     `.trim(),
   },
@@ -3577,6 +3750,18 @@ export const POSTS: BlogPost[] = [
   <li><strong>Speciaalkaas:</strong> Aldi heeft verrassend goede kaas (Parmezaan, Mozzarella) voor discounterprijzen</li>
   <li><strong>Yoghurt en kwark:</strong> huismerk is prima voor dagelijks gebruik, Fage/Activia alleen bij aanbieding</li>
 </ol>
+
+<h2>Kaas bewaren: zo blijft hij weken langer goed</h2>
+<p>Kaas in de aanbieding kopen loont alleen als hij niet verpietert. De basisregels:</p>
+<ul>
+  <li><strong>Jonge en belegen kaas:</strong> in kaaspapier of boterhamzakje (niet in strak plastic — dan gaat hij zweten) in de groentela. Houdbaar 2–3 weken.</li>
+  <li><strong>Geraspte kaas invriezen:</strong> werkt uitstekend — vries in porties en gebruik direct vanuit de vriezer over ovenschotels en pasta. Tot 3 maanden houdbaar.</li>
+  <li><strong>Hele stukken invriezen:</strong> kan, maar de structuur wordt kruimeliger — na ontdooien vooral geschikt om te verwerken in warme gerechten.</li>
+  <li><strong>Schimmel op harde kaas?</strong> Ruim rondom wegsnijden en de rest is prima; bij zachte kaas (brie, verse geitenkaas) helaas de hele verpakking weggooien.</li>
+</ul>
+
+<h2>Plantaardige zuivel: waar is die het goedkoopst?</h2>
+<p>Havermelk, sojayoghurt en plantaardige kwark zijn de snelst groeiende zuivelcategorie — en de prijsverschillen zijn groot. Huismerk haverdrink (Aldi, Lidl, AH Terra, Jumbo) kost ±€1,00–1,30 per liter, terwijl A-merken als Alpro en Oatly regulier ±€2,20–2,80 vragen. Alpro is wél opvallend vaak in de aanbieding (1+1 of 2e halve prijs bij AH en Jumbo) — wie het merk wil, koopt het praktisch nooit voor de volle prijs. Barista-varianten zijn overal het duurst; voor in de koffie is huismerk barista-haver van Lidl of Aldi de beste prijs-kwaliteitkeuze.</p>
 
 <p>→ <a href="/categorie/zuivel">Bekijk alle actuele zuivel-aanbiedingen</a> bij 10 supermarkten</p>
     `.trim(),
@@ -3802,6 +3987,19 @@ export const POSTS: BlogPost[] = [
 </ul>
 
 <p>→ <a href="/categorie/vlees-vis">Bekijk alle actuele vleeswaren- en vleesaanbiedingen</a> bij 10 supermarkten</p>
+
+<h2>Vleeswaren bewaren en invriezen</h2>
+<p>Vleeswaren in de aanbieding kopen loont het meest als je slim bewaart:</p>
+<ul>
+  <li><strong>Geopende verpakking:</strong> 3–4 dagen houdbaar in de koelkast; bewaar in de originele verpakking of een afgesloten bakje tegen uitdrogen.</li>
+  <li><strong>Invriezen kan prima:</strong> gerookte en gekookte vleeswaren (ham, kipfilet, rookvlees) vriezen goed in — leg bakpapier tussen de plakken zodat je per portie kunt ontdooien. 1–2 maanden houdbaar zonder kwaliteitsverlies.</li>
+  <li><strong>Ontdooien:</strong> altijd in de koelkast (niet op het aanrecht) — een nacht vooruit plannen is genoeg.</li>
+  <li><strong>Voorverpakt vs. versafdeling:</strong> voorverpakt is langer houdbaar en vaker in de aanbieding; de versafdeling wint op smaak maar moet binnen dagen op.</li>
+</ul>
+
+<h2>Op het zout letten? Zo kies je slimmer binnen vleeswaren</h2>
+<p>Vleeswaren zijn de grootste stille zoutbron in het Nederlandse boodschappenmandje. De verschillen per soort zijn groot: gekookte ham en kipfilet bevatten grofweg de helft minder zout dan gerookte en gedroogde soorten (salami, cervelaat, rookvlees). Wie minder zout wil, kiest de gekookte varianten als dagelijkse standaard en bewaart de gedroogde soorten voor het weekend. Steeds meer huismerken voeren bovendien een "minder zout" lijn — die is doorgaans niet duurder dan de reguliere variant en verschijnt net zo goed in de weekaanbiedingen.</p>
+
 <p>→ <a href="/supermarkt/dirk">Dirk van den Broek aanbiedingen</a> — structureel laagste vleesprijzen van Nederland</p>
     `.trim(),
   },
