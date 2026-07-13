@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { getAllPairs, parsePairSlug, getMarketStats, getWinner } from '@/lib/vergelijk'
+import { getAllPairs, parsePairSlug, getMarketStats, getWinner, isIndexedPair } from '@/lib/vergelijk'
 import { CATEGORY_LABELS } from '@/lib/types'
 import { buildBreadcrumbSchema, buildFaqSchema, getISOWeek } from '@/lib/schema'
 import { DealHunterLogo } from '@/components/DealHunterLogo'
@@ -38,6 +38,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     openGraph: { title, description, url, siteName: 'DealHunter4U', locale: 'nl_NL', type: 'website' },
     alternates: { canonical: url },
+    // Sadece gerçek arama talebi olan ikililer indexlenir — kalan otomatik
+    // kombinasyonlar ince/şablon içerik olarak AdSense reddine yol açıyordu.
+    ...(isIndexedPair(slug) ? {} : { robots: { index: false, follow: true } }),
   }
 }
 

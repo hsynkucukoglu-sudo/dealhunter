@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { VISIBLE_MARKETS as MARKETS, CATEGORIES } from '@/lib/types'
 import { getAllPosts } from '@/lib/posts'
 import { currentWeekSlug } from '@/lib/weeklyDeals'
-import { getAllPairs } from '@/lib/vergelijk'
+import { getAllPairs, isIndexedPair } from '@/lib/vergelijk'
 import { getBrandList } from '@/lib/brands'
 import { PRODUCT_KEYWORDS } from '@/lib/productKeywords'
 
@@ -24,7 +24,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.8,
   }))
 
-  const vergelijkPages = getAllPairs().map(p => ({
+  // Sadece indexlenen ikililer sitemap'e girer — kalan ~36 otomatik kombinasyon
+  // noindex (bkz. lib/vergelijk.ts INDEXED_PAIR_SLUGS).
+  const vergelijkPages = getAllPairs().filter(p => isIndexedPair(p.slug)).map(p => ({
         url: `${base}/vergelijk/${p.slug}`,
         lastModified: now,
         changeFrequency: 'weekly' as const,

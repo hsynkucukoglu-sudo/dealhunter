@@ -13,6 +13,26 @@ export interface MarketPair {
 
 const PAIR_SEPARATOR = '-vs-'
 
+// Google'a açık ikililer: gerçek arama talebi olan (GSC sorguları + karşılaştırma
+// blog yazılarıyla örtüşen) çiftler. Kalan ~36 otomatik kombinasyon ("hoogvliet-vs-vomar"
+// gibi) kullanıcı için erişilebilir kalır ama noindex + sitemap dışıdır — 46 ince
+// şablon sayfası AdSense "düşük değerli içerik" reddinin ana yüzeyiydi (2026-07-13).
+export const INDEXED_PAIR_SLUGS = new Set([
+  'albert-heijn-vs-jumbo',
+  'albert-heijn-vs-lidl',
+  'albert-heijn-vs-aldi',
+  'jumbo-vs-lidl',
+  'jumbo-vs-aldi',
+  'jumbo-vs-plus',
+  'lidl-vs-aldi',
+  'dirk-vs-aldi',
+  'dirk-vs-dekamarkt',
+])
+
+export function isIndexedPair(slug: string): boolean {
+  return INDEXED_PAIR_SLUGS.has(slug)
+}
+
 export function getAllPairs(): MarketPair[] {
   const pairs: MarketPair[] = []
   for (let i = 0; i < VISIBLE_MARKETS.length; i++) {
