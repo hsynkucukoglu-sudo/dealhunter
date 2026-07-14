@@ -27,6 +27,9 @@ export const INDEXED_PAIR_SLUGS = new Set([
   'lidl-vs-aldi',
   'dirk-vs-aldi',
   'dirk-vs-dekamarkt',
+  // Clarity'de kanıtlanmış Google talebi (13-07-2026): 1:45dk + 3 tıklama ile
+  // gerçek okuma, aynı gün 2 ayrı organik oturum.
+  'albert-heijn-vs-dekamarkt',
 ])
 
 export function isIndexedPair(slug: string): boolean {

@@ -1,12 +1,16 @@
 ---
-date: 2026-07-13
+date: 2026-07-14
 tags: [dealhunter, seo, adsense, affiliate, scraper]
 status: active
 ---
 
 # DealHunter4U — Devam Edilecekler
 
-## ✅ Bugün tamamlanan (2026-07-13)
+## ✅ Bugün tamamlanan (2026-07-14)
+
+- [x] **Clarity kayıt CSV analizi (13 Temmuz, 28 oturum) + 1 sitemap düzeltmesi**: Kullanıcının paylaştığı Clarity export'u incelendi. Gerçek ziyaretçi ~20-21 (09:24-09:25 ve 04:51-05:38 arası Edge/PC kümesi kullanıcının kendi test trafiği). **Kanıt: `/vergelijk/albert-heijn-vs-dekamarkt`** — dünkü budamada noindex listesindeydi ama aynı gün 2 ayrı organik Google oturumu aldı (biri 1:45dk + 3 tıklama, gerçek okuma). `INDEXED_PAIR_SLUGS`'a eklendi → tekrar indexleniyor, sitemap'e geri girdi. `/merk/alesto`'nun organik trafik alması merk sayfalarını budamama kararını doğruladı. Sürekli sorun: 28/28 oturum tek sayfa — dünkü "Lees ook" iç linkleme fix'inin etkisi 1-2 hafta sonra bu export tekrar çekilerek ölçülmeli. Build ✅.
+
+## ✅ Tamamlanan (2026-07-13)
 
 - [x] 🚨 **BÜYÜK affiliate link denetimi — 105 widget + 36 /go linkinin TAMAMI canlı test edildi, ~60 kırık düzeltildi**: Kullanıcı "bazı MeerBesparen linkleri hata veriyor" dedi. Sistematik test (curl redirect zinciri + şüphelilerde gerçek tarayıcı) sonucu: **`dl=` parametresi Daisycon kampanyalarının neredeyse tamamında kırık** — hedef URL ana sayfaya yapıştırılıyor (`site.nl/https://site.nl/...` → 404). affiliate.ts'te 36 trackingBase'li girişten **35'i kırıktı** (dün eklenen Flink kartı dahil!); widget'ta 58+3 giriş. **Fix (script ile):** kırık girişlerde tam tracking linki `destinationUrl` oldu, `trackingBase` kaldırıldı; widget'ta `DC()` → düz link. `dl`'nin gerçekten çalıştığı istisnalar korundu: Libelle Shop, Kiwi.com, Lycamobile, Bjorn Borg, Plaud + DS üçlüsü (CheapTickets/Prijsvrij/Oad). Ek fix: Bol.com topdeals hedefi ölmüştü → ana sayfa. Rakuten zincirleri (Smartbox/Dr.Martens/Eastpak/Foreo) tarayıcıda 4/4 doğrulandı (curl 400'leri bot-bloğu). Vakantiediscounter 500 kendi sitelerinin sorunu. **DERS: yeni Daisycon linki eklerken dl'li VE dl'siz curl testi ZORUNLU — dl çoğunlukla çalışmıyor, varsayılan desen düz tam-link olmalı.**
 
