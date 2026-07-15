@@ -147,6 +147,13 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   'Frank Energie':     { destinationUrl: 'https://jf79.net/c/?si=16978&li=1731992&wi=420902',  network: 'daisycon', rel: REL },
   'Gewoon Energie':    { destinationUrl: 'https://partners.gewoonenergie.nl/c/?si=16832&li=1724962&wi=420902', network: 'daisycon', rel: REL },
   Powerpeers:          { destinationUrl: 'https://lt45.net/c/?si=12400&li=1544330&wi=420902',    network: 'daisycon', rel: REL },
+  // 2026-07-15 onaylı — li Daisycon panelinden (Materialen > Deeplinks) henüz alınmadı,
+  // Westwing/Sembo deseni: düz destinationUrl, trackingBase yok, tracking henüz aktif değil.
+  EnergyZero: { destinationUrl: 'https://www.energyzero.nl/', network: 'daisycon', rel: REL }, // si=943, €37,50/sale
+
+  // ── Daisycon — 2026-07-15 onaylı, li Daisycon panelinden (Materialen > Deeplinks) henüz alınmadı ──
+  Foodello:        { destinationUrl: 'https://foodello.nl/', network: 'daisycon', rel: REL }, // si=17066
+  'Foodello (BE)': { destinationUrl: 'https://foodello.be/', network: 'daisycon', rel: REL }, // si=17574
 }
 
 /** Hedef URL'i yapılandırılmış ağın tracking deeplink'ine sarar. */

@@ -38,6 +38,17 @@ const SUPPLIERS = [
       'Klein en flexibel — vaak snel schakelen bij vragen',
     ],
   },
+  {
+    name: 'EnergyZero',
+    market: 'EnergyZero',
+    tagline: '100% dynamisch energiecontract — profiteer van uurprijzen',
+    color: '#00C48C',
+    points: [
+      'Volledig dynamisch tarief, geen vaste opslag',
+      'Slim energieverbruik lonend maken via uurprijzen',
+      'Voor wie actief wil sturen op verbruik en besparen',
+    ],
+  },
 ]
 
 const SOLAR = [
