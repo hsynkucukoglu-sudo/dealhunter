@@ -16,6 +16,7 @@ import { MarketLogo } from './MarketLogo'
 import { MARKET_FAQS, FAQ } from '@/lib/marketFaqs'
 import { MARKET_CONTENT } from '@/lib/marketContent'
 import { BlogPost } from '@/lib/posts'
+import { getAllPairs, isIndexedPair } from '@/lib/vergelijk'
 
 interface Market {
   slug: string
@@ -36,6 +37,12 @@ export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
   const [page, setPage] = useState(1)
   const { itemCount, setIsCartOpen } = useShoppingList()
   const faqs: FAQ[] = MARKET_FAQS[market.slug] ?? []
+  // Bu market için geçerli (indexed) vergelijk-ikilileri — GSC'de kanıtlanmış
+  // en iyi dönüşen içerik türü (pos 4-13, TO %2-20) vs generieke marketpagina.
+  const comparisonPairs = useMemo(
+    () => getAllPairs().filter(p => isIndexedPair(p.slug) && (p.a.slug === market.slug || p.b.slug === market.slug)),
+    [market.slug]
+  )
 
   const filtered = useMemo(() => {
     const result = initialProducts.filter(p => {
@@ -288,6 +295,32 @@ export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
         )}
 
         <NewsletterCTA variant="market" marketName={market.name} />
+
+        {/* Vergelijk deze market met andere supermarkten — beste presterende contenttype (GSC) */}
+        {comparisonPairs.length > 0 && (
+          <section className="mt-16">
+            <h2 className="text-xl font-headline font-bold mb-4" style={{ color: '#1A1A1A' }}>
+              {market.name} vergelijken met andere supermarkten
+            </h2>
+            <div className="flex flex-wrap gap-3">
+              {comparisonPairs.map(p => {
+                const other = p.a.slug === market.slug ? p.b : p.a
+                return (
+                  <Link key={p.slug} href={`/vergelijk/${p.slug}`}
+                    className="px-5 py-2.5 rounded-full text-sm font-medium transition-all hover:bg-white"
+                    style={{ background: 'rgba(255,255,255,0.6)', border: '1.5px solid #E0D8CE', color: '#1A1A1A' }}>
+                    {market.name} vs {other.name} →
+                  </Link>
+                )
+              })}
+              <Link href="/vergelijk"
+                className="px-5 py-2.5 rounded-full text-sm font-semibold transition-all"
+                style={{ background: '#1A1A1A', color: 'white' }}>
+                Alle vergelijkingen →
+              </Link>
+            </div>
+          </section>
+        )}
 
         {/* Andere supermarkten */}
         <section className="mt-20">

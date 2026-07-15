@@ -1121,7 +1121,11 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         {/* AD #1 — Stats altı, ortalama kaydırma derinliği (%21) İÇİNDE kalsın diye
             burada: önceden Verloopt Binnenkort + widget'ların altındaydı (%31 derinlik),
             ortalama ziyaretçi hiç görmüyordu (bkz. docs/ctr-takip.md monetizasyon analizi) */}
-        <AdBanner slot="7882410354" format="horizontal" className="mb-6" minHeight={90} />
+        {/* minHeight 90→120: 90px, full-width-responsive horizontal reklamın mobildeki
+            gerçek render yüksekliğinin altındaydı — Clarity CLS 0.147 (needs improvement,
+            2026-07-15) ile tutarlı, en olası kaynak bu slottu (tek istisna: diğer tüm
+            AdBanner çağrıları 280 kullanıyor). */}
+        <AdBanner slot="7882410354" format="horizontal" className="mb-6" minHeight={120} />
 
         {/* FLINK AFFILIATE BANNER */}
         <a

@@ -94,6 +94,16 @@ export function MarktenShowcase({ products, serverCounts, onSelectMarket }: Prop
           </motion.div>
         ))}
       </div>
+
+      <div className="flex justify-center mt-5">
+        <Link
+          href="/vergelijk"
+          className="text-[13px] font-semibold px-5 py-2.5 rounded-full transition-all"
+          style={{ background: 'rgba(228,190,183,0.15)', color: '#1A1A1A', border: '1.5px solid rgba(228,190,183,0.4)', textDecoration: 'none' }}
+        >
+          ⚖️ Vergelijk supermarkten direct naast elkaar →
+        </Link>
+      </div>
     </section>
   )
 }
