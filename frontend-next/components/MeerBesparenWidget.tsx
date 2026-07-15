@@ -231,16 +231,16 @@ export function MeerBesparenWidget({ open, onClose, onOpen, activeCategory }: Pr
       {/* BRAND CHIPS — altways visible, direct click to open drawer */}
       <section id="meer-besparen" className="mb-6">
         <div
-          className="flex items-center gap-3 px-4 py-3 rounded-2xl"
+          className="flex items-center gap-3 px-5 py-4 rounded-2xl"
           style={{
-            background: 'rgba(255,255,255,0.7)',
-            border: '1px solid rgba(201,193,182,0.4)',
-            boxShadow: '0 2px 0 #DDD0C4',
+            background: 'linear-gradient(90deg, rgba(227,61,38,0.08) 0%, rgba(227,61,38,0.02) 100%)',
+            border: '1.5px solid rgba(227,61,38,0.25)',
+            boxShadow: '0 4px 0 #DDD0C4',
           }}
         >
           <span
-            className="text-[11px] font-black uppercase tracking-wider whitespace-nowrap flex-none"
-            style={{ color: '#8C8478', fontFamily: 'Space Grotesk, sans-serif' }}
+            className="text-[13px] font-black uppercase tracking-wider whitespace-nowrap flex-none"
+            style={{ color: '#E33D26', fontFamily: 'Space Grotesk, sans-serif' }}
           >
             💡 Meer besparen
           </span>
@@ -249,11 +249,12 @@ export function MeerBesparenWidget({ open, onClose, onOpen, activeCategory }: Pr
               <button
                 key={b.name}
                 onClick={() => onOpen(b.category)}
-                className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap transition-all hover:scale-105 active:scale-95 flex-none"
+                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[12px] font-bold whitespace-nowrap transition-all hover:scale-105 active:scale-95 flex-none"
                 style={{
-                  background: `${b.color}12`,
-                  border: `1px solid ${b.color}35`,
+                  background: 'white',
+                  border: `1.5px solid ${b.color}45`,
                   color: b.color,
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
                 }}
               >
                 <span className="w-1.5 h-1.5 rounded-full flex-none" style={{ background: b.color }} />
@@ -263,7 +264,7 @@ export function MeerBesparenWidget({ open, onClose, onOpen, activeCategory }: Pr
           </div>
           <span
             className="text-[10px] font-medium whitespace-nowrap flex-none"
-            style={{ color: '#C9C1B6' }}
+            style={{ color: '#B5AA9C' }}
           >
             Gesponsord
           </span>

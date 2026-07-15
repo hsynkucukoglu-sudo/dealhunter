@@ -1127,6 +1127,19 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             AdBanner çağrıları 280 kullanıyor). */}
         <AdBanner slot="7882410354" format="horizontal" className="mb-6" minHeight={120} />
 
+        {/* MEER BESPAREN — compact trigger + drawer. Reklam#1'in hemen ardına taşındı
+            (önceden Flink banner'ın da altındaydı) — asıl komisyon kaynağı (energie/telecom/
+            verzekering affiliate) olduğu için AD#1'in %21 kaydırma derinliği hedefini
+            bozmadan mümkün olan en üste alındı. */}
+        {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
+          <MeerBesparenWidget
+            open={meerBesparenOpen}
+            onClose={() => { setMeerBesparenOpen(false); setMeerBesparenCategory(undefined) }}
+            onOpen={(cat) => { setMeerBesparenCategory(cat); setMeerBesparenOpen(true) }}
+            activeCategory={meerBesparenCategory}
+          />
+        )}
+
         {/* FLINK AFFILIATE BANNER */}
         <a
           href="https://jf79.net/c/?si=16070&li=1878997&wi=420902&ws="
@@ -1142,16 +1155,6 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           </div>
           <span className="text-white text-xs font-semibold whitespace-nowrap bg-white/20 rounded-full px-3 py-1">Probeer Flink →</span>
         </a>
-
-        {/* MEER BESPAREN — compact trigger + drawer */}
-        {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
-          <MeerBesparenWidget
-            open={meerBesparenOpen}
-            onClose={() => { setMeerBesparenOpen(false); setMeerBesparenCategory(undefined) }}
-            onOpen={(cat) => { setMeerBesparenCategory(cat); setMeerBesparenOpen(true) }}
-            activeCategory={meerBesparenCategory}
-          />
-        )}
 
         {/* MARKTEN SHOWCASE — ana vitrin, sadece default view'da, Top 5'ten sonra */}
         {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && !showFavoritesOnly && (
