@@ -125,8 +125,8 @@ const DEALS = [
       { name: 'Degrootmeesters',     tagline: 'Kunst & canvas voor aan de muur', cta: 'Bekijk collectie', color: '#5D4037', url: 'https://rkn3.net/c/?si=14804&li=1639024&wi=420902' },
       { name: 'Kameo Sleep',       tagline: 'Slaapkamer & matrassen',        cta: 'Bekijk aanbod', color: '#264653', url: 'https://glp8.net/c/?si=21324&li=1907610&wi=420902' },
       { name: 'LEDshop Groenovatie', tagline: 'LED-verlichting voor binnen & buiten', cta: 'Bekijk aanbod', color: '#F4A300', url: 'https://lt45.net/c/?si=10385&li=1459831&wi=420902' },
-      // 2026-07-15 onaylı — li nog niet uit Daisycon paneel (Materialen > Deeplinks), tracking nog niet actief
-      { name: 'Foodello',            tagline: 'Boodschappen tot 80% korting',  cta: 'Bekijk aanbod', color: '#4CAF50', url: 'https://foodello.nl/' },
+      // 2026-07-15 onaylı — li bevestigd via Daisycon 2026-07-16 campaigns export, tracking actief
+      { name: 'Foodello',            tagline: 'Boodschappen tot 80% korting',  cta: 'Bekijk aanbod', color: '#4CAF50', url: 'https://partners.foodello.nl/c/?si=17066&li=1737047&wi=420902' },
     ],
   },
   {

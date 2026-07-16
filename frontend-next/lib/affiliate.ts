@@ -147,13 +147,16 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   'Frank Energie':     { destinationUrl: 'https://jf79.net/c/?si=16978&li=1731992&wi=420902',  network: 'daisycon', rel: REL },
   'Gewoon Energie':    { destinationUrl: 'https://partners.gewoonenergie.nl/c/?si=16832&li=1724962&wi=420902', network: 'daisycon', rel: REL },
   Powerpeers:          { destinationUrl: 'https://lt45.net/c/?si=12400&li=1544330&wi=420902',    network: 'daisycon', rel: REL },
-  // 2026-07-15 onaylı — li Daisycon panelinden (Materialen > Deeplinks) henüz alınmadı,
-  // Westwing/Sembo deseni: düz destinationUrl, trackingBase yok, tracking henüz aktif değil.
+  // 2026-07-15 onaylı — si=943 Daisycon'un 2026-07-16 campaigns export'unda bulunamadı
+  // (hesapta gerçekten abone/approved olduğu doğrulanamadı) — Westwing/Sembo deseni:
+  // düz destinationUrl, trackingBase yok, tracking henüz aktif değil.
   EnergyZero: { destinationUrl: 'https://www.energyzero.nl/', network: 'daisycon', rel: REL }, // si=943, €37,50/sale
 
-  // ── Daisycon — 2026-07-15 onaylı, li Daisycon panelinden (Materialen > Deeplinks) henüz alınmadı ──
-  Foodello:        { destinationUrl: 'https://foodello.nl/', network: 'daisycon', rel: REL }, // si=17066
-  'Foodello (BE)': { destinationUrl: 'https://foodello.be/', network: 'daisycon', rel: REL }, // si=17574
+  // ── Daisycon — 2026-07-15 onaylı ──
+  // Foodello (NL): li Daisycon'un 2026-07-16 campaigns export'undan doğrulandı, tracking aktif.
+  Foodello: { destinationUrl: 'https://partners.foodello.nl/c/?si=17066&li=1737047&wi=420902', network: 'daisycon', rel: REL },
+  // Foodello (BE) si=17574: onay mailinde vardı ama 2026-07-16 export'unda çıkmadı — li henüz yok.
+  'Foodello (BE)': { destinationUrl: 'https://foodello.be/', network: 'daisycon', rel: REL },
 }
 
 /** Hedef URL'i yapılandırılmış ağın tracking deeplink'ine sarar. */
