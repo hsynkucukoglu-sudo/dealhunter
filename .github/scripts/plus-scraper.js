@@ -177,16 +177,20 @@ async function postToBackend(products) {
   console.log(`✅ Backend: ${json.count} ürün eklendi`)
 }
 
+const MAX_ATTEMPTS = 3
+const RETRY_DELAY_MS = 10000
+
 ;(async () => {
-  try {
-    const products = await scrapePlus()
-    if (products.length === 0) {
-      console.error('❌ Hiç ürün bulunamadı')
-      process.exit(1)
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      const products = await scrapePlus()
+      if (products.length === 0) throw new Error('Hiç ürün bulunamadı')
+      await postToBackend(products)
+      return
+    } catch (e) {
+      console.error(`❌ Deneme ${attempt}/${MAX_ATTEMPTS} başarısız:`, e.message)
+      if (attempt === MAX_ATTEMPTS) process.exit(1)
+      await new Promise((r) => setTimeout(r, RETRY_DELAY_MS))
     }
-    await postToBackend(products)
-  } catch (e) {
-    console.error('❌ Hata:', e.message)
-    process.exit(1)
   }
 })()
