@@ -44,6 +44,8 @@ const DEALS = [
       { name: 'hollandsnieuwe', tagline: 'Voordelig mobiel internet', cta: 'Bekijk abonnement', color: '#00A650', url: 'https://glp8.net/c/?si=21994&li=1927639&wi=420902' },
       { name: 'Lycamobile',     tagline: 'Goedkoop SIM-only',        cta: 'Bekijk abonnement', color: '#E4002B', url: DC('https://bdt9.net/c/?si=19078&li=1819944&wi=420902',  'https://www.lycamobile.nl/nl/') },
       { name: 'Company Telecom', tagline: 'Voordelig bellen & internet', cta: 'Bekijk aanbod',    color: '#0073E6', url: 'https://glp8.net/c/?si=20673&li=1876628&wi=420902' },
+      // 2026-07-16 onaylı — TradeTracker (Daisycon/Awin değil), site ID 511755
+      { name: 'B2Ctelecom.nl', tagline: 'Mobiel & internet vergelijken', cta: 'Vergelijk aanbod', color: '#1D3557', url: 'https://partner.b2ctelecom.nl/c?c=4714&m=12&a=511755&r=&u=%2F' },
     ],
   },
   {
