@@ -77,7 +77,7 @@ export const MARKETS = [
     name: 'Dirk',
     color: '#C8102E',
     ctaTitle: 'Dirk van den Broek Aanbiedingen Deze Week ✓ Laagste Vleesprijzen | DealHunter4U',
-    description: 'Laagste vleesprijzen van Nederland. Scherpe dranken- en groentedeals, dagelijks bijgewerkt.',
+    description: 'Geen folder nodig — alles op één pagina. Laagste vleesprijzen van Nederland.',
     keywords: 'aanbiedingen dirk van den broek, dirk van den broek aanbiedingen, aanbieding dirk van den broek, dirkvandenbroek folder, dirk van de broek aanbiedingen, aanbiedingen dirk van de broek, aanbiedingen dirk, dirk aanbiedingen, dirk folder, dirk deals, dirk aanbieding, dirk aanbieding deze week',
   },
   {
@@ -85,7 +85,7 @@ export const MARKETS = [
     name: 'Aldi',
     color: '#00205B',
     ctaTitle: 'Aldi Aanbiedingen Deze Week ✓ Actuele Deals | DealHunter4U',
-    description: 'Gemiddeld 22% goedkoper dan AH en Jumbo. Dagelijks bijgewerkt, geen folder nodig!',
+    description: 'Geen folder of app nodig — alles op één pagina. Gemiddeld 22% goedkoper dan AH en Jumbo.',
     keywords: 'aldi deals, aanbiedingen aldi, aldi aanbiedingen, aldi actie, aldi acties, aldi aanbiedingen deze week, aldi korting, aldi folder, aldi nederland, aldi aanbieding deze week',
   },
   {
