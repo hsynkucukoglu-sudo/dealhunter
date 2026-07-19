@@ -2,11 +2,23 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getBrandList, getBrandPageData } from '@/lib/brands'
+import { CATEGORY_LABELS } from '@/lib/types'
 import { buildBreadcrumbSchema, buildFaqSchema, buildMultiMarketProductListSchema, getISOWeek } from '@/lib/schema'
 import { DealHunterLogo } from '@/components/DealHunterLogo'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { ProductCard } from '@/components/ProductCard'
 import { MarketFAQ } from '@/components/MarketFAQ'
+
+function categoryLabel(id: string): string {
+  return CATEGORY_LABELS[id]?.nl ?? id
+}
+
+function topCategoryOf(products: { category: string }[]): string | null {
+  const counts = new Map<string, number>()
+  products.forEach(p => counts.set(p.category, (counts.get(p.category) ?? 0) + 1))
+  const sorted = [...counts.entries()].sort((a, b) => b[1] - a[1])
+  return sorted[0]?.[0] ?? null
+}
 
 export const revalidate = 3600
 export const dynamic = 'force-dynamic'
@@ -70,6 +82,9 @@ export default async function BrandPage({ params }: Props) {
     ? buildMultiMarketProductListSchema(products, `${name} Aanbiedingen`, `/merk/${slug}`)
     : null
 
+  const topDeal = products[0] ?? null
+  const topCategory = topCategoryOf(products)
+
   return (
     <div className="min-h-screen" style={{ background: '#F5EDE3' }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
@@ -129,6 +144,22 @@ export default async function BrandPage({ params }: Props) {
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
+
+        {topDeal && (
+          <section className="rounded-3xl p-6 md:p-8 mb-10" style={{ background: 'rgba(255,255,255,0.7)', border: '1px solid rgba(201,193,182,0.4)' }}>
+            <h2 className="text-xl font-headline font-bold mb-3" style={{ color: '#1A1A1A' }}>
+              {name} aanbiedingen deze week
+            </h2>
+            <p className="text-sm leading-relaxed" style={{ color: '#6B6259', fontFamily: 'Hanken Grotesk' }}>
+              Deze week zijn er {products.length} {name} aanbiedingen te vinden bij {marketCount} supermarkten,
+              met een gemiddelde korting van {avgDiscount}%. De sterkste aanbieding is op dit moment{' '}
+              <strong>{topDeal.name}</strong> bij {topDeal.market}: van €{topDeal.originalPrice.toFixed(2)} voor{' '}
+              €{topDeal.discountedPrice.toFixed(2)}, een korting van {topDeal.discount}%.
+              {topCategory && ` De meeste ${name} deals vallen deze week in de categorie ${categoryLabel(topCategory)}.`}{' '}
+              DealHunter4U vergelijkt dagelijks alle {name} aanbiedingen uit de officiële folders, zodat je nooit de beste prijs mist.
+            </p>
+          </section>
+        )}
 
         <MarketFAQ faqs={faqs} marketName={`${name}`} />
 

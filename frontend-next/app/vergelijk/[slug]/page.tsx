@@ -202,7 +202,12 @@ export default async function VergelijkPage({ params }: Props) {
           <p className="text-sm leading-relaxed" style={{ color: '#6B6259', fontFamily: 'Hanken Grotesk' }}>
             {a.description} {b.description} DealHunter4U verzamelt dagelijks alle folder-aanbiedingen van beide winkels
             — geen schattingen, maar echte actuele deals rechtstreeks uit de officiële folder. Deze week telt {a.name}{' '}
-            {sa.dealCount} aanbiedingen en {b.name} {sb.dealCount}.
+            {sa.dealCount} aanbiedingen (gemiddeld {sa.avgDiscount}% korting, sterkste categorie{' '}
+            {categoryLabel(sa.topCategory)}) tegenover {sb.dealCount} bij {b.name} (gemiddeld {sb.avgDiscount}% korting,
+            sterkste categorie {categoryLabel(sb.topCategory)}).{' '}
+            {sa.onePlusOneCount > 0 || sb.onePlusOneCount > 0
+              ? `Op 1+1 gratis-acties loopt ${sa.onePlusOneCount >= sb.onePlusOneCount ? a.name : b.name} deze week voorop met ${Math.max(sa.onePlusOneCount, sb.onePlusOneCount)} van dit soort deals.`
+              : `Geen van beide winkels heeft deze week een 1+1 gratis-actie lopen.`}
           </p>
         </section>
 
