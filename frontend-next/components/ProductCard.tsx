@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from 'react'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Product } from '@/lib/types'
 import { MARKET_COLORS } from '@/lib/types'
@@ -11,6 +12,7 @@ import { calcUnitPrice } from '@/lib/productMeta'
 import { detectCampaignType } from '@/lib/campaignType'
 import { usePriceHistory } from '@/context/PriceHistoryContext'
 import { trackDealClick, trackAddFavorite, trackAddWatchlist } from '@/lib/analytics'
+import { isRealBrand, slugify } from '@/lib/brands'
 import { PriceHistoryChart } from './PriceHistoryChart'
 
 export function ProductCard({ product, priority = false }: { product: Product; priority?: boolean }) {
@@ -48,6 +50,8 @@ export function ProductCard({ product, priority = false }: { product: Product; p
 
   const unitPrice = calcUnitPrice(product.name, product.discountedPrice)
   const campaign = detectCampaignType(product.name, discountPercent, product.campaignType)
+  const brandRaw = (product.brand ?? '').trim()
+  const brandSlug = isRealBrand(brandRaw) ? slugify(brandRaw) : null
 
   const [imgError, setImgError] = useState(false)
 
@@ -153,6 +157,16 @@ export function ProductCard({ product, priority = false }: { product: Product; p
           <p className="text-[11px] font-medium uppercase tracking-wider" style={{ color: '#9C9389', fontFamily: 'JetBrains Mono' }}>
             {product.market}
           </p>
+          {brandSlug && (
+            <Link
+              href={`/merk/${brandSlug}`}
+              onClick={(e) => e.stopPropagation()}
+              className="text-[11px] font-medium uppercase tracking-wider hover:underline"
+              style={{ color: '#B5AA9C', fontFamily: 'JetBrains Mono' }}
+            >
+              · {brandRaw}
+            </Link>
+          )}
           {campaign.type && (
             <span
               className="text-[9px] font-bold px-1.5 py-0.5 rounded-full ml-auto whitespace-nowrap"

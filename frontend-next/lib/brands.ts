@@ -28,7 +28,7 @@ export interface BrandInfo {
   count: number
 }
 
-function slugify(name: string): string {
+export function slugify(name: string): string {
   return name
     .toLowerCase()
     .normalize('NFD')
@@ -37,8 +37,13 @@ function slugify(name: string): string {
     .replace(/^-+|-+$/g, '')
 }
 
-function isRealBrand(raw: string): boolean {
-  return raw.length > 0 && !BRAND_STOPWORDS.has(raw.toLowerCase())
+// "Alle Axe", "Alle Gama en alle", "Alle Oral-B" — combi-actie labels ("all
+// of X") die de scraper als merk-veld heeft opgeslagen, geen echte merknaam.
+// ~7% van alle brand-waarden (2026-07-19 steekproef) had dit patroon.
+const MULTI_BRAND_PROMO_PREFIX = /^alle\s/i
+
+export function isRealBrand(raw: string): boolean {
+  return raw.length > 0 && !BRAND_STOPWORDS.has(raw.toLowerCase()) && !MULTI_BRAND_PROMO_PREFIX.test(raw)
 }
 
 export async function getBrandList(): Promise<BrandInfo[]> {
