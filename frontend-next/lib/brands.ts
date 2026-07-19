@@ -11,8 +11,16 @@ const BRAND_STOPWORDS = new Set([
   'div', 'stuks', 'div.', 'div',
 ])
 
-// Below this many active deals a brand page would be too thin to be useful.
-const MIN_DEALS = 5
+// Below this many active deals a brand page is too thin to list in the sitemap
+// or /merk index — but the page itself still renders (see MIN_DEALS_EXIST) so
+// it doesn't flicker between 200 and 404 as daily scraped inventory dips below
+// this bar, which was eroding Google's trust in the URL (GSC indexing test
+// rejected /merk/milka when its count briefly dropped to 2, 2026-07-19).
+const MIN_DEALS_SITEMAP = 5
+
+// Below this many matches there's no brand identity to render at all (no name
+// to derive). 1 is the real floor — any lower and the page has nothing to show.
+const MIN_DEALS_EXIST = 1
 
 export interface BrandInfo {
   slug: string
@@ -49,7 +57,7 @@ export async function getBrandList(): Promise<BrandInfo[]> {
 
   return [...counts.entries()]
     .map(([slug, v]) => ({ slug, name: v.name, count: v.count }))
-    .filter(b => b.count >= MIN_DEALS)
+    .filter(b => b.count >= MIN_DEALS_SITEMAP)
     .sort((a, b) => b.count - a.count)
 }
 
@@ -68,7 +76,7 @@ export async function getBrandPageData(slug: string): Promise<BrandPageData | nu
     return isRealBrand(raw) && slugify(raw) === slug
   })
 
-  if (matches.length < MIN_DEALS) return null
+  if (matches.length < MIN_DEALS_EXIST) return null
 
   const nameCounts = new Map<string, number>()
   matches.forEach(p => {
