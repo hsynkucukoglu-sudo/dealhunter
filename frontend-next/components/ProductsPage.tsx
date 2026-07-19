@@ -115,7 +115,7 @@ function PushPromptBanner() {
   )
 }
 
-export function ProductsPage({ initialProducts, initialSearch = '', marketCounts, totalCount }: {
+export function ProductsPage({ initialProducts, initialSearch = '', marketCounts, totalCount, defaultSort = 'discount', heroOverride }: {
   initialProducts: Product[]
   initialSearch?: string
   /** Sunucudan gelen gerçek market→ürün sayıları — client'ta sadece top 60 yüklüyken
@@ -123,6 +123,11 @@ export function ProductsPage({ initialProducts, initialSearch = '', marketCounts
   marketCounts?: Record<string, number>
   /** Sunucudan gelen gerçek toplam ürün sayısı (Stats bölümü için). */
   totalCount?: number
+  /** Homepage: yüksek indirim önce. /deals: yakında sona eren önce — aynı component'in
+      homepage ile birebir aynı sıralama/içerik göstermesini önler (GSC duplicate-content bulgusu). */
+  defaultSort?: 'discount' | 'expiring'
+  /** /deals gibi sayfalarda hero başlığını/alt metnini homepage'den farklılaştırmak için. */
+  heroOverride?: { title1: string; title2: string; subtitle: string }
 }) {
   const [products, setProducts] = useState<Product[]>(initialProducts)
   const [fetchError, setFetchError] = useState(false)
@@ -359,6 +364,12 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
       })()
       return notExpired && matchesCampaign && matchesMarket && matchesCategory && matchesFavorites && matchesKassakoopjes && matchesCampaignType && matchesHot
     }).sort((a, b) => {
+      if (defaultSort === 'expiring') {
+        // Verlopende het eerst; producten zonder expiresAt (zelden) achteraan.
+        const ea = a.expiresAt ? new Date(a.expiresAt).getTime() : Infinity
+        const eb = b.expiresAt ? new Date(b.expiresAt).getTime() : Infinity
+        if (ea !== eb) return ea - eb
+      }
       const pctA = a.originalPrice > a.discountedPrice && a.originalPrice > 0
         ? (a.discount || Math.round(((a.originalPrice - a.discountedPrice) / a.originalPrice) * 100))
         : 0
@@ -367,11 +378,13 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         : 0
       return pctB - pctA
     })
-  }, [products, deferredSearch, searchProducts, deferredCampaignsOnly, deferredKassakoopjes, deferredMarket, deferredCategory, deferredFavoritesOnly, favorites, deferredCampaign, deferredHotOnly, hotIds])
+  }, [products, deferredSearch, searchProducts, deferredCampaignsOnly, deferredKassakoopjes, deferredMarket, deferredCategory, deferredFavoritesOnly, favorites, deferredCampaign, deferredHotOnly, hotIds, defaultSort])
 
   const displayedProducts = useMemo(() => {
-    // Default view: ensure min. 2 products per market in the first visible slot
-    if (deferredMarket === 'all' && deferredCategory === 'all' && !deferredSearch && !deferredCampaignsOnly && !deferredFavoritesOnly) {
+    // Default view: ensure min. 2 products per market in the first visible slot.
+    // Skip on 'expiring' sort — market-diversiteit forceren zou de verloop-urgentie
+    // volgorde teniet doen (het hele punt van deze sortering).
+    if (defaultSort !== 'expiring' && deferredMarket === 'all' && deferredCategory === 'all' && !deferredSearch && !deferredCampaignsOnly && !deferredFavoritesOnly) {
       const guaranteed: typeof filteredProducts = []
       const rest: typeof filteredProducts = []
       const counts: Record<string, number> = {}
@@ -400,7 +413,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
       return [...guaranteed, ...interleaved].slice(0, visibleCount)
     }
     return filteredProducts.slice(0, visibleCount)
-  }, [filteredProducts, visibleCount, deferredMarket, deferredCategory, deferredSearch, deferredCampaignsOnly, deferredFavoritesOnly])
+  }, [filteredProducts, visibleCount, deferredMarket, deferredCategory, deferredSearch, deferredCampaignsOnly, deferredFavoritesOnly, defaultSort])
   const hasMore = filteredProducts.length > visibleCount
 
   const potentialSavings = useMemo(() =>
@@ -958,12 +971,15 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             className="font-headline font-bold tracking-tight mb-2 md:mb-5 max-w-3xl"
             style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', color: '#1A1A1A', letterSpacing: '-0.02em', lineHeight: '1.15', fontFamily: 'Space Grotesk' }}
           >
-            {t.heroTitle1} <span style={{ color: '#E33D26' }}>{t.heroTitle2}</span>
+            {heroOverride ? heroOverride.title1 : t.heroTitle1}{' '}
+            <span style={{ color: '#E33D26' }}>{heroOverride ? heroOverride.title2 : t.heroTitle2}</span>
           </h1>
 
           {/* Subtitle */}
           <p className="hidden sm:block mb-6 md:mb-8 max-w-2xl" style={{ fontSize: '1.0625rem', lineHeight: '1.7', color: '#6B6259', fontFamily: 'Hanken Grotesk, sans-serif' }}>
-            {lang === 'nl'
+            {heroOverride
+              ? heroOverride.subtitle
+              : lang === 'nl'
               ? 'Vergelijk dagelijks bijgewerkte aanbiedingen van 10 winkels. Stop met bladeren, begin met besparen.'
               : lang === 'en'
               ? 'Compare daily updated deals from 10 stores. Stop browsing, start saving.'
