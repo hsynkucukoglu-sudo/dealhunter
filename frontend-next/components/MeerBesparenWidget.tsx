@@ -111,6 +111,8 @@ const DEALS = [
       { name: 'Miss Towels',      tagline: 'Premium handdoeken & badgoed', cta: 'Bekijk aanbod',   color: '#B5838D', url: 'https://glp8.net/c/?si=21226&li=1904846&wi=420902' },
       { name: 'Florafy',          tagline: 'Bloemen & planten bezorgen',   cta: 'Bestel bloemen',  color: '#FF69B4', url: 'https://d.florafy.eu/c/?si=21211&li=1903580&wi=420902' },
       { name: 'Petgamma',          tagline: 'Dierenbenodigdheden & voer',   cta: 'Bekijk aanbod',    color: '#E67E22', url: 'https://fr135.net/c/?si=20686&li=1877039&wi=420902' },
+      // 2026-07-20 onaylı — trackingBase Daisycon panelinden (Materialen > Deeplinks) alınacak
+      { name: 'Huisdierenbazaar',  tagline: 'Diervoeding & accessoires',    cta: 'Bekijk aanbod',    color: '#F4511E', url: 'https://huisdierenbazaar.nl/' },
       { name: 'Yuplay',            tagline: 'PC games & game codes',       cta: 'Bekijk games',     color: '#7B2D8B', url: 'https://glp8.net/c/?si=19969&li=1857304&wi=420902' },
       { name: 'Verfuitverkoop.nl', tagline: 'Verfproducten met korting',    cta: 'Bekijk aanbod',    color: '#E65100', url: 'https://glp8.net/c/?si=21219&li=1904818&wi=420902' },
       { name: 'Wixx Coatings',     tagline: 'Professionele verfcoatings',   cta: 'Bekijk aanbod',    color: '#546E7A', url: 'https://glp8.net/c/?si=21467&li=1913625&wi=420902' },
@@ -166,6 +168,8 @@ const DEALS = [
       // dl= breekt (dubbele URL → 404, canlı test 2026-07-13) — geen dl
       { name: 'Zwemshop.com',    tagline: 'Zwemkleding & accessoires',     cta: 'Bekijk aanbod',    color: '#0077C8', url: 'https://rkn3.net/c/?si=14485&li=1622288&wi=420902' },
       { name: 'Sneakids',        tagline: 'Kindersneakers & schoenen',     cta: 'Bekijk collectie', color: '#FF6B35', url: AW(103061, 'https://sneakids.nl/') },
+      // 2026-07-20 onaylı — trackingBase Daisycon panelinden (Materialen > Deeplinks) alınacak
+      { name: 'De Goedkoopste Outlet', tagline: 'Sport- & modeoutlet met korting', cta: 'Bekijk aanbod', color: '#D9251D', url: 'https://www.degoedkoopsteoutlet.nl/' },
     ],
   },
   {
@@ -190,6 +194,8 @@ const DEALS = [
       { name: 'Difmark',         tagline: 'Refurbished smartphones met korting', cta: 'Bekijk aanbod', color: '#059669', url: 'https://glp8.net/c/?si=20242&li=1863153&wi=420902' },
       { name: 'Minisforum FR',   tagline: 'Mini PC\'s & AI workstations',  cta: 'Bekijk aanbod',  color: '#1A1A2E', url: 'https://glp8.net/c/?si=20763&li=1880752&wi=420902' },
       { name: 'Minisforum EU',   tagline: 'Mini PC\'s & AI workstations',  cta: 'Bekijk aanbod',  color: '#2B2D42', url: 'https://glp8.net/c/?si=20771&li=1880782&wi=420902' },
+      // 2026-07-20 onaylı (INT) — trackingBase Daisycon panelinden alınacak
+      { name: 'Skikk',           tagline: 'Laptops & computeraccessoires', cta: 'Bekijk aanbod', color: '#1A1A2E', url: 'https://www.skikk.eu/' },
     ],
   },
 ]

@@ -157,6 +157,12 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   Foodello: { destinationUrl: 'https://partners.foodello.nl/c/?si=17066&li=1737047&wi=420902', network: 'daisycon', rel: REL },
   // Foodello (BE) si=17574: onay mailinde vardı ama 2026-07-16 export'unda çıkmadı — li henüz yok.
   'Foodello (BE)': { destinationUrl: 'https://foodello.be/', network: 'daisycon', rel: REL },
+
+  // ── Daisycon — 2026-07-20 onaylı ────────────────────────────────────────────
+  // trackingBase henüz alınmadı — Daisycon panelinden (Materialen > Deeplinks) si/li al, sonra ekle.
+  Huisdierenbazaar:        { destinationUrl: 'https://huisdierenbazaar.nl/',      network: 'daisycon', rel: REL }, // aid=19217
+  Skikk:                   { destinationUrl: 'https://www.skikk.eu/',            network: 'daisycon', rel: REL }, // aid=17677 (INT)
+  'De Goedkoopste Outlet': { destinationUrl: 'https://www.degoedkoopsteoutlet.nl/', network: 'daisycon', rel: REL }, // aid=19859
 }
 
 /** Hedef URL'i yapılandırılmış ağın tracking deeplink'ine sarar. */

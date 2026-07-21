@@ -43,6 +43,13 @@ export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
     () => getAllPairs().filter(p => isIndexedPair(p.slug) && (p.a.slug === market.slug || p.b.slug === market.slug)),
     [market.slug]
   )
+  // En iyi dönüşen içerik (GSC 3 ay: albert-heijn-vs-jumbo-vs-lidl 48 tıklama, %0,82 TO)
+  // — market sayfaları (bu sayfa dahil) %0,04-0,13 TO'da donmuş, navigasyonel ziyaretçiye
+  // fold üstünde tek bir yüksek-dönüşümlü alternatif göster (2026-07-21 GSC analizi).
+  const topComparisonPost = useMemo(
+    () => relatedPosts.find(p => p.category === 'Vergelijking') ?? relatedPosts[0],
+    [relatedPosts]
+  )
 
   const filtered = useMemo(() => {
     const result = initialProducts.filter(p => {
@@ -178,6 +185,29 @@ export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
               Gemiddeld <strong style={{ color: '#1B9E4B' }}>{avgDiscount}% goedkoper</strong>
             </span>
           </div>
+        )}
+
+        {/* Fold-üstü kaldıraç: kanıtlanmış en iyi dönüşen içerik türüne (karşılaştırma) link.
+            Aldi/Dirk/Lidl gibi yüksek-gösterimli sayfalarda TO %0,04-0,13'te donmuş çünkü
+            ziyaretçi resmi siteyi arıyor — bu kart aynı ziyaretçiye sayfa dibindeki yerine
+            hemen burada bir alternatif sunuyor (2026-07-21 GSC analizi). */}
+        {topComparisonPost && (
+          <Link
+            href={`/blog/${topComparisonPost.slug}`}
+            className="flex items-center gap-3 mb-6 p-4 rounded-2xl transition-all hover:scale-[1.01]"
+            style={{ background: 'white', border: '1.5px solid rgba(227,61,38,0.3)', boxShadow: '0 2px 0 #DDD0C4' }}
+          >
+            <span
+              className="flex-none px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider"
+              style={{ background: 'rgba(227,61,38,0.1)', color: '#E33D26', fontFamily: 'JetBrains Mono' }}
+            >
+              Populair
+            </span>
+            <span className="flex-1 text-sm font-bold" style={{ color: '#1A1A1A' }}>
+              {topComparisonPost.title}
+            </span>
+            <span className="flex-none text-sm font-bold" style={{ color: '#E33D26' }}>→</span>
+          </Link>
         )}
 
         {/* Intent-uyumlu affiliate: bezorging (komisyonlu) */}
