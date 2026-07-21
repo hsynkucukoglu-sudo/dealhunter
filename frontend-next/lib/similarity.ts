@@ -28,6 +28,58 @@ export interface ComparisonGroup {
   unitType: string | null
 }
 
+interface ProductMeta {
+  unitType: string | null
+  unitPrice: number | null
+  unitSize: number | null
+}
+
+function getMeta(p: Product): ProductMeta {
+  return p.unitType != null
+    ? { unitType: p.unitType, unitPrice: p.unitPrice ?? null, unitSize: p.unitSize ?? null }
+    : parseProductMeta(p.name, p.discountedPrice)
+}
+
+export interface MarketEquivalent {
+  market: string
+  product: Product
+}
+
+/**
+ * Voor één product: het goedkoopste equivalent per andere supermarkt.
+ * Zelfde matchcriteria als buildComparisonGroups (naam-tokens, unit type, pack-grootte),
+ * maar voor een enkel seed-product tegen een kandidatenpool — gebruikt door de
+ * winkelmandje-marktvergelijking (welke supermarkt is deze lijst het goedkoopst?).
+ */
+export function findMarketEquivalents(seed: Product, candidates: Product[]): MarketEquivalent[] {
+  const seedTokens = new Set(tokenize(seed.name))
+  if (seedTokens.size < 2) return []
+  const seedMeta = getMeta(seed)
+
+  const byMarket = new Map<string, Product>()
+  for (const p of candidates) {
+    if (p.id === seed.id || p.market === seed.market) continue
+    const overlap = tokenize(p.name).filter(t => seedTokens.has(t)).length
+    if (overlap < 2) continue
+
+    const pMeta = getMeta(p)
+    if (seedMeta.unitType && pMeta.unitType && seedMeta.unitType !== pMeta.unitType) continue
+    if (seedMeta.unitType === 'stuks' && seedMeta.unitSize != null) {
+      if (pMeta.unitType !== 'stuks' || pMeta.unitSize !== seedMeta.unitSize) continue
+    }
+    if (seedMeta.unitType && seedMeta.unitType !== 'stuks' && seedMeta.unitSize != null && pMeta.unitSize != null) {
+      const ratio = Math.max(seedMeta.unitSize, pMeta.unitSize) / Math.min(seedMeta.unitSize, pMeta.unitSize)
+      if (ratio > 1.15) continue
+    }
+
+    const existing = byMarket.get(p.market)
+    const pScore = pMeta.unitPrice ?? p.discountedPrice
+    const exScore = existing ? (getMeta(existing).unitPrice ?? existing.discountedPrice) : Infinity
+    if (pScore < exScore) byMarket.set(p.market, p)
+  }
+  return Array.from(byMarket.entries()).map(([market, product]) => ({ market, product }))
+}
+
 export function buildComparisonGroups(products: Product[]): ComparisonGroup[] {
   const used = new Set<string>()
   const groups: ComparisonGroup[] = []
@@ -131,4 +183,49 @@ export function buildComparisonGroups(products: Product[]): ComparisonGroup[] {
       return diffB - diffA
     })
     .slice(0, 5)
+}
+
+export interface BasketMarketTotal {
+  market: string
+  total: number
+}
+
+/**
+ * Voor een winkelmandje: totaalbedrag per supermarkt als je exact dezelfde
+ * lijst daar zou kopen (eigen items tegen eigen prijs, rest via findMarketEquivalents).
+ * Een supermarkt zonder equivalent voor ALLE items wordt weggelaten — liever geen
+ * vergelijking dan een misleidend te-laag totaal door ontbrekende producten.
+ * Oplopend gesorteerd (goedkoopste eerst).
+ */
+export function compareBasketAcrossMarkets(
+  cartItems: (Product & { quantity: number })[],
+  catalog: Product[]
+): BasketMarketTotal[] {
+  if (cartItems.length === 0) return []
+
+  const allMarkets = new Set(catalog.map(p => p.market))
+  cartItems.forEach(i => allMarkets.add(i.market))
+
+  // Per item: prijs per markt — eigen markt = eigen prijs, anders het goedkoopste equivalent
+  const perItemPrices = cartItems.map(item => {
+    const prices = new Map<string, number>([[item.market, item.discountedPrice]])
+    for (const { market, product } of findMarketEquivalents(item, catalog)) {
+      if (!prices.has(market)) prices.set(market, product.discountedPrice)
+    }
+    return prices
+  })
+
+  const totals: BasketMarketTotal[] = []
+  for (const market of allMarkets) {
+    let total = 0
+    let complete = true
+    for (let i = 0; i < cartItems.length; i++) {
+      const price = perItemPrices[i].get(market)
+      if (price == null) { complete = false; break }
+      total += price * cartItems[i].quantity
+    }
+    if (complete) totals.push({ market, total })
+  }
+
+  return totals.sort((a, b) => a.total - b.total)
 }

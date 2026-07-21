@@ -1,12 +1,37 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useShoppingList } from '@/context/ShoppingListContext'
 import { useLanguage } from '@/context/LanguageContext'
+import { Product } from '@/lib/types'
+import { compareBasketAcrossMarkets } from '@/lib/similarity'
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
 export function ShoppingListSidebar() {
   const { isCartOpen, setIsCartOpen, items, updateQuantity, clearCart, totalCost, totalSavings } = useShoppingList()
   const { t } = useLanguage()
+
+  // Volledige catalogus lazy geladen — alleen als het mandje open is en items bevat,
+  // niet bij elke paginalaad (elders al idle-deferred geladen, hier apart nodig
+  // omdat de sidebar op elke pagina zonder productdata gemount wordt).
+  const [catalog, setCatalog] = useState<Product[] | null>(null)
+  useEffect(() => {
+    if (!isCartOpen || items.length === 0 || catalog) return
+    fetch(`${API_BASE}/api/products`)
+      .then(r => r.json())
+      .then((data: Product[]) => setCatalog(data))
+      .catch(() => {})
+  }, [isCartOpen, items.length, catalog])
+
+  // Welke supermarkt is deze exacte lijst het goedkoopst? (2026-07-21 — "Boodschappenlijstje")
+  const cheapestBasket = useMemo(() => {
+    if (!catalog || items.length === 0) return null
+    const totals = compareBasketAcrossMarkets(items, catalog)
+    const best = totals[0]
+    if (!best || best.total >= totalCost - 0.01) return null
+    return best
+  }, [catalog, items, totalCost])
 
   const handleWhatsAppShare = () => {
     if (items.length === 0) return
@@ -152,6 +177,15 @@ export function ShoppingListSidebar() {
                   <span className="font-medium" style={{ color: '#8C8478' }}>{t.totalCost}</span>
                   <span className="text-3xl font-headline font-black" style={{ color: '#1A1A1A' }}>€{totalCost.toFixed(2)}</span>
                 </div>
+                {cheapestBasket && (
+                  <div className="flex items-center gap-2 p-3 rounded-xl" style={{ background: 'rgba(227,61,38,0.06)', border: '1px solid rgba(227,61,38,0.2)' }}>
+                    <span className="material-symbols-outlined text-lg" style={{ color: '#E33D26' }}>emoji_events</span>
+                    <span className="text-xs font-medium" style={{ color: '#1A1A1A' }}>
+                      {t.cheapestBasketLabel} <strong>{cheapestBasket.market}</strong>: €{cheapestBasket.total.toFixed(2)}
+                      {' '}(<strong style={{ color: '#E33D26' }}>-€{(totalCost - cheapestBasket.total).toFixed(2)}</strong> {t.cheapestBasketSaving})
+                    </span>
+                  </div>
+                )}
                 <div className="flex gap-2 pt-1">
                   <motion.button
                     whileTap={{ scale: 0.95 }}
