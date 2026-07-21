@@ -71,6 +71,15 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
     marketCounts[p.market] = (marketCounts[p.market] ?? 0) + 1
   }
 
+  // Totale besparing over ALLE actieve deals (niet alleen de 60 SSR'de) — social
+  // proof in de hero. Reëel getal (som van originalPrice-discountedPrice), geen
+  // geschat/verzonnen bezoekersgedrag — dat tracken we serverside niet.
+  const totalSavings = allProducts.reduce((sum, p) => {
+    return p.originalPrice > p.discountedPrice && p.originalPrice > 0
+      ? sum + (p.originalPrice - p.discountedPrice)
+      : sum
+  }, 0)
+
   return (
     <>
       <script
@@ -85,7 +94,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homeDealsSchema) }}
       />
-      <ProductsPage initialProducts={initialProducts} initialSearch={q ?? ''} marketCounts={marketCounts} totalCount={allProducts.length} />
+      <ProductsPage initialProducts={initialProducts} initialSearch={q ?? ''} marketCounts={marketCounts} totalCount={allProducts.length} totalSavings={totalSavings} />
     </>
   )
 }

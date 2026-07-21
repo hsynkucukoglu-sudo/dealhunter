@@ -115,7 +115,7 @@ function PushPromptBanner() {
   )
 }
 
-export function ProductsPage({ initialProducts, initialSearch = '', marketCounts, totalCount, defaultSort = 'discount', heroOverride }: {
+export function ProductsPage({ initialProducts, initialSearch = '', marketCounts, totalCount, totalSavings: totalSavingsProp, defaultSort = 'discount', heroOverride }: {
   initialProducts: Product[]
   initialSearch?: string
   /** Sunucudan gelen gerçek market→ürün sayıları — client'ta sadece top 60 yüklüyken
@@ -123,6 +123,9 @@ export function ProductsPage({ initialProducts, initialSearch = '', marketCounts
   marketCounts?: Record<string, number>
   /** Sunucudan gelen gerçek toplam ürün sayısı (Stats bölümü için). */
   totalCount?: number
+  /** Sunucudan gelen gerçek toplam besparing (Hero social-proof sayacı için) — aynı
+      "client sadece top 60 yüklüyken düşük gösterme" sorunu totalCount ile aynı. */
+  totalSavings?: number
   /** Homepage: yüksek indirim önce. /deals: yakında sona eren önce — aynı component'in
       homepage ile birebir aynı sıralama/içerik göstermesini önler (GSC duplicate-content bulgusu). */
   defaultSort?: 'discount' | 'expiring'
@@ -339,6 +342,14 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
   const availableMarkets = useMemo(() =>
     Array.from(new Set(products.map(p => p.market))).sort()
   , [products])
+
+  // Hero social-proof sayacı: TÜM aktif deal'ler üzerinden toplam besparing.
+  // Client başta top-60 (SSR) ile başladığı için önce düşük sayar — totalCount ile
+  // aynı Math.max deseni, idle-fetch tamamlanana kadar sayının düşük görünmesini önler.
+  const clientTotalSavings = useMemo(() =>
+    products.reduce((sum, p) => sum + (p.originalPrice > p.discountedPrice && p.originalPrice > 0 ? p.originalPrice - p.discountedPrice : 0), 0)
+  , [products])
+  const totalSavings = Math.max(totalSavingsProp ?? 0, clientTotalSavings)
 
   const filteredProducts = useMemo(() => {
     // Use deferred values so filter button clicks feel instant
@@ -1041,6 +1052,24 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
               </div>
             )}
           </div>
+
+          {/* Social-proof sayacı: reëel totaal (som van alle actieve deals), geen
+              verzonnen bezoekersgedrag — server+client Math.max, zie hierboven. */}
+          {totalSavings > 0 && (
+            <div
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mt-3"
+              style={{ background: 'rgba(27,158,75,0.08)', border: '1px solid rgba(27,158,75,0.25)' }}
+            >
+              <span className="material-symbols-outlined text-base" style={{ color: '#1B9E4B' }}>savings</span>
+              <span className="text-xs font-bold" style={{ color: '#1A1A1A' }}>
+                {lang === 'nl'
+                  ? <>Deze week <strong style={{ color: '#1B9E4B' }}>€{Math.round(totalSavings).toLocaleString('nl-NL')}</strong> aan besparing beschikbaar</>
+                  : lang === 'en'
+                  ? <><strong style={{ color: '#1B9E4B' }}>€{Math.round(totalSavings).toLocaleString('nl-NL')}</strong> in savings available this week</>
+                  : <>Bu hafta <strong style={{ color: '#1B9E4B' }}>€{Math.round(totalSavings).toLocaleString('nl-NL')}</strong> tasarruf fırsatı var</>}
+              </span>
+            </div>
+          )}
 
           {/* Trust badges — enige site + anti-flipbook + auto-expire */}
           <div className="flex flex-wrap justify-center items-center gap-2 mt-4 mb-1">
