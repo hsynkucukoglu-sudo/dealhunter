@@ -55,7 +55,28 @@ async function sendTransactionalEmail(to, subject, htmlContent) {
   })
 }
 
-function buildNewsletterHtml(topDeals, unsubEmail) {
+function buildChampionHtml(champion) {
+  if (!champion) return ''
+  const saving = champion.mostExpensive.discountedPrice - champion.cheapest.discountedPrice
+  return `
+      <div style="margin:0 28px 20px;padding:18px 20px;background:#FFF8F0;border:1.5px solid #F0D9C0;border-radius:14px">
+        <p style="margin:0 0 8px;font-size:11px;font-weight:900;letter-spacing:0.5px;text-transform:uppercase;color:#E33D26">🏆 Marktkampioen van de week</p>
+        <p style="margin:0 0 10px;font-size:14px;color:#1A1A1A"><strong>${escapeHtml(champion.name)}</strong></p>
+        <table style="width:100%;border-collapse:collapse;font-size:13px">
+          <tr>
+            <td style="color:#1B9E4B;font-weight:700;padding:2px 0">✓ Goedkoopst bij ${escapeHtml(champion.cheapest.market)}</td>
+            <td style="text-align:right;color:#1B9E4B;font-weight:900">€${champion.cheapest.discountedPrice.toFixed(2)}</td>
+          </tr>
+          <tr>
+            <td style="color:#9C9389;padding:2px 0">Duurst bij ${escapeHtml(champion.mostExpensive.market)}</td>
+            <td style="text-align:right;color:#9C9389;text-decoration:line-through">€${champion.mostExpensive.discountedPrice.toFixed(2)}</td>
+          </tr>
+        </table>
+        <p style="margin:10px 0 0;font-size:12px;color:#6B6259">Bespaar <strong style="color:#E33D26">€${saving.toFixed(2)} (${Math.round(champion.savingPercent)}%)</strong> door bij de goedkoopste supermarkt te kopen.</p>
+      </div>`
+}
+
+function buildNewsletterHtml(topDeals, unsubEmail, champion) {
   const year = new Date().getFullYear()
   const week = getISOWeek()
 
@@ -103,7 +124,7 @@ function buildNewsletterHtml(topDeals, unsubEmail) {
           De beste kortingen van Albert Heijn, Jumbo, Lidl, Aldi en meer — elke week vers voor je geselecteerd.
         </p>
       </div>
-
+${buildChampionHtml(champion)}
       <table style="width:100%;border-collapse:collapse">
         ${dealsHtml}
       </table>
@@ -192,7 +213,7 @@ function buildWatchlistHtml(products) {
 </html>`
 }
 
-export async function sendWeeklyNewsletter(topDeals) {
+export async function sendWeeklyNewsletter(topDeals, champion) {
   if (!process.env.BREVO_API_KEY) {
     console.log('[Email] BREVO_API_KEY eksik, haftalık bülten atlandı')
     return
@@ -216,7 +237,7 @@ export async function sendWeeklyNewsletter(topDeals) {
   let errors = 0
   for (const contact of contacts) {
     if (!contact.email) continue
-    const html = buildNewsletterHtml(topDeals, contact.email)
+    const html = buildNewsletterHtml(topDeals, contact.email, champion)
     try {
       await sendTransactionalEmail(contact.email, subject, html)
       sent++

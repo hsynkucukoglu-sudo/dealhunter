@@ -5,6 +5,7 @@ import { initDatabase } from './db.js'
 import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, updateProductCategory, clearAllProducts, clearProductsByMarket } from './models.js'
 import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, archiveWeeklyDeals, getMinPriceMap, getPriceHistory, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts, updateSubscriptionPreferences, getUnsegmentedSubscriptions, getSegmentedSubscriptions, clearOrphanProducts, getProductCount, clearExpiredProducts, subscribeDealAlert, unsubscribeDealAlert, getMatchingAlerts, markAlertSent } from './db.js'
 import { sendWeeklyNewsletter, sendWatchlistAlert, sendDealAlert } from './email.js'
+import { findWeeklyChampion } from './productMatch.js'
 import { sendPushToAll, sendPushToSubscriptions } from './push.js'
 import { scrapeFlyerProducts } from './scraper/index.js'
 import { categorize } from './categorize.js'
@@ -491,7 +492,10 @@ cron.schedule('0 9 * * 1', async () => {
       .filter(p => p.discount >= 20)
       .sort((a, b) => b.discount - a.discount)
       .slice(0, 10)
-    await sendWeeklyNewsletter(topDeals)
+    // "Marktkampioen" bölümü: hangi market bu hafta belirli bir ürünü en ucuza satıyor
+    // — buildComparisonGroups (frontend) ile aynı mantığın backend'e taşınmış hali.
+    const champion = findWeeklyChampion(allProducts)
+    await sendWeeklyNewsletter(topDeals, champion)
   } catch (error) {
     console.error('⏰ Haftalık Bülten Hatası:', error)
   }
