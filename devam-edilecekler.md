@@ -6,6 +6,15 @@ status: active
 
 # DealHunter4U — Devam Edilecekler
 
+## ⏰ ZAMANLI GÖREV — 📅 2026-07-27
+
+- [ ] **AdSense yeniden inceleme öncesi son ince-içerik denetimi + inceleme iste** 📅 2026-07-27 #priority/high
+  - **Bağlam:** "düşük değerli içerik" reddi düzeltildi (blog derinleştirme + /vergelijk noindex, ana fix 13 Tem, son içerik 19 Tem). Plan: ~2 hafta bekleyip Google yeni içeriği yeniden tarasın, sonra inceleme iste. Kullanıcı bilinçli olarak "Sorunları giderdiğimi onaylıyorum"a henüz TIKLAMADI.
+  - **27 Tem'de yapılacaklar (sırayla):**
+    1. **Claude (koddan):** sitemap'teki tüm URL'lerin kelime-sayısı taraması — 300-400 kelime altı kalan sayfa var mı, /vergelijk noindex'leri gerçekten sitemap dışı mı, yeni merk/vergelijk sayfaları yeterli içerikte mi. Rapor çıkar.
+    2. **Kullanıcı (GSC paneli):** GSC → "Sayfalar" raporunda derinleştirilen blogların "İndekslendi" durumunda olduğunu doğrula. Hâlâ "Tarandı, şu anda dizine eklenmedi" ise Google yeni içeriği görmemiş → inceleme isteğini birkaç gün ertele.
+    3. İkisi de temizse → AdSense panelinde yeniden inceleme iste.
+
 ## ✅ Bugün tamamlanan (2026-07-14)
 
 - [x] **Clarity kayıt CSV analizi (13 Temmuz, 28 oturum) + 1 sitemap düzeltmesi**: Kullanıcının paylaştığı Clarity export'u incelendi. Gerçek ziyaretçi ~20-21 (09:24-09:25 ve 04:51-05:38 arası Edge/PC kümesi kullanıcının kendi test trafiği). **Kanıt: `/vergelijk/albert-heijn-vs-dekamarkt`** — dünkü budamada noindex listesindeydi ama aynı gün 2 ayrı organik Google oturumu aldı (biri 1:45dk + 3 tıklama, gerçek okuma). `INDEXED_PAIR_SLUGS`'a eklendi → tekrar indexleniyor, sitemap'e geri girdi. `/merk/alesto`'nun organik trafik alması merk sayfalarını budamama kararını doğruladı. Sürekli sorun: 28/28 oturum tek sayfa — dünkü "Lees ook" iç linkleme fix'inin etkisi 1-2 hafta sonra bu export tekrar çekilerek ölçülmeli. Build ✅.
