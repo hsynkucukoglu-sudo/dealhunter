@@ -40,6 +40,15 @@ const nextConfig: NextConfig = {
         destination: '/blog/beste-deals/:week',
         permanent: true,
       },
+      {
+        // Keyword-kannibalisatie opgelost (2026-07-24): twee posts streden om
+        // dezelfde "is jumbo goedkoper dan AH"-cluster en bleven allebei steken
+        // op positie ~6,6-7,0. De unieke FAQ's zijn samengevoegd in de sterkere
+        // post (18x meer clicks); deze slug redirect permanent daarheen.
+        source: '/blog/is-jumbo-goedkoper-dan-albert-heijn',
+        destination: '/blog/albert-heijn-vs-jumbo-vs-lidl-wie-is-goedkoper',
+        permanent: true,
+      },
     ]
   },
 };
