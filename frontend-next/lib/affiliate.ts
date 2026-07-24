@@ -108,9 +108,10 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   // 2026-07-03 onaylı — ayrı program, Minisforum (FR)'den farklı si
   'Minisforum (EU)':     { destinationUrl: 'https://glp8.net/c/?si=20771&li=1880782&wi=420902', network: 'daisycon', rel: REL },
   Jwverzekeringen:       { destinationUrl: 'https://partners.jwverzekeringen.nl/c/?si=21167&li=1901301&wi=420902', network: 'daisycon', rel: REL },
-  // 2026-07-07 onaylı — trackingBase Daisycon CSV export'undan alınacak
-  Westwing: { destinationUrl: 'https://www.westwing.nl/', network: 'daisycon', rel: REL }, // si=17294
-  Sembo:    { destinationUrl: 'https://www.sembo.nl/',    network: 'daisycon', rel: REL }, // si=20811
+  // 2026-07-07 onaylı — li 2026-07-16 campaigns export'undan doğrulandı (ikisi de approved),
+  // tracking aktif. Hedef zaten ana sayfa olduğu için dl= eklenmiyor (Foodello deseni).
+  Westwing: { destinationUrl: 'https://jdt8.net/c/?si=17294&li=1747070&wi=420902', network: 'daisycon', rel: REL }, // %4,90 · 30g
+  Sembo:    { destinationUrl: 'https://glp8.net/c/?si=20811&li=1881767&wi=420902', network: 'daisycon', rel: REL }, // %8,00 · 30g
 
   // ── Daisycon/Awin — 2026-07-13 onaylı, deeplink panelden alındı ──
   // Zwemshop + Degrootmeesters: dl= çift-URL 404'ü veriyor (canlı test) —
@@ -148,21 +149,25 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   'Gewoon Energie':    { destinationUrl: 'https://partners.gewoonenergie.nl/c/?si=16832&li=1724962&wi=420902', network: 'daisycon', rel: REL },
   Powerpeers:          { destinationUrl: 'https://lt45.net/c/?si=12400&li=1544330&wi=420902',    network: 'daisycon', rel: REL },
   // 2026-07-15 onaylı — si=943 Daisycon'un 2026-07-16 campaigns export'unda bulunamadı
-  // (hesapta gerçekten abone/approved olduğu doğrulanamadı) — Westwing/Sembo deseni:
-  // düz destinationUrl, trackingBase yok, tracking henüz aktif değil.
+  // (hesapta gerçekten abone/approved olduğu doğrulanamadı, 2026-07-24'te tekrar kontrol
+  // edildi): düz destinationUrl, trackingBase yok, tracking henüz aktif değil.
   EnergyZero: { destinationUrl: 'https://www.energyzero.nl/', network: 'daisycon', rel: REL }, // si=943, €37,50/sale
 
   // ── Daisycon — 2026-07-15 onaylı ──
   // Foodello (NL): li Daisycon'un 2026-07-16 campaigns export'undan doğrulandı, tracking aktif.
   Foodello: { destinationUrl: 'https://partners.foodello.nl/c/?si=17066&li=1737047&wi=420902', network: 'daisycon', rel: REL },
-  // Foodello (BE) si=17574: onay mailinde vardı ama 2026-07-16 export'unda çıkmadı — li henüz yok.
+  // Foodello (BE) si=17574: onay mailinde vardı ama 2026-07-16 VE 2026-07-24 export'larında
+  // çıkmadı (ikisi de yalnızca approved listeler) — abonelik geçmemiş olabilir, panelden kontrol et.
   'Foodello (BE)': { destinationUrl: 'https://foodello.be/', network: 'daisycon', rel: REL },
 
   // ── Daisycon — 2026-07-20 onaylı ────────────────────────────────────────────
-  // trackingBase henüz alınmadı — Daisycon panelinden (Materialen > Deeplinks) si/li al, sonra ekle.
-  Huisdierenbazaar:        { destinationUrl: 'https://huisdierenbazaar.nl/',      network: 'daisycon', rel: REL }, // aid=19217
-  Skikk:                   { destinationUrl: 'https://www.skikk.eu/',            network: 'daisycon', rel: REL }, // aid=17677 (INT)
-  'De Goedkoopste Outlet': { destinationUrl: 'https://www.degoedkoopsteoutlet.nl/', network: 'daisycon', rel: REL }, // aid=19859
+  // 2026-07-22 onaylı — li 2026-07-24 campaigns export'undan doğrulandı, tracking aktif.
+  'Canal+': { destinationUrl: 'https://rkn3.net/c/?si=18863&li=1812253&wi=420902', network: 'daisycon', rel: REL }, // €20/sale · 100g
+
+  // li 2026-07-24 campaigns export'undan doğrulandı (üçü de approved), tracking aktif.
+  Huisdierenbazaar:        { destinationUrl: 'https://partner.huisdierenbazaar.nl/c/?si=19217&li=1824499&wi=420902', network: 'daisycon', rel: REL }, // %10 · 35g
+  Skikk:                   { destinationUrl: 'https://jdt8.net/c/?si=17677&li=1765151&wi=420902',                    network: 'daisycon', rel: REL }, // %5 · 30g (INT)
+  'De Goedkoopste Outlet': { destinationUrl: 'https://glp8.net/c/?si=19859&li=1846103&wi=420902',                    network: 'daisycon', rel: REL }, // %10 · 100g
 }
 
 /** Hedef URL'i yapılandırılmış ağın tracking deeplink'ine sarar. */

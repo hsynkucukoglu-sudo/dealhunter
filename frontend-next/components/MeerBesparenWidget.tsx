@@ -46,6 +46,8 @@ const DEALS = [
       { name: 'Company Telecom', tagline: 'Voordelig bellen & internet', cta: 'Bekijk aanbod',    color: '#0073E6', url: 'https://glp8.net/c/?si=20673&li=1876628&wi=420902' },
       // 2026-07-16 onaylı — TradeTracker (Daisycon/Awin değil), site ID 511755
       { name: 'B2Ctelecom.nl', tagline: 'Mobiel & internet vergelijken', cta: 'Vergelijk aanbod', color: '#1D3557', url: 'https://partner.b2ctelecom.nl/c?c=4714&m=12&a=511755&r=&u=%2F' },
+      // 2026-07-22 onaylı — li bevestigd via Daisycon 2026-07-24 campaigns export, tracking actief
+      { name: 'Canal+',        tagline: 'Films, series & sport streamen', cta: 'Bekijk abonnement', color: '#000000', url: 'https://rkn3.net/c/?si=18863&li=1812253&wi=420902' },
     ],
   },
   {
@@ -89,8 +91,8 @@ const DEALS = [
       { name: 'Wereldplanner',           tagline: 'Reizen naar elke bestemming',   cta: 'Bekijk reizen',  color: '#1565C0', url: 'https://ds1.nl/c/?si=20232&li=1862768&wi=420902' },
       { name: 'Doenkado',                tagline: 'Uitjes & belevenissen cadeau',  cta: 'Bekijk ervaringen', color: '#E65100', url: 'https://ds1.nl/c/?si=1305&li=80616&wi=420902' },
       { name: 'Kiwi.com',                tagline: 'Goedkoopste vluchten EU',       cta: 'Zoek vlucht',    color: '#F57F17', url: DC('https://glp8.net/c/?si=20714&li=1878051&wi=420902',   'https://www.kiwi.com/nl/') },
-      // 2026-07-07 onaylı — trackingBase Daisycon CSV export'undan alınacak
-      { name: 'Sembo',                   tagline: 'Pakketreizen & vliegvakanties', cta: 'Bekijk reizen',  color: '#0057B8', url: 'https://www.sembo.nl/' },
+      // 2026-07-07 onaylı — li bevestigd via Daisycon 2026-07-16 campaigns export, tracking actief
+      { name: 'Sembo',                   tagline: 'Pakketreizen & vliegvakanties', cta: 'Bekijk reizen',  color: '#0057B8', url: 'https://glp8.net/c/?si=20811&li=1881767&wi=420902' },
     ],
   },
   {
@@ -102,8 +104,8 @@ const DEALS = [
       // Kwantum's eigen redirect breekt op de dl= deeplink parameter (dubbele URL → 404,
       // zelfde probleem als Levi's/Rakuten) — geen dl, gaat naar kwantum.nl homepage i.p.v. /sale
       { name: 'Kwantum',          tagline: 'Gordijnen, vloeren & meer',    cta: 'Bekijk sale',     color: '#E2001A', url: 'https://ds1.nl/c/?si=16070&li=1360074&wi=420902' },
-      // 2026-07-07 onaylı — trackingBase Daisycon CSV export'undan alınacak
-      { name: 'Westwing',         tagline: 'Design meubels & woonaccessoires', cta: 'Bekijk aanbod', color: '#8B2439', url: 'https://www.westwing.nl/' },
+      // 2026-07-07 onaylı — li bevestigd via Daisycon 2026-07-16 campaigns export, tracking actief
+      { name: 'Westwing',         tagline: 'Design meubels & woonaccessoires', cta: 'Bekijk aanbod', color: '#8B2439', url: 'https://jdt8.net/c/?si=17294&li=1747070&wi=420902' },
       // dl= parameter breekt (dubbele URL, canlı test 2026-07-06) — geen dl
       { name: 'Witgoedhuis',      tagline: 'Witgoed & huishoudapparaten',  cta: 'Bekijk aanbod',   color: '#005BAC', url: 'https://ds1.nl/c/?si=16070&li=1307850&wi=420902' },
       { name: '999Games',         tagline: 'Spellen, puzzels & speelgoed', cta: 'Bekijk aanbod',   color: '#E4007C', url: 'https://lt45.net/c/?si=13450&li=1593002&wi=420902' },
@@ -111,8 +113,8 @@ const DEALS = [
       { name: 'Miss Towels',      tagline: 'Premium handdoeken & badgoed', cta: 'Bekijk aanbod',   color: '#B5838D', url: 'https://glp8.net/c/?si=21226&li=1904846&wi=420902' },
       { name: 'Florafy',          tagline: 'Bloemen & planten bezorgen',   cta: 'Bestel bloemen',  color: '#FF69B4', url: 'https://d.florafy.eu/c/?si=21211&li=1903580&wi=420902' },
       { name: 'Petgamma',          tagline: 'Dierenbenodigdheden & voer',   cta: 'Bekijk aanbod',    color: '#E67E22', url: 'https://fr135.net/c/?si=20686&li=1877039&wi=420902' },
-      // 2026-07-20 onaylı — trackingBase Daisycon panelinden (Materialen > Deeplinks) alınacak
-      { name: 'Huisdierenbazaar',  tagline: 'Diervoeding & accessoires',    cta: 'Bekijk aanbod',    color: '#F4511E', url: 'https://huisdierenbazaar.nl/' },
+      // 2026-07-20 onaylı — li bevestigd via Daisycon 2026-07-24 campaigns export, tracking actief
+      { name: 'Huisdierenbazaar',  tagline: 'Diervoeding & accessoires',    cta: 'Bekijk aanbod',    color: '#F4511E', url: 'https://partner.huisdierenbazaar.nl/c/?si=19217&li=1824499&wi=420902' },
       { name: 'Yuplay',            tagline: 'PC games & game codes',       cta: 'Bekijk games',     color: '#7B2D8B', url: 'https://glp8.net/c/?si=19969&li=1857304&wi=420902' },
       { name: 'Verfuitverkoop.nl', tagline: 'Verfproducten met korting',    cta: 'Bekijk aanbod',    color: '#E65100', url: 'https://glp8.net/c/?si=21219&li=1904818&wi=420902' },
       { name: 'Wixx Coatings',     tagline: 'Professionele verfcoatings',   cta: 'Bekijk aanbod',    color: '#546E7A', url: 'https://glp8.net/c/?si=21467&li=1913625&wi=420902' },
@@ -168,8 +170,8 @@ const DEALS = [
       // dl= breekt (dubbele URL → 404, canlı test 2026-07-13) — geen dl
       { name: 'Zwemshop.com',    tagline: 'Zwemkleding & accessoires',     cta: 'Bekijk aanbod',    color: '#0077C8', url: 'https://rkn3.net/c/?si=14485&li=1622288&wi=420902' },
       { name: 'Sneakids',        tagline: 'Kindersneakers & schoenen',     cta: 'Bekijk collectie', color: '#FF6B35', url: AW(103061, 'https://sneakids.nl/') },
-      // 2026-07-20 onaylı — trackingBase Daisycon panelinden (Materialen > Deeplinks) alınacak
-      { name: 'De Goedkoopste Outlet', tagline: 'Sport- & modeoutlet met korting', cta: 'Bekijk aanbod', color: '#D9251D', url: 'https://www.degoedkoopsteoutlet.nl/' },
+      // 2026-07-20 onaylı — li bevestigd via Daisycon 2026-07-24 campaigns export, tracking actief
+      { name: 'De Goedkoopste Outlet', tagline: 'Sport- & modeoutlet met korting', cta: 'Bekijk aanbod', color: '#D9251D', url: 'https://glp8.net/c/?si=19859&li=1846103&wi=420902' },
     ],
   },
   {
@@ -194,8 +196,8 @@ const DEALS = [
       { name: 'Difmark',         tagline: 'Refurbished smartphones met korting', cta: 'Bekijk aanbod', color: '#059669', url: 'https://glp8.net/c/?si=20242&li=1863153&wi=420902' },
       { name: 'Minisforum FR',   tagline: 'Mini PC\'s & AI workstations',  cta: 'Bekijk aanbod',  color: '#1A1A2E', url: 'https://glp8.net/c/?si=20763&li=1880752&wi=420902' },
       { name: 'Minisforum EU',   tagline: 'Mini PC\'s & AI workstations',  cta: 'Bekijk aanbod',  color: '#2B2D42', url: 'https://glp8.net/c/?si=20771&li=1880782&wi=420902' },
-      // 2026-07-20 onaylı (INT) — trackingBase Daisycon panelinden alınacak
-      { name: 'Skikk',           tagline: 'Laptops & computeraccessoires', cta: 'Bekijk aanbod', color: '#1A1A2E', url: 'https://www.skikk.eu/' },
+      // 2026-07-20 onaylı (INT) — li bevestigd via Daisycon 2026-07-24 campaigns export, tracking actief
+      { name: 'Skikk',           tagline: 'Laptops & computeraccessoires', cta: 'Bekijk aanbod', color: '#1A1A2E', url: 'https://jdt8.net/c/?si=17677&li=1765151&wi=420902' },
     ],
   },
 ]
