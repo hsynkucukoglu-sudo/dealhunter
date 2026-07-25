@@ -19,6 +19,7 @@ import { AuthButton } from './AuthButton'
 import { detectCampaignType, CAMPAIGN_FILTERS, CampaignType } from '@/lib/campaignType'
 import { StickyFilterBar } from './StickyFilterBar'
 import { NewsletterSignup } from './NewsletterSignup'
+import { NewsletterSignupCompact } from './NewsletterSignupCompact'
 import { trackMarketFilter, trackCategoryFilter, trackCampaignFilter, trackSearch, trackPwaInstall } from '@/lib/analytics'
 import { MarketIndexWidget } from './MarketIndexWidget'
 import { CombinatieDealsWidget } from './CombinatieDealsWidget'
@@ -1183,6 +1184,13 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             onOpen={(cat) => { setMeerBesparenCategory(cat); setMeerBesparenOpen(true) }}
             activeCategory={meerBesparenCategory}
           />
+        )}
+
+        {/* NEWSLETTER — compacte variant binnen de %21 scroll-depth zone (bkz. AD #1
+            commentaar). De volle NewsletterSignup blijft onderaan als tweede kans;
+            deze staat hier omdat de meeste mobiele bezoekers dat punt nooit bereiken. */}
+        {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
+          <NewsletterSignupCompact />
         )}
 
         {/* FLINK AFFILIATE BANNER */}
