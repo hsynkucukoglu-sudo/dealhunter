@@ -2,6 +2,15 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    // Next 16.2.11 (patch bump 2026-07-25) started enforcing this for same-origin
+    // URLs with a query string — /api/img-proxy?u=<dynamic> — causing homepage
+    // 500s. No `search` field = matches any query string for this pathname
+    // (an exact `search` string would only match one hardcoded query, which
+    // doesn't work here since ?u= differs per product).
+    localPatterns: [
+      { pathname: '/api/img-proxy' },
+      { pathname: '/api/ah-image/**' },
+    ],
     remotePatterns: [
       { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
       // Albert Heijn
