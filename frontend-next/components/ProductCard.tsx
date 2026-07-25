@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Product } from '@/lib/types'
 import { MARKET_COLORS } from '@/lib/types'
@@ -92,15 +93,17 @@ export function ProductCard({ product, priority = false }: { product: Product; p
 
       <div className="h-36 overflow-hidden relative" style={{ background: '#f5ede3' }}>
         {imgSrc && !imgError ? (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
+          // next/image: bron-CDN's leveren vaak veel grotere afbeeldingen dan de
+          // 144px-hoge kaart nodig heeft (mobiele LCP-analyse 2026-07-25 wees dit
+          // aan als hoofdoorzaak). Next optimaliseert/resized/WebP't zelf, ook voor
+          // same-origin /api/img-proxy-URL's (geen remotePattern nodig daarvoor).
+          <Image
             src={imgSrc}
             alt={product.name}
-            loading={priority ? 'eager' : 'lazy'}
-            fetchPriority={priority ? 'high' : 'auto'}
-            width={300}
-            height={300}
-            className="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-500"
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+            priority={priority}
+            className="object-contain p-4 group-hover:scale-110 transition-transform duration-500"
             onError={() => setImgError(true)}
             onLoad={(e) => {
               // Some browsers don't fire onError for a 0-byte 404 body from
