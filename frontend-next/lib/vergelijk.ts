@@ -17,18 +17,17 @@ const PAIR_SEPARATOR = '-vs-'
 // blog yazılarıyla örtüşen) çiftler. Kalan ~36 otomatik kombinasyon ("hoogvliet-vs-vomar"
 // gibi) kullanıcı için erişilebilir kalır ama noindex + sitemap dışıdır — 46 ince
 // şablon sayfası AdSense "düşük değerli içerik" reddinin ana yüzeyiydi (2026-07-13).
+//
+// 2026-07-25: 8 çift daha çıkarıldı. Bunların her birinin bir karşılaştırma BLOG
+// yazısı var (ör. albert-heijn-vs-lidl ↔ /blog/is-lidl-goedkoper-dan-albert-heijn) ve
+// blog o sorguda konum 3-6'da net kazanıyordu; /vergelijk/ eşi indexli olmasına rağmen
+// GSC'de 0 tık alıyor, sadece sinyal bölüyordu (blog-vs-blog kannibalizasyonunun
+// /vergelijk × blog ölçeği — bkz. is-jumbo-goedkoper-dan-albert-heijn birleştirmesi).
+// Blog karşılığı OLMAYAN 2 çift indexli kaldı.
 export const INDEXED_PAIR_SLUGS = new Set([
-  'albert-heijn-vs-jumbo',
-  'albert-heijn-vs-lidl',
-  'albert-heijn-vs-aldi',
-  'jumbo-vs-lidl',
-  'jumbo-vs-aldi',
-  'jumbo-vs-plus',
-  'lidl-vs-aldi',
-  'dirk-vs-aldi',
-  'dirk-vs-dekamarkt',
+  'albert-heijn-vs-aldi', // blog karşılığı yok (is-aldi-goedkoper-dan-albert-heijn mevcut değil)
   // Clarity'de kanıtlanmış Google talebi (13-07-2026): 1:45dk + 3 tıklama ile
-  // gerçek okuma, aynı gün 2 ayrı organik oturum.
+  // gerçek okuma, aynı gün 2 ayrı organik oturum. Blog karşılığı yok.
   'albert-heijn-vs-dekamarkt',
 ])
 
