@@ -211,6 +211,12 @@ const FEATURED_BRANDS = [
   { name: "Levi's",            category: 'mode',        color: '#C8102E' },
 ]
 
+// Directe affiliate-URL per featured brand — uit DEALS gehaald (single source of
+// truth, geen dubbele URL die uit sync kan raken). undefined = fallback naar drawer.
+function findFeaturedUrl(name: string, category: string): string | undefined {
+  return DEALS.find(d => d.id === category)?.items.find(i => i.name === name)?.url
+}
+
 interface Props {
   open: boolean
   onClose: () => void
@@ -255,22 +261,61 @@ export function MeerBesparenWidget({ open, onClose, onOpen, activeCategory }: Pr
             💡 Meer besparen
           </span>
           <div className="flex gap-2 overflow-x-auto no-scrollbar flex-1">
-            {FEATURED_BRANDS.map(b => (
-              <button
-                key={b.name}
-                onClick={() => onOpen(b.category)}
-                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[12px] font-bold whitespace-nowrap transition-all hover:scale-105 active:scale-95 flex-none"
-                style={{
-                  background: 'white',
-                  border: `1.5px solid ${b.color}45`,
-                  color: b.color,
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
-                }}
-              >
-                <span className="w-1.5 h-1.5 rounded-full flex-none" style={{ background: b.color }} />
-                {b.name}
-              </button>
-            ))}
+            {FEATURED_BRANDS.map(b => {
+              const url = findFeaturedUrl(b.name, b.category)
+              const chipStyle = {
+                background: 'white',
+                border: `1.5px solid ${b.color}45`,
+                color: b.color,
+                boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+              }
+              const dot = <span className="w-1.5 h-1.5 rounded-full flex-none" style={{ background: b.color }} />
+              // Directe 1-klik affiliate-link i.p.v. drawer openen — de drawer voor
+              // deze 6 merken kostte een extra klik terwijl de link al bekend is.
+              // Geen url gevonden (zou niet moeten voorkomen) → val terug op drawer.
+              return url ? (
+                <a
+                  key={b.name}
+                  href={url}
+                  target="_blank"
+                  rel="noopener sponsored"
+                  onClick={(e) => {
+                    try {
+                      // @ts-ignore
+                      if (typeof gtag !== 'undefined') gtag('event', 'affiliate_click', { affiliate_name: b.name, affiliate_category: b.category, affiliate_source: 'featured_chip' })
+                    } catch {}
+                    window.open(url, '_blank', 'noopener,noreferrer')
+                    e.preventDefault()
+                  }}
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[12px] font-bold whitespace-nowrap transition-all hover:scale-105 active:scale-95 flex-none"
+                  style={{ ...chipStyle, textDecoration: 'none' }}
+                >
+                  {dot}
+                  {b.name}
+                </a>
+              ) : (
+                <button
+                  key={b.name}
+                  onClick={() => onOpen(b.category)}
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[12px] font-bold whitespace-nowrap transition-all hover:scale-105 active:scale-95 flex-none"
+                  style={chipStyle}
+                >
+                  {dot}
+                  {b.name}
+                </button>
+              )
+            })}
+            <button
+              onClick={() => onOpen('energie')}
+              className="flex items-center gap-1 px-3.5 py-1.5 rounded-full text-[12px] font-bold whitespace-nowrap transition-all hover:scale-105 active:scale-95 flex-none"
+              style={{
+                background: 'rgba(26,26,26,0.06)',
+                border: '1.5px solid rgba(26,26,26,0.12)',
+                color: '#1A1A1A',
+              }}
+            >
+              + Meer
+            </button>
           </div>
           <span
             className="text-[10px] font-medium whitespace-nowrap flex-none"
