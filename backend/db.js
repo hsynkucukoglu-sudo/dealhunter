@@ -259,22 +259,31 @@ export async function recordPriceHistory(products) {
 }
 
 export async function getMinPriceMap() {
+  // Group by (name, market) only — NOT by unit dimensions.
+  //
+  // Waarom: de UNIQUE-constraint op deze tabel is (product_name, product_market,
+  // recorded_week) en bevat de unit-kolommen niet. Er is dus sowieso hooguit één
+  // rij per product per week; groeperen op unit_size/unit_type splitste die
+  // historie alleen maar op, omdat unit_size later via ALTER TABLE is toegevoegd
+  // (oude rijen NULL, nieuwe rijen gevuld). Gevolg was een echte false positive
+  // op het "laagste prijs"-label: bij "1 de Beste Limoenen Net 3 stuks (Dirk)"
+  // stond de unit-sleutel op min 0,89 (1 week) terwijl de legacy-sleutel 0,79
+  // (3 weken) had — het label riep dus "laagste prijs!" bij 0,89.
+  //
+  // Deze granulariteit is wat de data echt ondersteunt. Ze pretendeert geen
+  // onderscheid dat de schrijfkant niet maakt. (Gevonden 2026-07-26.)
   const { rows } = await pool.query(`
     SELECT
       product_name,
       product_market,
-      unit_size,
-      unit_type,
       MIN(discounted_price) AS min_price,
       COUNT(DISTINCT recorded_week) AS weeks
     FROM price_history
-    GROUP BY product_name, product_market, unit_size, unit_type
+    GROUP BY product_name, product_market
   `)
   const map = {}
   for (const r of rows) {
-    // Key includes unit dimensions so pack sizes don't share the same historical low
-    const sizeKey = r.unit_size != null ? `::${r.unit_size}::${r.unit_type}` : ''
-    map[`${r.product_name}::${r.product_market}${sizeKey}`] = {
+    map[`${r.product_name}::${r.product_market}`] = {
       minPrice: parseFloat(r.min_price),
       weeks: parseInt(r.weeks),
     }
