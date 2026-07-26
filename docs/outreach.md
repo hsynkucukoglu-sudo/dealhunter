@@ -7,6 +7,23 @@ je lezers kan helpen"-benadering.
 **Datum opgesteld:** 2026-07-26
 **Verstuurd door:** Hüseyin (hsyn.kucukoglu@gmail.com) — dit zijn concepten, jij verstuurt
 
+## Status per doelwit (adressen geverifieerd op hun eigen contactpagina)
+
+| Doelwit | Adres | Gmail-concept | Opmerking |
+|---|---|---|---|
+| Sparen en Besparen | `info@sparenenbesparen.nl` | ✅ aangemaakt | Contactpagina noemt zelf "Suggesties voor nieuwe artikelen" — beste kandidaat |
+| One Broke Girl | `info@onebrokegirl.nl` | ✅ aangemaakt | Iris Newman. Commercieel (One Girl Media B.V., Media Kit + shop) → verwacht mogelijk een tarievenkaart terug |
+| Mr FOB | — | ❌ niet aangemaakt | Contactpagina geeft 404, geen e-mailadres te vinden. Eventueel via hun nieuwsbrief-reply of social |
+| Bespaartop100 | — | ⛔ **bewust overgeslagen** | Zie waarschuwing hieronder |
+
+### ⛔ Bespaartop100 — niet benaderen
+
+Hun "Samenwerken"-pagina verkoopt expliciet: *"SEO Content: het schrijven van een
+relevante blog artikel; Een review schrijven in de vorm van een blog; Het plaatsen
+van een banner advertentie."* Dat is een link-verkopende site. Een betaalde link
+daar valt onder Google's spam-beleid (link schemes) en kan de eigen site schaden.
+Niet doen — ook niet als ze goedkoop zijn.
+
 ---
 
 ## Cijfers die je mag gebruiken (geverifieerd 2026-07-26)
