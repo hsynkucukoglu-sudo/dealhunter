@@ -3,7 +3,6 @@ import { VISIBLE_MARKETS as MARKETS, CATEGORIES } from '@/lib/types'
 import { getAllPosts } from '@/lib/posts'
 import { currentWeekSlug } from '@/lib/weeklyDeals'
 import { getAllPairs, isIndexedPair } from '@/lib/vergelijk'
-import { getBrandList } from '@/lib/brands'
 import { PRODUCT_KEYWORDS } from '@/lib/productKeywords'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -37,13 +36,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.7,
   }))
 
-  const brands = await getBrandList()
-  const brandPages = brands.map(b => ({
-        url: `${base}/merk/${b.slug}`,
-        lastModified: today,
-        changeFrequency: 'weekly' as const,
-        priority: 0.65,
-  }))
+  // /merk/[slug] staat sinds 2026-07-26 op noindex (te dun, zie de metadata daar).
+  // Ze horen dan ook niet in de sitemap: een noindex-pagina indienen als
+  // indexeerbaar is een tegenstrijdig signaal. De overzichtspagina /merk zelf
+  // blijft wel staan — die is navigatie, geen dunne contentpagina.
 
   const blogPages = getAllPosts().map(post => ({
         url: `${base}/blog/${post.slug}`,
@@ -84,7 +80,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ...marketPages,
         ...categoryPages,
         ...vergelijkPages,
-        ...brandPages,
         ...productPages,
     { url: `${base}/privacy`, lastModified: today, changeFrequency: 'monthly' as const, priority: 0.3 },
     { url: `${base}/contact`, lastModified: today, changeFrequency: 'monthly' as const, priority: 0.3 },

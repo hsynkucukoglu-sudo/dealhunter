@@ -46,6 +46,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     openGraph: { title, description, url, siteName: 'DealHunter4U', locale: 'nl_NL', type: 'website' },
     alternates: { canonical: url },
+    // noindex: deze pagina's zijn te dun om als zoekresultaat te verdedigen —
+    // gemeten 342-396 woorden, waarvan het unieke deel neerkomt op één
+    // gegenereerde zin plus een handvol productkaarten (vgl. /product/*:
+    // 671-1011 woorden, /supermarkt/*: ~2600). AdSense wees de site op
+    // 13-07-2026 af met "laagwaardige content"; dit is de duidelijkste
+    // kandidaat. follow blijft aan, dus interne links tellen gewoon door en
+    // de pagina blijft bruikbaar voor bezoekers die op een merk filteren.
+    robots: { index: false, follow: true },
   }
 }
 
