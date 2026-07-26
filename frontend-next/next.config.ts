@@ -16,17 +16,25 @@ const nextConfig: NextConfig = {
       // Albert Heijn
       { protocol: 'https', hostname: 'static.ah.nl' },
       { protocol: 'https', hostname: 'api.ah.nl' },
-      // Jumbo
+      // Jumbo — dam-images CDN (www.jumbo.com zelf, niet cloudinary — die stond
+      // hier ongebruikt; scraper is ooit van CDN gewisseld, config niet bijgewerkt.
+      // Alle Jumbo-productafbeeldingen kregen hierdoor stil een 400 via /_next/image
+      // en vielen terug op het placeholder-icoon, ontdekt 2026-07-26.
+      { protocol: 'https', hostname: 'www.jumbo.com' },
       { protocol: 'https', hostname: 'res.cloudinary.com' },
       // Lidl
       { protocol: 'https', hostname: 'cn-s3-cdn.lidl.nl' },
       { protocol: 'https', hostname: 'assets.lidl-statics.com' },
+      // Lidl Nord (Schwarz Group imgproxy — zelfde 2026-07-26 bug als Jumbo)
+      { protocol: 'https', hostname: 'imgproxy-retcat.assets.schwarz' },
       // Dirk
       { protocol: 'https', hostname: 'web-fileserver.dirk.nl' },
       // Hoogvliet
       { protocol: 'https', hostname: 'www.hoogvliet.com' },
-      // Aldi
+      // Aldi Nord — productafbeeldingen komen via Scene7, www.aldi.nl is voor
+      // andere assets (zelfde 2026-07-26 bug)
       { protocol: 'https', hostname: 'www.aldi.nl' },
+      { protocol: 'https', hostname: 's7g10.scene7.com' },
       // Vomar
       { protocol: 'https', hostname: 'd3vricquk1sjgf.cloudfront.net' },
       // DekaMarkt

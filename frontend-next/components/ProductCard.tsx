@@ -64,6 +64,13 @@ export function ProductCard({ product, priority = false }: { product: Product; p
         ? `/api/img-proxy?u=${encodeURIComponent(product.imageUrl)}`
         : product.imageUrl
     : null
+  // next/image's optimizer treats /api/* as a static-file localPattern and
+  // can't handle these dynamic proxy routes — it 400s with "isn't a valid
+  // image" even when the proxy returns a real WebP (found 2026-07-26, only
+  // affects AH/Kruidvat since they're the only CDN_PROXY entries). These
+  // thumbnails are already small (~184px from source), so the resize/format
+  // win next/image gives elsewhere doesn't apply here anyway — plain <img>.
+  const isProxied = imgSrc?.startsWith('/api/') ?? false
 
   return (
     <div className="card-product group">
@@ -93,24 +100,40 @@ export function ProductCard({ product, priority = false }: { product: Product; p
 
       <div className="h-36 overflow-hidden relative" style={{ background: '#f5ede3' }}>
         {imgSrc && !imgError ? (
-          // next/image: bron-CDN's leveren vaak veel grotere afbeeldingen dan de
-          // 144px-hoge kaart nodig heeft (mobiele LCP-analyse 2026-07-25 wees dit
-          // aan als hoofdoorzaak). Next optimaliseert/resized/WebP't zelf, ook voor
-          // same-origin /api/img-proxy-URL's (geen remotePattern nodig daarvoor).
-          <Image
-            src={imgSrc}
-            alt={product.name}
-            fill
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-            priority={priority}
-            className="object-contain p-4 group-hover:scale-110 transition-transform duration-500"
-            onError={() => setImgError(true)}
-            onLoad={(e) => {
-              // Some browsers don't fire onError for a 0-byte 404 body from
-              // the image proxy — naturalWidth stays 0 with no error event.
-              if (e.currentTarget.naturalWidth === 0) setImgError(true)
-            }}
-          />
+          isProxied ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={imgSrc}
+              alt={product.name}
+              loading={priority ? 'eager' : 'lazy'}
+              fetchPriority={priority ? 'high' : 'auto'}
+              width={300}
+              height={300}
+              className="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-500"
+              onError={() => setImgError(true)}
+              onLoad={(e) => {
+                if (e.currentTarget.naturalWidth === 0) setImgError(true)
+              }}
+            />
+          ) : (
+            // next/image: bron-CDN's leveren vaak veel grotere afbeeldingen dan de
+            // 144px-hoge kaart nodig heeft (mobiele LCP-analyse 2026-07-25 wees dit
+            // aan als hoofdoorzaak). Next optimaliseert/resized/WebP't zelf.
+            <Image
+              src={imgSrc}
+              alt={product.name}
+              fill
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+              priority={priority}
+              className="object-contain p-4 group-hover:scale-110 transition-transform duration-500"
+              onError={() => setImgError(true)}
+              onLoad={(e) => {
+                // Some browsers don't fire onError for a 0-byte 404 body from
+                // the image proxy — naturalWidth stays 0 with no error event.
+                if (e.currentTarget.naturalWidth === 0) setImgError(true)
+              }}
+            />
+          )
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             <span className="material-symbols-outlined" style={{ fontSize: 56, color: '#C9C1B6' }}>nutrition</span>

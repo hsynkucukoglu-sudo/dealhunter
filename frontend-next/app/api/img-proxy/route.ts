@@ -25,7 +25,11 @@ export async function GET(req: NextRequest) {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
         'Referer': referer,
-        'Accept': 'image/webp,image/avif,image/*,*/*;q=0.8',
+        // No image/avif: upstream (Kruidvat) happily serves AVIF when asked, but
+        // the Next.js Image Optimizer on Railway can't decode it and 400s with
+        // "isn't a valid image" — silently breaking Kruidvat product images
+        // (found 2026-07-26). WebP/JPEG round-trip through the optimizer fine.
+        'Accept': 'image/webp,image/*,*/*;q=0.8',
         'Accept-Language': 'nl-NL,nl;q=0.9',
       },
       signal: AbortSignal.timeout(8000),
