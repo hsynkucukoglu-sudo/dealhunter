@@ -16,6 +16,7 @@ import { SiteFooter } from '@/components/SiteFooter'
 import { InstallPrompt } from '@/components/InstallPrompt'
 import { SessionProvider } from 'next-auth/react'
 import { AuthEmailSync } from '@/components/AuthEmailSync'
+import { GoogleFontsAsyncLoader } from '@/components/GoogleFontsAsyncLoader'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -80,13 +81,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="apple-touch-icon" href="/icon-192x192.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* display=swap + preload for text fonts to reduce FOUT layout shift */}
+        {/* Non-blocking: only a preload hint here (starts the fetch early without
+            blocking first paint). The actual <link rel="stylesheet"> is applied
+            client-side by <GoogleFontsAsyncLoader/> below — see that file for why
+            (Slow 4G PSI run, 2026-07-26: these were the likely cause of a 9.5s FCP). */}
         <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;800&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@700;800&display=swap" />
-        <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;800&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
-        {/* display=block for icon font: invisible until loaded, no text-fallback shift */}
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=block" rel="stylesheet" />
+        <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=block" />
       </head>
       <body suppressHydrationWarning>
+        <GoogleFontsAsyncLoader />
         <SessionProvider>
           <AuthEmailSync />
           <LanguageProvider>
