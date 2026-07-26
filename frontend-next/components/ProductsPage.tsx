@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useMemo, useEffect, useRef, useCallback, useTransition, useDeferredValue } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import Fuse from 'fuse.js'
+import type FuseType from 'fuse.js'
 import { Product, CATEGORIES, CATEGORY_LABELS, MARKET_COLORS } from '@/lib/types'
 import { ProductCard } from './ProductCard'
 import { ShoppingListSidebar } from './ShoppingListSidebar'
@@ -254,7 +254,22 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
     return () => clearTimeout(t)
   }, [searchTerm]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const fuse = useMemo(() => new Fuse(products, {
+  // fuse.js (~133 KB parse-werk) wordt pas geladen zodra iemand echt zoekt.
+  // Statisch importeren kostte élke bezoeker dat werk op het kritieke pad,
+  // terwijl de meeste bezoekers nooit zoeken — en juist main-thread-drukte was
+  // de LCP-bottleneck (PSI-breakdown 2026-07-26: render delay 1,84s van de 2,47s).
+  // Tot het chunkje binnen is valt searchProducts terug op substring-match, dus
+  // de zoekfunctie voelt nooit stuk.
+  const [FuseCtor, setFuseCtor] = useState<typeof FuseType | null>(null)
+
+  useEffect(() => {
+    if (FuseCtor || searchTerm.trim().length < 2) return
+    let cancelled = false
+    import('fuse.js').then(m => { if (!cancelled) setFuseCtor(() => m.default) })
+    return () => { cancelled = true }
+  }, [searchTerm, FuseCtor])
+
+  const fuse = useMemo(() => FuseCtor ? new FuseCtor(products, {
     keys: [
       { name: 'name', weight: 0.65 },
       { name: 'brand', weight: 0.25 },
@@ -265,7 +280,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
     includeScore: true,
     ignoreLocation: true,
     minMatchCharLength: 2,
-  }), [products])
+  }) : null, [FuseCtor, products])
 
   // Zoekrelevantie: producten waarvan de naam of het merk de zoekterm letterlijk
   // bevat komen eerst, daarna de fuzzy-treffers op score. Voorkomt dat een korte
@@ -273,6 +288,12 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
   const searchProducts = useCallback((term: string): Product[] => {
     const q = term.trim().toLowerCase()
     if (q.length < 2) return []
+    // fuse.js nog onderweg → simpele substring-match zodat er meteen iets staat
+    if (!fuse) {
+      return products
+        .filter(p => `${p.name} ${p.brand ?? ''}`.toLowerCase().includes(q))
+        .slice(0, 50)
+    }
     return fuse.search(term)
       .sort((a, b) => {
         const aHit = `${a.item.name} ${a.item.brand ?? ''}`.toLowerCase().includes(q) ? 0 : 1
@@ -281,7 +302,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         return (a.score ?? 1) - (b.score ?? 1)
       })
       .map(r => r.item)
-  }, [fuse])
+  }, [fuse, products])
 
   const autocompleteSuggestions = useMemo(
     () => searchProducts(searchTerm).slice(0, 5),
