@@ -655,6 +655,22 @@ function calcAhPromo(p) {
 function parseUnitLabel(label, discountedPrice) {
   const desc = (label || '').trim()
   if (!desc) return {}
+
+  // Multipack: "40 x 85 gram", "6 x 665 ml" -> totaal 3400 g / 3990 ml.
+  // Eenduidig (in tegenstelling tot "230 of 250 ml"), dus veilig te rekenen.
+  // Komt vooral bij Kruidvat voor (dierenvoer, wasmiddel).
+  const multi = desc.match(/^(\d+)\s*[x×]\s*([\d,.]+)\s*(g|gram|kg|kilo|ml|cl|dl|l|liter|stuks?|stuk)\b/i)
+  if (multi) {
+    const count = parseInt(multi[1], 10)
+    const each = parseFloat(multi[2].replace(',', '.'))
+    if (count > 0 && each > 0) {
+      const total = parseUnitLabel(`${count * each} ${multi[3]}`, discountedPrice)
+      // fullSizeLabel op het origineel houden: "40 x 85 gram" zegt de bezoeker
+      // meer dan "3400 gram", terwijl unitSize/unitPrice op het totaal rekenen.
+      return total.unitSize ? { ...total, fullSizeLabel: desc } : {}
+    }
+  }
+
   const m = desc.match(/^([\d,.]+)\s*(g|gram|kg|kilo|ml|cl|dl|l|liter|stuks?|stuk|tabs?|capsu?les?|rollen?|zakjes?)\b/i)
   if (!m) return {}
 
@@ -1581,6 +1597,11 @@ async function scrapeKruidvat() {
             tile.localizedURLLink || '',
           ].join(' ')
 
+          // De maat staat al in de tile (`subTitle`: "125 ml", "40 x 85 gram"),
+          // dus geen extra request nodig. Niet-maten ("MG3920/15", "500 stukjes",
+          // "56-delig") vallen vanzelf af op de regex in parseUnitLabel.
+          const unit = parseUnitLabel(tile.subTitle, discountedPrice)
+
           return {
             market: 'Kruidvat',
             name: p.name || tile.title,
@@ -1593,6 +1614,7 @@ async function scrapeKruidvat() {
             campaignType: toCampaignType(promoText),
             isCampaign: true,
             source: 'kruidvat.nl/aanbiedingen',
+            ...unit,
           }
         } catch { return null }
       }))
