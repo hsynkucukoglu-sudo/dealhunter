@@ -682,6 +682,28 @@ function parseUnitLabel(label, discountedPrice) {
   return { unitSize, unitType, fullSizeLabel: desc, unitPrice }
 }
 
+// ─── Maat uit een NL folder-omschrijving ("Pak 4 stuks.", "Blik 400 gram.") ──
+// Folderteksten noemen vaak meerdere maten in één aanbieding ("Beker 230 of blik
+// 250 ml", "Fles 25 cl, 30 cl of 33 cl"). Dan is er geen enkele maat die bij de
+// prijs hoort en zou unitPrice fout zijn — die slaan we over. Zelfde geldt voor
+// schattingen ("ca. 150 gram"). Gemeten op DekaMarkt (2026-07-26): 29 van 99
+// aanbiedingen leveren zo een eenduidige maat op, 3 worden bewust overgeslagen.
+function extractSizeFromPromoText(text) {
+  const t = (text || '').replace(/\n/g, ' ').trim()
+  if (!t) return null
+  if (/ca\.|ongeveer|vanaf/i.test(t)) return null
+
+  const m = t.match(/\b(?:pak|schaal|blik|kuip|zak|fles|pot|doos|bak|rol|krat|net|bos|beker)\s+(\d+[.,]?\d*)\s*(gram|kg|ml|cl|liter|l|stuks?)\b/i)
+  if (!m) return null
+
+  // Prijzen ("Van € 4.09 tot € 4.45") tellen niet mee als tweede maat.
+  const withoutPrices = t.replace(/€\s*\d+[.,]?\d*/g, ' ')
+  const numbers = withoutPrices.match(/\d+[.,]?\d*/g) || []
+  if (numbers.length !== 1) return null
+
+  return `${m[1]} ${m[2]}`
+}
+
 // ─── AH Unit-size parser — API fields take priority over regex ───────────────
 function parseAhUnitInfo(p, discountedPrice) {
   // 1. price.unitSizeDescription: "750g", "40 wasbeurten", "1.5 l", "24 stuks"
@@ -1296,6 +1318,11 @@ async function scrapeDekaMarkt() {
         if (!name) continue
 
         const promoLabel = o.promotionText || o.subText || ''
+        // `packaging` is in de praktijk vrijwel altijd leeg (11 van 99); de maat
+        // staat in subText ("Pak 4 stuks."). Beide proberen, subText als bron.
+        const sizeLabel = extractSizeFromPromoText(o.packaging) || extractSizeFromPromoText(o.subText)
+        const unit = parseUnitLabel(sizeLabel, discountedPrice)
+
         results.push({
           name,
           market: 'DekaMarkt',
@@ -1306,6 +1333,7 @@ async function scrapeDekaMarkt() {
           source: 'dekamarkt.nl/aanbiedingen',
           expiresAt: EXPIRES_AT,
           campaignType: toCampaignType(promoLabel || name),
+          ...unit,
         })
       }
     }
