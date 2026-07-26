@@ -503,6 +503,15 @@ async function scrapeLidl() {
           ? new Date(endTs * 1000).toISOString().split('T')[0]
           : EXPIRES_AT
 
+        // Maat zit in price.packaging.text: "200 g", "2 x 500 g", "36 tabs",
+        // maar ook "Zak 500 g" (verpakkingswoord ervoor) en niet-maten als
+        // "Per stuk" of bereiken "88-92 g" — die vallen vanzelf af.
+        const packText = obj.price?.packaging?.text
+        const direct = parseUnitLabel(packText, discountedPrice)
+        const unit = direct.unitSize
+          ? direct
+          : parseUnitLabel(extractSizeFromPromoText(packText), discountedPrice)
+
         results.push({
           name,
           market: 'Lidl',
@@ -513,6 +522,7 @@ async function scrapeLidl() {
           source: 'lidl.nl/aanbiedingen',
           expiresAt,
           campaignType: toCampaignType(name),
+          ...unit,
         })
       } catch {}
     }
@@ -695,7 +705,10 @@ function parseUnitLabel(label, discountedPrice) {
     unitPrice = parseFloat(unitPrice.toFixed(4))
   }
 
-  return { unitSize, unitType, fullSizeLabel: desc, unitPrice }
+  // fullSizeLabel wordt op de productkaart getoond, dus alleen het maat-deel —
+  // niet de hele bronstring. Plus levert bijvoorbeeld "500 GRAM 2.99" aan
+  // (maat + prijs); "500 GRAM 2.99" op een kaart zetten is verwarrend.
+  return { unitSize, unitType, fullSizeLabel: m[0].trim(), unitPrice }
 }
 
 // ─── Maat uit een NL folder-omschrijving ("Pak 4 stuks.", "Blik 400 gram.") ──
@@ -1772,6 +1785,14 @@ async function scrapePlus() {
 
         const slug = offer.Slug || `${offer.PromotionID}-${offer.Offer_Id}`
 
+        // Plus levert geen apart maatveld; DisplayInfo_Label is de enige kandidaat
+        // ("Pak 500 gram" e.d.). Beide parsers wijzen alles af wat geen eenduidige
+        // maat is, dus levert dit hooguit niets op — nooit een foute unitPrice.
+        const plusDirect = parseUnitLabel(label, newPrice)
+        const unit = plusDirect.unitSize
+          ? plusDirect
+          : parseUnitLabel(extractSizeFromPromoText(label), newPrice)
+
         results.push({
           name,
           brand: offer.Brand?.split(',')[0]?.trim() || undefined,
@@ -1785,6 +1806,7 @@ async function scrapePlus() {
           campaignType,
           isCampaign: true,
           source: 'plus.nl/aanbiedingen',
+          ...unit,
         })
       }
     }
