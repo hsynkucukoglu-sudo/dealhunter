@@ -733,6 +733,22 @@ function extractSizeFromPromoText(text) {
   return `${m[1]} ${m[2]}`
 }
 
+// ─── Aldi salesUnit ("Inhoud: 2 stuks, 200 g", "250 g", "Per stuk") ──────────
+// Bij meerdere delen kiezen we massa/inhoud boven het aantal: Aldi rekent zelf
+// ook zo (basePrice 4,95/kg bij EUR 0,99 en "2 stuks, 200 g" => 0,99 / 0,2 kg).
+// "Per stuk", "Per set" en bereiken ("125-150 g") leveren niets op — terecht,
+// daar valt geen prijs per eenheid uit af te leiden.
+function parseAldiSalesUnit(salesUnit, discountedPrice) {
+  const raw = (salesUnit || '').replace(/^inhoud:\s*/i, '').trim()
+  if (!raw) return {}
+
+  const parts = raw.split(',').map(s => s.trim()).filter(Boolean)
+  const parsed = parts.map(part => parseUnitLabel(part, discountedPrice)).filter(u => u.unitSize)
+  if (!parsed.length) return {}
+
+  return parsed.find(u => u.unitType === 'g' || u.unitType === 'ml') ?? parsed[0]
+}
+
 // ─── AH Unit-size parser — API fields take priority over regex ───────────────
 function parseAhUnitInfo(p, discountedPrice) {
   // 1. price.unitSizeDescription: "750g", "40 wasbeurten", "1.5 l", "24 stuks"
@@ -994,6 +1010,7 @@ async function scrapeAldi() {
         source: 'aldi.nl/api/offer',
         expiresAt,
         campaignType: toCampaignType(p.currentPrice?.priceTagLabels?.promoText1) || toCampaignType(p.name),
+        ...parseAldiSalesUnit(p.salesUnit, discountedPrice),
       })
     }
 
