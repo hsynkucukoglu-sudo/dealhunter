@@ -84,6 +84,13 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   XLLease:              { destinationUrl: 'https://fr135.net/c/?si=20255&li=1864272&wi=420902',               network: 'daisycon', rel: REL },
   DutchLease:           { destinationUrl: 'https://fr135.net/c/?si=20456&li=1868213&wi=420902',            network: 'daisycon', rel: REL },
   XLEasy:               { destinationUrl: 'https://fr135.net/c/?si=15775&li=1682823&wi=420902',               network: 'daisycon', rel: REL },
+  // Alle vijf goedgekeurd maar nooit aangesloten; li's uit Daisycon-export 2026-07-26
+  'Lease.auto':         { destinationUrl: 'https://glp8.net/c/?si=21513&li=1912084&wi=420902',               network: 'daisycon', rel: REL }, // €85/sale · 100g
+  'Wittebrug Lease':    { destinationUrl: 'https://lt45.net/c/?si=15724&li=1681173&wi=420902',               network: 'daisycon', rel: REL }, // €350/sale · 100g
+  Carvendo:             { destinationUrl: 'https://d.carvendo.nl/c/?si=21437&li=1910810&wi=420902',          network: 'daisycon', rel: REL }, // €350/sale · 100g
+  'IkRij.nl':           { destinationUrl: 'https://lt45.net/c/?si=13144&li=1577821&wi=420902',               network: 'daisycon', rel: REL }, // €175/sale · 100g
+  MeerMetZiggo:         { destinationUrl: 'https://glp8.net/c/?si=21173&li=1901598&wi=420902',               network: 'daisycon', rel: REL }, // €50/sale · 100g
+  'I-KOOK':             { destinationUrl: 'https://lt45.net/c/?si=11558&li=1513186&wi=420902',               network: 'daisycon', rel: REL }, // €50/sale · 100g
   Ziggo:                { destinationUrl: 'https://jf79.net/c/?si=17174&li=1742299&wi=420902',          network: 'daisycon',  rel: REL },
   Vattenfall:           { destinationUrl: 'https://www.vattenfall.nl/',            network: 'direct',   rel: REL },
   hollandsnieuwe:       { destinationUrl: 'https://glp8.net/c/?si=21994&li=1927639&wi=420902',        network: 'daisycon',  rel: REL },

@@ -41,6 +41,8 @@ const DEALS = [
     category: '📱 Telecom',
     items: [
       { name: 'Ziggo',          tagline: 'Internet, TV & bellen',    cta: 'Bekijk abonnement', color: '#FF6600', url: 'https://jf79.net/c/?si=17174&li=1742299&wi=420902' },
+      // Goedgekeurd maar nooit aangesloten; li bevestigd via export 2026-07-26 (€50/sale, 100g)
+      { name: 'MeerMetZiggo',   tagline: 'Ziggo internet & TV-deal', cta: 'Bekijk deal',       color: '#E87722', url: 'https://glp8.net/c/?si=21173&li=1901598&wi=420902' },
       { name: 'hollandsnieuwe', tagline: 'Voordelig mobiel internet', cta: 'Bekijk abonnement', color: '#00A650', url: 'https://glp8.net/c/?si=21994&li=1927639&wi=420902' },
       { name: 'Lycamobile',     tagline: 'Goedkoop SIM-only',        cta: 'Bekijk abonnement', color: '#E4002B', url: DC('https://bdt9.net/c/?si=19078&li=1819944&wi=420902',  'https://www.lycamobile.nl/nl/') },
       { name: 'Company Telecom', tagline: 'Voordelig bellen & internet', cta: 'Bekijk aanbod',    color: '#0073E6', url: 'https://glp8.net/c/?si=20673&li=1876628&wi=420902' },
@@ -104,6 +106,8 @@ const DEALS = [
       // Kwantum's eigen redirect breekt op de dl= deeplink parameter (dubbele URL → 404,
       // zelfde probleem als Levi's/Rakuten) — geen dl, gaat naar kwantum.nl homepage i.p.v. /sale
       { name: 'Kwantum',          tagline: 'Gordijnen, vloeren & meer',    cta: 'Bekijk sale',     color: '#E2001A', url: 'https://ds1.nl/c/?si=16070&li=1360074&wi=420902' },
+      // Goedgekeurd maar nooit aangesloten; li bevestigd via export 2026-07-26 (€50/sale, 100g)
+      { name: 'I-KOOK',           tagline: 'Keukens op maat',              cta: 'Bekijk keukens',  color: '#C8102E', url: 'https://lt45.net/c/?si=11558&li=1513186&wi=420902' },
       // 2026-07-07 onaylı — li bevestigd via Daisycon 2026-07-16 campaigns export, tracking actief
       { name: 'Westwing',         tagline: 'Design meubels & woonaccessoires', cta: 'Bekijk aanbod', color: '#8B2439', url: 'https://jdt8.net/c/?si=17294&li=1747070&wi=420902' },
       // dl= parameter breekt (dubbele URL, canlı test 2026-07-06) — geen dl
@@ -181,6 +185,12 @@ const DEALS = [
       { name: 'XLLease',    tagline: 'Private lease deals',       cta: 'Bekijk aanbod',  color: '#003366', url: 'https://fr135.net/c/?si=20255&li=1864272&wi=420902' },
       { name: 'DutchLease', tagline: 'Elektrisch & hybrid lease', cta: 'Bekijk aanbod',  color: '#009FE3', url: 'https://fr135.net/c/?si=20456&li=1868213&wi=420902' },
       { name: 'XLEasy',     tagline: 'Private lease vanaf €299',  cta: 'Bereken prijs',  color: '#1A237E', url: 'https://fr135.net/c/?si=15775&li=1682823&wi=420902' },
+      // Onderstaande vier: al goedgekeurd maar nooit aangesloten. li's bevestigd
+      // via Daisycon-export 2026-07-26. Hoogste vaste vergoedingen in het account.
+      { name: 'Lease.auto',      tagline: 'Private lease vergelijken',   cta: 'Vergelijk lease', color: '#E30613', url: 'https://glp8.net/c/?si=21513&li=1912084&wi=420902' },
+      { name: 'Wittebrug Lease', tagline: 'Zakelijk & privé lease',      cta: 'Bekijk aanbod',   color: '#0B4EA2', url: 'https://lt45.net/c/?si=15724&li=1681173&wi=420902' },
+      { name: 'Carvendo',        tagline: 'Occasions met BOVAG-garantie', cta: 'Bekijk auto\'s',  color: '#00B67A', url: 'https://d.carvendo.nl/c/?si=21437&li=1910810&wi=420902' },
+      { name: 'IkRij.nl',        tagline: 'Private lease zonder gedoe',  cta: 'Bereken prijs',   color: '#F26722', url: 'https://lt45.net/c/?si=13144&li=1577821&wi=420902' },
     ],
   },
   {
