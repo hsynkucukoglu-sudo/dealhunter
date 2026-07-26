@@ -18,6 +18,24 @@ const PriceHistoryContext = createContext<PriceHistoryContextType>({
   getMinPrice: () => null,
 })
 
+// Folderaanbiedingen die géén enkel product zijn maar een categorie:
+//   "Alle Sensodyne"                    -> alle varianten van dat merk
+//   "Rode paprika of courgette"         -> "of" = of; twee verschillende producten
+//   "Odorex deodorant Bus 150 ml of roller 50 ml"
+//
+// Bij zulke namen wisselt het onderliggende product per week, dus is er geen
+// prijsverloop van één artikel om tegen af te zetten. Gemeten voorbeeld:
+// "Lipton" (Jumbo) stond weken op EUR 18,16 (adviesprijs 21,36), dook in juni
+// drie weken naar EUR 2,25 (adviesprijs 3,69) en ging daarna terug — dat zijn
+// twee verschillende artikelen onder dezelfde naam. Een "laagste prijs ooit"-
+// claim is daar per definitie betekenisloos, dus tonen we het label niet.
+//
+// Dit is geen scraper-bug: de folder adverteert de actie zélf op categorieniveau.
+// Raakt 45 van de 299 producten die het label nu zouden krijgen (gemeten
+// 2026-07-26). Bewust conservatief: liever een label te weinig dan een claim
+// die niet klopt.
+const CATEGORY_OFFER = /^alle\b|\bof\b|\bt\/m\b|\bdiverse\b|\bassorti/i
+
 export function PriceHistoryProvider({ children }: { children: React.ReactNode }) {
   const [map, setMap] = useState<Record<string, PriceEntry>>({})
 
@@ -40,6 +58,8 @@ export function PriceHistoryProvider({ children }: { children: React.ReactNode }
   }
 
   const isLowestPrice = (name: string, market: string, currentPrice: number) => {
+    // Categorie-aanbieding: geen vast artikel om een prijsverloop van te hebben.
+    if (CATEGORY_OFFER.test(name)) return false
     const entry = getMinPrice(name, market)
     // >=3 weken i.p.v. 2: met 2 weken is "huidige prijs is de laagste" te vaak
     // triviaal waar (product net opgenomen), wat het label betekenisloos maakt.
