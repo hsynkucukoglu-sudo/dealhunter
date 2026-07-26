@@ -633,8 +633,12 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
       </AnimatePresence>
 
       {/* STICKY FULL-WIDTH NAVBAR — V9 Style */}
+      {/* initial={false}: framer-motion zet `initial` als inline style in de SSR-HTML,
+          dus opacity:0 tot hydration klaar is. Op Lighthouse mobile (4x CPU-throttle)
+          duurde dat seconden en dat was de echte oorzaak van FCP 8,4s / LCP 13,1s —
+          niet de afbeeldingen of fonts (2026-07-26). Overgangen blijven werken. */}
       <motion.nav
-        initial={{ y: -20, opacity: 0 }}
+        initial={false}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.4, delay: 0.05 }}
         className="fixed top-0 left-0 right-0 z-50 bg-white transition-all duration-300"
@@ -1128,7 +1132,10 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
               {topDeals.map((product, i) => (
                 <motion.div
                   key={product.id}
-                  initial={{ opacity: 0, y: 16 }}
+                  // Top 5 staat boven de vouw en bevat de priority-image: dit is
+                  // het LCP-element. Meteen zichtbaar renderen, anders wacht de
+                  // LCP op hydration (zie nav-commentaar hierboven, 2026-07-26).
+                  initial={false}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: i * 0.05 }}
                 >
@@ -1273,7 +1280,11 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           {/* Sol: kategori / home view */}
           <div className="flex-1 min-w-0">
         {/* CATEGORY VIEW / HOME VIEW */}
-        <AnimatePresence mode="wait">
+        {/* initial={false}: sla de enter-animatie bij eerste mount over, zodat de
+            hoofdinhoud (productgrid = LCP-element) meteen zichtbaar in de SSR-HTML
+            staat i.p.v. opacity:0 tot hydration. Wisselen tussen categorie/home
+            animeert daarna gewoon door. */}
+        <AnimatePresence mode="wait" initial={false}>
           {selectedCategory !== 'all' ? (
             <motion.div key={selectedCategory} initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -40 }} transition={{ duration: 0.25 }}>
               <div className="flex items-center gap-4 mb-8">

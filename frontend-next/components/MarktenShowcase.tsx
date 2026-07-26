@@ -48,7 +48,10 @@ export function MarktenShowcase({ products, serverCounts, onSelectMarket }: Prop
         {marketStats.map((m, i) => (
           <motion.div
             key={m.name}
-            initial={{ opacity: 0, y: 12 }}
+            // Zie ProductsPage: `initial` belandt als inline opacity:0 in de
+            // SSR-HTML en wacht op hydration. Deze showcase staat hoog op de
+            // homepage, dus meteen zichtbaar renderen (2026-07-26).
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.25, delay: i * 0.03 }}
             className="group"
