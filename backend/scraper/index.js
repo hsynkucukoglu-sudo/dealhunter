@@ -227,6 +227,12 @@ async function scrapeJumbo() {
         parsed,
         promoLabel: parsed.promoLabel,
         campaignType: toCampaignType(parsed.promoLabel),
+        // Alleen bij precies één product is de maatvoering ondubbelzinnig. Bij
+        // "Alle Aquafresh" (4+ producten) hoort er geen maat bij het aanbod —
+        // 58% van de Jumbo-promoties is zo'n categorie-aanbieding (gemeten
+        // 2026-07-26), dus die laten we bewust leeg i.p.v. de maat van het
+        // eerste product te lenen.
+        singleProduct: (promo.products || []).length === 1,
       })
     }
 
@@ -239,7 +245,8 @@ async function scrapeJumbo() {
     const GQL_BATCH = 20
     for (let i = 0; i < skuDeals.length; i += GQL_BATCH) {
       const batch = skuDeals.slice(i, i + GQL_BATCH)
-      const aliases = batch.map((d, j) => `p${j}: product(sku: "${d.sku}") { price { price } image }`).join(' ')
+      // subtitle = maatlabel ("570 ml", "500 g"); komt gratis mee in dezelfde call
+      const aliases = batch.map((d, j) => `p${j}: product(sku: "${d.sku}") { price { price } image subtitle }`).join(' ')
       try {
         const r = await fetch(JUMBO_GQL_URL, {
           method: 'POST',
@@ -254,6 +261,7 @@ async function scrapeJumbo() {
           const cents = prod?.price?.price
           if (cents && cents > 0) d.regularPrice = cents / 100
           if (prod?.image) d.imageUrl = prod.image
+          if (prod?.subtitle) d.sizeLabel = prod.subtitle
         })
       } catch {}
     }
@@ -268,7 +276,7 @@ async function scrapeJumbo() {
           const r = await fetch(JUMBO_GQL_URL, {
             method: 'POST',
             headers: JUMBO_GQL_HEADERS,
-            body: JSON.stringify({ query: `{ product(sku: "${deal.sku}") { price { price } image } }` }),
+            body: JSON.stringify({ query: `{ product(sku: "${deal.sku}") { price { price } image subtitle } }` }),
             signal: AbortSignal.timeout(8000),
           })
           if (!r.ok) continue
@@ -277,6 +285,7 @@ async function scrapeJumbo() {
           const cents = prod?.price?.price
           if (cents && cents > 0) deal.regularPrice = cents / 100
           if (prod?.image) deal.imageUrl = prod.image
+          if (prod?.subtitle) deal.sizeLabel = prod.subtitle
         } catch {}
       }
     }
@@ -299,6 +308,8 @@ async function scrapeJumbo() {
         if (discountedPrice <= 0) continue
       }
 
+      const unit = deal.singleProduct ? parseUnitLabel(deal.sizeLabel, discountedPrice) : {}
+
       results.push({
         name: deal.name,
         market: 'Jumbo',
@@ -310,6 +321,7 @@ async function scrapeJumbo() {
         expiresAt: EXPIRES_AT,
         campaignType: deal.campaignType,
         affiliateUrl: null, // Daisycon/Awin linkleri buraya gelecek
+        ...unit,
       })
     }
 
@@ -634,6 +646,40 @@ function calcAhPromo(p) {
   }
 
   return null
+}
+
+// ─── Generieke unit-parser voor "570 ml" / "500 g" / "3 stuks"-achtige labels ──
+// Jumbo's GraphQL geeft dit als `subtitle` op het product. Zelfde normalisatie
+// als parseAhUnitInfo (g en ml als basiseenheid) zodat unitPrice over winkels
+// heen vergelijkbaar blijft. Retourneert {} als er niets bruikbaars in staat.
+function parseUnitLabel(label, discountedPrice) {
+  const desc = (label || '').trim()
+  if (!desc) return {}
+  const m = desc.match(/^([\d,.]+)\s*(g|gram|kg|kilo|ml|cl|dl|l|liter|stuks?|stuk|tabs?|capsu?les?|rollen?|zakjes?)\b/i)
+  if (!m) return {}
+
+  const amount = parseFloat(m[1].replace(',', '.'))
+  if (!(amount > 0)) return {}
+  const raw = m[2].toLowerCase()
+  let unitSize, unitType
+
+  if (/^(g|gram)$/.test(raw))       { unitSize = amount;        unitType = 'g'  }
+  else if (/^(kg|kilo)$/.test(raw)) { unitSize = amount * 1000; unitType = 'g'  }
+  else if (/^ml$/.test(raw))        { unitSize = amount;        unitType = 'ml' }
+  else if (/^cl$/.test(raw))        { unitSize = amount * 10;   unitType = 'ml' }
+  else if (/^dl$/.test(raw))        { unitSize = amount * 100;  unitType = 'ml' }
+  else if (/^(l|liter)$/.test(raw)) { unitSize = amount * 1000; unitType = 'ml' }
+  else                              { unitSize = amount;        unitType = 'stuks' }
+
+  let unitPrice = null
+  if (discountedPrice > 0 && unitSize > 0) {
+    if (unitType === 'g')       unitPrice = unitSize >= 500  ? discountedPrice / (unitSize / 1000) : discountedPrice / (unitSize / 100)
+    else if (unitType === 'ml') unitPrice = unitSize >= 1000 ? discountedPrice / (unitSize / 1000) : discountedPrice / (unitSize / 100)
+    else                        unitPrice = discountedPrice / unitSize
+    unitPrice = parseFloat(unitPrice.toFixed(4))
+  }
+
+  return { unitSize, unitType, fullSizeLabel: desc, unitPrice }
 }
 
 // ─── AH Unit-size parser — API fields take priority over regex ───────────────
