@@ -155,10 +155,8 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   'Frank Energie':     { destinationUrl: 'https://jf79.net/c/?si=16978&li=1731992&wi=420902',  network: 'daisycon', rel: REL },
   'Gewoon Energie':    { destinationUrl: 'https://partners.gewoonenergie.nl/c/?si=16832&li=1724962&wi=420902', network: 'daisycon', rel: REL },
   Powerpeers:          { destinationUrl: 'https://lt45.net/c/?si=12400&li=1544330&wi=420902',    network: 'daisycon', rel: REL },
-  // 2026-07-15 onaylı — si=943 Daisycon'un 2026-07-16 campaigns export'unda bulunamadı
-  // (hesapta gerçekten abone/approved olduğu doğrulanamadı, 2026-07-24'te tekrar kontrol
-  // edildi): düz destinationUrl, trackingBase yok, tracking henüz aktif değil.
-  EnergyZero: { destinationUrl: 'https://www.energyzero.nl/', network: 'daisycon', rel: REL }, // si=943, €37,50/sale
+  // EnergyZero (si=943) verwijderd 2026-07-26: abonnement is nooit doorgekomen en we
+  // vragen het niet opnieuw aan. Frank Energie dekt hetzelfde dynamische segment mét tracking.
 
   // ── Daisycon — 2026-07-15 onaylı ──
   // Foodello (NL): li Daisycon'un 2026-07-16 campaigns export'undan doğrulandı, tracking aktif.

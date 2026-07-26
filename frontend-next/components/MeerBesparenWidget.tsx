@@ -32,8 +32,6 @@ const DEALS = [
       { name: 'Powerpeers',       tagline: 'Deel lokale groene stroom',         cta: 'Bekijk aanbod',    color: '#6FCF97', url: 'https://lt45.net/c/?si=12400&li=1544330&wi=420902' },
       // 2026-07-12 onaylı
       { name: 'Vandebron',        tagline: 'Groene stroom van eigen bodem',     cta: 'Vergelijk tarief', color: '#00A651', url: 'https://lt45.net/c/?si=12134&li=1535052&wi=420902' },
-      // 2026-07-15 onaylı — li nog niet uit Daisycon paneel (Materialen > Deeplinks), tracking nog niet actief
-      { name: 'EnergyZero',       tagline: 'Dynamisch energiecontract',         cta: 'Vergelijk tarief', color: '#00C48C', url: 'https://www.energyzero.nl/' },
     ],
   },
   {

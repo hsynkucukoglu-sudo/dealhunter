@@ -69,8 +69,6 @@ status: active
   - Lidl/Plus HTML scrape, yapıları ayrıca çözülmeli
   - `parseUnitLabel()` ve `extractSizeFromPromoText()` hazır, yeniden kullanılabilir
 - [ ] **Outreach takibi ~5 Ağustos** — her bloga en fazla BİR hatırlatma, sonra bırak
-- [ ] **EnergyZero (si=943, €37,50/satış)** — üç export üst üste onaylı listede yok,
-  abonelik hiç geçmemiş → **yeniden başvur** (kontrol etmek yetmez)
 - [ ] **Awin mid'leri** — ALLPOWERS + Deporvillage, `ui.awin.com` → Advertisers → Joined
 - [ ] **GSC ölçümü (2-4 hafta):** 25-26 Tem'deki SEO değişikliklerinin etkisi
   (AH-vs-Jumbo redirect, /vergelijk içeriği + noindex, merk noindex)
