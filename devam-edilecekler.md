@@ -1,19 +1,94 @@
 ---
-date: 2026-07-14
+date: 2026-07-26
 tags: [dealhunter, seo, adsense, affiliate, scraper]
 status: active
 ---
 
 # DealHunter4U — Devam Edilecekler
 
-## ⏰ ZAMANLI GÖREV — 📅 2026-07-27
+## 🔵 ŞU AN BEKLEYEN — AdSense incelemesi
 
-- [ ] **AdSense yeniden inceleme öncesi son ince-içerik denetimi + inceleme iste** 📅 2026-07-27 #priority/high
-  - **Bağlam:** "düşük değerli içerik" reddi düzeltildi (blog derinleştirme + /vergelijk noindex, ana fix 13 Tem, son içerik 19 Tem). Plan: ~2 hafta bekleyip Google yeni içeriği yeniden tarasın, sonra inceleme iste. Kullanıcı bilinçli olarak "Sorunları giderdiğimi onaylıyorum"a henüz TIKLAMADI.
-  - **27 Tem'de yapılacaklar (sırayla):**
-    1. **Claude (koddan):** sitemap'teki tüm URL'lerin kelime-sayısı taraması — 300-400 kelime altı kalan sayfa var mı, /vergelijk noindex'leri gerçekten sitemap dışı mı, yeni merk/vergelijk sayfaları yeterli içerikte mi. Rapor çıkar.
-    2. **Kullanıcı (GSC paneli):** GSC → "Sayfalar" raporunda derinleştirilen blogların "İndekslendi" durumunda olduğunu doğrula. Hâlâ "Tarandı, şu anda dizine eklenmedi" ise Google yeni içeriği görmemiş → inceleme isteğini birkaç gün ertele.
-    3. İkisi de temizse → AdSense panelinde yeniden inceleme iste.
+- [ ] **AdSense inceleme sonucunu takip et** #priority/high
+  - **26 Tem 20:08 CEST:** "Sorunları giderdiğimi onaylıyorum"a basıldı, panel
+    durumu **"Müdahale edilmesi gerekiyor" → "Hazırlanıyor"**. İnceleme başladı,
+    tipik süre birkaç gün–birkaç hafta.
+  - **Bu süre boyunca YAPMA:** şüpheli affiliate ekleme (özellikle **UniqPaid.com** —
+    Awin'den 26 Tem'de onay geldi ama GPT/anket sitesi, ScamAdviser düşük güven
+    puanı veriyor), büyük yapısal değişiklik. Normal scraper/blog işleri sorun değil.
+  - **Reddedilirse:** gerekçe metnine bak, iki hafta bekleme — top hemen bizde olur.
+
+> [!warning] Eski "27 Tem" görevi hatalıydı — kaldırıldı
+> Bu dosyada 22 Tem'e kadar "27 Tem'de inceleme iste, o zamana kadar TIKLAMA"
+> diye bir görev vardı. **Yanlıştı.** Panel 13 Tem'den beri "Müdahale edilmesi
+> gerekiyor" durumundaydı ve "Sorunları giderdiğimi onaylıyorum" butonu hazır
+> bekliyordu — beklenecek bir inceleme yoktu, top bizdeydi. Bu yanlış not
+> yüzünden ~2 hafta boşa geçti. **Ders: panel durumunu varsayma, bak.**
+
+## ✅ Bugün tamamlanan (2026-07-26) — 22 commit
+
+**AdSense — asıl tıkanıklık açıldı**
+- [x] **Gerçek durum tespit edildi:** 13 Tem'de "düşük değere sahip içerik" ile
+  reddedilmiş, bekleyen inceleme yok. Maillerde AdSense'ten son yazı 26 Mayıs.
+- [x] **İnce içerik denetimi (sitemap 124 URL, kelime sayımı):** `/supermarkt/*`
+  ~2.614 ✅, `/product/*` 671-1.011 ✅, `/blog/*` ~894 ✅, **`/merk/*` 342-396 ❌**.
+  Kırık URL yok (124/124 HTTP 200).
+- [x] **`/merk/[slug]` → `noindex, follow` + sitemap dışı** (`a7184ff`). Sitemap
+  124 → 105. Sayfalar kullanıcıya açık. Trafik kaybı ihmal edilebilir.
+- [x] İnceleme talebi gönderildi.
+
+**Fiyat geçmişi / "Laagste prijs" rozeti — 3 kat düzeltme**
+- [x] **Yazma/okuma yolu çelişkisi** (`d15dab4`): `UNIQUE(name, market, week)` birim
+  içermiyordu ama `getMinPriceMap()` birime göre grupluyordu → tek ürünün geçmişi
+  ikiye bölünüyordu. Kanıt: "1 de Beste Limoenen" (Dirk) birim anahtarı €0,89/1hafta,
+  eski anahtar €0,79/3hafta → rozet €0,89'da "en düşük" diyordu. Fix: `(name, market)`
+  bazında gruplama + eşik 2→3 hafta.
+- [x] **Kategori promosyonları** (`a775c96`): "Alle Sensodyne", "Rode paprika of
+  courgette" gibi isimlerde altındaki ürün her hafta değişiyor → rozet anlamsız.
+  `CATEGORY_OFFER` regex ile eleniyor.
+- [x] **Sonuç: 437 → 254 rozet.** 183 şüpheli iddia kaldırıldı.
+- [x] **Constraint migrasyonu GEREKMEDİĞİ ölçümle kanıtlandı:** canlı sette aynı
+  (isim, market) ile sıfır tekrar var; constraint doğru çalışıyor. Sorun isimlendirmede.
+
+**Birim verisi (unitPrice) — rakip analizinden çıkan iş**
+- [x] **Jumbo %0 → %7** (`a567374`): GraphQL `product.subtitle` ("570 ml") mevcut
+  batch çağrısına eklendi, ekstra istek yok. Sadece tek ürünlü promolarda (58'i 4+ ürünlü).
+- [x] **DekaMarkt %0 → %29** (`4077460`): `subText`'ten ("Pak 4 stuks.") ayrıştırma.
+  Belirsizler eleniyor ("Beker 230 of blik 250 ml", "ca. 150 gram").
+
+**Affiliate**
+- [x] **6 yüksek komisyonlu program bağlandı** (`8264f92`): Wittebrug Lease €350,
+  Carvendo €350, IkRij.nl €175, Lease.auto €85, MeerMetZiggo €50, I-KOOK €50.
+  Hesapta 580 onaylı programdan sadece 93'ü bağlıymış.
+- [x] 2 outreach maili gönderildi (Sparen en Besparen, One Broke Girl).
+
+## 📌 Açık işler
+
+- [ ] **Birim verisi kalan 3 market** #priority/medium
+  - Lidl (86 ürün), Plus (155), Kruidvat (88) — hepsi %0-1
+  - Kruidvat probe'u HTTP 403 aldı, scraper'ın kendi header setiyle denenmeli
+  - Lidl/Plus HTML scrape, yapıları ayrıca çözülmeli
+  - `parseUnitLabel()` ve `extractSizeFromPromoText()` hazır, yeniden kullanılabilir
+- [ ] **Outreach takibi ~5 Ağustos** — her bloga en fazla BİR hatırlatma, sonra bırak
+- [ ] **EnergyZero (si=943, €37,50/satış)** — üç export üst üste onaylı listede yok,
+  abonelik hiç geçmemiş → **yeniden başvur** (kontrol etmek yetmez)
+- [ ] **Awin mid'leri** — ALLPOWERS + Deporvillage, `ui.awin.com` → Advertisers → Joined
+- [ ] **GSC ölçümü (2-4 hafta):** 25-26 Tem'deki SEO değişikliklerinin etkisi
+  (AH-vs-Jumbo redirect, /vergelijk içeriği + noindex, merk noindex)
+- [ ] **Ürün kimliği / scraper isimlendirmesi** — veri hikâyesini ve basın yolunu açar,
+  ama 10 scraper'lık büyük iş. Kaynak veride yeterli detay olup olmadığı belirsiz.
+
+## ⚠️ Railway deploy tuzakları (tekrar lazım olacak)
+
+1. **"Deploy" butonu son commit'i deploy ETMEZ** — son *başarılı* build'i geri
+   yükler. Yeni kod için **yeni commit push et**.
+2. **Railway kendi SHA'larını gösterir** — paneldeki ID'ler (`cf2a2711`, `7ad41557`)
+   GitHub'da yok. Commit **mesajından** eşleştir.
+3. **Build log kaybolabilir** ("Yapı kayıtları yok"). O durumda sırayla: lockfile
+   senkronu → gitignore kapsamı → yerel `tsc`+`build` → **`frontend-next/Dockerfile`
+   sonundaki cache buster satırını ilerlet**. 26 Tem'de sebep bozuk Docker katmanıydı,
+   cache buster çözdü.
+4. **Railway Agent'ın 11 `railway/code-change-*` branch'i var** — otonom commit atıyor,
+   PR açıyor. Kritik build düzeltmeleri main'de, kontrol edildi.
 
 ## ✅ Bugün tamamlanan (2026-07-14)
 
