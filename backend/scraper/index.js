@@ -766,17 +766,26 @@ function parseUnitLabel(label, discountedPrice) {
 // prijs hoort en zou unitPrice fout zijn — die slaan we over. Zelfde geldt voor
 // schattingen ("ca. 150 gram"). Gemeten op DekaMarkt (2026-07-26): 29 van 99
 // aanbiedingen leveren zo een eenduidige maat op, 3 worden bewust overgeslagen.
+// Verpakkingswoorden die in aanbiedingsteksten aan de maat voorafgaan.
+// "bus", "flacon", "gigapack" e.d. ontbraken; gemeten 2026-07-27 op DekaMarkt.
+const PROMO_PACK_WORDS = 'pak|pakje|schaal|blik|kuip|kuipje|zak|zakje|fles|pot|potje|doos|doosje|bak|rol|krat|net|bos|beker|bus|flacon|gigapack|tray|emmer|stuk'
+
 function extractSizeFromPromoText(text) {
   const t = (text || '').replace(/\n/g, ' ').trim()
   if (!t) return null
   if (/ca\.|ongeveer|vanaf/i.test(t)) return null
 
-  const m = t.match(/\b(?:pak|schaal|blik|kuip|zak|fles|pot|doos|bak|rol|krat|net|bos|beker)\s+(\d+[.,]?\d*)\s*(gram|kg|ml|cl|liter|l|stuks?)\b/i)
-  if (!m) return null
-
   // Prijzen ("Van € 4.09 tot € 4.45") tellen niet mee als tweede maat.
   const withoutPrices = t.replace(/€\s*\d+[.,]?\d*/g, ' ')
   const numbers = withoutPrices.match(/\d+[.,]?\d*/g) || []
+
+  // Multipack: "Krat 24 x 30 cl" is ondubbelzinnig ondanks twee getallen.
+  // parseUnitLabel rekent "24 x 30 cl" zelf om naar 7200 ml.
+  const mm = t.match(new RegExp(`\\b(?:${PROMO_PACK_WORDS})\\s+(\\d+)\\s*[x×]\\s*(\\d+[.,]?\\d*)\\s*(gram|kg|ml|cl|liter|l|stuks?)\\b`, 'i'))
+  if (mm && numbers.length === 2) return `${mm[1]} x ${mm[2]} ${mm[3]}`
+
+  const m = t.match(new RegExp(`\\b(?:${PROMO_PACK_WORDS})\\s+(\\d+[.,]?\\d*)\\s*(gram|kg|ml|cl|liter|l|stuks?)\\b`, 'i'))
+  if (!m) return null
   if (numbers.length !== 1) return null
 
   return `${m[1]} ${m[2]}`
@@ -1316,9 +1325,11 @@ function _extractWeightG(name) {
 }
 
 function _extractCount(name) {
-  for (const re of [/(\d+)\s*[-]?\s*(?:pack|pak|pck|stuks?|stuk|pieces?)\b/i, /\b(\d+)\s*x\s*(?:\d)/i]) {
+  // Lookahead op het tweede getal, anders slurpt de match het eerste cijfer
+  // ervan op: "Pak 5 x 30 gram" gaf label "5 x 3" en dus "5 x 3 30 gram".
+  for (const re of [/(\d+)\s*[-]?\s*(?:pack|pak|pck|stuks?|stuk|pieces?)\b/i, /\b(\d+)\s*x\s*(?=\d)/i]) {
     const m = name.match(re)
-    if (m) { const n = parseInt(m[1]); if (n > 1 && n <= 200) return { count: n, label: m[0] } }
+    if (m) { const n = parseInt(m[1]); if (n > 1 && n <= 200) return { count: n, label: m[0].trim() } }
   }
   return null
 }
