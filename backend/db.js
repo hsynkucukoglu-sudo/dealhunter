@@ -272,6 +272,13 @@ export async function getMinPriceMap() {
   //
   // Deze granulariteit is wat de data echt ondersteunt. Ze pretendeert geen
   // onderscheid dat de schrijfkant niet maakt. (Gevonden 2026-07-26.)
+  // Extra guard (2026-07-27): als max/min-verhouding binnen een (name, market)
+  // groep implausibel groot is (>3,5x), is dat vrijwel nooit een echte
+  // weekkorting op hetzelfde artikel — het is een generieke naam die meerdere
+  // producten/verpakkingsmaten deelt (bv. "Red Bull" €1,38-€29,99, "Lipton"
+  // €2,25-€19,38). Gemeten op live data: raakt 18 van 1.971 groepen (0,9%),
+  // de overgrote meerderheid van échte 2-3x weekacties (bv. Kruidvat
+  // elektronica op exact halve prijs) blijft intact. Zie docs/outreach.md.
   const { rows } = await pool.query(`
     SELECT
       product_name,
@@ -280,6 +287,7 @@ export async function getMinPriceMap() {
       COUNT(DISTINCT recorded_week) AS weeks
     FROM price_history
     GROUP BY product_name, product_market
+    HAVING MAX(discounted_price) / NULLIF(MIN(discounted_price), 0) <= 3.5
   `)
   const map = {}
   for (const r of rows) {
