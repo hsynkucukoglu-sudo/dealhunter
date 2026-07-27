@@ -1717,6 +1717,35 @@ async function scrapeKruidvat() {
 }
 
 // ─── PLUS — OutSystems SPA (Imperva WAF bypass via Preload endpoint) ─────────
+// Plus zet de maat in twee velden die we eerder niet uitlazen: Example
+// ("Per 700 ml", 69/165 gevuld) en Variant ("Alle flessen à 1 liter",
+// "Schaal 500 gram", 90/165). Bij "Alle flessen à 1 liter" is de maat ook bij
+// een categorie-aanbieding ondubbelzinnig, want Plus noemt hem expliciet.
+const PLUS_PACK = 'pak(?:ken)?|scha(?:al|len)|blik(?:ken)?|kuip(?:en)?|zak(?:ken)?|fles(?:sen)?|pot(?:ten)?|do(?:os|zen)|bak(?:ken)?|rol(?:len)?|krat(?:ten)?|net(?:ten)?|bos|beker(?:s)?|stuk(?:s)?'
+const PLUS_SIZE_RE = new RegExp(
+  `(?:^|\\b)(?:per|alle\\s+(?:${PLUS_PACK})\\s*[àa]|${PLUS_PACK})?\\s*([\\d,.]+)\\s*(g|gram|kg|kilo|ml|cl|dl|l|liter|st|stuks?|stuk)\\b`,
+  'i'
+)
+
+function extractPlusSizeLabel(offer) {
+  for (const raw of [offer.Example, offer.Variant]) {
+    const t = (raw || '').trim()
+    if (!t) continue
+    // Een range of twee maten is geen maat: "Schaal 400-500 gram",
+    // "Alle zakken à 200 en 300 gram". Idem voor benaderingen en voorbeelden.
+    if (/\d\s*-\s*\d/.test(t)) continue
+    if (/\d[^.]*\s+en\s+\d/.test(t)) continue
+    if (/\bca\.|ongeveer|vanaf|bijv\.?/i.test(t)) continue
+    const m = t.match(PLUS_SIZE_RE)
+    if (!m) continue
+    // Meer dan een getal in de tekst -> dubbelzinnig, laten liggen.
+    if ((t.replace(/€\s*[\d,.]+/g, ' ').match(/\d+[.,]?\d*/g) || []).length !== 1) continue
+    // parseUnitLabel kent alleen 'stuk(s)', niet de afkorting 'st'.
+    return `${m[1]} ${/^st$/i.test(m[2]) ? 'stuks' : m[2]}`
+  }
+  return null
+}
+
 async function scrapePlus() {
   console.log('🏪 [Plus] plus.nl/aanbiedingen (OutSystems API)...')
   try {
@@ -1851,10 +1880,11 @@ async function scrapePlus() {
 
         const slug = offer.Slug || `${offer.PromotionID}-${offer.Offer_Id}`
 
-        // Plus levert geen apart maatveld; DisplayInfo_Label is de enige kandidaat
-        // ("Pak 500 gram" e.d.). Beide parsers wijzen alles af wat geen eenduidige
-        // maat is, dus levert dit hooguit niets op — nooit een foute unitPrice.
-        const plusDirect = parseUnitLabel(label, newPrice)
+        // Example/Variant zijn de echte maatvelden. DisplayInfo_Label is de
+        // PROMOTIElabel ("1+1 GRATIS", "25 % KORTING") en dus geen maat; die
+        // blijft alleen als laatste redmiddel staan omdat de parser alles
+        // weigert wat niet eenduidig is.
+        const plusDirect = parseUnitLabel(extractPlusSizeLabel(offer), newPrice)
         const unit = plusDirect.unitSize
           ? plusDirect
           : parseUnitLabel(extractSizeFromPromoText(label), newPrice)
