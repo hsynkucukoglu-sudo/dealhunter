@@ -1651,6 +1651,10 @@ async function scrapeKruidvat() {
     }
     const CONCURRENCY = 10
     const results = []
+    // Losse detail-fetches slikken hun eigen fouten, waardoor een geblokkeerde
+    // of trage OCC-API zich voordeed als "0 producten gevonden" -- niet te
+    // onderscheiden van een lege week. Tellen dus, en luid melden.
+    const failures = { http: 0, network: 0, noPrice: 0 }
 
     for (let i = 0; i < productTiles.length; i += CONCURRENCY) {
       const batch = productTiles.slice(i, i + CONCURRENCY)
@@ -1662,11 +1666,11 @@ async function scrapeKruidvat() {
             `${OCC}/products/${code}?lang=nl&curr=EUR&fields=FULL`,
             { headers: kvH, signal: AbortSignal.timeout(10000) }
           )
-          if (!r.ok) return null
+          if (!r.ok) { failures.http++; return null }
           const p = await r.json()
 
           const discountedPrice = p.price?.value
-          if (!discountedPrice || discountedPrice <= 0) return null
+          if (!discountedPrice || discountedPrice <= 0) { failures.noPrice++; return null }
 
           const originalPrice = p.price?.oldValue ?? discountedPrice
 
@@ -1706,9 +1710,17 @@ async function scrapeKruidvat() {
             source: 'kruidvat.nl/aanbiedingen',
             ...unit,
           }
-        } catch { return null }
+        } catch { failures.network++; return null }
       }))
       results.push(...batchRes.filter(Boolean))
+    }
+
+    const failed = failures.http + failures.network
+    if (failed > 0) {
+      console.warn(`  ⚠️  [Kruidvat] ${failed}/${productTiles.length} detail-fetch mislukt (HTTP ${failures.http}, netwerk ${failures.network}, zonder prijs ${failures.noPrice})`)
+    }
+    if (productTiles.length > 0 && results.length === 0) {
+      throw new Error(`OCC-API gaf niets terug voor ${productTiles.length} tiles (HTTP ${failures.http}, netwerk ${failures.network}) — geen lege week maar een storing`)
     }
 
     // Name-based dedup — different codes can resolve to the same product name
