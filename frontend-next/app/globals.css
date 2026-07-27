@@ -291,3 +291,12 @@
   content-visibility: auto;
   contain-intrinsic-size: auto 800px;
 }
+
+/* Aynı teknik, tek ürün kartı için (MarketPage grid, fold-altı 40+ kart —
+   2026-07-27 PSI ölçümü: Style&Layout tek başına 1,69s'ydi). 800px'lik
+   sayfa-bölümü placeholder'ı kart için çok büyük olurdu (CLS riski),
+   ProductCard'ın gerçek yüksekliğine (~300px) yakın bir tahmin kullanılıyor. */
+.cv-auto-card {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 300px;
+}

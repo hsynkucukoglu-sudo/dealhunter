@@ -251,6 +251,10 @@ export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
                   // die renderen meteen zichtbaar (opacity 1) i.p.v. opacity:0 in de
                   // SSR-HTML, want dat laatste wacht op hydration — op Lighthouse
                   // mobile seconden (2026-07-26). De rest fade't gewoon in bij scroll.
+                  // Diezelfde rest krijgt ook content-visibility:auto (2026-07-27) —
+                  // browser slaat layout/paint over tot de kaart de viewport nadert,
+                  // scheelt Style&Layout-tijd op paginas met 40+ kaarten (bv. Aldi).
+                  className={i >= 8 ? 'cv-auto-card' : undefined}
                   initial={i < 8 ? { opacity: 1, y: 0 } : { opacity: 0, y: 0 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '0px 0px -40px 0px' }}
