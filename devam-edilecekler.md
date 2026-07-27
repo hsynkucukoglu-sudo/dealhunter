@@ -24,6 +24,47 @@ status: active
 > bekliyordu — beklenecek bir inceleme yoktu, top bizdeydi. Bu yanlış not
 > yüzünden ~2 hafta boşa geçti. **Ders: panel durumunu varsayma, bak.**
 
+## ✅ Bugün tamamlanan (2026-07-27) — perf doğrulama + 2 commit
+
+- [x] **26 Tem'deki framer-motion LCP fix'i (`2398eee`) ölçüldü ve doğrulandı**: PSI
+  kotası dolu olduğu için yerel Lighthouse kullanıldı. Ana sayfa: skor 43-49→**52**,
+  LCP 13,1-13,7s→**~3,5s**, FCP 8,4-9,5s→**~2,5s**. Fix tuttu.
+- [x] **Yeni bulgu — Aldi/market sayfaları (GSC gösterimlerinin %62'si) throttled
+  Lighthouse'ta hâlâ kötü (FCP 4-7,2s, LCP 4,7-13,5s) ama run'lar arası çok gürültülü**
+  (aynı sayfa art arda 2 ölçümde 2 kat fark). Unthrottled temiz ve tutarlı (skor 92-93,
+  FCP/LCP 2,6-2,7s) — gerçek network/kod sorunu yok, throttled sayı Lantern
+  simülasyon gürültüsü. `9156970`: MarketPage fold-altı 40+ karta
+  `content-visibility:auto` eklendi (`.cv-auto-card`, 300px), main-thread work
+  ölçülebilir düştü ama headline FCP/LCP sayısı gürültü yüzünden net değişmedi.
+  **Dürüst durum: kod değişikliği güvenli/muhtemelen faydalı ama kesin "X saniye
+  kazandırdı" iddiası şu an yapılamaz — PSI kotası yarın sıfırlanınca 3-5 run
+  ortalamasıyla tekrar ölçülmeli.**
+- [x] **Bağımsız bug bulundu ve düzeltildi: CategoryPage (`47dac32`)** — MarketPage'in
+  26 Tem'de düzeltilen hatasının birebir aynısı (tüm kartlar `opacity:0` + SINIRSIZ
+  kademeli gecikme `i*0.03s`, pagination yok → 100+ ürünlü kategoride son kart 3+
+  saniye bekliyordu) burada atlanmıştı. MarketPage'le aynı düzeltme uygulandı.
+  Unthrottled doğrulama: skor 100, FCP/LCP 1,0s.
+- [x] Her iki commit push edildi, Railway otomatik deploy etti, `curl` ile canlıda
+  doğrulandı.
+- [x] **AH scraper stale veri tespit edildi ve manuel düzeltildi**: `/api/health/scraper`
+  kontrolünde AH'nin `last_scraped`'i 07-26 08:02'de takılı kalmış, diğer tüm marketler
+  07-27'de güncellenmişti. Sebep: `api.ah.nl` Akamai Bot Manager sayfalama sırasında
+  bugünkü cron denemesinde erken 403 vermiş → 0 ürün → eski (ama gerçek) veri
+  korunmuş, timestamp güncellenmemiş. Manuel `POST /api/scraper/run` tetiklendi,
+  bu seferki deneme sayfa 15'e kadar geçti (403 yine geldi ama daha geç) → 750
+  ürün tarandı, 290 gerçek promosyon toplandı. AH şimdi 286 ürünle taze
+  (19:03 UTC). Bilinen/tekrarlayan Akamai deseni (bkz. huntermd32), kod bug'ı değil.
+- [x] **"✓ Laagste prijs" rozeti — ratio-guard eklendi (`7eba1db`)**: `docs/outreach.md`'de
+  (26 Tem) not düşülen "generieke namen delen productidentiteit" sorunu ölçüldü ve
+  düzeltildi. Live data: 1.971 (name,market) grubunda (>=3 hafta geçmiş) max/min
+  oranı 3,5x üstü olanlar (Red Bull €1,38-€29,99, Lipton €2,25-€19,38, Biefstuk
+  naturel €2,49-€26,90 — 21 farklı örnek incelendi) neredeyse hep isim çakışması,
+  gerçek haftalık indirim değil. 3,5x altındaki büyük çoğunluk (Kruidvat elektroniği
+  tam yarı fiyatta, AH-marka ürünler) korundu — sadece 18/1.971 grup (%0,9) etkilendi.
+  `getMinPriceMap()`'e `HAVING MAX/MIN <= 3.5` eklendi, frontend değişikliği
+  gerekmedi (eksik entry zaten `isLowestPrice()`'ta false dönüyor). Canlıda
+  doğrulandı: Red Bull/Lipton haritadan çıktı, AH Aubergine gibi meşru kayıtlar kaldı.
+
 ## ✅ Bugün tamamlanan (2026-07-26) — 22 commit
 
 **AdSense — asıl tıkanıklık açıldı**
