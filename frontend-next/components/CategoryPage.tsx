@@ -158,8 +158,16 @@ export function CategoryPage({ category, initialProducts, relatedPosts = [] }: {
         ) : (
           <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {filtered.map((product, i) => (
-              <motion.div key={product.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: i * 0.03 }}>
+              // MarketPage'deki fix'le aynı desen (2026-07-26/27): eerste 8 kaarten
+              // boven de vouw meteen zichtbaar (SSR-HTML wacht anders op hydration,
+              // en de oude i*0.03 stagger liep bij grote lijsten op tot seconden
+              // vertraging). Rest fade't in bij scroll + content-visibility:auto.
+              <motion.div key={product.id}
+                className={i >= 8 ? 'cv-auto-card' : undefined}
+                initial={i < 8 ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '0px 0px -40px 0px' }}
+                transition={{ duration: 0.3, delay: 0 }}>
                 <ProductCard product={product} />
               </motion.div>
             ))}
