@@ -135,12 +135,16 @@ const DEALS = [
       { name: 'LEDshop Groenovatie', tagline: 'LED-verlichting voor binnen & buiten', cta: 'Bekijk aanbod', color: '#F4A300', url: 'https://lt45.net/c/?si=10385&li=1459831&wi=420902' },
       // 2026-07-15 onaylı — li bevestigd via Daisycon 2026-07-16 campaigns export, tracking actief
       { name: 'Foodello',            tagline: 'Boodschappen tot 80% korting',  cta: 'Bekijk aanbod', color: '#4CAF50', url: 'https://partners.foodello.nl/c/?si=17066&li=1737047&wi=420902' },
+      // 2026-07-27 onaylı — mid via Awin panel (Advertisers > Joined)
+      { name: 'ALLPOWERS',           tagline: 'Powerstations & zonnepanelen',  cta: 'Bekijk aanbod', color: '#FF6B00', url: AW(125964, 'https://iallpowers.nl/') },
     ],
   },
   {
     id: 'mode',
     category: '👟 Sport & Mode',
     items: [
+      // 2026-07-27 onaylı — mid via Awin panel (Advertisers > Joined)
+      { name: 'Deporvillage',        tagline: 'Fietsen, hardlopen & outdoor gear', cta: 'Bekijk aanbod', color: '#E30613', url: AW(121218, 'https://www.deporvillage.nl/') },
       { name: 'Holland & Barrett', tagline: 'Vitamines, sport & health',  cta: 'Bekijk aanbod',    color: '#007A3D', url: AW(8108,   'https://www.hollandandbarrett.nl/shop/aanbiedingen/') },
       { name: 'Vitaepro NL',       tagline: 'Vitamines & gezondheid NL',  cta: 'Bekijk aanbod',    color: '#B71C1C', url: AW(18520,  'https://www.vitaepro.nl/') },
       { name: 'Direct Running',    tagline: 'Hardloopschoenen & kleding', cta: 'Bekijk aanbod',    color: '#E63329', url: AW(71531,  'https://www.direct-running.nl/') },
