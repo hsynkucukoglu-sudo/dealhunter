@@ -128,6 +128,15 @@ const JUMBO_GQL_HEADERS = {
   'apollographql-client-version': '1.0.0',
 }
 
+// "1 KG" / "1 kg" / "150 Gram" / "150 g" horen hetzelfde te zijn bij het
+// vergelijken van maten binnen één promotie.
+function normalizeSizeLabel(label) {
+  return (label || '').toLowerCase().replace(/,/g, '.').replace(/\s+/g, ' ').trim()
+    .replace(/\bgram\b/g, 'g')
+    .replace(/\bkilo(gram)?\b/g, 'kg')
+    .replace(/\bliter\b/g, 'l')
+}
+
 // Parse deal price from Jumbo promotion description text
 function parseJumboPromoPrice(desc, title) {
   const text = `${desc} ${title}`.trim()
@@ -227,12 +236,15 @@ async function scrapeJumbo() {
         parsed,
         promoLabel: parsed.promoLabel,
         campaignType: toCampaignType(parsed.promoLabel),
-        // Alleen bij precies één product is de maatvoering ondubbelzinnig. Bij
-        // "Alle Aquafresh" (4+ producten) hoort er geen maat bij het aanbod —
-        // 58% van de Jumbo-promoties is zo'n categorie-aanbieding (gemeten
-        // 2026-07-26), dus die laten we bewust leeg i.p.v. de maat van het
-        // eerste product te lenen.
+        // Bij precies één product is de maatvoering ondubbelzinnig. Bij een
+        // categorie-aanbieding ("Alle Aquafresh") hoort er in principe geen maat
+        // bij het aanbod, dus lenen we NOOIT de maat van het eerste product.
+        // Uitzondering: als élk product in de promotie dezelfde maat heeft
+        // ("Lipton ice tea" x8, allemaal 1.5 L) is de maat wél ondubbelzinnig —
+        // die halen we op in stap 4c. Gemeten 2026-07-27: 18 van de 163
+        // multi-product promoties valt in die categorie.
         singleProduct: (promo.products || []).length === 1,
+        allSkus: (promo.products || []).map(p => p.sku).filter(Boolean),
       })
     }
 
@@ -290,6 +302,41 @@ async function scrapeJumbo() {
       }
     }
 
+    // Step 4c: Gedeelde maat bij categorie-aanbiedingen. Alleen als ELK product
+    // een subtitle heeft én ze allemaal naar dezelfde maat normaliseren is het
+    // aanbod ondubbelzinnig ("Kies & Mix Soepen" x6, allemaal 500 g). Ontbreekt
+    // er één, dan overslaan — half bewijs is geen bewijs.
+    // Boven de 25 producten niet controleren: we zouden dan maar een deel van de
+    // promotie zien en "allemaal dezelfde maat" concluderen op onvolledig bewijs.
+    const SHARED_SIZE_MAX_PRODUCTS = 25
+    const sharedCandidates = deals.filter(d =>
+      !d.singleProduct && d.allSkus.length > 1 && d.allSkus.length <= SHARED_SIZE_MAX_PRODUCTS
+    )
+    if (sharedCandidates.length > 0) {
+      console.log(`  [Jumbo] ${sharedCandidates.length} categorie-aanbiedingen op gedeelde maat controleren...`)
+      for (const deal of sharedCandidates) {
+        const skus = deal.allSkus
+        try {
+          await new Promise(r => setTimeout(r, 100))
+          const aliases = skus.map((s, i) => `p${i}: product(sku: "${s}") { subtitle }`).join(' ')
+          const r = await fetch(JUMBO_GQL_URL, {
+            method: 'POST',
+            headers: JUMBO_GQL_HEADERS,
+            body: JSON.stringify({ query: `{ ${aliases} }` }),
+            signal: AbortSignal.timeout(12000),
+          })
+          if (!r.ok) continue
+          const data = await r.json()
+          const subs = skus.map((_, i) => data.data?.[`p${i}`]?.subtitle).filter(Boolean)
+          if (subs.length !== skus.length) continue
+          if (new Set(subs.map(normalizeSizeLabel)).size !== 1) continue
+          deal.sizeLabel = subs[0]
+          deal.sharedSize = true
+        } catch {}
+      }
+      console.log(`  [Jumbo] ${sharedCandidates.filter(d => d.sharedSize).length} met gedeelde maat`)
+    }
+
     // Step 5: Compute final prices
     const results = []
     for (const deal of deals) {
@@ -308,7 +355,9 @@ async function scrapeJumbo() {
         if (discountedPrice <= 0) continue
       }
 
-      const unit = deal.singleProduct ? parseUnitLabel(deal.sizeLabel, discountedPrice) : {}
+      const unit = (deal.singleProduct || deal.sharedSize)
+        ? parseUnitLabel(deal.sizeLabel, discountedPrice)
+        : {}
 
       results.push({
         name: deal.name,
