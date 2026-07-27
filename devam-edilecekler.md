@@ -6,6 +6,16 @@ status: active
 
 # DealHunter4U — Devam Edilecekler
 
+## ✅ Bugün tamamlanan (2026-07-27, devamı) — Awin mid'leri
+
+- [x] **ALLPOWERS NL (mid=125964) + Deporvillage NL (mid=121218) eklendi (`0d7f17b`)**:
+  huntermd91'den beri açık bekleyen iş kapandı. Kullanıcı Awin'e `connect`+`handoff`
+  ile giriş yaptı, oturum `.gstack/browse-states/awin.json`'a kaydedildi (bir dahaki
+  sefere tekrar giriş gerekmez). `MeerBesparenWidget.tsx`'e eklendi: ALLPOWERS →
+  Thuis & Wonen, Deporvillage → Sport & Mode. Canlıda doğrulandı (JS chunk'ında
+  mid'ler bulundu, tracking linkleri GET ile 200 + doğru `awc=` parametresiyle test
+  edildi — `curl -I` Deporvillage'da yanlış negatif verdi, HEAD desteklenmiyor).
+
 ## 🔵 ŞU AN BEKLEYEN — AdSense incelemesi
 
 - [ ] **AdSense inceleme sonucunu takip et** #priority/high
