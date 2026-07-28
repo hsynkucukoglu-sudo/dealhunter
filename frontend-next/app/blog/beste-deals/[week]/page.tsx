@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
+import { notFound, permanentRedirect } from 'next/navigation'
 import { getProducts } from '@/lib/api'
 import { MARKETS, VISIBLE_MARKETS, MARKET_COLORS } from '@/lib/types'
 import { buildBreadcrumbSchema } from '@/lib/schema'
@@ -44,6 +44,13 @@ export default async function WeeklyDealsPage({ params }: Props) {
   const { week } = await params ?? {}
   const parsed = parseWeekSlug(week)
   if (!parsed) notFound()
+
+  // Pagina toont altijd de huidige top-deals (getProducts() heeft geen historie
+  // per week) — een oude weekslug zou dus vandaags data tonen onder een oude
+  // titel. Doorverwijzen naar de actuele week i.p.v. misleidende duplicate content
+  // serveren (gevonden via GSC: "Crawled - currently not indexed", 2026-07-28).
+  const current = currentWeekSlug()
+  if (week !== current) permanentRedirect(`/blog/beste-deals/${current}`)
 
   const allProducts = await getProducts()
   const topDeals = getTopDeals(allProducts, 15)
