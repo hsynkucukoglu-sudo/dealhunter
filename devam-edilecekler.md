@@ -6,6 +6,22 @@ status: active
 
 # DealHunter4U — Devam Edilecekler
 
+## ✅ Bugün tamamlanan (2026-07-28) — GSC mail analizi + week-N bug fix
+
+- [x] **GSC mailleri incelendi, gerçek bug bulundu ve düzeltildi (`e43b3d8`)**:
+  Google'a connect+handoff ile giriş yapıldı (oturum `.gstack/browse-states/google.json`'a
+  kaydedildi). "Tarandı - şu anda dizine eklenmiş değil, doğrulama başarısız" (8 sayfa)
+  satırındaki URL'ler tek tek incelendi: 4x `/go?...` zaten bilinçli noindex (sorun
+  değil), 1x opengraph-image bir görsel asset (sorun değil), 2x blog yazısı teknik
+  olarak sağlıklı (muhtemelen crawl bütçesi gecikmesi), **1x gerçek bug**:
+  `/blog/beste-deals/[week]/page.tsx` URL'deki hafta numarasını sadece başlıkta
+  kullanıyordu, içerik her zaman canlı veriden geliyordu — week-24 ve week-31
+  sayfaları birebir aynı fiyatları gösteriyordu. Her eski hafta URL'i sınırsız
+  büyüyen bir duplicate-content tuzağıydı. Fix: eski week slug'ları `permanentRedirect()`
+  (308) ile güncel haftaya yönlendiriliyor artık. Canlıda doğrulandı.
+- [x] `dealhunter-market.onrender.com` GSC maili — eski/terk edilmiş Render deploy'u,
+  aksiyon gerekmedi.
+
 ## ✅ Bugün tamamlanan (2026-07-27, devamı) — Awin mid'leri
 
 - [x] **ALLPOWERS NL (mid=125964) + Deporvillage NL (mid=121218) eklendi (`0d7f17b`)**:
