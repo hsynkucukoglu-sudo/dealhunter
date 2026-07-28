@@ -11,7 +11,7 @@ je lezers kan helpen"-benadering.
 
 | Doelwit | Adres | Gmail-concept | Opmerking |
 |---|---|---|---|
-| Sparen en Besparen | `info@sparenenbesparen.nl` | ✅ aangemaakt | Contactpagina noemt zelf "Suggesties voor nieuwe artikelen" — beste kandidaat |
+| Sparen en Besparen | `info@sparenenbesparen.nl` | ⛔ **bounced** | Verstuurd 26-07, direct bounced (550 No such recipient here). Site publiceert alleen dit adres — geen contactformulier, geen social links, geen naam ("Ons team" anoniem). Gecontroleerd 28-07: nog steeds hetzelfde adres, geen alternatief kanaal gevonden. Niet opnieuw proberen zonder nieuw contactpunt. |
 | One Broke Girl | `info@onebrokegirl.nl` | ✅ aangemaakt | Iris Newman. Commercieel (One Girl Media B.V., Media Kit + shop) → verwacht mogelijk een tarievenkaart terug |
 | Mr FOB | — | ❌ niet aangemaakt | Contactpagina geeft 404, geen e-mailadres te vinden. Eventueel via hun nieuwsbrief-reply of social |
 | Bespaartop100 | — | ⛔ **bewust overgeslagen** | Zie waarschuwing hieronder |
