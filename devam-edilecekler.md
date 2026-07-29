@@ -6,6 +6,20 @@ status: active
 
 # DealHunter4U — Devam Edilecekler
 
+## 🎉 AdSense ONAYLANDI — 29 Tem 2026 07:49 CEST
+
+- [x] Panelde doğrulandı: `dealhunter4u.nl` onay durumu **"Hazır"** (yeşil),
+  Ads.txt "Yetki verildi". 13 Tem'deki "düşük değerli içerik" reddinden,
+  içerik derinleştirme + `/merk` noindex + `/vergelijk` budaması + 26 Tem'deki
+  yeniden inceleme talebinden sonra 3 gün içinde onaylandı.
+- [x] **"İnceleme sırasında dokunma" kısıtı artık kalktı** — aşağıdaki eski not
+  (UniqPaid.com'dan kaçınma, büyük yapısal değişiklik yapmama) geçersiz,
+  normal şekilde devam edilebilir.
+- [ ] **Sıradaki:** Ana Sayfa'da "Kimlik doğrulama" adımı bekliyor (ödeme
+  alabilmek için gerekli), "Daha fazla reklam oluşturun" önerisi var — ilk
+  gerçek kazanç rakamları birkaç gün içinde Tahmini Kazançlar panelinde
+  görünmeye başlayacak, takip edilmeli.
+
 ## ✅ Bugün tamamlanan (2026-07-29) — Dirk/Plus expiresAt bug
 
 - [x] **Dirk 1/102 ürün gösteriyordu, kök neden bulundu ve düzeltildi (`054ea09`)**:
@@ -48,16 +62,12 @@ status: active
   mid'ler bulundu, tracking linkleri GET ile 200 + doğru `awc=` parametresiyle test
   edildi — `curl -I` Deporvillage'da yanlış negatif verdi, HEAD desteklenmiyor).
 
-## 🔵 ŞU AN BEKLEYEN — AdSense incelemesi
+## ✅ ÇÖZÜLDÜ — AdSense incelemesi (yukarıda bkz. "AdSense ONAYLANDI")
 
-- [ ] **AdSense inceleme sonucunu takip et** #priority/high
-  - **26 Tem 20:08 CEST:** "Sorunları giderdiğimi onaylıyorum"a basıldı, panel
-    durumu **"Müdahale edilmesi gerekiyor" → "Hazırlanıyor"**. İnceleme başladı,
-    tipik süre birkaç gün–birkaç hafta.
-  - **Bu süre boyunca YAPMA:** şüpheli affiliate ekleme (özellikle **UniqPaid.com** —
-    Awin'den 26 Tem'de onay geldi ama GPT/anket sitesi, ScamAdviser düşük güven
-    puanı veriyor), büyük yapısal değişiklik. Normal scraper/blog işleri sorun değil.
-  - **Reddedilirse:** gerekçe metnine bak, iki hafta bekleme — top hemen bizde olur.
+- [x] ~~AdSense inceleme sonucunu takip et~~ — 29 Tem'de onaylandı.
+  **UniqPaid.com hâlâ eklenmedi** — ScamAdviser düşük güven puanı sebebiyle
+  editoryal karar olarak atlandı, AdSense onayından bağımsız, tekrar gündeme
+  getirilebilir ama önerilmez.
 
 > [!warning] Eski "27 Tem" görevi hatalıydı — kaldırıldı
 > Bu dosyada 22 Tem'e kadar "27 Tem'de inceleme iste, o zamana kadar TIKLAMA"
