@@ -149,7 +149,12 @@ async function scrapePlus() {
         originalPrice: origPrice > newPrice ? origPrice : newPrice,
         imageUrl: imgUrl || null,
         url: `https://www.plus.nl/aanbiedingen/${slug}`,
-        expiresAt: offer.EndDate || null,
+        // offer.EndDate soms gelijk aan/vóór vandaag (waargenomen 2026-07-28,
+        // 129/150 Plus-producten stil verdwenen tot volgende run) — alleen
+        // vertrouwen als het écht in de toekomst ligt, anders null zodat de
+        // backend's eigen 7-dagen-fallback (server.js bulk-replace) het opvangt.
+        // Zelfde guard als de Plus-functie in backend/scraper/index.js.
+        expiresAt: (offer.EndDate && offer.EndDate > new Date().toISOString().split('T')[0]) ? offer.EndDate : null,
         category: catLabel,
         campaignType: toCampaignType(label),
         isCampaign: true,

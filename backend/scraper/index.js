@@ -86,7 +86,15 @@ async function scrapeDirk() {
         const imageUrl = offer.image
           ? `https://web-fileserver.dirk.nl/offers/${encodeURIComponent(offer.image)}?width=190`
           : null
-        const expiresAt = offer.endDate ? offer.endDate.split('T')[0] : EXPIRES_AT
+        // offer.endDate soms gelijk aan de scrapedatum zelf (waargenomen 2026-07-28,
+        // 101/102 Dirk-producten) — waarschijnlijk een tijdelijke inconsistentie in
+        // Dirk's eigen API tijdens een campagnewissel. Zonder deze guard verdween de
+        // hele Dirk-catalogus tot de volgende cron-run. Alleen vertrouwen als het
+        // écht in de toekomst ligt, anders terugvallen op EXPIRES_AT (aanstaande
+        // zondag) — zelfde patroon als de Plus-guard hieronder.
+        const rawEndDate = offer.endDate ? offer.endDate.split('T')[0] : null
+        const today = new Date().toISOString().split('T')[0]
+        const expiresAt = (rawEndDate && rawEndDate > today) ? rawEndDate : EXPIRES_AT
 
         results.push({
           name,
