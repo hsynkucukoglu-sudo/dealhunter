@@ -6,6 +6,22 @@ status: active
 
 # DealHunter4U — Devam Edilecekler
 
+## ✅ Bugün tamamlanan (2026-07-29) — Dirk/Plus expiresAt bug
+
+- [x] **Dirk 1/102 ürün gösteriyordu, kök neden bulundu ve düzeltildi (`054ea09`)**:
+  `/api/products?market=Dirk` 1, `/api/health/scraper` 102 diyordu. DB'de 101
+  Dirk ürününün `expiresAt`'i taranma günüydü (dün, 2026-07-28) — Dirk'in kendi
+  API'si dün geçici olarak bugünün tarihini `endDate` döndürmüş (kampanya geçiş
+  penceresi), kod hiç doğrulamadan yazmış. Aynı sınıftan bug Plus'ta da bulundu
+  (`.github/scripts/plus-scraper.js` — GH Actions'taki Plus'ın asıl kaynağı,
+  guard'ı yoktu; `backend/scraper/index.js`'teki Plus fonksiyonunda zaten vardı).
+  Her iki dosyaya "endDate > today" guard'ı eklendi. Deploy edildi, Railway'de
+  manuel scraper tetiklendi — **Dirk 109 taze ürüne döndü, canlıda doğrulandı.**
+  **Plus'ın fix'i henüz canlı değil** — GH Actions script'i, kendi zamanlanmış
+  çalışmasında (09:00 UTC) otomatik düzelecek, `gh` CLI bu ortamda yok, manuel
+  tetiklenemedi. Aldi'de farklı şekilde küçük bir stale-row grubu var (40/192,
+  muhtemelen normal rotasyon kalıntısı), dokunulmadı.
+
 ## ✅ Bugün tamamlanan (2026-07-28) — GSC mail analizi + week-N bug fix
 
 - [x] **GSC mailleri incelendi, gerçek bug bulundu ve düzeltildi (`e43b3d8`)**:
