@@ -73,18 +73,77 @@ Beklenti: market sayfaları %0,07 → %0,5 çıksa bile toplam tıklama ikiye ka
 
 </details>
 
-### 2. [ ] Karşılaştırma içeriğine yatırım — ÖNCELİK 2
+### 2. [!] Karşılaştırma içeriği — **ÖNCEKİ ÖNERİ YANLIŞTI, DÜZELTİLDİ (2026-08-01)**
+
+İlk öneri "5-10 yeni karşılaştırma yazısı yaz"dı. Veri bunu çürüttü.
+
+**Düzeltme 1 — sayı hatası:** kazanan yazının gösterimini 27.578 okumuşum, doğrusu **7.720**
+(63 tıklama ÷ %0,8 TO ile tutarlı). GSC'nin bitişik sayı formatı yanlış ayrıştırılmıştı.
+
+**Düzeltme 2 — zaten 46 blog yazısı var**, 9'u karşılaştırma yazısı
+(`is-aldi-goedkoper-dan-jumbo`, `is-lidl-goedkoper-dan-jumbo`, `is-plus-goedkoper-dan-jumbo`,
+`goedkoopste-supermarkt-nederland-2026` vb.). Yani içerik eksikliği yok.
+
+**Asıl bulgu — karşılaştırma yazıları ZATEN iyi sıralanıyor, sorun sorgu hacmi:**
+
+| Yazı | Konum | Gösterim (3 ay) | Tıklama |
+|---|---|---|---|
+| is-lidl-goedkoper-dan-jumbo | **3,3** | 96 | 1 |
+| is-plus-goedkoper-dan-jumbo | **4,5** | 100 | 3 |
+| is-dirk-goedkoper-dan-aldi | **4,5** | 42 | 0 |
+| is-aldi-goedkoper-dan-lidl | **5,1** | 42 | 1 |
+| is-dekamarkt-goedkoper-dan-dirk | **5,8** | 30 | 0 |
+
+Konum 3-6, yani sıralama mükemmel. Ama 3 ayda 30-100 gösterim = günde ~1 gösterim.
+Bu sorgularda Hollanda'da arama hacmi yok. Yeni "is X goedkoper dan Y" yazmak
+top-5'e çıkan ama çeyrekte ~2 tıklama getiren sayfalar üretir.
+
+**Barbell problemi — site geneli sorgular gösterime göre:**
+
+| Sorgu | Gösterim | Tıklama | Konum |
+|---|---|---|---|
+| aldi | 39.913 | 15 | 8,2 |
+| lidl aanbiedingen | 10.361 | 2 | 8,5 |
+| dirk aanbiedingen | 9.339 | 3 | 8,5 |
+| plus aanbiedingen | 3.389 | 0 | 9,0 |
+| aanbiedingen lidl | 2.018 | 2 | 8,7 |
+| jumbo aanbiedingen | 1.449 | 2 | 9,5 |
+| *(sonraki hepsi)* | <900 | | |
+
+İlk 10 sorgu ≈ **69.500 gösterim → 10 tıklama**. Ortası yok: ya kazanılamayan head-term
+(konum 8-10), ya da zaten kazanılan ama hacmi olmayan long-tail.
+
+**Kaldıraç hesabı:** 10 yeni karşılaştırma yazısı ≈ +20 tıklama/çeyrek.
+Tek başına "lidl aanbiedingen"i konum 8,5'ten 3'e taşımak ≈ +1.000 tıklama.
+**50x fark.** Ama bu içerik değil, otorite problemi.
+
+**Blog yine de market sayfalarından 10x iyi dönüyor:** blog ~14.000 gösterim → 103 tıklama
+(%0,74), market sayfaları ~91.000 → 67 (%0,07). 46 yazının ~30'u sıfır tıklama alıyor.
+
+`/kortingsindex` sayfası var ama konum 30,8, 146 gösterim — linklenebilir varlık olarak paketlenmemiş.
+
+**KARAR BEKLİYOR** — üç yol aşağıda, henüz seçilmedi:
 
 Kanıt: tek yazı `/blog/albert-heijn-vs-jumbo-vs-lidl-wie-is-goedkoper` = **62 tıklama**
 (tüm sitenin %18'i), 27.578 gösterim, konum 6,4. Diğerleri: `is-lidl-goedkoper-dan-albert-heijn`
 %2,3 TO (konum 4,8), `is-kruidvat-goedkoper-dan-etos` %1,2, `beste-dag-boodschappen-doen` %1,1.
 `/vergelijk` sayfaları %1,1 TO ile mükemmel dönüyor ama sayfa başına sadece 17-106 gösterim (hacim yok).
 
-**Moat:** 10+ markette gerçek fiyat verisi var. Folder siteleri sadece PDF yayınlıyor,
-"Lidl bu hafta AH'den ucuz mu" sorusuna sayıyla cevap veremezler.
+**A) Otorite inşası** — 69.500 head-term gösterimini açacak tek şey. Moat gerçek:
+10+ markette haftalık fiyat verisi var, folder siteleri sadece PDF yayınlıyor. Bu veriyi
+alıntılanabilir bir varlığa çevir (aylık Hollanda market fiyat endeksi raporu) ve tüketici/haber
+mecralarına sun. `/kortingsindex` altyapısı var ama hikâye olarak paketlenmemiş.
+Yavaş ama tek gerçek kaldıraç.
 
-Hedef sorgular: "goedkoopste supermarkt van nederland", "welke supermarkt is het goedkoopst 2026",
-"boodschappen goedkoper doen", "supermarkt prijzen vergelijken" — aynı kalitede 5-10 yazı.
+**B) İnce karşılaştırma yazılarını birleştir** — 9 yazının çoğu <100 gösterim alıyor, sinyali
+dağıtıyor olabilir. Tek güçlü "welke supermarkt is het goedkoopst" hub'ında toplamak sinyali
+yoğunlaştırır. RİSK: şu an konum 3-6'dalar, birleştirme bunu bozabilir.
+
+**C) Tavanı kabul et, mevcut trafiği paraya çevir** — trafik hedefi bırak, AdSense/affiliate
+dönüşümüne odaklan. Blog trafiği zaten market sayfalarından 10x iyi dönüyor.
+
+*(Eski öneri — referans için: "goedkoopste supermarkt van nederland", "welke supermarkt is het
+goedkoopst 2026" gibi sorgulara 5-10 yazı. Yukarıdaki veriye göre bu yolun tavanı düşük.)*
 
 ### 3. [ ] Head-term optimizasyonunu bırak
 
