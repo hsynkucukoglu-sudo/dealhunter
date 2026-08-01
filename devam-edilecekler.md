@@ -154,9 +154,17 @@ gazeteci/rakip bunu kolayca çürütürdü — otorite inşasının tam tersi.
 (aynı ürünlerin marketler arası fiyatı). `GET /api/compare` çalıştırıldı: **sadece 5 adet
 çok-marketli karşılaştırılabilir ürün grubu** var. Sepet endeksi için çok az.
 
-**CANLI RİSK:** `/kortingsindex` sayfası (`force-dynamic`) şu anda tam da bu yanıltıcı
-sıralamayı yayınlıyor — "hangi süpermarketin en yüksek ortalama indirimi var" diye. Otorite
-inşasına başlamadan önce bu düzeltilmeli, yoksa elimizdeki en zayıf halka orası olur.
+**CANLI RİSK — ✅ ÇÖZÜLDÜ (commit `d21d8b2`).** `/kortingsindex` sayfası süpermarketleri
+ortalama indirime göre sıralıyor, lideri "kopploeg" ilan ediyor ve metodoloji bölümünde
+**gazetecileri bu rakamları kaynak göstererek kullanmaya davet ediyordu** (`/pers` basın
+kitinden de link veriliyordu). Yapılanlar:
+- `lib/kortingsindex.ts`: sıralama ortalama indirim yerine **alfabetik**
+- Sayfa: kopploeg bandı ve sıra numaraları kaldırıldı; başlık/FAQ artık "hangi süpermarket
+  en yüksek indirimi veriyor" demiyor; tablonun üstüne okuma uyarısı, metodolojiye
+  "bu rakamlar ne DEĞİLDİR" bölümü eklendi
+- `/pers`: serbest kullanım iznine aynı kayıt düşüldü
+- Deal sayısı, en yüksek indirim ve 1+1 sayısı duruyor — bunlar olgusal sayımlar,
+  yayınlanabilir. Kaldırılan tek şey sıralama iddiası.
 
 **Yayınlanabilir olan ne var:** ürün bazlı, tek market içi zaman serisi — kapsama yanlılığından
 etkilenmez. Örn. "koffie promosyon fiyatları mayıstan beri %X değişti". `price_history` bunu
