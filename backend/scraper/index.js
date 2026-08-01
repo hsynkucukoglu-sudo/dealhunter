@@ -400,6 +400,18 @@ function decodeHtmlEntities(str) {
 // Hoogvliet typically lists 15-20 deals per week in `product-all-info` blocks on
 // the main /aanbiedingen page. The Intershop "LoadMore" AJAX button is only active
 // when additional products exist; for most weeks the initial HTML contains all deals.
+//
+// LET OP (2026-08-01): deze fetch-variant werkt niet meer vanaf Railway. Hoogvliet zit
+// achter Imperva/Incapsula en serveert datacenter-IP's een JS-challenge, waardoor dit
+// sinds 2026-07-29 stelselmatig 0 producten teruggaf. Dat bleef onopgemerkt omdat een
+// markt met 0 resultaten bewust niet wordt leeggemaakt. Hoogvliet wordt nu primair
+// gescraped door .github/scripts/hoogvliet-scraper.js (Playwright + stealth, komt wél
+// door de challenge) die via /api/products/bulk-replace schrijft. Deze functie blijft
+// staan als fallback voor het geval de challenge verdwijnt.
+//
+// Die scraper vindt ook 2 kortingen méér: de regexparser hieronder knipt elke kaart af
+// op 2500 tekens, en bij Aviko Churros (8346) en Page toiletpapier (8549) valt de
+// strikethrough-prijs buiten dat venster, waardoor ze als "geen korting" binnenkwamen.
 async function scrapeHoogvliet() {
   console.log('🏪 [Hoogvliet] hoogvliet.com/aanbiedingen (session+PromotionRange)...')
   try {

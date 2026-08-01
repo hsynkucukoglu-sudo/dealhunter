@@ -1,0 +1,37 @@
+name: Hoogvliet Scraper
+
+# hoogvliet.com zit achter Imperva/Incapsula en serveert datacenter-IP's een
+# JS-challenge. De fetch-scraper op Railway kreeg daardoor 0 producten terug
+# (stil, want een lege markt wordt bewust niet leeggemaakt). Playwright met
+# stealth komt er wel doorheen — zelfde aanpak als de Kruidvat-scraper.
+
+on:
+  schedule:
+    # Elke dag 08:20 UTC — net na de Railway-run van 08:02, zodat de folder
+    # van Hoogvliet wordt bijgewerkt nadat de overige markten binnen zijn.
+    - cron: '20 8 * * *'
+  workflow_dispatch:
+
+jobs:
+  scrape-hoogvliet:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install Playwright
+        working-directory: .github/scripts
+        run: |
+          npm install
+          npx playwright install chromium --with-deps
+
+      - name: Run Hoogvliet scraper
+        continue-on-error: true
+        working-directory: .github/scripts
+        env:
+          BACKEND_URL: ${{ secrets.BACKEND_URL }}
+          ADMIN_TOKEN: ${{ secrets.ADMIN_TOKEN }}
+        run: node hoogvliet-scraper.js
