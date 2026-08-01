@@ -299,6 +299,34 @@ export async function getMinPriceMap() {
   return map
 }
 
+// Wekelijkse kortingsindex per supermarkt, berekend uit price_history.
+// De /kortingsindex-pagina toont alleen een live momentopname; die verandert elk uur
+// en is dus niet citeerbaar. Deze aggregatie levert de historische reeks die nodig is
+// voor een gedateerd maandrapport (autoriteitsopbouw, 2026-08-01).
+// Ondergrens van 20 deals per week/markt filtert weken weg waarin een scraper faalde —
+// anders zakt het gemiddelde door een handvol restproducten en ontstaat een schijntrend.
+export async function getKortingsindexHistory() {
+  const { rows } = await pool.query(
+    `SELECT recorded_week,
+            product_market,
+            COUNT(*)::int AS deal_count,
+            ROUND(AVG((original_price - discounted_price) / original_price * 100)::numeric, 1) AS avg_discount
+     FROM price_history
+     WHERE original_price > discounted_price
+       AND discounted_price > 0
+       AND original_price > 0
+     GROUP BY recorded_week, product_market
+     HAVING COUNT(*) >= 20
+     ORDER BY recorded_week ASC, product_market ASC`
+  )
+  return rows.map(r => ({
+    week: r.recorded_week,
+    market: r.product_market,
+    dealCount: r.deal_count,
+    avgDiscount: parseFloat(r.avg_discount),
+  }))
+}
+
 export async function getPriceHistory(productName, productMarket) {
   const { rows } = await pool.query(
     `SELECT discounted_price, original_price, recorded_week
