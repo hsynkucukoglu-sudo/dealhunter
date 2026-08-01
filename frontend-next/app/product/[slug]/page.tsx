@@ -23,9 +23,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const data = await getProductKeywordData(slug)
   if (!data) return {}
   const { keyword, products, marketCount } = data
-  const week = getISOWeek(new Date())
   const url = `https://www.dealhunter4u.nl/product/${slug}`
-  const title = `${keyword.label} Aanbieding Week ${week} ✓ Vergelijk ${marketCount || 'Alle'} Winkels | DealHunter4U`
+  // Hafta numarası yok — index'te eskiyip "bayat içerik" sinyali veriyordu, bkz. supermarkt/[slug]
+  const title = `${keyword.label} Aanbieding Deze Week ✓ Vergelijk ${marketCount || 'Alle'} Winkels | DealHunter4U`
   const description = `✓ ${products.length} actuele ${keyword.label} aanbiedingen bij ${marketCount} supermarkten — wekelijks bijgewerkt. Vergelijk de laagste prijs en bespaar.`
 
   return {

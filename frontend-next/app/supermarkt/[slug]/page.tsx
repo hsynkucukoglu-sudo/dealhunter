@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getProductsByMarket } from '@/lib/api'
 import { MARKETS, VISIBLE_MARKETS } from '@/lib/types'
-import { buildBreadcrumbSchema, buildFaqSchema, buildProductListSchema, getISOWeek } from '@/lib/schema'
+import { buildBreadcrumbSchema, buildFaqSchema, buildProductListSchema } from '@/lib/schema'
 import { MarketPage } from '@/components/MarketPage'
 import { MARKET_FAQS } from '@/lib/marketFaqs'
 import { getPostsByMarket } from '@/lib/posts'
@@ -22,8 +22,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const market = MARKETS.find(m => m.slug === slug)
   if (!market) return {}
 
-  const week = getISOWeek(new Date())
-  const year = new Date().getFullYear()
   const products = await getProductsByMarket(market.name)
   const dealCount = products.length
   const topDiscount = products.length > 0
@@ -32,16 +30,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   // Deal sayısı varsa dinamik title (CTR için ✓ + rakam), yoksa statik fallback
   // dealBrandTerm: marketin eigen aanbiedingsmerk (bv. AH's "Bonus") — H1 ile ve GSC hedef sorgularıyla tutarlı olsun diye title/description'a da eklenir
+  // Hafta numarası BİLİNÇLİ olarak yok: Google ~2 haftada bir tarıyor, site haftalık
+  // güncelleniyor → index'teki başlık sürekli eskiyordu (2026-08-01'de 10 market
+  // sayfasının 7'si SERP'te eski haftayı gösteriyordu, bu da TO'yu %0,07'ye düşürdü).
+  // Rakiplerin hiçbiri hafta no kullanmıyor; hepsi "deze week" evergreen ifadesinde.
   const brandTerm = (market as { dealBrandTerm?: string }).dealBrandTerm
   const brandPrefix = brandTerm ? `${brandTerm} ` : ''
   const baseTitle = market.ctaTitle ?? `${market.name} Aanbiedingen Deze Week | DealHunter4U`
   const pageTitle = dealCount > 0
-    ? `${market.name} ${brandPrefix}Aanbiedingen Week ${week} ✓ ${dealCount} Actuele Deals | DealHunter4U`
-    : baseTitle.replace('Deze Week', `Week ${week} ${year}`)
+    ? `${market.name} ${brandPrefix}Aanbiedingen Deze Week ✓ ${dealCount} Actuele Deals | DealHunter4U`
+    : baseTitle
 
   const discountStr = topDiscount > 0 ? ` — tot ${topDiscount}% korting` : ''
   const dynamicDesc = dealCount > 0
-    ? `✓ ${dealCount} actuele ${market.name} ${brandPrefix}aanbiedingen voor week ${week}${discountStr}. ${market.description}`
+    ? `✓ ${dealCount} actuele ${market.name} ${brandPrefix}aanbiedingen van deze week${discountStr}. ${market.description}`
     : market.description
 
   return {

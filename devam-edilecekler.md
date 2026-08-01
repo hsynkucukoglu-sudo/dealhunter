@@ -1,10 +1,111 @@
 ---
-date: 2026-07-26
+date: 2026-08-01
 tags: [dealhunter, seo, adsense, affiliate, scraper]
 status: active
 ---
 
 # DealHunter4U — Devam Edilecekler
+
+## 🔴 SIRADAKİ İŞ — Trafik teşhisi tamamlandı, uygulama bekliyor (2026-08-01)
+
+**Teşhis: gösterim sorunu yok, CTR sorunu var.** GSC + canlı SERP analizi yapıldı.
+
+| Dönem | Gösterim/gün | Tıklama/gün | TO |
+|---|---|---|---|
+| Önceki 62 gün | 806 | 3,35 | %0,42 |
+| Son 28 gün | **2.357** (+192%) | 4,64 (+38%) | **%0,20** |
+
+Google 3 kat fazla gösteriyor, tıklama neredeyse sabit. Sayfa tipine göre ters orantı (3 ay):
+
+| Sayfa tipi | Gösterim | Tıklama | TO |
+|---|---|---|---|
+| `/supermarkt/*` | ~91.000 | 67 | **%0,07** |
+| Blog karşılaştırma | ~30.600 | 86 | %0,28 |
+| `/vergelijk/*` | ~800 | ~9 | **%1,1** |
+| Ana sayfa (marka) | 538 | 138 | %25,7 |
+
+### 1. [x] Hafta numaralarını title/description'dan kaldır — ✅ YAPILDI (2026-08-01)
+
+Uygulandı ve canlı sunucuda doğrulandı (`next build` + `next start` ile gerçek HTML çıktısı):
+- `Lidl Aanbiedingen Deze Week ✓ 86 Actuele Deals | DealHunter4U`
+- `Albert Heijn Bonus Aanbiedingen Deze Week ✓ 697 Actuele Deals | DealHunter4U`
+- `Aldi Aanbiedingen Deze Week ✓ 192 Actuele Deals | DealHunter4U`
+- `Albert Heijn vs Jumbo: Wie Heeft de Beste Aanbiedingen? | DealHunter4U`
+- `Koffie Aanbieding Deze Week ✓ Vergelijk 9 Winkels | DealHunter4U`
+- description: `✓ 86 actuele Lidl aanbiedingen van deze week — tot 50% korting…`
+
+Değişen dosyalar: `app/supermarkt/[slug]/page.tsx` (week+year değişkenleri ve `getISOWeek`
+importu da temizlendi, satır 40'taki replace bug'ı silindi), `app/vergelijk/[slug]/page.tsx`,
+`app/product/[slug]/page.tsx`. `npx tsc --noEmit` temiz, build başarılı.
+
+**Bilinçli olarak dokunulmadı:**
+- Deal sayısı (86/192/697) title'da bırakıldı — eskimesi zararsız, hafta no gibi
+  "bayat içerik" sinyali vermiyor, ayrıca somut rakam TO'yu artırır.
+- Sayfa **içindeki** görünür "Week {week}" ifadeleri (`vergelijk` satır 132, `product`
+  satır 120) duruyor — sayfa canlı render edildiği için her zaman güncel, sorun sadece
+  Google'ın önbelleklediği metadata'daydı.
+- `lib/schema.ts:107,126,150` ItemList `name` alanlarındaki hafta no — structured data
+  adı kullanıcıya gösterilmiyor, cerrahi kalmak için dokunulmadı.
+
+**Ölçüm:** GSC'de market sayfası TO'su 2-4 hafta içinde takip edilmeli (şu an %0,07).
+Google yeniden tarayana kadar SERP'te eski başlıklar görünmeye devam edecek.
+
+<details><summary>Orijinal teşhis (referans için)</summary>
+
+`site:dealhunter4u.nl/supermarkt` sorgusu çalıştırıldı. **Bugün hafta 31**, indexteki başlıklar:
+Kruidvat=**Week 28**, Lidl/Hoogvliet/DekaMarkt=**Week 29**, Vomar/Jumbo/AH=**Week 30**,
+Plus/Aldi=Week 31 ✅, Dirk=başlığı Google yeniden yazmış (güvenmediği sinyali).
+→ **10 sayfadan 7'si SERP'te eski hafta gösteriyor.** Kullanıcı bayat sanıp rakibe tıklıyor.
+Canlı sayfa doğru (Week 31) ama Google ~2 haftada bir tarıyor — bu yarış kaybedilemez.
+
+Rakiplerin **hiçbiri** hafta no kullanmıyor: Folderz "vanaf 07-08 | Deze & volgende week",
+AlleFolders/Reclamefolder "van deze week" (evergreen).
+
+Yapılacak:
+- `app/supermarkt/[slug]/page.tsx:39` — `Week ${week} ✓ ${dealCount} Actuele Deals` → evergreen "Deze Week"
+- `app/supermarkt/[slug]/page.tsx:44` — description'daki `voor week ${week}` aynı şekilde
+- **`page.tsx:40` GERÇEK BUG** — evergreen fallback'teki `'Deze Week'` ifadesini
+  `Week ${week} ${year}` ile **değiştiriyor**, yani doğru seçenek bile bozuluyor. Bu satır silinmeli.
+- Aynı sorun: `app/vergelijk/[slug]/page.tsx:33`, `app/product/[slug]/page.tsx:28`
+- Deal sayısı da eskiyor (Lidl indexte 73, canlıda 86) → kaldır veya "100+" gibi yuvarla
+
+Beklenti: market sayfaları %0,07 → %0,5 çıksa bile toplam tıklama ikiye katlanır.
+
+</details>
+
+### 2. [ ] Karşılaştırma içeriğine yatırım — ÖNCELİK 2
+
+Kanıt: tek yazı `/blog/albert-heijn-vs-jumbo-vs-lidl-wie-is-goedkoper` = **62 tıklama**
+(tüm sitenin %18'i), 27.578 gösterim, konum 6,4. Diğerleri: `is-lidl-goedkoper-dan-albert-heijn`
+%2,3 TO (konum 4,8), `is-kruidvat-goedkoper-dan-etos` %1,2, `beste-dag-boodschappen-doen` %1,1.
+`/vergelijk` sayfaları %1,1 TO ile mükemmel dönüyor ama sayfa başına sadece 17-106 gösterim (hacim yok).
+
+**Moat:** 10+ markette gerçek fiyat verisi var. Folder siteleri sadece PDF yayınlıyor,
+"Lidl bu hafta AH'den ucuz mu" sorusuna sayıyla cevap veremezler.
+
+Hedef sorgular: "goedkoopste supermarkt van nederland", "welke supermarkt is het goedkoopst 2026",
+"boodschappen goedkoper doen", "supermarkt prijzen vergelijken" — aynı kalitede 5-10 yazı.
+
+### 3. [ ] Head-term optimizasyonunu bırak
+
+"aldi" 11.947 gösterim/28g → 4 tıklama (%0,03). "lidl aanbiedingen" 9.989 → 2.
+Bu SERP'lerde 1-2. sıra marketin kendi sitesi, arkasında reclamefolder/allefolders/folderz/yenom/foldoo
+(yıllarca otorite biriktirmiş). Konum 8-9'da kullanıcı zaten aradığını bulmuş oluyor.
+Title/meta ince ayarı yapmayı kes — bu otorite savaşı, kopya savaşı değil.
+
+> ⚠️ **SERP kontrolünde tuzak:** kendi tarayıcında kişiselleştirme yüzünden site 3. sırada
+> görünüyor. GSC'nin verdiği 8,5 konumu gerçek olan. Canlı SERP'e bakıp "iyi sıradayız" deme.
+
+### 4. [ ] 44 "keşfedildi-indekslenmedi" sayfayı incele
+
+İndeksleme: 166 indexte, 93 dışında (44 keşfedildi-indekslenmedi, 27 robots.txt, 8 tarandı-indekslenmedi).
+Kalite/crawl bütçesi sinyali olabilir.
+
+### Elenen hipotezler (tekrar bakma)
+- **Ürün snippet'leri**: arama görünümü kırılımında sadece 483 gösterim — structured data yüzeyi sorun değil.
+- **Cihaz**: mobil 45.779 gösterim/94 tıklama, masaüstü 16.812/31 — mobil %69 hakim, dengesizlik yok.
+
+---
 
 ## 🎉 AdSense ONAYLANDI — 29 Tem 2026 07:49 CEST
 
