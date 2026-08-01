@@ -214,6 +214,43 @@ O zamana kadar Hoogvliet/Lidl'in %0 sorunu da çözülmeli.
 "bu hafta koffie Lidl'de €7,99, AH'de €X". `/product` sayfaları zaten bunu yapıyor.
 Otorite için veri-PR yerine ortaklık/dizin kaynaklı link yolu daha gerçekçi görünüyor.
 
+### 2c. [x] Hoogvliet sessiz scraper arızası — ✅ ÇÖZÜLDÜ (commit `1c23849`)
+
+**"Hoogvliet ve Lidl aynı veriyi tekrar okuyor" demiştim — yarısı yanlıştı.**
+- **Lidl'de sorun YOK.** Scraper her gün çalışıyor (son tarama bugün 08:02). %0 haftaları
+  gerçek: promosyonlar 2 hafta sürüyor. Doğrulandı — "Koffie goud XXL" 07-20 ve 07-27'de
+  €7,99; "Gemengd gehakt" 06-29+07-06'da €5,99, 07-20+07-27'de €5,29. Bug değil.
+- **Hoogvliet'te gerçek arıza vardı** ama sebebi "aynı veriyi okumak" değil, hiç
+  okuyamamaktı: `last_scraped` 29 Temmuz'da donmuş, diğer tüm marketler günlük güncelleniyordu.
+
+**Kök neden:** hoogvliet.com **Imperva/Incapsula** arkasında (`X-CDN: Imperva`,
+`visid_incap_*` çerezleri). Imperva veri merkezi IP'lerine JS challenge veriyor →
+Railway'den `fetch` başarısız → `scrapeHoogvliet()` catch'e düşüp `[]` dönüyor →
+scheduler 0 ürünlü marketi bilinçli olarak silmediği için eski folder sessizce kalıyor.
+Kruidvat/Akamai ile aynı sınıf sessiz arıza.
+
+**Kurmadan önce doğrulandı:** sayfa sağlam (HTTP 200, 20 tegel), parser sağlam
+(scraper'ın TAM başlıklarıyla residential IP'den 17 ürün çıkıyor). Fark IP'de, kodda değil.
+
+**Çözüm:** `.github/scripts/hoogvliet-scraper.js` (Playwright + stealth, Kruidvat şablonu),
+`.github/workflows/hoogvliet-scraper.yml` günlük 08:20 UTC. Yerelde çalıştırıldı:
+20 tegel → 17 ürün, 17 indirimli. Challenge sayfasının folderi ezmemesi için
+5 ürün alt eşiği kondu.
+
+**Yan bugfix:** backend regex parser her kartı 2500 karakterde kesiyordu; Aviko Churros
+(8346) ve Page toiletpapier (8549) kartlarında strikethrough o pencerenin dışında kalıyor,
+bu 2 ürün "indirimsiz" olarak kaydediliyordu. DOM sürümü yakalıyor. Fiyatın doğru ürüne
+ait olduğu doğrulandı (her iki kartta tek ürün başlığı, strikethrough aynı `price-container`'da).
+
+**AÇIK:** `gh` CLI bu ortamda yok, workflow elle tetiklenemedi. Yarın 08:20 UTC'de
+kendiliğinden çalışacak; Actions sekmesinden "Run workflow" ile hemen de tetiklenebilir.
+Sonrasında `/api/health/scraper`'da Hoogvliet `last_scraped`'i güncel olmalı.
+
+**İzlenecek risk (bu değişiklikte çözülmedi):** backend scraper Hoogvliet/Kruidvat/Dirk/Plus
+için minimum ürün eşiği içermiyor. Bir gün Imperva 200 + challenge sayfası dönerse ve
+parser birkaç çöp ürün çıkarırsa, market silinip çöple değiştirilebilir. Proje genelinde
+mevcut bir desen, ayrı iş olarak ele alınmalı.
+
 <details><summary>Üç strateji yolu (referans)</summary>
 
 Kanıt: tek yazı `/blog/albert-heijn-vs-jumbo-vs-lidl-wie-is-goedkoper` = **62 tıklama**
