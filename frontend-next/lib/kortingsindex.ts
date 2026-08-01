@@ -35,7 +35,15 @@ export async function getKortingsindex(): Promise<MarketIndexEntry[]> {
     entries.push({ market, slug: slugByName.get(market)!, dealCount: list.length, avgDiscount, maxDiscount, onePlusOneCount })
   }
 
-  return entries.sort((a, b) => b.avgDiscount - a.avgDiscount)
+  // Alfabetisch, NIET op gemiddelde korting.
+  //
+  // Sorteren op gemiddelde korting suggereert een ranglijst ("deze supermarkt geeft de
+  // meeste korting") die de data niet kan dragen: de scraperdekking verschilt per keten.
+  // Meting 2026-08-01 over 12 weken: Hoogvliet levert 27-31 producten per week (alleen de
+  // kopdeals uit de folder, dus hoge percentages), Albert Heijn 167-743 (het hele
+  // assortiment inclusief kleine kortingen). Het verschil tussen "Hoogvliet 43%" en
+  // "AH 18%" zit in wat we ophalen, niet in wat de winkel doet.
+  return entries.sort((a, b) => a.market.localeCompare(b.market, 'nl'))
 }
 
 export function getMonthLabel(): string {

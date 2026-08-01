@@ -74,7 +74,9 @@ export default async function PersPage() {
         <ul style={{ paddingLeft: 24, marginBottom: 16 }}>
           <li style={{ marginBottom: 8 }}>
             Cijfers van de <Link href="/kortingsindex" style={{ color: '#E33D26', fontWeight: 600 }}>DealHunter4U Kortingsindex</Link> zijn
-            vrij te gebruiken in publicaties, met bronvermelding naar dealhunter4u.nl.
+            vrij te gebruiken in publicaties, met bronvermelding naar dealhunter4u.nl. Let op: de gemiddelde
+            korting is niet bedoeld om supermarkten onderling te ranken — onze dekking verschilt per keten.
+            De kanttekening staat bij de index zelf.
           </li>
           <li style={{ marginBottom: 8 }}>Meer over ons: <Link href="/over-ons" style={{ color: '#E33D26', fontWeight: 600 }}>Over ons</Link></li>
         </ul>

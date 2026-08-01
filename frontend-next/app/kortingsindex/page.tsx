@@ -12,8 +12,10 @@ export const dynamic = 'force-dynamic'
 
 export async function generateMetadata(): Promise<Metadata> {
   const month = getMonthLabel()
-  const title = `DealHunter4U Kortingsindex — ${month} | Welke Supermarkt Heeft de Hoogste Korting?`
-  const description = `✓ De DealHunter4U Kortingsindex van ${month}: gemiddelde korting, aantal aanbiedingen en 1+1 acties per supermarkt, live vergeleken.`
+  // Geen "welke supermarkt heeft de hoogste korting" meer: die claim kan de data niet
+  // dragen (verschillende scraperdekking per keten — zie lib/kortingsindex.ts).
+  const title = `Kortingsindex ${month} — Actuele Aanbiedingen per Supermarkt | DealHunter4U`
+  const description = `✓ Overzicht van de aanbiedingen die DealHunter4U deze week volgt per supermarkt: aantal deals, hoogste korting en 1+1 acties.`
   return {
     title,
     description,
@@ -25,7 +27,6 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function KortingsindexPage() {
   const entries = await getKortingsindex()
   const month = getMonthLabel()
-  const leader = entries[0]
 
   const breadcrumb = buildBreadcrumbSchema([
     { name: 'Home', url: '/' },
@@ -34,14 +35,12 @@ export default async function KortingsindexPage() {
 
   const faqs = [
     {
-      question: `Welke supermarkt heeft in ${month} de hoogste gemiddelde korting?`,
-      answer: leader
-        ? `${leader.market} heeft momenteel de hoogste gemiddelde korting: ${leader.avgDiscount}% over ${leader.dealCount} actuele aanbiedingen.`
-        : 'De index wordt op dit moment bijgewerkt.',
+      question: 'Kun je supermarkten vergelijken op gemiddelde korting?',
+      answer: 'Niet zomaar, en daarom presenteren wij geen ranglijst. Van de ene keten halen we alleen de kopdeals uit de folder op (enkele tientallen producten, dus hoge percentages), van de andere het volledige aanbod inclusief kleine kortingen (honderden producten). Een gemiddelde over die twee groepen meet vooral het verschil in wat wij ophalen. Het aantal deals per supermarkt staat er daarom altijd naast.',
     },
     {
       question: 'Wat is de DealHunter4U Kortingsindex?',
-      answer: 'De Kortingsindex is een doorlopend, live overzicht van de gemiddelde korting, het aantal aanbiedingen en het aantal 1+1-acties per Nederlandse supermarkt — berekend op basis van alle actuele folderdata die DealHunter4U dagelijks verzamelt.',
+      answer: 'Een live overzicht van de aanbiedingen die DealHunter4U op dit moment volgt per Nederlandse supermarkt: het aantal deals, de hoogste korting die we vonden en het aantal 1+1-acties. De cijfers komen rechtstreeks uit de officiële folders van die week.',
     },
     {
       question: 'Hoe wordt de Kortingsindex berekend?',
@@ -84,18 +83,22 @@ export default async function KortingsindexPage() {
         >
           DealHunter4U Kortingsindex
         </h1>
-        <p className="text-base max-w-2xl mb-10" style={{ color: '#6B6259', fontFamily: 'Hanken Grotesk' }}>
-          {month} — live gerangschikt op gemiddelde korting, gebaseerd op alle actuele folderdata. Geen schattingen.
+        <p className="text-base max-w-2xl mb-6" style={{ color: '#6B6259', fontFamily: 'Hanken Grotesk' }}>
+          {month} — de aanbiedingen die wij deze week volgen per supermarkt, rechtstreeks uit de
+          officiële folders. Alfabetisch, geen ranglijst.
         </p>
 
-        {leader && (
-          <div className="rounded-3xl p-6 mb-10" style={{ background: 'white', border: '2px solid #1B9E4B' }}>
-            <p className="text-base md:text-lg font-semibold" style={{ color: '#1A1A1A', fontFamily: 'Hanken Grotesk' }}>
-              🏆 Deze week kopploeg: <span style={{ color: '#1B9E4B' }}>{leader.market}</span> — gemiddeld{' '}
-              <strong>{leader.avgDiscount}% korting</strong> over {leader.dealCount} aanbiedingen.
-            </p>
-          </div>
-        )}
+        {/* Bewust geen "kopploeg"-banner en geen sortering op gemiddelde korting: het aantal
+            opgehaalde producten verschilt te sterk per keten om ketens op dat gemiddelde te
+            kunnen ranken (zie lib/kortingsindex.ts). */}
+        <div className="rounded-2xl p-4 mb-10" style={{ background: 'rgba(227,61,38,0.06)', border: '1.5px solid rgba(227,61,38,0.25)' }}>
+          <p className="text-sm leading-relaxed" style={{ color: '#6B6259', fontFamily: 'Hanken Grotesk' }}>
+            <strong style={{ color: '#1A1A1A' }}>Let op bij het lezen:</strong> de gemiddelde korting is
+            niet tussen supermarkten te vergelijken. Van sommige ketens volgen we enkele tientallen
+            kopdeals, van andere honderden producten inclusief kleine kortingen. Kijk daarom altijd
+            naar de kolom <em>Deals</em> ernaast.
+          </p>
+        </div>
 
         <div className="rounded-3xl overflow-hidden mb-10" style={{ background: 'white', border: '1.5px solid #E0D8CE' }}>
           <div className="grid grid-cols-5 text-xs font-bold uppercase tracking-wide px-6 py-3" style={{ color: '#9C9389', fontFamily: 'JetBrains Mono', borderBottom: '1.5px solid #E0D8CE' }}>
@@ -112,8 +115,8 @@ export default async function KortingsindexPage() {
               className="grid grid-cols-5 items-center px-6 py-4 transition-colors hover:bg-black/[0.02]"
               style={{ borderBottom: i < entries.length - 1 ? '1px solid #E0D8CE' : 'none', textDecoration: 'none' }}
             >
+              {/* Geen rangnummer meer — dat las als "nr. 1 = beste korting" */}
               <div className="flex items-center gap-3">
-                <span className="text-xs font-bold w-4" style={{ color: '#9C9389', fontFamily: 'JetBrains Mono' }}>{i + 1}</span>
                 <MarketLogo market={e.market} size={28} />
                 <span className="font-semibold text-sm" style={{ color: '#1A1A1A', fontFamily: 'Space Grotesk' }}>{e.market}</span>
               </div>
@@ -127,10 +130,21 @@ export default async function KortingsindexPage() {
 
         <section className="rounded-3xl p-6 md:p-8 mb-10" style={{ background: 'rgba(255,255,255,0.7)', border: '1px solid rgba(201,193,182,0.4)' }}>
           <h2 className="text-xl font-headline font-bold mb-3" style={{ color: '#1A1A1A' }}>Methodologie</h2>
-          <p className="text-sm leading-relaxed" style={{ color: '#6B6259', fontFamily: 'Hanken Grotesk' }}>
+          <p className="text-sm leading-relaxed mb-3" style={{ color: '#6B6259', fontFamily: 'Hanken Grotesk' }}>
             De Kortingsindex is gebaseerd op alle op dit moment geldige aanbiedingen die DealHunter4U dagelijks verzamelt
-            uit de officiële folders van {entries.length} Nederlandse supermarkten. Voor journalisten: cijfers zijn
-            vrij te gebruiken met bronvermelding naar dealhunter4u.nl.{' '}
+            uit de officiële folders van {entries.length} Nederlandse supermarkten.
+          </p>
+          <p className="text-sm leading-relaxed mb-3" style={{ color: '#6B6259', fontFamily: 'Hanken Grotesk' }}>
+            <strong style={{ color: '#1A1A1A' }}>Wat deze cijfers niet zijn:</strong> de dekking verschilt per keten.
+            Van sommige supermarkten halen we alleen de kopdeals uit de folder op, van andere het volledige
+            aanbod inclusief kleine kortingen. Daardoor is de gemiddelde korting wél te volgen binnen één
+            supermarkt, maar niet te gebruiken om supermarkten onderling te ranken. Om diezelfde reden staat
+            hier geen ranglijst en sorteren we alfabetisch.
+          </p>
+          <p className="text-sm leading-relaxed" style={{ color: '#6B6259', fontFamily: 'Hanken Grotesk' }}>
+            Voor journalisten: het aantal deals, de hoogste korting en het aantal 1+1-acties per supermarkt zijn
+            vrij te gebruiken met bronvermelding naar dealhunter4u.nl. Neem de gemiddelde korting alleen over
+            mét de bijbehorende kanttekening hierboven.{' '}
             <Link href="/pers" style={{ color: '#E33D26', fontWeight: 600 }}>Bekijk onze perskit →</Link>
           </p>
         </section>
