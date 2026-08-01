@@ -327,6 +327,46 @@ export async function getKortingsindexHistory() {
   }))
 }
 
+// Matched-pair prijsindex: vergelijkt per week alleen producten die in ZOWEL die week
+// als de week ervoor zijn waargenomen (zelfde naam + markt). Dat is dezelfde methode die
+// statistiekbureaus voor een CPI gebruiken, en het is hier noodzakelijk: de gemiddelde
+// korting per markt is onbruikbaar omdat scraper-dekking per markt en over tijd verschilt
+// (AH sprong 2026-06-15 van 193 naar 676 producten). Door alleen gepaarde waarnemingen te
+// gebruiken kan een wijziging in dekking geen schijnbeweging meer veroorzaken.
+//
+// Let op bij publicatie: dit meet PROMOTIEprijzen, niet schapprijzen. Alleen producten die
+// in beide weken in de folder stonden tellen mee.
+export async function getMatchedPriceIndex() {
+  const { rows } = await pool.query(
+    `WITH pairs AS (
+       SELECT b.recorded_week AS week,
+              b.product_market AS market,
+              b.discounted_price / a.discounted_price AS ratio
+       FROM price_history a
+       JOIN price_history b
+         ON b.product_name   = a.product_name
+        AND b.product_market = a.product_market
+        AND b.recorded_week  = a.recorded_week + 7
+       WHERE a.discounted_price > 0
+         AND b.discounted_price > 0
+     )
+     SELECT week,
+            market,
+            COUNT(*)::int AS matched_count,
+            ROUND(((AVG(ratio) - 1) * 100)::numeric, 2) AS pct_change
+     FROM pairs
+     GROUP BY week, market
+     HAVING COUNT(*) >= 10
+     ORDER BY week ASC, market ASC`
+  )
+  return rows.map(r => ({
+    week: r.week,
+    market: r.market,
+    matchedCount: r.matched_count,
+    pctChange: parseFloat(r.pct_change),
+  }))
+}
+
 export async function getPriceHistory(productName, productMarket) {
   const { rows } = await pool.query(
     `SELECT discounted_price, original_price, recorded_week

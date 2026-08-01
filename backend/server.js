@@ -3,7 +3,7 @@ import cors from 'cors'
 import rateLimit from 'express-rate-limit'
 import { initDatabase } from './db.js'
 import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, updateProductCategory, clearAllProducts, clearProductsByMarket } from './models.js'
-import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, archiveWeeklyDeals, getMinPriceMap, getPriceHistory, getKortingsindexHistory, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts, updateSubscriptionPreferences, getUnsegmentedSubscriptions, getSegmentedSubscriptions, clearOrphanProducts, getProductCount, clearExpiredProducts, subscribeDealAlert, unsubscribeDealAlert, getMatchingAlerts, markAlertSent } from './db.js'
+import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, archiveWeeklyDeals, getMinPriceMap, getPriceHistory, getKortingsindexHistory, getMatchedPriceIndex, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts, updateSubscriptionPreferences, getUnsegmentedSubscriptions, getSegmentedSubscriptions, clearOrphanProducts, getProductCount, clearExpiredProducts, subscribeDealAlert, unsubscribeDealAlert, getMatchingAlerts, markAlertSent } from './db.js'
 import { sendWeeklyNewsletter, sendWatchlistAlert, sendDealAlert } from './email.js'
 import { findWeeklyChampion } from './productMatch.js'
 import { sendPushToAll, sendPushToSubscriptions } from './push.js'
@@ -581,6 +581,12 @@ app.get('/api/price-history', asyncHandler(async (req, res) => {
 // GET /api/kortingsindex-history - Haftalık kortingsindex serisi (market x hafta)
 app.get('/api/kortingsindex-history', asyncHandler(async (req, res) => {
   const rows = await getKortingsindexHistory()
+  res.json(rows)
+}))
+
+// GET /api/matched-price-index - Matched-pair prijsindex (alleen gepaarde waarnemingen)
+app.get('/api/matched-price-index', asyncHandler(async (req, res) => {
+  const rows = await getMatchedPriceIndex()
   res.json(rows)
 }))
 
