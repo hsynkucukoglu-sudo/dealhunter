@@ -184,8 +184,14 @@ export function ProductCard({ product, priority = false }: { product: Product; p
             {product.market}
           </p>
           {brandSlug && (
+            // rel=nofollow: /merk sayfaları bilinçli olarak noindex. Her ürün kartı bir
+            // link verdiği için ana sayfa 29, market sayfaları 42 /merk linki üretiyordu —
+            // Googlebot bunları tarayıp noindex görmek için tarama bütçesi harcıyordu,
+            // bu sırada /product ve /categorie sayfaları "keşfedildi ama taranmadı"da
+            // bekliyordu (2026-08-01, 44 sayfa). Kullanıcı için link kalıyor.
             <Link
               href={`/merk/${brandSlug}`}
+              rel="nofollow"
               onClick={(e) => e.stopPropagation()}
               className="text-[11px] font-medium uppercase tracking-wider hover:underline"
               style={{ color: '#B5AA9C', fontFamily: 'JetBrains Mono' }}

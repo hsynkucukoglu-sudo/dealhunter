@@ -96,10 +96,55 @@ Title/meta ince ayarı yapmayı kes — bu otorite savaşı, kopya savaşı değ
 > ⚠️ **SERP kontrolünde tuzak:** kendi tarayıcında kişiselleştirme yüzünden site 3. sırada
 > görünüyor. GSC'nin verdiği 8,5 konumu gerçek olan. Canlı SERP'e bakıp "iyi sıradayız" deme.
 
-### 4. [ ] 44 "keşfedildi-indekslenmedi" sayfayı incele
+### 4. [x] 44 "keşfedildi-indekslenmedi" sayfa — ✅ TEŞHİS + FIX YAPILDI (2026-08-01)
 
-İndeksleme: 166 indexte, 93 dışında (44 keşfedildi-indekslenmedi, 27 robots.txt, 8 tarandı-indekslenmedi).
-Kalite/crawl bütçesi sinyali olabilir.
+**Uygulanan fix (doğrulandı, sunucu HTML'inde):**
+- `components/CategoryPage.tsx` + `app/categorie/[slug]/page.tsx`: kategori sayfalarına
+  "Populaire producten in deze categorie" chip bloğu eklendi. `PRODUCT_KEYWORDS`'ün
+  `category` alanı kategori slug'ıyla eşleştiriliyor. Sonuç: **20/20 ürün sayfası**
+  artık bağlamsal iç link alıyor (zuivel 5, dranken 4, vlees-vis 3, overig 3,
+  maaltijden 2, huishouden/snacks/verzorging 1'er). bakkerij + groente-fruit'te eşleşen
+  keyword yok → blok gizleniyor.
+- `components/ProductCard.tsx`: `/merk/` linkine `rel="nofollow"` eklendi. Kullanıcı için
+  link duruyor, Googlebot tarama bütçesini indexlenmeyecek sayfalara harcamıyor.
+  Doğrulandı: kategori sayfasında 48-124 nofollow.
+- `tsc --noEmit` temiz, `next build` başarılı. (Build'deki "Failed to load dynamic font
+  for ✓" uyarıları OG görsel üreticisinden, önceden de vardı, bu değişiklikle ilgisiz.)
+
+**Ölçüm:** GSC "Keşfedildi - şu anda dizine eklenmiş değil" sayısı 2-4 hafta içinde
+44'ten düşmeli. Düşmezse sorun tarama bütçesi değil, domain otoritesi demektir.
+
+<details><summary>Teşhis detayı (referans)</summary>
+
+**44 URL'in dağılımı:** 14 `/product/*`, 14 `/merk/*`, 9 `/categorie/*`, 6 blog, 1 `/contact`.
+
+"Keşfedildi" = Google URL'i biliyor ama **henüz taramadı** (reddetmiş değil — "tarandı-indekslenmedi"
+sadece 8 sayfa). Yani sorun içerik kalitesi değil, tarama önceliği.
+İçerik ince de değil: `/product/koffie` 932 kelime, `/categorie/zuivel` 1050, blog 1277.
+
+**KÖK NEDEN: iç linkleme önceliği tam ters.** Ham sunucu HTML'inde (Googlebot'un gördüğü):
+
+| Sayfa tipi | Ana sayfadan link | Market sayfasından | Durum |
+|---|---|---|---|
+| `/merk/*` (**noindex!**) | 29 | 42 | asla indexlenmeyecek |
+| `/categorie/*` | 7 | 7 | 10'un 9'u indexlenmemiş |
+| `/product/*` | **0** | **0** | 20'nin 14'ü indexlenmemiş |
+
+`/product/*` sayfalarına tek erişim yolu `/product` index sayfası (oradan 20 link var),
+ana sayfa da o index'e 784 linkinden sadece 1'ini veriyor. Yani dar bir huniden besleniyorlar.
+Buna karşılık **noindex** olan `/merk/*` sayfaları her sayfadan 29-42 doğrudan link alıyor.
+
+**Yapılacak fix:**
+- `/product/*` sayfalarına bağlamsal iç link ekle — en mantıklısı `/categorie/*` sayfalarından
+  ("Populaire producten in deze categorie") ve ilgili blog yazılarından.
+- `/merk/*` link yoğunluğunu azalt (ürün kartlarındaki marka etiketleri, `card-product` içinde).
+  Sayfalar `noindex, follow` — teknik olarak doğru, robots.txt'de de engelli değil (doğru),
+  ama her sayfadan 42 link vermek tarama bütçesini indexlenmeyecek sayfalara harcıyor.
+
+**Elenen hipotezler:** ince içerik değil (kelime sayıları yukarıda); `/merk` sitemap'te yok (doğru);
+ana sayfadaki 643 adet `href="#"` link çerez onay bannerının satıcı listesi — gerçek URL değil, sorun değil.
+
+</details>
 
 ### Elenen hipotezler (tekrar bakma)
 - **Ürün snippet'leri**: arama görünümü kırılımında sadece 483 gösterim — structured data yüzeyi sorun değil.

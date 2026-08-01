@@ -18,7 +18,13 @@ interface Category {
   emoji: string
 }
 
-export function CategoryPage({ category, initialProducts, relatedPosts = [] }: { category: Category; initialProducts: Product[]; relatedPosts?: BlogPost[] }) {
+// Sadece slug+label — ProductKeyword tipini import etmek client bundle'a lib/api'yi de çekerdi
+interface RelatedProduct {
+  slug: string
+  label: string
+}
+
+export function CategoryPage({ category, initialProducts, relatedPosts = [], relatedProducts = [] }: { category: Category; initialProducts: Product[]; relatedPosts?: BlogPost[]; relatedProducts?: RelatedProduct[] }) {
   const [search, setSearch] = useState('')
   const [selectedMarket, setSelectedMarket] = useState('all')
   const { itemCount, setIsCartOpen } = useShoppingList()
@@ -35,6 +41,7 @@ export function CategoryPage({ category, initialProducts, relatedPosts = [] }: {
     found: lang === 'tr' ? 'fırsat bulundu' : lang === 'en' ? 'deals found' : 'aanbiedingen gevonden',
     noDeals: lang === 'tr' ? 'Fırsat bulunamadı' : lang === 'en' ? 'No deals found' : 'Geen aanbiedingen gevonden',
     otherCats: lang === 'tr' ? 'Diğer kategoriler' : lang === 'en' ? 'Other categories' : 'Andere categorieën',
+    popularProducts: lang === 'tr' ? 'Bu kategorideki popüler ürünler' : lang === 'en' ? 'Popular products in this category' : 'Populaire producten in deze categorie',
     searchPlaceholder: lang === 'tr' ? `${catLabel} içinde ara...` : lang === 'en' ? `Search in ${catLabel}...` : `Zoek in ${catLabel}...`,
     dealsTitle: lang === 'tr' ? 'Fırsatları' : lang === 'en' ? 'Deals' : 'Aanbiedingen',
     descText: lang === 'tr'
@@ -212,6 +219,24 @@ export function CategoryPage({ category, initialProducts, relatedPosts = [] }: {
                   <span className="inline-block mt-3 text-xs font-semibold" style={{ color: '#E33D26' }}>
                     Lees meer →
                   </span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Populaire producten — /product/* sayfalarına tek iç link kaynağı.
+            Öncesinde bu sayfalara sadece /product index'inden link vardı ve 20'nin
+            14'ü GSC'de "keşfedildi ama taranmadı" durumundaydı (2026-08-01). */}
+        {relatedProducts.length > 0 && (
+          <section className="mt-16">
+            <h2 className="text-xl font-headline font-bold mb-4" style={{ color: '#1A1A1A' }}>{ui.popularProducts}</h2>
+            <div className="flex flex-wrap gap-3">
+              {relatedProducts.map(p => (
+                <Link key={p.slug} href={`/product/${p.slug}`}
+                  className="px-5 py-2.5 rounded-full text-sm font-medium transition-all hover:bg-white"
+                  style={{ background: 'rgba(255,255,255,0.6)', border: '1.5px solid #E0D8CE', color: '#1A1A1A' }}>
+                  {p.label}
                 </Link>
               ))}
             </div>

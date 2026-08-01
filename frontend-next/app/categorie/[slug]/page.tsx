@@ -6,6 +6,7 @@ import { buildBreadcrumbSchema, buildFaqSchema, buildMultiMarketProductListSchem
 import { CategoryPage } from '@/components/CategoryPage'
 import { getPostsByCategory } from '@/lib/posts'
 import { CATEGORY_FAQS } from '@/lib/categoryFaqs'
+import { PRODUCT_KEYWORDS } from '@/lib/productKeywords'
 
 const CATEGORY_META: Record<string, { title: string; description: string; keywords: string }> = {
   'groente-fruit': {
@@ -98,6 +99,9 @@ export default async function CategoriePageRoute({ params }: Props) {
 
   const products = await getProductsByCategory(slug)
   const relatedPosts = getPostsByCategory(slug)
+  const relatedProducts = PRODUCT_KEYWORDS
+    .filter(k => k.category === slug)
+    .map(k => ({ slug: k.slug, label: k.label }))
 
   const breadcrumb = buildBreadcrumbSchema([
     { name: 'Home', url: '/' },
@@ -128,7 +132,7 @@ export default async function CategoriePageRoute({ params }: Props) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(productListSchema) }}
         />
       )}
-      <CategoryPage category={cat} initialProducts={products} relatedPosts={relatedPosts} />
+      <CategoryPage category={cat} initialProducts={products} relatedPosts={relatedPosts} relatedProducts={relatedProducts} />
     </>
   )
 }
