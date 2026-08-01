@@ -122,7 +122,50 @@ Tek başına "lidl aanbiedingen"i konum 8,5'ten 3'e taşımak ≈ +1.000 tıklam
 
 `/kortingsindex` sayfası var ama konum 30,8, 146 gösterim — linklenebilir varlık olarak paketlenmemiş.
 
-**KARAR BEKLİYOR** — üç yol aşağıda, henüz seçilmedi:
+**SEÇİLEN YOL: A (otorite inşası).** İlk adım atıldı, ama veri denetimi engel çıkardı — aşağıya bak.
+
+### 2a. [!] Kortingsindex verisi YAYINLANABİLİR DEĞİL — metodoloji sorunu (2026-08-01)
+
+`GET /api/kortingsindex-history` eklendi (commit sonrası canlı) ve 12 haftalık seri incelendi
+(2026-05-11 → 07-27, 9 market, 84 kayıt). Sonuç: **mevcut endeks metriği (market başına
+ortalama indirim %) ne marketler arası ne de zaman içinde karşılaştırılabilir.**
+
+**Sorun 1 — kapsama yanlılığı (marketler arası):** haftalık ürün sayıları uçurum gibi farklı.
+
+| Market | Haftalık ürün | Ort. indirim |
+|---|---|---|
+| Hoogvliet | 27-31 | %37,8-46 |
+| Aldi | 25-42 | %22,4-27,3 |
+| Albert Heijn | 167-743 | %13,4-20,9 |
+
+Hoogvliet'in scraper'ı sadece manşet fırsatları çekiyor (yüksek indirim), AH'ninki tüm
+assortimanı (küçük indirimler dahil). "Hoogvliet %43, AH %18" gerçek değil, scraper
+kapsamının yan ürünü. Karşılaştırma elma-armut.
+
+**Sorun 2 — zaman içinde kırılma:** scraper değişiklikleri sahte trend üretiyor.
+- Albert Heijn ürün sayısı 06-08'de 193 → 06-15'te **676** (3,5x sıçrama)
+- Dirk ort. indirim 06-08'de %30,8 → 06-15'te **%44,3** (bilinen Dirk scraper yeniden yazımı)
+- Kruidvat serisi ancak 06-29'da başlıyor, Vomar 07-06'da (05-18'deki tek %78 okuması saçma)
+
+Yani "Dirk haziranda indirimlerini ikiye katladı" diye yayınlansa **yanlış** olurdu ve bir
+gazeteci/rakip bunu kolayca çürütürdü — otorite inşasının tam tersi.
+
+**Sorun 3 — sağlam alternatif şu an kurulamıyor.** Metodolojik olarak doğru yol sabit sepet
+(aynı ürünlerin marketler arası fiyatı). `GET /api/compare` çalıştırıldı: **sadece 5 adet
+çok-marketli karşılaştırılabilir ürün grubu** var. Sepet endeksi için çok az.
+
+**CANLI RİSK:** `/kortingsindex` sayfası (`force-dynamic`) şu anda tam da bu yanıltıcı
+sıralamayı yayınlıyor — "hangi süpermarketin en yüksek ortalama indirimi var" diye. Otorite
+inşasına başlamadan önce bu düzeltilmeli, yoksa elimizdeki en zayıf halka orası olur.
+
+**Yayınlanabilir olan ne var:** ürün bazlı, tek market içi zaman serisi — kapsama yanlılığından
+etkilenmez. Örn. "koffie promosyon fiyatları mayıstan beri %X değişti". `price_history` bunu
+destekliyor. İfade net olmalı: bu **promosyon** fiyatı, raf fiyatı değil.
+
+**Sıradaki karar:** (i) endeksi düzelt/kaldır mı, (ii) ürün bazlı zaman serisine mi geçilsin,
+(iii) scraper kapsamı eşitlenene kadar otorite işi ertelensin mi.
+
+<details><summary>Üç strateji yolu (referans)</summary>
 
 Kanıt: tek yazı `/blog/albert-heijn-vs-jumbo-vs-lidl-wie-is-goedkoper` = **62 tıklama**
 (tüm sitenin %18'i), 27.578 gösterim, konum 6,4. Diğerleri: `is-lidl-goedkoper-dan-albert-heijn`
@@ -144,6 +187,8 @@ dönüşümüne odaklan. Blog trafiği zaten market sayfalarından 10x iyi dön�
 
 *(Eski öneri — referans için: "goedkoopste supermarkt van nederland", "welke supermarkt is het
 goedkoopst 2026" gibi sorgulara 5-10 yazı. Yukarıdaki veriye göre bu yolun tavanı düşük.)*
+
+</details>
 
 ### 3. [ ] Head-term optimizasyonunu bırak
 
