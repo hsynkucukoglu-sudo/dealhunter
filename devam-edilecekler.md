@@ -162,8 +162,49 @@ inşasına başlamadan önce bu düzeltilmeli, yoksa elimizdeki en zayıf halka 
 etkilenmez. Örn. "koffie promosyon fiyatları mayıstan beri %X değişti". `price_history` bunu
 destekliyor. İfade net olmalı: bu **promosyon** fiyatı, raf fiyatı değil.
 
-**Sıradaki karar:** (i) endeksi düzelt/kaldır mı, (ii) ürün bazlı zaman serisine mi geçilsin,
-(iii) scraper kapsamı eşitlenene kadar otorite işi ertelensin mi.
+**Seçilen:** (ii) ürün bazlı zaman serisi. Kuruldu ve test edildi — sonuç aşağıda.
+
+### 2b. [!] Matched-pair endeksi de yayınlanabilir değil (2026-08-01)
+
+`GET /api/matched-price-index` eklendi: sadece ardışık iki haftada da görülen **aynı ürünün**
+fiyat oranı alınıyor (TÜFE yöntemi). Kapsama yanlılığı sorunu böylece çözüldü — kapsam
+değişimi artık endeksi kıpırdatamaz. Ama veri yine tutmuyor.
+
+| Market | Kümülatif | Hafta | Medyan eşleşme | %0 hafta |
+|---|---|---|---|---|
+| Aldi | **+62,0%** | 6 | 54 | 0/6 |
+| Albert Heijn | **+20,5%** | 11 | 486 | 0/11 |
+| Jumbo | +14,9% | 11 | 175 | 0/11 |
+| DekaMarkt | +3,3% | 8 | 102 | 2/8 |
+| Lidl | +1,2% | 8 | 70 | **5/8** |
+| Hoogvliet | -0,1% | 10 | 16 | **7/10** |
+| Dirk | -2,5% | 10 | 103 | 1/10 |
+| Vomar | -8,4% | 5 | 49 | 2/5 |
+
+**Neden yayınlanamaz:**
+1. **Aldi +%62 / 6 hafta** — imkânsız. Medyan eşleşme 54, bazı haftalar 11-12 ürün.
+2. **AH +%20,5'in 7,2 puanı tek haftadan** (06-22) geliyor ve o hafta eşleşme sayısı
+   182→486 sıçradı (kapsama genişlemesi). O hafta çıkarılınca +%13,3. Zincir kayması var.
+3. **Hoogvliet 7/10, Lidl 5/8 hafta tam %0** — veri statik, scraper aynı değerleri
+   tekrar okuyor. Gerçek seri değil.
+4. **Dağılım ekonomik olarak imkânsız:** aynı dönemde AH +%20,5 iken Vomar -%8,4.
+   Aynı tedarikçi ve enflasyon ortamındaki marketler arasında 29 puanlık fark olmaz.
+5. **En temel sorun — metrik ne ölçtüğü belli değil:** bunlar *promosyon* fiyatları.
+   AH mayısta derin indirim, temmuzda sığ indirim yaptıysa endeks yükselir ama hiçbir
+   raf fiyatı değişmemiştir. Okuyucunun "fiyatlar arttı" diye anlayacağı şeyi ölçmüyor.
+   Doğru hesaplansa bile savunulabilir bir yorumu yok.
+
+**SONUÇ: 12 haftalık promosyon verisiyle istatistiksel iddia kurulamaz.** İki tur doğrulama
+da bunu gösterdi. Endpoint'ler kodda duruyor (zararsız, ileride işe yarar) ama üzerine
+sayfa/rapor YAPILMADI — bilinçli karar.
+
+**Ne zaman mümkün olur:** scraper'lar ancak yeni stabilleşti (Kruidvat 06-29, Vomar 07-06).
+Bugünden itibaren temiz seri biriktirip 3-6 ay sonra yayınlamak savunulabilir olur.
+O zamana kadar Hoogvliet/Lidl'in %0 sorunu da çözülmeli.
+
+**Bugün savunulabilir olan:** toplulaştırma gerektirmeyen, tek tek doğrulanabilir iddialar —
+"bu hafta koffie Lidl'de €7,99, AH'de €X". `/product` sayfaları zaten bunu yapıyor.
+Otorite için veri-PR yerine ortaklık/dizin kaynaklı link yolu daha gerçekçi görünüyor.
 
 <details><summary>Üç strateji yolu (referans)</summary>
 
