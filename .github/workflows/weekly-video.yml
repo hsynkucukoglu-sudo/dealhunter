@@ -1,0 +1,63 @@
+name: Weekly Deals Video
+
+# Maakt elke maandag de "Top 5 Supermarkt Deals"-video en levert die op twee manieren:
+#   1. als artifact, om handmatig naar TikTok/Reels te zetten mét trending audio
+#      (die kun je alleen in de app toevoegen, en zonder audio kost het bereik)
+#   2. automatisch naar YouTube Shorts, waar een stille video minder pijn doet
+#
+# Maandagochtend omdat de Nederlandse folders dan vers zijn; 06:30 UTC ligt ruim
+# na de scraper-runs van 08:02 lokale tijd van de vorige dag.
+
+on:
+  schedule:
+    - cron: '30 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      upload_youtube:
+        description: 'Ook naar YouTube uploaden?'
+        type: boolean
+        default: true
+      privacy:
+        description: 'YouTube privacy (private/unlisted/public)'
+        type: string
+        default: private
+
+jobs:
+  build-video:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install deps
+        working-directory: tools/tiktok-video
+        run: |
+          npm install
+          npx playwright install chromium --with-deps
+
+      - name: Generate video
+        working-directory: tools/tiktok-video
+        run: node make-video.mjs
+
+      # Altijd bewaren, ook als de YouTube-stap faalt — de handmatige route naar
+      # TikTok/Reels mag daar niet van afhangen.
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dealhunter-weekly-video
+          path: tools/tiktok-video/out/*.mp4
+          retention-days: 30
+          if-no-files-found: error
+
+      - name: Upload to YouTube Shorts
+        if: github.event_name == 'schedule' || inputs.upload_youtube
+        working-directory: tools/tiktok-video
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          YOUTUBE_PRIVACY: ${{ inputs.privacy || 'private' }}
+        run: node upload-youtube.mjs
