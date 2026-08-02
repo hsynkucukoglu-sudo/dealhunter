@@ -6,6 +6,55 @@ status: active
 
 # DealHunter4U — Devam Edilecekler
 
+## 📱 Mobil fold denetimi — 1 fix gitti, 2 KARAR SENDE (2026-08-02)
+
+**Clarity (son 3 gün):** 39 oturum, **sayfa/oturum 1**, kaydırma derinliği **%26,4**,
+geri dönen kullanıcı **%0**, sinirli tıklama %0. İnsanlar geliyor, üst çeyreğe bakıyor, çıkıyor.
+
+**Ölçüm — `/supermarkt/lidl`, mobil 390x844** (trafiğin %69'u mobil):
+
+| Öğe | y | Yükseklik |
+|---|---|---|
+| Sabit header | 0 | 65 |
+| PWA kurulum bandı | 65 | **113** |
+| h1 | 128 | 64 |
+| açıklama + arama + filtre + istatistik | 196-508 | ~312 |
+| "POPULAIR — Is Aldi Goedkoper dan Lidl?" blog linki | 532 | 74 |
+| "🛵 Boodschappen laten bezorgen" affiliate CTA | 630 | 84 |
+| **İlk ürün kartı** | **738** | 425 |
+| AdSense anchor reklam (`position:fixed`, **aralıklı**) | 586-844 | **258** |
+
+"lidl aanbiedingen" arayan kullanıcı, tek bir aanbieding görmeden çıkıyor.
+
+### ✅ Yapıldı: PWA bandı etkileşime bağlandı (`adb8f48`)
+
+`InstallPrompt.tsx` koşulsuz gösteriliyordu. Oturumların %100'ü yeni kullanıcıyken,
+hiçbir şey görmemiş kişiden "uygulamayı yükle" istemek hem erken hem de 113px'lik en
+değerli alanı yiyordu. Artık **2 ekran yüksekliği kaydırdıktan sonra** çıkıyor.
+`beforeinstallprompt` yine anında yakalanıyor (yoksa tarayıcı kendi çubuğunu gösterir),
+sadece gösterim erteleniyor. Etki: ilk ürün 851 → **738**, yani fold'un içine girdi.
+
+### ⚠️ KARAR 1 — AdSense anchor reklam (gelir vs ilk izlenim)
+
+Ekranın alt %31'ini kaplıyor ve tam ilk ürünün olduğu bölgeyi (586-844) örtüyor.
+**Kodda değil** — AdSense Auto Ads ayarı (Auto ads → Ad formats → Anchor ads).
+Sadece sen kapatabilirsin. Aralıklı çıkıyor, her sayfa görüntülemesinde değil.
+Kapatmak reklam gelirini düşürür; bu yüzden dokunmadım.
+
+### ⚠️ KARAR 2 — fold üstündeki iki tanıtım bloğu
+
+Blog linki (74px) + bezorging affiliate CTA (84px) = 158px, ürünlerden **önce** duruyor.
+Bunları ilk ürün satırının altına almak ilk ürünü 738 → ~580'e çeker. Ama bezorging
+CTA'sı affiliate geliri; yerini değiştirmek tıklamayı düşürebilir. Aynı sınıf karar
+olduğu için tek başıma yapmadım.
+**Not:** anchor reklam çıktığı sayfa görüntülemelerinde bu taşıma tek başına yetmez
+(580 vs reklamın 586'da başlaması) — asıl kazanç KARAR 1 ile birlikte gelir.
+
+### Panel erişimi düştü
+GSC + AdSense oturumu kapanmış, `.gstack/browse-states/google.json` (29 Tem) da süresi
+geçmiş — hesap seçme ekranında takılıyor. Yeniden giriş gerekiyor, sonra
+`state save google` ile tazelenmeli. Clarity oturumu çalışıyordu, veriler ondan.
+
 ## 🔴 SIRADAKİ İŞ — Trafik teşhisi tamamlandı, uygulama bekliyor (2026-08-01)
 
 **Teşhis: gösterim sorunu yok, CTR sorunu var.** GSC + canlı SERP analizi yapıldı.
