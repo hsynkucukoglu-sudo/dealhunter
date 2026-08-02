@@ -21,19 +21,43 @@ const MARKET_COLORS = {
   Coop: '#007B5E', Plus: '#2D8B35', Kruidvat: '#D50032',
 }
 
-// ─── 1. Veri: market başına 1 ürün, %20-90 indirim, görselli, top 5 ───────────
+// Bovengrens voor de korting die in de video mag verschijnen.
+//
+// Deze selectie pakt per definitie de uiterste staart van de dataset, en dat is precies
+// waar prijsfouten zitten. Meting 2026-08-02 over 1257 afgeprijsde producten: het aandeel
+// met eenheidsdata (waarmee een prijs per kg/l te controleren is) zakt van 62% bij <40%
+// korting naar 25% bij 60-69%, en naar 0% zodra de korting boven de 70% komt. In die
+// bovenste band stond o.a. "AH Varkenshaas €6,00 → €1,09 (-82%)" — varkenshaas kost geen
+// €1,09, dat is een prijs per 100 gram die tegen een pakprijs is afgezet.
+//
+// Boven deze grens dus niet tonen. Let op: 3-halen-1-betalen-acties (Plus Lenor
+// €29,97 → €9,99) komen op ~67% uit en zijn wél echt; die blijven bewust staan.
+const MAX_DISCOUNT = Number(process.env.MAX_DISCOUNT ?? 70)
+const MIN_DISCOUNT = Number(process.env.MIN_DISCOUNT ?? 20)
+
+// ─── 1. Veri: market başına 1 ürün, görselli, top 5 ───────────────────────────
 async function fetchTop5() {
   const res = await fetch(`${API}/api/products`)
   if (!res.ok) throw new Error(`API ${res.status}`)
   const all = await res.json()
   const byMarket = {}
+  const dropped = []
   for (const p of all) {
     if (!p.imageUrl || !p.originalPrice || p.originalPrice <= p.discountedPrice) continue
     const disc = Math.round((p.originalPrice - p.discountedPrice) / p.originalPrice * 100)
-    if (disc > 90 || disc < 20) continue
+    if (disc < MIN_DISCOUNT) continue
+    if (disc >= MAX_DISCOUNT) {
+      // Niet stil weggooien: als hier structureel echte deals sneuvelen wil je dat zien.
+      dropped.push(`${p.market} ${p.name} -${disc}% (€${p.originalPrice}→€${p.discountedPrice})`)
+      continue
+    }
     if (!byMarket[p.market] || disc > byMarket[p.market].disc) {
       byMarket[p.market] = { name: p.name, market: p.market, orig: p.originalPrice, price: p.discountedPrice, disc, img: p.imageUrl }
     }
+  }
+  if (dropped.length) {
+    console.log(`⚠️  ${dropped.length} product overgeslagen (korting ≥ ${MAX_DISCOUNT}%, niet te verifiëren):`)
+    dropped.forEach(d => console.log(`     ${d}`))
   }
   return Object.values(byMarket).sort((a, b) => b.disc - a.disc).slice(0, 5)
 }
