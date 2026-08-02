@@ -41,14 +41,20 @@ Ekranın alt %31'ini kaplıyor ve tam ilk ürünün olduğu bölgeyi (586-844) �
 Sadece sen kapatabilirsin. Aralıklı çıkıyor, her sayfa görüntülemesinde değil.
 Kapatmak reklam gelirini düşürür; bu yüzden dokunmadım.
 
-### ⚠️ KARAR 2 — fold üstündeki iki tanıtım bloğu
+### ✅ KARAR 2 — YAPILDI: tanıtım blokları ilk ürün satırının altına alındı (`2fea171`)
 
-Blog linki (74px) + bezorging affiliate CTA (84px) = 158px, ürünlerden **önce** duruyor.
-Bunları ilk ürün satırının altına almak ilk ürünü 738 → ~580'e çeker. Ama bezorging
-CTA'sı affiliate geliri; yerini değiştirmek tıklamayı düşürebilir. Aynı sınıf karar
-olduğu için tek başıma yapmadım.
-**Not:** anchor reklam çıktığı sayfa görüntülemelerinde bu taşıma tek başına yetmez
-(580 vs reklamın 586'da başlaması) — asıl kazanç KARAR 1 ile birlikte gelir.
+Blog linki (74px) + bezorging affiliate CTA (84px) ürünlerden **önce** duruyordu.
+İkisi de `col-span-full` olarak grid'in içine, **4. karttan sonra** taşındı — mobilde
+(grid-cols-2) ikinci satırın sonu. Yani önce dört gerçek fırsat, sonra alternatif.
+4'ten az ürün varsa blok son karta kayıyor, hiç kaybolmuyor.
+
+Yerelde ölçüldü: **ilk kart y=738 → y=532**, fold'un rahat içinde. Görsel doğrulandı,
+düzen bozulmuyor. 2026-07-21'deki "bounce eden ziyaretçiye alternatif sun" kararı
+silinmedi, sadece fırsatların arkasına alındı.
+
+**Sınır:** anchor reklamın çıktığı sayfa görüntülemelerinde (y=586'dan başlıyor) bu
+taşımadan geriye pek bir şey kalmıyor — kartın sadece 54px'i görünüyor. Tam kazanç
+KARAR 1 ile geliyor.
 
 ### Panel erişimi düştü
 GSC + AdSense oturumu kapanmış, `.gstack/browse-states/google.json` (29 Tem) da süresi
