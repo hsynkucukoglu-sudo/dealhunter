@@ -37,6 +37,69 @@ function toCampaignType(text) {
   return null
 }
 
+// ─── Eenheidsdata ────────────────────────────────────────────────────────────
+// Overgenomen uit backend/scraper/index.js (PLUS_SIZE_RE, extractPlusSizeLabel,
+// parseUnitLabel). Die logica bestond al, maar deze scraper vervangt de markt via
+// bulk-replace en stuurde geen eenheden mee — waardoor Plus op 0% stond terwijl
+// de backend-run ze om 08:02 wél had ingevuld. Gemeten op de live API 2026-08-02:
+// 42 van 139 aanbiedingen (30%) leveren zo een eenduidige maat op.
+//
+// Bewust niet gedeeld via import: dit script draait standalone in Actions en heeft
+// geen toegang tot de ESM-module van de backend.
+const PLUS_PACK = 'pak(?:ken)?|scha(?:al|len)|blik(?:ken)?|kuip(?:en)?|zak(?:ken)?|fles(?:sen)?|pot(?:ten)?|do(?:os|zen)|bak(?:ken)?|rol(?:len)?|krat(?:ten)?|net(?:ten)?|bos|beker(?:s)?|stuk(?:s)?'
+const PLUS_SIZE_RE = new RegExp(
+  `(?:^|\\b)(?:per|alle\\s+(?:${PLUS_PACK})\\s*[àa]|${PLUS_PACK})?\\s*([\\d,.]+)\\s*(g|gram|kg|kilo|ml|cl|dl|l|liter|st|stuks?|stuk)\\b`,
+  'i'
+)
+
+// Example ("Per 500 gram") en Variant ("Zak 1 kilo") zijn de echte maatvelden.
+// Alles wat niet eenduidig is wordt geweigerd: bereiken ("Schaal 225-400 gram"),
+// twee maten ("200 en 300 gram"), schattingen ("ca. 150 gram") en voorbeelden
+// ("Bijv. Tandpasta anti-caries").
+function extractPlusSizeLabel(offer) {
+  for (const raw of [offer.Example, offer.Variant]) {
+    const t = (raw || '').trim()
+    if (!t) continue
+    if (/\d\s*-\s*\d/.test(t)) continue
+    if (/\d[^.]*\s+en\s+\d/.test(t)) continue
+    if (/\bca\.|ongeveer|vanaf|bijv\.?/i.test(t)) continue
+    const m = t.match(PLUS_SIZE_RE)
+    if (!m) continue
+    // Meer dan één getal in de tekst -> dubbelzinnig, laten liggen.
+    if ((t.replace(/€\s*[\d,.]+/g, ' ').match(/\d+[.,]?\d*/g) || []).length !== 1) continue
+    // parseUnitLabel kent alleen 'stuk(s)', niet de afkorting 'st'.
+    return `${m[1]} ${/^st$/i.test(m[2]) ? 'stuks' : m[2]}`
+  }
+  return null
+}
+
+function parseUnitLabel(label, discountedPrice) {
+  const desc = (label || '').trim()
+  if (!desc) return {}
+  const m = desc.match(/^([\d,.]+)\s*(g|gram|kg|kilo|ml|cl|dl|l|liter|stuks?|stuk|tabs?|capsu?les?|rollen?|zakjes?)\b/i)
+  if (!m) return {}
+  const amount = parseFloat(m[1].replace(',', '.'))
+  if (!(amount > 0)) return {}
+  const raw = m[2].toLowerCase()
+  let unitSize, unitType
+  if (/^(g|gram)$/.test(raw)) { unitSize = amount; unitType = 'g' }
+  else if (/^(kg|kilo)$/.test(raw)) { unitSize = amount * 1000; unitType = 'g' }
+  else if (/^ml$/.test(raw)) { unitSize = amount; unitType = 'ml' }
+  else if (/^cl$/.test(raw)) { unitSize = amount * 10; unitType = 'ml' }
+  else if (/^dl$/.test(raw)) { unitSize = amount * 100; unitType = 'ml' }
+  else if (/^(l|liter)$/.test(raw)) { unitSize = amount * 1000; unitType = 'ml' }
+  else { unitSize = amount; unitType = 'stuks' }
+
+  let unitPrice = null
+  if (discountedPrice > 0 && unitSize > 0) {
+    if (unitType === 'g') unitPrice = unitSize >= 500 ? discountedPrice / (unitSize / 1000) : discountedPrice / (unitSize / 100)
+    else if (unitType === 'ml') unitPrice = unitSize >= 1000 ? discountedPrice / (unitSize / 1000) : discountedPrice / (unitSize / 100)
+    else unitPrice = discountedPrice / unitSize
+    unitPrice = parseFloat(unitPrice.toFixed(4))
+  }
+  return { unitSize, unitType, fullSizeLabel: m[0].trim(), unitPrice }
+}
+
 const jar = {}
 
 function getCookieHeaders(res) {
@@ -142,11 +205,17 @@ async function scrapePlus() {
       if (imgUrl.startsWith('//')) imgUrl = 'https:' + imgUrl
       const slug = offer.Slug || `${offer.PromotionID}-${offer.Offer_Id}`
 
+      const unit = parseUnitLabel(extractPlusSizeLabel(offer), newPrice)
+
       results.push({
         name,
         brand: offer.Brand?.split(',')[0]?.trim() || undefined,
         discountedPrice: newPrice,
         originalPrice: origPrice > newPrice ? origPrice : newPrice,
+        unitSize: unit.unitSize ?? null,
+        unitType: unit.unitType ?? null,
+        unitPrice: unit.unitPrice ?? null,
+        fullSizeLabel: unit.fullSizeLabel ?? null,
         imageUrl: imgUrl || null,
         url: `https://www.plus.nl/aanbiedingen/${slug}`,
         // offer.EndDate soms gelijk aan/vóór vandaag (waargenomen 2026-07-28,

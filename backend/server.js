@@ -632,6 +632,16 @@ app.post('/api/products/bulk-replace', requireAdmin, asyncHandler(async (req, re
       campaignType: p.campaignType || null,
       category: p.category || 'overig',
       brand: p.brand || null,
+      // Eenheidsvelden werden hier niet doorgegeven, terwijl de GitHub
+      // Actions-scrapers (Plus, Kruidvat, Dirk) hun markt via deze route volledig
+      // vervangen. De backend-scraper vult ze om 08:02 wel, waarna de Actions-run
+      // ze er even later weer uit haalde — vandaar dat Plus op 0% eenheidsdata
+      // stond (gemeten 2026-08-02). Ontbreken ze in de payload, dan wordt het
+      // null (models.js), dus dit is veilig voor scrapers die ze nog niet sturen.
+      unitSize: p.unitSize ?? null,
+      unitType: p.unitType ?? null,
+      unitPrice: p.unitPrice ?? null,
+      fullSizeLabel: p.fullSizeLabel ?? null,
     })
     created.push(product)
   }
