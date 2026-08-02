@@ -64,6 +64,12 @@ export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
   const displayed = useMemo(() => filtered.slice(0, page * PAGE_SIZE), [filtered, page])
   const hasMore = displayed.length < filtered.length
 
+  // Na welke kaart de vergelijkingslink + bezorgkaart komen. Index 3 is op mobiel
+  // (grid-cols-2) het einde van de tweede rij: de bezoeker heeft dan vier echte
+  // aanbiedingen gezien. Bij minder producten schuift het blok naar de laatste kaart,
+  // zodat het nooit verdwijnt.
+  const promoIndex = Math.min(3, displayed.length - 1)
+
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value)
     setPage(1)
@@ -187,32 +193,6 @@ export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
           </div>
         )}
 
-        {/* Fold-üstü kaldıraç: kanıtlanmış en iyi dönüşen içerik türüne (karşılaştırma) link.
-            Aldi/Dirk/Lidl gibi yüksek-gösterimli sayfalarda TO %0,04-0,13'te donmuş çünkü
-            ziyaretçi resmi siteyi arıyor — bu kart aynı ziyaretçiye sayfa dibindeki yerine
-            hemen burada bir alternatif sunuyor (2026-07-21 GSC analizi). */}
-        {topComparisonPost && (
-          <Link
-            href={`/blog/${topComparisonPost.slug}`}
-            className="flex items-center gap-3 mb-6 p-4 rounded-2xl transition-all hover:scale-[1.01]"
-            style={{ background: 'white', border: '1.5px solid rgba(227,61,38,0.3)', boxShadow: '0 2px 0 #DDD0C4' }}
-          >
-            <span
-              className="flex-none px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider"
-              style={{ background: 'rgba(227,61,38,0.1)', color: '#E33D26', fontFamily: 'JetBrains Mono' }}
-            >
-              Populair
-            </span>
-            <span className="flex-1 text-sm font-bold" style={{ color: '#1A1A1A' }}>
-              {topComparisonPost.title}
-            </span>
-            <span className="flex-none text-sm font-bold" style={{ color: '#E33D26' }}>→</span>
-          </Link>
-        )}
-
-        {/* Intent-uyumlu affiliate: bezorging (komisyonlu) */}
-        <FlinkDeliveryCard marketName={market.name} />
-
         {/* Grid */}
         {filtered.length === 0 ? (
           initialProducts.length === 0 ? (
@@ -246,21 +226,57 @@ export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
           <>
             <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
               {displayed.map((product, i) => (
-                <motion.div key={product.id}
-                  // De eerste 8 kaarten staan boven de vouw en zijn het LCP-element:
-                  // die renderen meteen zichtbaar (opacity 1) i.p.v. opacity:0 in de
-                  // SSR-HTML, want dat laatste wacht op hydration — op Lighthouse
-                  // mobile seconden (2026-07-26). De rest fade't gewoon in bij scroll.
-                  // Diezelfde rest krijgt ook content-visibility:auto (2026-07-27) —
-                  // browser slaat layout/paint over tot de kaart de viewport nadert,
-                  // scheelt Style&Layout-tijd op paginas met 40+ kaarten (bv. Aldi).
-                  className={i >= 8 ? 'cv-auto-card' : undefined}
-                  initial={i < 8 ? { opacity: 1, y: 0 } : { opacity: 0, y: 0 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '0px 0px -40px 0px' }}
-                  transition={{ duration: 0.3, delay: 0 }}>
-                  <ProductCard product={product} />
-                </motion.div>
+                <React.Fragment key={product.id}>
+                  <motion.div
+                    // De eerste 8 kaarten staan boven de vouw en zijn het LCP-element:
+                    // die renderen meteen zichtbaar (opacity 1) i.p.v. opacity:0 in de
+                    // SSR-HTML, want dat laatste wacht op hydration — op Lighthouse
+                    // mobile seconden (2026-07-26). De rest fade't gewoon in bij scroll.
+                    // Diezelfde rest krijgt ook content-visibility:auto (2026-07-27) —
+                    // browser slaat layout/paint over tot de kaart de viewport nadert,
+                    // scheelt Style&Layout-tijd op paginas met 40+ kaarten (bv. Aldi).
+                    className={i >= 8 ? 'cv-auto-card' : undefined}
+                    initial={i < 8 ? { opacity: 1, y: 0 } : { opacity: 0, y: 0 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '0px 0px -40px 0px' }}
+                    transition={{ duration: 0.3, delay: 0 }}>
+                    <ProductCard product={product} />
+                  </motion.div>
+
+                  {/* Vergelijkingslink + bezorg-affiliate stonden hierboven, vóór de
+                      eerste kaart. Bedoeling was goed (2026-07-21: bezoekers die op
+                      "aldi aanbiedingen" landen een alternatief bieden i.p.v. ze te
+                      laten bouncen), maar op mobiel kostte dat 158px op het enige
+                      scherm dat de meeste bezoekers zien. Meting 2026-08-02 op
+                      /supermarkt/lidl (390x844): eerste kaart begon op y=738, terwijl
+                      Clarity 1 pagina per sessie en 26,4% scrolldiepte laat zien —
+                      wie "lidl aanbiedingen" zoekt kreeg geen enkele aanbieding te
+                      zien. Nu staan ze ná de eerste rij kaarten: deals eerst, het
+                      alternatief nog steeds vroeg genoeg om gezien te worden. */}
+                  {i === promoIndex && (
+                    <div className="col-span-full">
+                      {topComparisonPost && (
+                        <Link
+                          href={`/blog/${topComparisonPost.slug}`}
+                          className="flex items-center gap-3 mb-6 p-4 rounded-2xl transition-all hover:scale-[1.01]"
+                          style={{ background: 'white', border: '1.5px solid rgba(227,61,38,0.3)', boxShadow: '0 2px 0 #DDD0C4' }}
+                        >
+                          <span
+                            className="flex-none px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider"
+                            style={{ background: 'rgba(227,61,38,0.1)', color: '#E33D26', fontFamily: 'JetBrains Mono' }}
+                          >
+                            Populair
+                          </span>
+                          <span className="flex-1 text-sm font-bold" style={{ color: '#1A1A1A' }}>
+                            {topComparisonPost.title}
+                          </span>
+                          <span className="flex-none text-sm font-bold" style={{ color: '#E33D26' }}>→</span>
+                        </Link>
+                      )}
+                      <FlinkDeliveryCard marketName={market.name} />
+                    </div>
+                  )}
+                </React.Fragment>
               ))}
             </div>
 
