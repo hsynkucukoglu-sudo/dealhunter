@@ -7,6 +7,14 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>
 }
 
+// Pas tonen nadat iemand echt aan het lezen is. Deze balk is 113px hoog en stond
+// bovenaan het allereerste scherm, terwijl daaronder ook nog een vaste anchor-advertentie
+// van 258px staat: op mobiel (69% van het verkeer) was daardoor op scherm één geen
+// enkele aanbieding zichtbaar. Clarity 2026-08-02: 100% nieuwe bezoekers, 1 pagina per
+// sessie, 26,4% scrolldiepte — je vraagt om een installatie aan iemand die nog niks
+// van de site heeft gezien. Twee schermen scrollen is het signaal dat er wél interesse is.
+const SCROLL_GATE_VIEWPORTS = 2
+
 export function InstallPrompt() {
   const [prompt, setPrompt] = useState<BeforeInstallPromptEvent | null>(null)
   const [visible, setVisible] = useState(false)
@@ -16,13 +24,37 @@ export function InstallPrompt() {
     const dismissed = localStorage.getItem('dh_install_dismissed')
     if (dismissed && Date.now() - Number(dismissed) < 7 * 24 * 60 * 60 * 1000) return
 
+    let engaged = window.scrollY > window.innerHeight * SCROLL_GATE_VIEWPORTS
+    let captured: BeforeInstallPromptEvent | null = null
+
+    const show = () => {
+      if (engaged && captured) setVisible(true)
+    }
+
+    const onScroll = () => {
+      if (engaged) return
+      if (window.scrollY > window.innerHeight * SCROLL_GATE_VIEWPORTS) {
+        engaged = true
+        window.removeEventListener('scroll', onScroll)
+        show()
+      }
+    }
+
+    // beforeinstallprompt moet direct worden afgevangen, anders toont de browser zijn
+    // eigen mini-infobar. Het event bewaren we; alleen het tónen wachten we af.
     const handler = (e: Event) => {
       e.preventDefault()
-      setPrompt(e as BeforeInstallPromptEvent)
-      setVisible(true)
+      captured = e as BeforeInstallPromptEvent
+      setPrompt(captured)
+      show()
     }
+
     window.addEventListener('beforeinstallprompt', handler)
-    return () => window.removeEventListener('beforeinstallprompt', handler)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handler)
+      window.removeEventListener('scroll', onScroll)
+    }
   }, [])
 
   if (!visible || !prompt) return null
