@@ -547,11 +547,26 @@ ana sayfadaki 643 adet `href="#"` link çerez onay bannerının satıcı listesi
 
 ## 📌 Açık işler
 
-- [ ] **Birim verisi kalan 3 market** #priority/medium
-  - Lidl (86 ürün), Plus (155), Kruidvat (88) — hepsi %0-1
-  - Kruidvat probe'u HTTP 403 aldı, scraper'ın kendi header setiyle denenmeli
-  - Lidl/Plus HTML scrape, yapıları ayrıca çözülmeli
-  - `parseUnitLabel()` ve `extractSizeFromPromoText()` hazır, yeniden kullanılabilir
+- [x] **Birim verisi — ÇÖZÜLDÜ (2026-08-02, `c17098e`)** — not bayatmış, durum farklıydı:
+  Lidl %71, Kruidvat %50 zaten iyiydi; **sadece Plus %0'daydı.**
+  **Kök neden iki katmanlıydı:**
+  1. `bulk-replace` handler'ı `createProduct`'ı sabit alan listesiyle kuruyordu ve
+     `unitSize/unitType/unitPrice/fullSizeLabel` o listede yoktu. Backend scraper
+     08:02'de birimleri dolduruyor, GH Actions run'ı (Plus/Kruidvat/Dirk) marketi
+     komple değiştirip **birimleri siliyordu**. Mantık zaten vardı, API sınırında düşüyordu.
+  2. Plus'ın Actions scraper'ı zaten göndermiyordu. Çıkarım (`PLUS_SIZE_RE` +
+     `extractPlusSizeLabel` + `parseUnitLabel`) sadece `backend/scraper/index.js`'teydi;
+     Actions script'i standalone çalıştığı için ESM modülü import edemiyor, birebir kopyalandı.
+
+  Canlı API'de ölçüldü: **42/139 = %30**. Yerel alıcıyla uçtan uca test edildi,
+  fiyatlar doğru (druiven 500g €0,99 → €1,98/kg; avocado 2 stuks €1,99 → €0,995/stuk).
+  Kalanlar bilinçli reddediliyor: aralık ("Schaal 225-400 gram"), iki maat,
+  tahmin ("ca. 150 gram"), örnek ("Bijv. ...").
+
+  **Kalan:** Kruidvat ve Dirk Actions scraper'ları hâlâ birim göndermiyor — artık
+  bulk-replace geçirdiği için eklenebilir, aynı desen.
+  **Uyarı:** Plus scraper'ı çalışırken `⚠️ versionInfo değişti` diyor — OutSystems
+  modül sürümü değişmiş. Şu an çalışıyor (139 ürün) ama ileride kırılabilir.
 - [ ] **Outreach takibi ~5 Ağustos** — her bloga en fazla BİR hatırlatma, sonra bırak
 - [ ] **Awin mid'leri** — ALLPOWERS + Deporvillage, `ui.awin.com` → Advertisers → Joined
 - [ ] **GSC ölçümü (2-4 hafta):** 25-26 Tem'deki SEO değişikliklerinin etkisi
