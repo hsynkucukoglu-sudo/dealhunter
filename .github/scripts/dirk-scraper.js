@@ -54,6 +54,77 @@ function getExpiry() {
   return sunday.toISOString().split('T')[0]
 }
 
+// ─── Eenheidsdata ────────────────────────────────────────────────────────────
+// Overgenomen uit backend/scraper/index.js (parseUnitLabel + extractSizeFromPromoText).
+// Dirk zet de maat in offer.packaging ("Zak 450 gram.", "Pak 3 stuks."), maar die
+// werd hier alleen aan de naam geplakt. Sinds bulk-replace de eenheidsvelden
+// doorgeeft (2026-08-02) kunnen ze mee. Gemeten op de live folder 2026-08-03:
+// 46 van 99 aanbiedingen (46%) leveren een eenduidige maat op.
+//
+// Standalone kopie: dit script draait in Actions en kan de ESM-module van de
+// backend niet importeren.
+function parseUnitLabel(label, discountedPrice) {
+  const desc = (label || '').trim()
+  if (!desc) return {}
+
+  // Multipack: "24 x 30 cl" -> 7200 ml. fullSizeLabel houdt het origineel.
+  const multi = desc.match(/^(\d+)\s*[x×]\s*([\d,.]+)\s*(g|gram|kg|kilo|ml|cl|dl|l|liter|stuks?|stuk)\b/i)
+  if (multi) {
+    const count = parseInt(multi[1], 10)
+    const each = parseFloat(multi[2].replace(',', '.'))
+    if (count > 0 && each > 0) {
+      const total = parseUnitLabel(`${count * each} ${multi[3]}`, discountedPrice)
+      return total.unitSize ? { ...total, fullSizeLabel: desc } : {}
+    }
+  }
+
+  const m = desc.match(/^([\d,.]+)\s*(g|gram|kg|kilo|ml|cl|dl|l|liter|stuks?|stuk|tabs?|capsu?les?|rollen?|zakjes?)\b/i)
+  if (!m) return {}
+  const amount = parseFloat(m[1].replace(',', '.'))
+  if (!(amount > 0)) return {}
+  const raw = m[2].toLowerCase()
+  let unitSize, unitType
+  if (/^(g|gram)$/.test(raw)) { unitSize = amount; unitType = 'g' }
+  else if (/^(kg|kilo)$/.test(raw)) { unitSize = amount * 1000; unitType = 'g' }
+  else if (/^ml$/.test(raw)) { unitSize = amount; unitType = 'ml' }
+  else if (/^cl$/.test(raw)) { unitSize = amount * 10; unitType = 'ml' }
+  else if (/^dl$/.test(raw)) { unitSize = amount * 100; unitType = 'ml' }
+  else if (/^(l|liter)$/.test(raw)) { unitSize = amount * 1000; unitType = 'ml' }
+  else { unitSize = amount; unitType = 'stuks' }
+
+  let unitPrice = null
+  if (discountedPrice > 0 && unitSize > 0) {
+    if (unitType === 'g') unitPrice = unitSize >= 500 ? discountedPrice / (unitSize / 1000) : discountedPrice / (unitSize / 100)
+    else if (unitType === 'ml') unitPrice = unitSize >= 1000 ? discountedPrice / (unitSize / 1000) : discountedPrice / (unitSize / 100)
+    else unitPrice = discountedPrice / unitSize
+    unitPrice = parseFloat(unitPrice.toFixed(4))
+  }
+  return { unitSize, unitType, fullSizeLabel: m[0].trim(), unitPrice }
+}
+
+const PROMO_PACK_WORDS = 'pak|pakje|schaal|blik|kuip|kuipje|zak|zakje|fles|pot|potje|doos|doosje|bak|rol|krat|net|bos|beker|bus|flacon|gigapack|tray|emmer|stuk'
+
+// Folderteksten noemen vaak meerdere maten in één aanbieding ("Bak 500 gram of
+// 1 kilo", "Pot 330 - 370 gram"). Dan hoort er geen enkele maat bij de prijs en
+// zou unitPrice fout zijn — die slaan we bewust over. Idem voor schattingen
+// ("Per stuk ca. 4 kilo").
+function extractSizeFromPromoText(text) {
+  const t = (text || '').replace(/\n/g, ' ').trim()
+  if (!t) return null
+  if (/ca\.|ongeveer|vanaf/i.test(t)) return null
+
+  const withoutPrices = t.replace(/€\s*\d+[.,]?\d*/g, ' ')
+  const numbers = withoutPrices.match(/\d+[.,]?\d*/g) || []
+
+  const mm = t.match(new RegExp(`\\b(?:${PROMO_PACK_WORDS})\\s+(\\d+)\\s*[x×]\\s*(\\d+[.,]?\\d*)\\s*(gram|kg|kilo|ml|cl|dl|liter|l|stuks?)\\b`, 'i'))
+  if (mm && numbers.length === 2) return `${mm[1]} x ${mm[2]} ${mm[3]}`
+
+  const m = t.match(new RegExp(`\\b(?:${PROMO_PACK_WORDS})\\s+(\\d+[.,]?\\d*)\\s*(gram|kg|kilo|ml|cl|dl|liter|l|stuks?)\\b`, 'i'))
+  if (!m) return null
+  if (numbers.length !== 1) return null
+  return `${m[1]} ${m[2]}`
+}
+
 async function scrapeDirk() {
   console.log('🏪 Dirk.nl scraper başlıyor...')
   const EXPIRES_AT = getExpiry()
@@ -102,11 +173,16 @@ async function scrapeDirk() {
         ? `https://web-fileserver.dirk.nl/offers/${encodeURIComponent(offer.image)}?width=190`
         : null
       const expiresAt = offer.endDate ? offer.endDate.split('T')[0] : EXPIRES_AT
+      const unit = parseUnitLabel(extractSizeFromPromoText(offer.packaging), offerPrice)
 
       results.push({
         name,
         discountedPrice: offerPrice,
         originalPrice: normalPrice && normalPrice > offerPrice ? normalPrice : offerPrice,
+        unitSize: unit.unitSize ?? null,
+        unitType: unit.unitType ?? null,
+        unitPrice: unit.unitPrice ?? null,
+        fullSizeLabel: unit.fullSizeLabel ?? null,
         imageUrl,
         url: `https://www.dirk.nl/aanbiedingen`,
         expiresAt,

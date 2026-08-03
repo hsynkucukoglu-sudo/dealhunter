@@ -115,16 +115,57 @@ function findInState(obj, key, depth = 0) {
 
     if (productTiles.length === 0) throw new Error('Hic urun tile bulunamadi')
 
-    // Tile listesini tarayıcıya geçir, /products/{code} fetch'lerini orada yap
+    // Tile listesini tarayıcıya geçir, /products/{code} fetch'lerini orada yap.
+    // subTitle maatı taşıyor ("125 ml", "40 x 85 gram") — tile'ın kendisinden gelir,
+    // ürün API'sinden değil (aynı yerden okur backend/scraper/index.js:1717-1720).
     const tilePayload = productTiles.map(t => ({
       code: t.localizedURLLink.match(/\/p\/(\d+)/)[1],
       link: t.localizedURLLink,
       title: t.title || '',
+      subTitle: t.subTitle || '',
       img: t.image?.url || null,
     }))
 
     console.log('Urun detaylari cekiliyor (browser context)...')
     const { products, firstErr } = await page.evaluate(async (tiles) => {
+      // parseUnitLabel: birebir backend/scraper/index.js:734-781. Sayfa içinde
+      // (page.evaluate) çalıştığı için ayrı bir fonksiyon olarak import edilemiyor,
+      // string enjeksiyonu yerine burada tekrar tanımlandı.
+      function parseUnitLabel(label, discountedPrice) {
+        const desc = (label || '').trim()
+        if (!desc) return {}
+        const multi = desc.match(/^(\d+)\s*[x×]\s*([\d,.]+)\s*(g|gram|kg|kilo|ml|cl|dl|l|liter|stuks?|stuk)\b/i)
+        if (multi) {
+          const count = parseInt(multi[1], 10)
+          const each = parseFloat(multi[2].replace(',', '.'))
+          if (count > 0 && each > 0) {
+            const total = parseUnitLabel(`${count * each} ${multi[3]}`, discountedPrice)
+            return total.unitSize ? { ...total, fullSizeLabel: desc } : {}
+          }
+        }
+        const m = desc.match(/^([\d,.]+)\s*(g|gram|kg|kilo|ml|cl|dl|l|liter|stuks?|stuk|tabs?|capsu?les?|rollen?|zakjes?)\b/i)
+        if (!m) return {}
+        const amount = parseFloat(m[1].replace(',', '.'))
+        if (!(amount > 0)) return {}
+        const raw = m[2].toLowerCase()
+        let unitSize, unitType
+        if (/^(g|gram)$/.test(raw)) { unitSize = amount; unitType = 'g' }
+        else if (/^(kg|kilo)$/.test(raw)) { unitSize = amount * 1000; unitType = 'g' }
+        else if (/^ml$/.test(raw)) { unitSize = amount; unitType = 'ml' }
+        else if (/^cl$/.test(raw)) { unitSize = amount * 10; unitType = 'ml' }
+        else if (/^dl$/.test(raw)) { unitSize = amount * 100; unitType = 'ml' }
+        else if (/^(l|liter)$/.test(raw)) { unitSize = amount * 1000; unitType = 'ml' }
+        else { unitSize = amount; unitType = 'stuks' }
+        let unitPrice = null
+        if (discountedPrice > 0 && unitSize > 0) {
+          if (unitType === 'g') unitPrice = unitSize >= 500 ? discountedPrice / (unitSize / 1000) : discountedPrice / (unitSize / 100)
+          else if (unitType === 'ml') unitPrice = unitSize >= 1000 ? discountedPrice / (unitSize / 1000) : discountedPrice / (unitSize / 100)
+          else unitPrice = discountedPrice / unitSize
+          unitPrice = parseFloat(unitPrice.toFixed(4))
+        }
+        return { unitSize, unitType, fullSizeLabel: m[0].trim(), unitPrice }
+      }
+
       const OCC = 'https://api.kruidvat.nl/api/v2/kvn-spa'
       const out = []
       let firstErr = null
@@ -144,10 +185,15 @@ function findInState(obj, key, depth = 0) {
             const op = p.price?.oldValue ?? dp
             const rawImg = p.listImage?.url || p.thumbnailImage?.url || t.img || null
             const imageUrl = rawImg ? (rawImg.startsWith('http') ? rawImg : 'https://media.kruidvat.nl' + rawImg) : null
+            const unit = parseUnitLabel(t.subTitle, dp)
             return {
               name: p.name || t.title,
               discountedPrice: dp,
               originalPrice: op > dp ? op : dp,
+              unitSize: unit.unitSize ?? null,
+              unitType: unit.unitType ?? null,
+              unitPrice: unit.unitPrice ?? null,
+              fullSizeLabel: unit.fullSizeLabel ?? null,
               imageUrl,
               url: 'https://www.kruidvat.nl' + t.link,
               expiresAt: p.topPromotion?.endDate ? new Date(p.topPromotion.endDate).toISOString().split('T')[0] : null,
@@ -167,6 +213,10 @@ function findInState(obj, key, depth = 0) {
       name: p.name,
       discountedPrice: p.discountedPrice,
       originalPrice: p.originalPrice,
+      unitSize: p.unitSize,
+      unitType: p.unitType,
+      unitPrice: p.unitPrice,
+      fullSizeLabel: p.fullSizeLabel,
       imageUrl: p.imageUrl,
       url: p.url,
       expiresAt: p.expiresAt,

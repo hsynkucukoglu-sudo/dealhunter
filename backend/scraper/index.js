@@ -801,10 +801,13 @@ function extractSizeFromPromoText(text) {
 
   // Multipack: "Krat 24 x 30 cl" is ondubbelzinnig ondanks twee getallen.
   // parseUnitLabel rekent "24 x 30 cl" zelf om naar 7200 ml.
-  const mm = t.match(new RegExp(`\\b(?:${PROMO_PACK_WORDS})\\s+(\\d+)\\s*[x×]\\s*(\\d+[.,]?\\d*)\\s*(gram|kg|ml|cl|liter|l|stuks?)\\b`, 'i'))
+  // 'kilo' en 'dl' stonden hier niet in, terwijl parseUnitLabel ze wel kent.
+  // Daardoor vielen eenduidige maten als "Zak 1 kilo" en "Doos 1 kilo" af
+  // (gemeten op Dirk 2026-08-03: 2 van 99 aanbiedingen, 44% -> 46%).
+  const mm = t.match(new RegExp(`\\b(?:${PROMO_PACK_WORDS})\\s+(\\d+)\\s*[x×]\\s*(\\d+[.,]?\\d*)\\s*(gram|kg|kilo|ml|cl|dl|liter|l|stuks?)\\b`, 'i'))
   if (mm && numbers.length === 2) return `${mm[1]} x ${mm[2]} ${mm[3]}`
 
-  const m = t.match(new RegExp(`\\b(?:${PROMO_PACK_WORDS})\\s+(\\d+[.,]?\\d*)\\s*(gram|kg|ml|cl|liter|l|stuks?)\\b`, 'i'))
+  const m = t.match(new RegExp(`\\b(?:${PROMO_PACK_WORDS})\\s+(\\d+[.,]?\\d*)\\s*(gram|kg|kilo|ml|cl|dl|liter|l|stuks?)\\b`, 'i'))
   if (!m) return null
   if (numbers.length !== 1) return null
 
