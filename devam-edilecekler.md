@@ -580,7 +580,9 @@ ana sayfadaki 643 adet `href="#"` link çerez onay bannerının satıcı listesi
   - Reddedilenler bilinçli kalıyor: aralık ("Pot 330-370 gram"), iki maat
     ("Bak 500 gram of 1 kilo"), tahmin ("ca. 4 kilo").
 - [ ] **Outreach takibi ~5 Ağustos** — her bloga en fazla BİR hatırlatma, sonra bırak
-- [ ] **Awin mid'leri** — ALLPOWERS + Deporvillage, `ui.awin.com` → Advertisers → Joined
+- [x] **Awin mid'leri — bayat not, zaten yapılmış.** ALLPOWERS (125964) ve
+  Deporvillage (121218) `MeerBesparenWidget.tsx:139,147`'de duruyor. 2026-08-01'de
+  de fark edilmişti (huntermd90), bugün doğrulandı, kapatıldı.
 - [ ] **GSC ölçümü (2-4 hafta):** 25-26 Tem'deki SEO değişikliklerinin etkisi
   (AH-vs-Jumbo redirect, /vergelijk içeriği + noindex, merk noindex)
 - [ ] **Ürün kimliği / scraper isimlendirmesi** — veri hikâyesini ve basın yolunu açar,

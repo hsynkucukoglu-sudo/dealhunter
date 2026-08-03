@@ -200,6 +200,18 @@ onderliggende productkoppeling onbetrouwbaar:
 Een verhaal hierop publiceren zou supermarkten beschuldigen op basis van onze
 eigen datafout. Eerst productidentiteit fixen, dan pas dit pad.
 
-**Let op:** dezelfde data voedt het "✓ Laagste prijs"-label op de site
-(`PriceHistoryContext.tsx`). Dat label staat dus op wankele grond zolang dit
-niet is opgelost.
+**Update 2026-08-03 — het label is inmiddels gefixt, de datastory nog niet.**
+`PriceHistoryContext.tsx` gebruikt niet meer de unit-sleutel (die de UNIQUE-
+constraint op `price_history` toch niet had, en dus vals-positieve labels gaf)
+en filtert categorie-aanbiedingen ("Alle …", "… of …") eruit — 45 van 299
+kandidaten vielen daardoor af bij de laatste meting. Live gecontroleerd:
+175 producten krijgen nu het label, steekproef van 10 is stuk voor stuk een
+specifieke merk+product-naam met een consistente prijs, geen categorienaam.
+Het label staat dus niet meer op wankele grond.
+Los, kleiner punt: "Zonnebrand" (Jumbo) staat 11 weken op exact dezelfde prijs
+tot op de cent — geen datafout voor het label (weegt gewoon mee als geldig),
+maar wel de moeite van een blik waard of de Jumbo-scraper daar elke week
+dezelfde respons herleest.
+De onderliggende datastory-vraag ("hoeveel 'aanbiedingen' zijn écht de laagste
+prijs?") blijft voorlopig geblokkeerd: 11 weken historie is nog kort voor een
+publieke claim, en dat is een apart besluit van de "laagste prijs"-badge zelf.
