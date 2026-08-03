@@ -563,10 +563,22 @@ ana sayfadaki 643 adet `href="#"` link çerez onay bannerının satıcı listesi
   Kalanlar bilinçli reddediliyor: aralık ("Schaal 225-400 gram"), iki maat,
   tahmin ("ca. 150 gram"), örnek ("Bijv. ...").
 
-  **Kalan:** Kruidvat ve Dirk Actions scraper'ları hâlâ birim göndermiyor — artık
-  bulk-replace geçirdiği için eklenebilir, aynı desen.
   **Uyarı:** Plus scraper'ı çalışırken `⚠️ versionInfo değişti` diyor — OutSystems
   modül sürümü değişmiş. Şu an çalışıyor (139 ürün) ama ileride kırılabilir.
+
+  **Kruidvat + Dirk de tamamlandı (2026-08-03, `6c50844`).** Aynı desen: mantık
+  backend'de zaten vardı, Actions scraper'ları göndermiyordu.
+  - Dirk: `offer.packaging` ("Zak 450 gram.", "Pak 3 stuks.") parse edildi.
+    Uçtan uca test: 99 üründen 46'sı birim aldı (%46).
+  - Kruidvat: `tile.subTitle` ("125 ml") kaynakta zaten vardı ama payload'a
+    taşınmıyordu; artık taşınıyor, browser context'inde parse ediliyor (script
+    backend modülünü import edemediği için birebir kopyalandı). Uçtan uca
+    test: 100 üründen 45'i birim aldı (%45).
+  - Yan bugfix: `extractSizeFromPromoText` (Dirk/DekaMarkt/Jumbo paylaşıyor)
+    `kg` ve `liter` biliyordu ama `kilo`/`dl` bilmiyordu, oysa `parseUnitLabel`
+    ikisini de kabul ediyor. Eklendi — "Zak 1 kilo" gibi ifadeler artık düşmüyor.
+  - Reddedilenler bilinçli kalıyor: aralık ("Pot 330-370 gram"), iki maat
+    ("Bak 500 gram of 1 kilo"), tahmin ("ca. 4 kilo").
 - [ ] **Outreach takibi ~5 Ağustos** — her bloga en fazla BİR hatırlatma, sonra bırak
 - [ ] **Awin mid'leri** — ALLPOWERS + Deporvillage, `ui.awin.com` → Advertisers → Joined
 - [ ] **GSC ölçümü (2-4 hafta):** 25-26 Tem'deki SEO değişikliklerinin etkisi
