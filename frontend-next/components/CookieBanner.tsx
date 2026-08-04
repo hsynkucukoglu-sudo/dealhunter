@@ -16,11 +16,13 @@ export function CookieBanner() {
     localStorage.setItem('cookie_consent', 'accepted')
     setShow(false)
     window.dispatchEvent(new Event('cookie_consent_accepted'))
+    window.dispatchEvent(new Event('cookie_consent_resolved'))
   }
 
   const decline = () => {
     localStorage.setItem('cookie_consent', 'declined')
     setShow(false)
+    window.dispatchEvent(new Event('cookie_consent_resolved'))
   }
 
   return (
