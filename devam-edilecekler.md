@@ -269,7 +269,35 @@ O zamana kadar Hoogvliet/Lidl'in %0 sorunu da çözülmeli.
 "bu hafta koffie Lidl'de €7,99, AH'de €X". `/product` sayfaları zaten bunu yapıyor.
 Otorite için veri-PR yerine ortaklık/dizin kaynaklı link yolu daha gerçekçi görünüyor.
 
-### 2c. [x] Hoogvliet sessiz scraper arızası — ✅ ÇÖZÜLDÜ (commit `1c23849`)
+### 2c. [!] Hoogvliet sessiz scraper arızası — YENİDEN AÇILDI (2026-08-04)
+
+**Fix çalışmadı.** İki gündür (2 ve 3 Ağustos) workflow çalışıyor ama Hoogvliet hâlâ
+canlıda **0 ürün**. Sebep: workflow YAML'ine Kruidvat şablonundan `continue-on-error: true`
+kopyalamışım — her iki run da GERÇEKTE `exit code 1` ile başarısız oluyordu (annotation'da
+görülüyor) ama bu ayar yüzünden job "Success" (yeşil tik) gösteriyordu. Tam olarak
+çözmeye çalıştığım "sessiz arıza" türünü ben yaratmışım.
+
+**Düzeltilen (commit `fe1b3d0`):** `continue-on-error` kaldırıldı. Script'e teşhis
+loglaması eklendi — `waitForSelector` başarısız olursa artık sayfa başlığı, HTML uzunluğu
+ve ilk 300 karakter body metni loglanıyor.
+
+**Henüz KANITLANMAMIŞ teori:** her iki başarısız run da ~60 saniye sürmüş — bu,
+`page.goto` (45sn) + `waitForSelector` (30sn) timeout'larının üst üste binmesiyle
+örtüşüyor. Yani muhtemelen **GitHub Actions'ın IP'si de Imperva challenge'ını
+geçemiyor** (Kruidvat/Dirk/Plus'ta geçiyordu, Hoogvliet'in WAF konfigürasyonu daha
+agresif olabilir). Ama bu bir teori — kesin teşhis ancak bir sonraki çalışmanın
+log çıktısıyla gelecek.
+
+**AÇIK:** Ben GitHub'a giriş yapamıyorum (oturum yok), workflow'u elle tetikleyemem.
+Yarın (5 Ağustos) 08:20 UTC'de kendiliğinden çalışacak, ya da Actions sekmesinden
+"Run workflow" ile hemen tetiklenebilir. Eğer teori doğru çıkarsa (Imperva GH Actions
+IP'sini de engelliyor), playwright+stealth yaklaşımı bu market için yetersiz kalır —
+alternatif (residential proxy, self-hosted runner, ya da bırakma kararı) o zaman
+değerlendirilmeli. Hoogvliet zaten haftada sadece 15-20 ürün sunan küçük bir market.
+
+<details><summary>Önceki (yanlış) "çözüldü" notu — referans için</summary>
+
+### 2c-eski. Hoogvliet sessiz scraper arızası — ✅ ÇÖZÜLDÜ (commit `1c23849`)
 
 **"Hoogvliet ve Lidl aynı veriyi tekrar okuyor" demiştim — yarısı yanlıştı.**
 - **Lidl'de sorun YOK.** Scraper her gün çalışıyor (son tarama bugün 08:02). %0 haftaları
@@ -305,6 +333,8 @@ Sonrasında `/api/health/scraper`'da Hoogvliet `last_scraped`'i güncel olmalı.
 için minimum ürün eşiği içermiyor. Bir gün Imperva 200 + challenge sayfası dönerse ve
 parser birkaç çöp ürün çıkarırsa, market silinip çöple değiştirilebilir. Proje genelinde
 mevcut bir desen, ayrı iş olarak ele alınmalı.
+
+</details>
 
 <details><summary>Üç strateji yolu (referans)</summary>
 
@@ -585,8 +615,35 @@ ana sayfadaki 643 adet `href="#"` link çerez onay bannerının satıcı listesi
   de fark edilmişti (huntermd90), bugün doğrulandı, kapatıldı.
 - [ ] **GSC ölçümü (2-4 hafta):** 25-26 Tem'deki SEO değişikliklerinin etkisi
   (AH-vs-Jumbo redirect, /vergelijk içeriği + noindex, merk noindex)
-- [ ] **Ürün kimliği / scraper isimlendirmesi** — veri hikâyesini ve basın yolunu açar,
-  ama 10 scraper'lık büyük iş. Kaynak veride yeterli detay olup olmadığı belirsiz.
+- [ ] **Ürün kimliği / scraper isimlendirmesi — DOĞRULANDI (2026-08-03), UYGULAMA BEKLİYOR.**
+  `docs/outreach.md`'deki engellenmiş veri hikâyesiyle bağlantılı (jenerik isimler
+  farklı ürünleri çarpıştırıyor, "Lipton" örneği). Amaç: `price_history`'ye
+  `product_id` ekleyip isim çarpışmasını kökten çözmek.
+
+  **Bulgu — hangi marketlerde kaynakta zaten kalıcı kimlik var:**
+  | Market | Alan | Durum |
+  |---|---|---|
+  | Albert Heijn | `webshopId` | **Kanıtlı kalıcı** — `ah.nl/producten/product/wi{id}` resmi ürün URL'si, kod zaten kendi image proxy'sinde (`server.js:103`) kullanıyor |
+  | Kruidvat | `code` | **Kanıtlı kalıcı** — ürün sayfası URL'sinde (`/p/{code}`) |
+  | Jumbo | `sku` | **Güçlü kanıt** — bağımsız `product(sku: "...")` GraphQL sorgusunda kullanılıyor, kampanyaya bağlı değil |
+  | Plus | `Product_SKU` | **Kanıtlı GÜVENİLMEZ** — canlı API'de test edildi: "Alle Dove en Rexona" ve "Alle Elmex en Colgate" (farklı ürünler) aynı SKU'yu (963886) taşıyor. Slug bazlı filtre denendi (gerçek ürün slug'ı olanlar ayrı): sadece 19/137 teklif (~%14) güvenilir çıktı, pratikte değersiz. |
+  | Dirk | `offerId` | **Olumsuz sinyal** — offer objesinde hiç ürün detay sayfası/URL alanı yok, tüm ürünler aynı genel `/aanbiedingen` sayfasına yönleniyor |
+  | DekaMarkt | `offerId` | **Olumsuz sinyal** — GraphQL alan adı `currentOffers` ("o anki teklifler"), ayrı bir ürün ID alanı yok |
+  | Hoogvliet, Lidl, Aldi, Vomar | — | kimlik yok, mevcut isim+market fallback'te kalır |
+
+  **Karar:** sadece AH+Kruidvat+Jumbo (en büyük 3 market, ~936 ürün/hafta) güvenle
+  kullanılabilir. Diğerlerini eklemek isim çarpışmasından daha kötü bir sorun
+  yaratır — offer ID'ler muhtemelen haftalık sıfırlanıyor, yani "her hafta yeni
+  ürün" gibi görünüp hiç fiyat geçmişi biriktirmez.
+
+  **DURDURULDU (kullanıcı kararı, 2026-08-03):** şemaya `product_id` eklemek ve
+  3 scraper'ı güncellemek geri dönüşü zor bir adım (mevcut 12 haftalık geçmişin
+  yorumunu etkiler). Sadece araştırma yapıldı, uygulanmadı. Devam edilecekse:
+  1. `price_history`'ye `product_id TEXT` ekle, `UNIQUE` kısıtına dahil et
+  2. Backend AH/Jumbo scraper'larına `webshopId`/`sku`'yu `recordPriceHistory`'ye geçir
+  3. Kruidvat Actions scraper'ına `code`'u aynı şekilde ekle
+  4. `getMinPriceMap()`/`getPriceHistory()`'yi `product_id` varsa onu, yoksa
+     `name::market` fallback'ini kullanacak şekilde güncelle (geriye dönük uyumluluk)
 
 ## ⚠️ Railway deploy tuzakları (tekrar lazım olacak)
 
