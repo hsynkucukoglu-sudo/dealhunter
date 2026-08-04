@@ -28,8 +28,10 @@ jobs:
           npm install
           npx playwright install chromium --with-deps
 
+      # GEEN continue-on-error: die verborg runs #1 (2 aug) en #2 (3 aug) als groen
+      # vinkje terwijl beide "exit code 1" gaven (0 producten opgehaald) — precies de
+      # stille storing die deze workflow had moeten oplossen, nu door mezelf herhaald.
       - name: Run Hoogvliet scraper
-        continue-on-error: true
         working-directory: .github/scripts
         env:
           BACKEND_URL: ${{ secrets.BACKEND_URL }}

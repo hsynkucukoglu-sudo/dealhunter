@@ -56,9 +56,23 @@ function nextSunday() {
     const page = await ctx.newPage()
 
     console.log('Hoogvliet /aanbiedingen wordt geladen...')
-    await page.goto('https://www.hoogvliet.com/aanbiedingen', { waitUntil: 'domcontentloaded', timeout: 45000 })
-    // Imperva kan een tussenpagina serveren die zichzelf doorstuurt; wachten op de tegels
-    await page.waitForSelector('.product-all-info', { timeout: 30000 })
+    const resp = await page.goto('https://www.hoogvliet.com/aanbiedingen', { waitUntil: 'domcontentloaded', timeout: 45000 })
+    console.log('HTTP status: ' + (resp ? resp.status() : '(geen response)'))
+
+    // Imperva kan een tussenpagina serveren die zichzelf doorstuurt; wachten op de tegels.
+    // Runs #1 (2 aug) en #2 (3 aug) faalden allebei na ~60s zonder duidelijke reden —
+    // bij een volgende mislukking moet dit blok laten zien WAT er in plaats daarvan
+    // op de pagina stond (Imperva-challenge, lege pagina, gewijzigde HTML-structuur).
+    try {
+      await page.waitForSelector('.product-all-info', { timeout: 30000 })
+    } catch (waitErr) {
+      const title = await page.title().catch(() => '(onbekend)')
+      const bodyText = await page.evaluate(() => document.body?.innerText?.slice(0, 300) || '(leeg)').catch(() => '(niet op te halen)')
+      const htmlLen = await page.evaluate(() => document.documentElement.outerHTML.length).catch(() => -1)
+      console.error('waitForSelector mislukt — pagina-titel: "' + title + '", HTML-lengte: ' + htmlLen)
+      console.error('eerste 300 tekens body-tekst: ' + bodyText.replace(/\n/g, ' '))
+      throw waitErr
+    }
 
     const raw = await page.evaluate(() => {
       const txt = el => (el ? el.textContent.replace(/\s+/g, ' ').trim() : null)
