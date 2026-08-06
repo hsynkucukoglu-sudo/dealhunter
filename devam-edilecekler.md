@@ -6,6 +6,48 @@ status: active
 
 # DealHunter4U — Devam Edilecekler
 
+## 🔍 GSC + Clarity trafik analizi (2026-08-06) — büyüme fırsatları
+
+**GSC (son 3 ay, 4 May-3 Ağu):** 356 tıklama, 125K gösterim, ort. TO %0,3, ort. pozisyon 9,6.
+
+### ✅ Yapıldı — /vergelijk/ sayfa title fix (`500c531`)
+
+**Bulgu:** 15+ `/vergelijk/X-vs-Y` sayfası pozisyon 4-12'de (bazıları MÜKEMMEL: aldi-vs-dekamarkt
+4.0, lidl-vs-kruidvat 6.0) ama **TO %0 — sıfır tıklama**, onlarca-yüzlerce gösterime rağmen:
+albert-heijn-vs-aldi (107 gösterim, poz 9.2), albert-heijn-vs-lidl (91, 9.6), jumbo-vs-vomar
+(43, 8.8), lidl-vs-plus (25, 6.3), vb. Aynı zamanda `/blog/is-X-goedkoper-dan-Y` yazıları TO
+%0,6-3,3 ile çalışıyor. Kök neden: vergelijk title'ı "Wie Heeft de Beste Aanbiedingen?"
+diye çerçeveleniyordu, ama bu sayfaları sıralayan gerçek sorgular "is X goedkoper dan Y",
+"X vs Y" — "goedkoper" (daha ucuz) niyeti, "beste aanbiedingen" (en iyi fırsatlar) değil.
+**Fix:** title → "Is X Goedkoper dan Y? Prijzen & Aanbiedingen Vergeleken", description
+aynı şekilde "goedkoper"/"prijzen" odaklı yeniden yazıldı. H1'e dokunulmadı (SERP'te
+görünmüyor). Etki 2-4 hafta sonra GSC'de ölçülmeli.
+
+### 📌 AÇIK — diğer bulgular (aksiyon bekliyor)
+
+1. **Aynı title-mismatch deseni blog'da da var, zero-click + iyi pozisyon:**
+   `is-aldi-goedkoper-dan-jumbo` (121 gösterim, poz **5.0**, 0 tık), `barbecue-aanbieding-
+   supermarkt-2026` (129, poz **4.8**, 0 tık), `is-dirk-goedkoper-dan-aldi` (49, poz 5.3,
+   0 tık), `jumbo-aanbiedingen-gids` (155, poz 9.1, 0 tık). Bunların title/description'ını
+   da tek tek gözden geçirmek gerekiyor — vergelijk fix'iyle aynı sınıf sorun olabilir.
+2. **`/supermarkt/albert-heijn` pozisyonu (12.7) diğer marketlerden kötü** (aldi 8.5, lidl
+   8.7, dirk 9.0) — AH en büyük envantere sahip olduğu halde en kötü sıralanıyor. Bugünkü
+   paket-boyutu dedup fix'inin (614→368 ürün, bkz. yukarıdaki commit) bunu iyileştirip
+   iyileştirmediği 2-4 hafta sonra kontrol edilmeli.
+3. **İç linkleme fırsatı:** `/supermarkt/aldi` (44K gösterim, en büyük sayfa) kendi
+   `/vergelijk/aldi-vs-*` sayfalarına (özellikle mükemmel-pozisyonlu aldi-vs-dekamarkt'a)
+   belirgin link vermiyor gibi görünüyor — kontrol edip eklemek hem kullanıcı gezintisi
+   hem de bu düşük-TO sayfalara authority/tıklama aktarımı için değerli olabilir.
+4. **Clarity (son 30 gün, x232q20xdj):** 681 oturum (676 bot hariç), sayfa/oturum 1,01,
+   kaydırma %30 (Temmuz'daki %21-26'dan iyileşme), etkin süre 26sn. **Geçersiz tıklamalar
+   %6,9 (47 oturum)** — sinirli tıklama sadece %0,15. Neyin tıklandığı araştırılmadı,
+   düşük öncelik ama not edildi. **Trafik kaynağı sürprizi: merchant.tradetracker.com
+   95 oturum + cross.tradetracker.com 5 = Google organik'in (166) yarısı kadar!** Bu
+   TradeTracker'dan gelen trafiğin ne olduğu (affiliate ağı listing/dizin sayfası mı,
+   yoksa yönlendirme zinciri mi) araştırılmadı — potansiyel ek kanal, incelenmeli.
+   gemini.google.com da 7 oturumla referrer listesinde — AI sohbetlerde siteden
+   bahsedilmiş olabilir.
+
 ## ✅ Bugün tamamlanan (2026-08-06) — AH verpakkingsvarianten dedup
 
 Kullanıcı şikayeti: Albert Heijn sayfasında sanki ürün eksik hissi var, çünkü aynı ürün
