@@ -29,6 +29,15 @@ export const INDEXED_PAIR_SLUGS = new Set([
   // Clarity'de kanıtlanmış Google talebi (13-07-2026): 1:45dk + 3 tıklama ile
   // gerçek okuma, aynı gün 2 ayrı organik oturum. Blog karşılığı yok.
   'albert-heijn-vs-dekamarkt',
+  // 2026-08-06: GSC 3 ay verisinde gerçek talep gösteren + blog karşılığı OLMAYAN
+  // 5 çift eklendi (albert-heijn-vs-lidl gibi blog'u zaten kazanan çiftler bilerek
+  // dışarıda tutuldu — 07-25 kannibalizasyon dersi). Şu an TO %0 çünkü noindex'ti;
+  // bu iyi pozisyonlar Google'ın hiç görmediği sayfalardan geliyor.
+  'aldi-vs-dekamarkt', // poz 4,0, 28 gösterim — blog karşılığı yok
+  'lidl-vs-kruidvat', // poz 6,0, 46 gösterim — blog karşılığı yok
+  'lidl-vs-plus', // poz 6,3, 25 gösterim — blog karşılığı yok
+  'vomar-vs-plus', // poz 6,4, 20 gösterim — blog karşılığı yok
+  'albert-heijn-vs-hoogvliet', // poz 8,3, 51 gösterim — blog karşılığı yok
 ])
 
 export function isIndexedPair(slug: string): boolean {
