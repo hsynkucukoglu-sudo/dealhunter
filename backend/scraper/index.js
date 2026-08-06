@@ -872,6 +872,29 @@ function parseAhUnitInfo(p, discountedPrice) {
   return {}
 }
 
+// AH toont hetzelfde artikel vaak als losse producten in meerdere verpakkingsgroottes
+// (2-pack, 4-pack, 10-pack, 24-pack, 40-pack...) — dat vult de paginakaart met bijna-
+// identieke tegels en verdringt echte productvariatie. We houden per basisnaam (zonder
+// "-pack"-suffix) maar 1 variant over: bij voorkeur mét korting, en anders de kleinste
+// verpakking (het losse artikel zonder pack-label geldt als de kleinste).
+function dedupePackVariants(products) {
+  const groups = new Map()
+  for (const p of products) {
+    const base = p.name.replace(/\s*\d+\s*-?\s*pack\b/i, '').trim().toLowerCase()
+    if (!groups.has(base)) groups.set(base, [])
+    groups.get(base).push(p)
+  }
+  const out = []
+  for (const items of groups.values()) {
+    if (items.length === 1) { out.push(items[0]); continue }
+    const withDiscount = items.filter(p => p.originalPrice > p.discountedPrice)
+    const pool = withDiscount.length ? withDiscount : items
+    const winner = pool.slice().sort((a, b) => (a.unitSize ?? 0) - (b.unitSize ?? 0))[0]
+    out.push(winner)
+  }
+  return out
+}
+
 // ─── ALBERT HEIJN — Tüm promosyon tipleri (1+1, halve prijs, X voor Y, %) ───
 async function scrapeAlbertHeijn() {
   console.log('🏪 [Albert Heijn] bonus API taranıyor...')
@@ -899,7 +922,7 @@ async function scrapeAlbertHeijn() {
     }
 
     const seenIds = new Set()
-    const candidates = []
+    let candidates = []
 
     // Strateji 1: bonus=true — tüm bonus ürünleri çek
     for (let page = 0; page < 30; page++) {
@@ -983,6 +1006,10 @@ async function scrapeAlbertHeijn() {
       console.log('  [AH] 3 strateji de 0 ürün döndürdü')
       return []
     }
+
+    const beforePackDedup = candidates.length
+    candidates = dedupePackVariants(candidates)
+    console.log(`  [AH] Verpakkingsvarianten samengevoegd: ${beforePackDedup} → ${candidates.length}`)
 
     candidates.sort((a, b) => (a.discountedPrice / a.originalPrice) - (b.discountedPrice / b.originalPrice))
     const ahWithDiscount = candidates.filter(p => p.originalPrice > p.discountedPrice)
