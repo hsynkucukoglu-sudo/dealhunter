@@ -6,6 +6,26 @@ status: active
 
 # DealHunter4U — Devam Edilecekler
 
+## ✅ Bugün tamamlanan (2026-08-06) — AH verpakkingsvarianten dedup
+
+Kullanıcı şikayeti: Albert Heijn sayfasında sanki ürün eksik hissi var, çünkü aynı ürün
+2-li/4-lü/10-lu/20-li gibi farklı paket boyutlarında tekrar tekrar listeleniyor.
+
+**Doğrulandı:** 614 AH ürününün **391'i (%64)** sadece 145 taban üründen türeyen paket-
+boyutu kopyası çıktı (örn. Coca-Cola Zero sugar tek başına 4/5/6/10/24/40-pack olarak
+6 ayrı kart kaplıyordu). Diğer 8 markette bu sorun hiç yok (%0) — sadece AH'nin bonus
+API'si aynı ürünü her ambalaj boyutu için ayrı SKU olarak döndürüyor.
+
+**Fix (`cf5716a`):** `backend/scraper/index.js` → `dedupePackVariants()` eklendi.
+Taban isme (paket eki silinmiş hâl) göre gruplayıp grup içinden **öncelik gerçek indirimi
+olan, sonra en küçük ambalaj** (paket etiketi olmayan tekli ürün en küçük sayılır — yoksa
+en düşük `unitSize`) seçiliyor. 614 → **368 ürün** (145 grup 1'e indi; Robijn örneğinde
+tam olarak istenen "2'li hali" kazandı çünkü grupta en küçüğü oydu).
+
+**AÇIK:** Backend cron her gün 08:00 UTC'de çalışıyor (`server.js:470`), fix bir sonraki
+scrape'te canlıya yansıyacak. Manuel tetiklemek için `/api/scraper/run` admin token
+gerektiriyor, elimde yok — kullanıcı panelden tetikleyebilir ya da yarın sabah bekler.
+
 ## 📱 Mobil fold denetimi — 1 fix gitti, 2 KARAR SENDE (2026-08-02)
 
 **Clarity (son 3 gün):** 39 oturum, **sayfa/oturum 1**, kaydırma derinliği **%26,4**,
