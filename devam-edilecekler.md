@@ -10,6 +10,22 @@ status: active
 
 **GSC (son 3 ay, 4 May-3 Ağu):** 356 tıklama, 125K gösterim, ort. TO %0,3, ort. pozisyon 9,6.
 
+### ✅ Yapıldı — 5 vergelijk çifti index'e açıldı (`7fe29a8`)
+
+**Önemli düzeltme:** İlk analizde "15+ vergelijk sayfası büyük fırsat" dedim ama bu
+yanlıştı — `lib/vergelijk.ts`'te 55 olası çiftten sadece 2'si (`albert-heijn-vs-aldi`,
+`albert-heijn-vs-dekamarkt`) index'e açıktı, kalanı **bilerek** noindex (2026-07-13
+AdSense "ince içerik" reddi + 2026-07-25'te blog'u zaten kazanan 8 çift daha çıkarıldı
+— kannibalizasyon önlemek için). GSC'de gördüğüm "poz 4-12 ama TO %0" sayfaların çoğu
+zaten bu noindex grubundaydı, title fix'i onlar için işe yaramazdı.
+
+**Gerçek aksiyon:** GSC'de gerçek talep gösteren VE blog karşılığı OLMAYAN 5 çift
+index'e eklendi (blog'u zaten kazanan `albert-heijn-vs-lidl` gibi çiftler bilerek
+dışarıda tutuldu — 07-25 dersini tekrarlamamak için):
+`aldi-vs-dekamarkt` (poz 4.0), `lidl-vs-kruidvat` (poz 6.0), `lidl-vs-plus` (poz 6.3),
+`vomar-vs-plus` (poz 6.4), `albert-heijn-vs-hoogvliet` (poz 8.3). Sitemap otomatik
+güncellenir (`isIndexedPair` üzerinden okuyor). Etki 2-4 hafta sonra ölçülmeli.
+
 ### ✅ Yapıldı — /vergelijk/ sayfa title fix (`500c531`)
 
 **Bulgu:** 15+ `/vergelijk/X-vs-Y` sayfası pozisyon 4-12'de (bazıları MÜKEMMEL: aldi-vs-dekamarkt
