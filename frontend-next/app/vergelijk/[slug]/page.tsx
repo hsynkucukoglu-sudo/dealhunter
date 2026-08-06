@@ -30,8 +30,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { a, b } = pair
   const url = `https://www.dealhunter4u.nl/vergelijk/${slug}`
   // Hafta numarası yok — index'te eskiyip "bayat içerik" sinyali veriyordu, bkz. supermarkt/[slug]
-  const title = `${a.name} vs ${b.name}: Wie Heeft de Beste Aanbiedingen? | DealHunter4U`
-  const description = `✓ Vergelijk de actuele aanbiedingen van ${a.name} en ${b.name}. Gemiddelde korting, aantal deals en topdeals naast elkaar — wekelijks bijgewerkt.`
+  // GSC: bu sayfalar pozisyon 4-12'de (bazıları mükemmel: 4.0, 6.0) ama TO %0 — çünkü
+  // sıralandıkları sorgular "is X goedkoper dan Y" / "X vs Y" iken title "beste aanbiedingen"
+  // (deals) diye çerçeveliyordu. Aynı ikili blog'da "is-X-goedkoper-dan-Y" başlığıyla
+  // TO %0,6-3,3 arası çalışıyor — title'ı arama sorgusuyla eşleştir.
+  const title = `Is ${a.name} Goedkoper dan ${b.name}? Prijzen & Aanbiedingen Vergeleken | DealHunter4U`
+  const description = `✓ Is ${a.name} goedkoper dan ${b.name}? Vergelijk actuele prijzen, gemiddelde korting en topdeals naast elkaar — wekelijks bijgewerkt.`
 
   return {
     title,
