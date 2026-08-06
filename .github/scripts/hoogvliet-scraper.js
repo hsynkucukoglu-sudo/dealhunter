@@ -45,6 +45,12 @@ function nextSunday() {
   return d.toISOString().split('T')[0]
 }
 
+// Schrijft naar Annotations (leesbaar via de publieke check-runs-API zonder inlog),
+// in plaats van console.error die alleen in de ruwe log staat (403 zonder admin-rechten).
+function ghError(msg) {
+  console.log('::error::' + msg.replace(/\r?\n/g, ' | ').replace(/%/g, '%25'))
+}
+
 ;(async () => {
   let browser = null
   try {
@@ -60,17 +66,20 @@ function nextSunday() {
     console.log('HTTP status: ' + (resp ? resp.status() : '(geen response)'))
 
     // Imperva kan een tussenpagina serveren die zichzelf doorstuurt; wachten op de tegels.
-    // Runs #1 (2 aug) en #2 (3 aug) faalden allebei na ~60s zonder duidelijke reden —
-    // bij een volgende mislukking moet dit blok laten zien WAT er in plaats daarvan
-    // op de pagina stond (Imperva-challenge, lege pagina, gewijzigde HTML-structuur).
+    // Runs #1 (2 aug) en #2 (3 aug) faalden allebei na ~60s zonder duidelijke reden, en
+    // #3/#4 (4-5 aug, na het verwijderen van continue-on-error) faalden opnieuw na ~59s —
+    // maar console.error komt niet in de Annotations-tab terecht, alleen in de ruwe log
+    // (die "Must have admin rights" geeft via de publieke API zonder inlog). De GitHub
+    // Actions workflow-command ::error:: schrijft WEL naar Annotations, die de publieke
+    // check-runs/{id}/annotations-API zonder authenticatie teruggeeft — dat maakt de
+    // volgende mislukking voor het eerst inspecteerbaar zonder in te loggen.
     try {
       await page.waitForSelector('.product-all-info', { timeout: 30000 })
     } catch (waitErr) {
       const title = await page.title().catch(() => '(onbekend)')
       const bodyText = await page.evaluate(() => document.body?.innerText?.slice(0, 300) || '(leeg)').catch(() => '(niet op te halen)')
       const htmlLen = await page.evaluate(() => document.documentElement.outerHTML.length).catch(() => -1)
-      console.error('waitForSelector mislukt — pagina-titel: "' + title + '", HTML-lengte: ' + htmlLen)
-      console.error('eerste 300 tekens body-tekst: ' + bodyText.replace(/\n/g, ' '))
+      ghError('waitForSelector mislukt — titel: "' + title + '", HTML-lengte: ' + htmlLen + ', eerste 300 tekens body: ' + bodyText)
       throw waitErr
     }
 
@@ -159,7 +168,7 @@ function nextSunday() {
     console.log((json.count ?? products.length) + ' urun eklendi!')
   } catch (e) {
     if (browser) await browser.close().catch(() => {})
-    console.error('HATA:', e.message)
+    ghError('HATA: ' + e.message)
     process.exit(1)
   }
 })()
