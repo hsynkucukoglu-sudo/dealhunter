@@ -3,7 +3,7 @@ import cors from 'cors'
 import rateLimit from 'express-rate-limit'
 import { initDatabase } from './db.js'
 import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, updateProductCategory, clearAllProducts, clearProductsByMarket } from './models.js'
-import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, archiveWeeklyDeals, getMinPriceMap, getPriceHistory, getKortingsindexHistory, getMatchedPriceIndex, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts, updateSubscriptionPreferences, getUnsegmentedSubscriptions, getSegmentedSubscriptions, clearOrphanProducts, getProductCount, clearExpiredProducts, subscribeDealAlert, unsubscribeDealAlert, getMatchingAlerts, markAlertSent } from './db.js'
+import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, archiveWeeklyDeals, getMinPriceMap, getPriceHistory, getKortingsindexHistory, getMatchedPriceIndex, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts, updateSubscriptionPreferences, getUnsegmentedSubscriptions, getSegmentedSubscriptions, clearOrphanProducts, getProductCount, clearExpiredProducts, subscribeDealAlert, unsubscribeDealAlert, getMatchingAlerts, markAlertSent, recordClick, getClickStats, getDailyClicks } from './db.js'
 import { sendWeeklyNewsletter, sendWatchlistAlert, sendDealAlert } from './email.js'
 import { findWeeklyChampion } from './productMatch.js'
 import { sendPushToAll, sendPushToSubscriptions } from './push.js'
@@ -49,6 +49,13 @@ const newsletterLimit = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Te veel aanmeldingen, probeer later opnieuw.' },
+})
+const trackLimit = rateLimit({
+  windowMs: 60 * 1000,
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many track requests.' },
 })
 
 // ===== Admin Auth Middleware =====
@@ -166,6 +173,45 @@ app.get('/api/products', asyncHandler(async (req, res) => {
 app.get('/api/status', (req, res) => {
   res.json({ scraperRunning })
 })
+
+const TRACK_CHANNELS = new Set(['sponsor', 'market', 'flink', 'blog', 'other'])
+
+// POST /api/track - Tıklama takibi (navigator.sendBeacon hedefi)
+// sendBeacon body'yi text/plain olarak gönderir — express.json() Content-Type
+// eşleşmediği için body'yi parse etmeden geçer, o yüzden burada ayrıca
+// express.text({ type: '*/*' }) ile ham body'yi Content-Type'tan bağımsız okuyoruz.
+app.post('/api/track', trackLimit, express.text({ type: '*/*' }), asyncHandler(async (req, res) => {
+  try {
+    const raw = typeof req.body === 'string' ? req.body : ''
+    const data = JSON.parse(raw || '{}')
+    const channel = String(data.channel ?? 'other').slice(0, 20)
+    const target = String(data.target ?? '').slice(0, 80)
+    if (target && TRACK_CHANNELS.has(channel)) {
+      const ua = req.headers['user-agent'] || ''
+      const device = /mobile|android|iphone/i.test(ua) ? 'mobile' : 'desktop'
+      await recordClick({
+        channel,
+        target,
+        dealId: data.dealId ? String(data.dealId).slice(0, 60) : undefined,
+        page: data.page ? String(data.page).slice(0, 120) : undefined,
+        device,
+      })
+    }
+  } catch {
+    // sessizce yut — kullanıcı akışını bozma, sendBeacon zaten yanıt beklemiyor
+  }
+  res.status(204).end()
+}))
+
+// GET /api/track/stats - Tıklama raporu (gizli anahtarla korumalı)
+app.get('/api/track/stats', asyncHandler(async (req, res) => {
+  if (!process.env.TRACK_STATS_KEY || req.query.key !== process.env.TRACK_STATS_KEY) {
+    return res.status(404).end()
+  }
+  const days = Number(req.query.days) || 14
+  const [totals, daily] = await Promise.all([getClickStats(days), getDailyClicks(days)])
+  res.json({ days, totals, daily })
+}))
 
 // GET /api/products/:id - Belirli ürünü getir
 app.get('/api/products/:id', asyncHandler(async (req, res) => {

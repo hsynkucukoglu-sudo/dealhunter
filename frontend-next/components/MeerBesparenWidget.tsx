@@ -1,6 +1,7 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { trackClick } from '@/lib/track'
 
 const AW = (mid: number, dest: string) =>
   `https://www.awin1.com/cread.php?awinmid=${mid}&awinaffid=2932569&ued=${encodeURIComponent(dest)}`
@@ -296,6 +297,7 @@ export function MeerBesparenWidget({ open, onClose, onOpen, activeCategory }: Pr
                       // @ts-ignore
                       if (typeof gtag !== 'undefined') gtag('event', 'affiliate_click', { affiliate_name: b.name, affiliate_category: b.category, affiliate_source: 'featured_chip' })
                     } catch {}
+                    trackClick('sponsor', b.name)
                     window.open(url, '_blank', 'noopener,noreferrer')
                     e.preventDefault()
                   }}
@@ -446,6 +448,7 @@ export function MeerBesparenWidget({ open, onClose, onOpen, activeCategory }: Pr
                             // @ts-ignore
                             if (typeof gtag !== 'undefined') gtag('event', 'affiliate_click', { affiliate_name: item.name, affiliate_category: activeGroup.id })
                           } catch {}
+                          trackClick('sponsor', item.name)
                           window.open(item.url, '_blank', 'noopener,noreferrer')
                           e.preventDefault()
                         }}

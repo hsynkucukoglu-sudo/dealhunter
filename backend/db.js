@@ -133,6 +133,21 @@ export async function initDatabase() {
   await pool.query(`CREATE INDEX IF NOT EXISTS idx_deal_alerts_email ON deal_alerts (email)`)
   await pool.query(`CREATE INDEX IF NOT EXISTS idx_deal_alerts_keyword ON deal_alerts (lower(keyword))`)
 
+  // Tıklama takibi — EPC (tıklama başına kazanç) hesabı için kanal bazlı log
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS click_events (
+      id SERIAL PRIMARY KEY,
+      channel TEXT NOT NULL,
+      target TEXT NOT NULL,
+      deal_id TEXT,
+      page TEXT,
+      device TEXT,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `)
+  await pool.query(`CREATE INDEX IF NOT EXISTS idx_click_events_channel_date ON click_events (channel, created_at)`)
+  await pool.query(`CREATE INDEX IF NOT EXISTS idx_click_events_target ON click_events (target)`)
+
   console.log('✅ PostgreSQL veritabanı başlatıldı')
 }
 
@@ -635,6 +650,40 @@ export async function getScraperStats() {
   `)
   const total = rows.reduce((s, r) => s + r.total, 0)
   return { total, markets: rows }
+}
+
+export async function recordClick({ channel, target, dealId, page, device }) {
+  await pool.query(
+    `INSERT INTO click_events (channel, target, deal_id, page, device)
+     VALUES ($1, $2, $3, $4, $5)`,
+    [channel, target, dealId ?? null, page ?? null, device ?? null]
+  )
+}
+
+// Rapor: son N gün, kanal+hedef bazlı toplam (EPC hesabı için)
+export async function getClickStats(days = 14) {
+  const { rows } = await pool.query(
+    `SELECT channel, target, COUNT(*)::int AS clicks, MAX(created_at) AS last_click
+       FROM click_events
+      WHERE created_at >= NOW() - ($1 || ' days')::interval
+      GROUP BY channel, target
+      ORDER BY clicks DESC`,
+    [String(days)]
+  )
+  return rows
+}
+
+// Günlük trend (grafik için)
+export async function getDailyClicks(days = 14) {
+  const { rows } = await pool.query(
+    `SELECT date(created_at) AS day, channel, COUNT(*)::int AS clicks
+       FROM click_events
+      WHERE created_at >= NOW() - ($1 || ' days')::interval
+      GROUP BY day, channel
+      ORDER BY day DESC`,
+    [String(days)]
+  )
+  return rows
 }
 
 export async function subscribeDealAlert({ email, keyword, market, token }) {

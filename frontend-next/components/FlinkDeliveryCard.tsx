@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import { getAffiliateLink } from '@/lib/affiliate'
+import { trackClick } from '@/lib/track'
 
 declare function gtag(...args: unknown[]): void
 
@@ -22,6 +23,7 @@ export function FlinkDeliveryCard({ marketName }: { marketName: string }) {
       rel={flink.rel}
       onClick={() => {
         if (typeof gtag !== 'undefined') gtag('event', 'affiliate_click', { affiliate_name: 'Flink', affiliate_category: 'bezorging', source_page: marketName })
+        trackClick('flink', 'flink')
       }}
       className="flex items-center gap-3 mb-6 p-3 pr-4 rounded-2xl w-fit max-w-full transition-all hover:shadow-md"
       style={{ background: 'white', border: '1.5px solid #E0D8CE', textDecoration: 'none' }}

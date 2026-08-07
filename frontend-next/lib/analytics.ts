@@ -1,3 +1,5 @@
+import { trackClick } from './track'
+
 declare function gtag(...args: unknown[]): void
 
 function track(event: string, params: Record<string, unknown> = {}) {
@@ -14,6 +16,8 @@ export function trackDealClick(productName: string, market: string, discountPct:
     creative_slot: `deal_card_${Math.round(discountPct)}pct`,
   })
   track('deal_click', { market, product: productName, discount_pct: discountPct })
+  // First-party log — EPC hesabı için (bkz. backend /api/track/stats)
+  trackClick('market', market, productName)
 }
 
 // Market filtresi seçimi
