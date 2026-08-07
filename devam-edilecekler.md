@@ -51,28 +51,29 @@ başarısız çalıştığında mail gelmeye devam edecek ama artık uğraşılm
 
 ### 📌 AÇIK — diğer bulgular (aksiyon bekliyor)
 
-1. **Aynı title-mismatch deseni blog'da da var, zero-click + iyi pozisyon:**
-   `is-aldi-goedkoper-dan-jumbo` (121 gösterim, poz **5.0**, 0 tık), `barbecue-aanbieding-
-   supermarkt-2026` (129, poz **4.8**, 0 tık), `is-dirk-goedkoper-dan-aldi` (49, poz 5.3,
-   0 tık), `jumbo-aanbiedingen-gids` (155, poz 9.1, 0 tık). Bunların title/description'ını
-   da tek tek gözden geçirmek gerekiyor — vergelijk fix'iyle aynı sınıf sorun olabilir.
+1. ~~Blog title-mismatch~~ **⛔ KAPATILDI (2026-08-07):** 4 yazıdan 2'sini kontrol ettim
+   (`is-aldi-goedkoper-dan-jumbo`, `is-dirk-goedkoper-dan-aldi`) — title'ları ZATEN doğru
+   formatta ("Is X Goedkoper dan Y?"), vergelijk sayfalarındaki gibi bir kusur yok, 0 tık
+   büyük olasılıkla küçük örneklem şansı (90 günde 121/49 gösterim). Kalan 2'si
+   (`barbecue-aanbieding-supermarkt-2026` 129 gösterim, `jumbo-aanbiedingen-gids` 155
+   gösterim) kontrol edilmedi — GSC'ye yeniden giriş gerektiriyordu, ikisi de düşük
+   hacimli/şüpheli değerli olduğu için (Hoogvliet dersiyle aynı: emek/değer dengesi
+   tutmuyor) kullanıcı kararıyla kovalanmıyor.
 2. **`/supermarkt/albert-heijn` pozisyonu (12.7) diğer marketlerden kötü** (aldi 8.5, lidl
    8.7, dirk 9.0) — AH en büyük envantere sahip olduğu halde en kötü sıralanıyor. Bugünkü
    paket-boyutu dedup fix'inin (614→368 ürün, bkz. yukarıdaki commit) bunu iyileştirip
    iyileştirmediği 2-4 hafta sonra kontrol edilmeli.
-3. **İç linkleme fırsatı:** `/supermarkt/aldi` (44K gösterim, en büyük sayfa) kendi
-   `/vergelijk/aldi-vs-*` sayfalarına (özellikle mükemmel-pozisyonlu aldi-vs-dekamarkt'a)
-   belirgin link vermiyor gibi görünüyor — kontrol edip eklemek hem kullanıcı gezintisi
-   hem de bu düşük-TO sayfalara authority/tıklama aktarımı için değerli olabilir.
-4. **Clarity (son 30 gün, x232q20xdj):** 681 oturum (676 bot hariç), sayfa/oturum 1,01,
-   kaydırma %30 (Temmuz'daki %21-26'dan iyileşme), etkin süre 26sn. **Geçersiz tıklamalar
-   %6,9 (47 oturum)** — sinirli tıklama sadece %0,15. Neyin tıklandığı araştırılmadı,
-   düşük öncelik ama not edildi. **Trafik kaynağı sürprizi: merchant.tradetracker.com
-   95 oturum + cross.tradetracker.com 5 = Google organik'in (166) yarısı kadar!** Bu
-   TradeTracker'dan gelen trafiğin ne olduğu (affiliate ağı listing/dizin sayfası mı,
-   yoksa yönlendirme zinciri mi) araştırılmadı — potansiyel ek kanal, incelenmeli.
-   gemini.google.com da 7 oturumla referrer listesinde — AI sohbetlerde siteden
-   bahsedilmiş olabilir.
+3. ~~İç linkleme fırsatı~~ **✅ ZATEN ÇÖZÜLMÜŞ (yan etki):** `MarketPage.tsx`'teki
+   `comparisonPairs` bloğu zaten `isIndexedPair()` üzerinden filtreleniyor — 5 çifti
+   index'e açtığımız commit (`7fe29a8`) bunu otomatik olarak da çözdü. Aldi sayfası artık
+   "Aldi vs Albert Heijn" VE "Aldi vs DekaMarkt" linklerini gösteriyor, kod değişikliği
+   gerekmedi. (2026-08-07 doğrulandı)
+4. ~~Clarity geçersiz tıklama (%6,9) araştırması~~ **⛔ KAPATILDI (2026-08-07):** GSC'ye
+   yeniden giriş gerektiriyordu, kullanıcı kararıyla kovalanmıyor (bkz. madde 1).
+   **TradeTracker trafiği (merchant.tradetracker.com 95 oturum) AYRICA ARAŞTIRILDI VE
+   ÇÖZÜLDÜ** (bkz. [[huntermd110]]): `/tools/clickOut` — kodumuzdaki tek TradeTracker
+   linki (B2Ctelecom, farklı domain/format) ile ilgisi yok, kodda düzeltilecek bir şey
+   yok.
 
 ## ✅ Bugün tamamlanan (2026-08-06) — AH verpakkingsvarianten dedup
 
