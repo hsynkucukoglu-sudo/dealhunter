@@ -39,6 +39,16 @@ diye çerçeveleniyordu, ama bu sayfaları sıralayan gerçek sorgular "is X goe
 aynı şekilde "goedkoper"/"prijzen" odaklı yeniden yazıldı. H1'e dokunulmadı (SERP'te
 görünmüyor). Etki 2-4 hafta sonra GSC'de ölçülmeli.
 
+### ⛔ KAPATILDI — Hoogvliet scraper artık kovalanmıyor (2026-08-07)
+
+`::error::` teşhis fix'i (`f7d2cbb`) nihayet gerçek sebebi gösterdi: sayfa 897 karakterlik
+boş bir kabuk dönüyor (`titel: "", HTML-lengte: 897, body: leeg`) — klasik Imperva
+JS-challenge stub'ı, GitHub Actions'ın datacenter IP'sini bazen (2-3 Ağu) geçiyor bazen
+(4-5-6 Ağu) geçemiyor. Apify Store'da hazır bir Incapsula-bypass Actor yok, tek çözüm
+ücretli residential proxy (garanti değil, tekrarlayan maliyet). Hoogvliet en küçük market
+(15-20 ürün/hafta) — emek/değer dengesi tutmuyor. **Karar: olduğu gibi bırakılıyor,
+başarısız çalıştığında mail gelmeye devam edecek ama artık uğraşılmayacak.**
+
 ### 📌 AÇIK — diğer bulgular (aksiyon bekliyor)
 
 1. **Aynı title-mismatch deseni blog'da da var, zero-click + iyi pozisyon:**
