@@ -1,5 +1,7 @@
 'use client'
 import React, { useState } from 'react'
+import { WHATSAPP_GROUP_URL } from '@/lib/social'
+import { trackClick } from '@/lib/track'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
@@ -50,9 +52,10 @@ export function NewsletterCTA({ variant = 'blog', marketName }: { variant?: Vari
             {sub}
           </p>
           <a
-            href="https://wa.me/31649305079"
+            href={WHATSAPP_GROUP_URL}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackClick('whatsapp', 'newsletter-cta')}
             className="inline-flex items-center gap-2 mt-3 text-sm font-medium transition-opacity hover:opacity-80"
             style={{ color: '#4ADE80', fontFamily: 'JetBrains Mono' }}
           >

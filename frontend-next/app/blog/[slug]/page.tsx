@@ -8,6 +8,7 @@ import { buildBreadcrumbSchema, buildFaqSchema } from '@/lib/schema'
 import { MARKETS } from '@/lib/types'
 import { AdBanner } from '@/components/AdBanner'
 import { NewsletterCTA } from '@/components/NewsletterCTA'
+import { ShareButton } from '@/components/ShareButton'
 
 export async function generateStaticParams() {
   return getAllPosts().map(p => ({ slug: p.slug }))
@@ -158,6 +159,18 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           className="blog-content"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
+
+        {/* Delen — direct na het artikel, waar de lezer klaar is met lezen */}
+        <div style={{ marginTop: 20 }}>
+          <ShareButton
+            variant="full"
+            label="Deel dit artikel"
+            title={post.title}
+            text={post.title}
+            url={`https://www.dealhunter4u.nl/blog/${post.slug}`}
+            target={`blog:${post.slug}`}
+          />
+        </div>
 
         {/* Canlı deal embed (post'ta dealEmbed config varsa) */}
         {post.dealEmbed && <EmbeddedDeals config={post.dealEmbed} />}

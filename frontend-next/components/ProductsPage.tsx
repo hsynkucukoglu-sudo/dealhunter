@@ -21,6 +21,8 @@ import { StickyFilterBar } from './StickyFilterBar'
 import { NewsletterSignup } from './NewsletterSignup'
 import { NewsletterSignupCompact } from './NewsletterSignupCompact'
 import { trackMarketFilter, trackCategoryFilter, trackCampaignFilter, trackSearch, trackPwaInstall } from '@/lib/analytics'
+import { trackClick } from '@/lib/track'
+import { WHATSAPP_GROUP_URL } from '@/lib/social'
 import { MarketIndexWidget } from './MarketIndexWidget'
 import { CombinatieDealsWidget } from './CombinatieDealsWidget'
 import { MeerBesparenWidget } from './MeerBesparenWidget'
@@ -1680,9 +1682,10 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           cookie-consent-keuze is gemaakt (zie effect hierboven). */}
       {whatsappVisible && (
         <a
-          href="https://chat.whatsapp.com/C4Q20ugQTIYKdY4ZCeNqL2"
+          href={WHATSAPP_GROUP_URL}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackClick('whatsapp', 'floating-button')}
           className="fixed bottom-24 right-4 z-50 flex items-center gap-2 px-4 py-3 rounded-full shadow-lg transition-transform hover:scale-105 active:scale-95 md:hidden"
           style={{ background: '#25D366', color: 'white', fontWeight: 700, fontSize: 13 }}
           aria-label="WhatsApp groep — dagelijkse topdeals"

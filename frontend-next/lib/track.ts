@@ -1,6 +1,6 @@
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
-export type TrackChannel = 'sponsor' | 'market' | 'flink' | 'blog'
+export type TrackChannel = 'sponsor' | 'market' | 'flink' | 'blog' | 'share' | 'whatsapp'
 
 /**
  * First-party tıklama takibi — GA4'e ek olarak (reklam engelleyicilerden

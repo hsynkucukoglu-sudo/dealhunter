@@ -33,6 +33,22 @@ async function brevoRequest(method, path, body) {
   return res.status === 204 ? null : res.json()
 }
 
+/** Nieuwsbrief-abonnees: één call, geen 500-limiet zoals de contactenlijst. */
+export async function getBrevoListStats() {
+  const listId = process.env.BREVO_LIST_ID
+  if (!process.env.BREVO_API_KEY || !listId) return null
+  try {
+    const data = await brevoRequest('GET', `/contacts/lists/${listId}`)
+    return {
+      subscribers: data?.totalSubscribers ?? null,
+      blacklisted: data?.totalBlacklisted ?? null,
+    }
+  } catch (e) {
+    console.error('[Email] Brevo lijststatistiek mislukt:', e.message)
+    return null
+  }
+}
+
 async function getBrevoContacts() {
   const listId = process.env.BREVO_LIST_ID
   if (!listId) return []

@@ -2,6 +2,8 @@
 import Link from 'next/link'
 import { VISIBLE_MARKETS as MARKETS, CATEGORIES } from '@/lib/types'
 import { LanguageSwitcher } from './LanguageSwitcher'
+import { WHATSAPP_GROUP_URL, INSTAGRAM_URL } from '@/lib/social'
+import { trackClick } from '@/lib/track'
 
 export function SiteFooter() {
   return (
@@ -38,7 +40,7 @@ export function SiteFooter() {
             </p>
             <div className="flex items-center gap-3">
               <a
-                href="https://www.instagram.com/dealhunter4u.nl"
+                href={INSTAGRAM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-full flex items-center justify-center transition-all"
@@ -52,9 +54,10 @@ export function SiteFooter() {
                 </svg>
               </a>
               <a
-                href="https://wa.me/31649305079"
+                href={WHATSAPP_GROUP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackClick('whatsapp', 'footer')}
                 className="w-9 h-9 rounded-full flex items-center justify-center transition-all"
                 style={{ background: 'rgba(228,190,183,0.4)', color: '#6B6259' }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#1B9E4B'; (e.currentTarget as HTMLElement).style.color = 'white' }}

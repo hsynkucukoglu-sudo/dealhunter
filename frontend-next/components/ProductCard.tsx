@@ -14,7 +14,12 @@ import { detectCampaignType } from '@/lib/campaignType'
 import { usePriceHistory } from '@/context/PriceHistoryContext'
 import { trackDealClick, trackAddFavorite, trackAddWatchlist } from '@/lib/analytics'
 import { isRealBrand, slugify } from '@/lib/brands'
+import { MARKETS } from '@/lib/types'
 import { PriceHistoryChart } from './PriceHistoryChart'
+import { ShareButton } from './ShareButton'
+
+const SITE_URL = 'https://www.dealhunter4u.nl'
+const MARKET_SLUG: Record<string, string> = Object.fromEntries(MARKETS.map(m => [m.name, m.slug]))
 
 export function ProductCard({ product, priority = false }: { product: Product; priority?: boolean }) {
   const { t } = useLanguage()
@@ -53,6 +58,14 @@ export function ProductCard({ product, priority = false }: { product: Product; p
   const campaign = detectCampaignType(product.name, discountPercent, product.campaignType)
   const brandRaw = (product.brand ?? '').trim()
   const brandSlug = isRealBrand(brandRaw) ? slugify(brandRaw) : null
+
+  // Een losse deal heeft geen eigen URL (/product/* zijn zoekwoordpagina's), dus
+  // delen landt op de marktpagina waar de deal ook echt staat.
+  const marketSlug = MARKET_SLUG[product.market]
+  const shareUrl = marketSlug ? `${SITE_URL}/supermarkt/${marketSlug}` : SITE_URL
+  const shareText = `${product.name} — €${product.discountedPrice.toFixed(2)}${
+    hasValidDiscount && discountPercent > 0 ? ` (-${discountPercent}%)` : ''
+  } bij ${product.market}`
 
   const [imgError, setImgError] = useState(false)
 
@@ -171,6 +184,12 @@ export function ProductCard({ product, priority = false }: { product: Product; p
           >
             <span style={{ fontSize: 15, lineHeight: 1 }}>{isHot(product.id) ? '🔥' : '🤍'}</span>
           </button>
+          <ShareButton
+            title={product.name}
+            text={shareText}
+            url={shareUrl}
+            target={`deal:${product.market}`}
+          />
         </div>
       </div>
 

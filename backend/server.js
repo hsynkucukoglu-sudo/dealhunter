@@ -3,8 +3,8 @@ import cors from 'cors'
 import rateLimit from 'express-rate-limit'
 import { initDatabase } from './db.js'
 import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, updateProductCategory, clearAllProducts, clearProductsByMarket } from './models.js'
-import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, archiveWeeklyDeals, getMinPriceMap, getPriceHistory, getKortingsindexHistory, getMatchedPriceIndex, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts, updateSubscriptionPreferences, getUnsegmentedSubscriptions, getSegmentedSubscriptions, clearOrphanProducts, getProductCount, clearExpiredProducts, subscribeDealAlert, unsubscribeDealAlert, getMatchingAlerts, markAlertSent, recordClick, getClickStats, getDailyClicks } from './db.js'
-import { sendWeeklyNewsletter, sendWatchlistAlert, sendDealAlert } from './email.js'
+import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, archiveWeeklyDeals, getMinPriceMap, getPriceHistory, getKortingsindexHistory, getMatchedPriceIndex, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts, updateSubscriptionPreferences, getUnsegmentedSubscriptions, getSegmentedSubscriptions, clearOrphanProducts, getProductCount, clearExpiredProducts, subscribeDealAlert, unsubscribeDealAlert, getMatchingAlerts, markAlertSent, recordClick, getClickStats, getDailyClicks, getAudienceStats } from './db.js'
+import { sendWeeklyNewsletter, sendWatchlistAlert, sendDealAlert, getBrevoListStats } from './email.js'
 import { findWeeklyChampion } from './productMatch.js'
 import { sendPushToAll, sendPushToSubscriptions } from './push.js'
 import { scrapeFlyerProducts } from './scraper/index.js'
@@ -174,7 +174,7 @@ app.get('/api/status', (req, res) => {
   res.json({ scraperRunning })
 })
 
-const TRACK_CHANNELS = new Set(['sponsor', 'market', 'flink', 'blog', 'other'])
+const TRACK_CHANNELS = new Set(['sponsor', 'market', 'flink', 'blog', 'share', 'whatsapp', 'other'])
 
 // POST /api/track - Tıklama takibi (navigator.sendBeacon hedefi)
 // sendBeacon body'yi text/plain olarak gönderir — express.json() Content-Type
@@ -211,6 +211,17 @@ app.get('/api/track/stats', asyncHandler(async (req, res) => {
   const days = Number(req.query.days) || 14
   const [totals, daily] = await Promise.all([getClickStats(days), getDailyClicks(days)])
   res.json({ days, totals, daily })
+}))
+
+// GET /api/audience/stats - Abone sayıları (aynı gizli anahtarla korumalı)
+app.get('/api/audience/stats', asyncHandler(async (req, res) => {
+  if (!process.env.TRACK_STATS_KEY || req.query.key !== process.env.TRACK_STATS_KEY) {
+    return res.status(404).end()
+  }
+  const [db, newsletter] = await Promise.all([getAudienceStats(), getBrevoListStats()])
+  // newsletter null = BREVO_API_KEY/BREVO_LIST_ID yok of Brevo gaf een fout;
+  // bewust niet als 0 gerapporteerd, dat zou "geen abonnees" suggereren.
+  res.json({ ...db, newsletter })
 }))
 
 // GET /api/products/:id - Belirli ürünü getir

@@ -13,6 +13,7 @@ import { MarketFAQ } from './MarketFAQ'
 import { FlinkDeliveryCard } from './FlinkDeliveryCard'
 import { NewsletterCTA } from './NewsletterCTA'
 import { MarketLogo } from './MarketLogo'
+import { ShareButton } from './ShareButton'
 import { MARKET_FAQS, FAQ } from '@/lib/marketFaqs'
 import { MARKET_CONTENT } from '@/lib/marketContent'
 import { BlogPost } from '@/lib/posts'
@@ -104,6 +105,17 @@ export function MarketPage({ market, initialProducts, relatedPosts = [] }: {
             <span className="hidden md:block text-sm font-medium" style={{ color: '#6B6259', fontFamily: 'JetBrains Mono' }}>{market.name}</span>
           </div>
           <div className="flex items-center gap-2">
+            {/* Alleen desktop: op mobiel deel je vanaf de productkaart zelf (native
+                deelvenster), en de nav-balk mag daar geen breedte aan verliezen. */}
+            <span className="hidden md:inline-flex">
+              <ShareButton
+                variant="full"
+                title={`${market.name} aanbiedingen`}
+                text={`${market.name} aanbiedingen deze week op DealHunter4U`}
+                url={`https://www.dealhunter4u.nl/supermarkt/${market.slug}`}
+                target={`market:${market.slug}`}
+              />
+            </span>
             <LanguageSwitcher />
             <motion.button
               whileTap={{ scale: 0.9 }}

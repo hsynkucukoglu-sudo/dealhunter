@@ -686,6 +686,25 @@ export async function getDailyClicks(days = 14) {
   return rows
 }
 
+// Kitle sayaçları — push/favori/alert abone sayıları hiçbir yerde ölçülmüyordu,
+// dolayısıyla "kanal büyüyor mu" sorusu cevapsızdı. Tek sorguda toplanıyor.
+export async function getAudienceStats() {
+  const { rows } = await pool.query(`
+    SELECT
+      (SELECT COUNT(*)::int FROM push_subscriptions) AS push_total,
+      (SELECT COUNT(*)::int FROM push_subscriptions
+        WHERE created_at >= NOW() - INTERVAL '30 days') AS push_last_30d,
+      (SELECT COUNT(*)::int FROM push_subscriptions
+        WHERE preferred_markets IS NOT NULL OR preferred_categories IS NOT NULL) AS push_segmented,
+      (SELECT COUNT(DISTINCT user_id)::int FROM user_favorites) AS favorite_users,
+      (SELECT COUNT(*)::int FROM user_favorites) AS favorite_items,
+      (SELECT COUNT(*)::int FROM user_emails) AS linked_emails,
+      (SELECT COUNT(*)::int FROM deal_alerts) AS deal_alerts_total,
+      (SELECT COUNT(*)::int FROM deal_alerts WHERE confirmed) AS deal_alerts_confirmed
+  `)
+  return rows[0]
+}
+
 export async function subscribeDealAlert({ email, keyword, market, token }) {
   const { rows } = await pool.query(
     `INSERT INTO deal_alerts (email, keyword, market, token)
