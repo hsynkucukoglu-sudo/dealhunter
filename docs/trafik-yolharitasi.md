@@ -138,7 +138,50 @@ Backend `node --check` temiz.
 
 > ⚠️ Henüz commit/deploy edilmedi.
 
+### 🔴 FAZ 1 BLOKE — AH scraper 4 gündür sessizce ölü (2026-08-08 bulundu)
+
+Faz 1'in öncü gösterge kontrolü sırasında ortaya çıktı. **Ölçüm işi değil, canlı arıza.**
+
+**Kanıt:**
+
+| Kontrol | Sonuç |
+|---|---|
+| AH `last_scraped` (`/api/health/scraper`) | **2026-08-04** — diğer 8 market 08-07 |
+| AH API yerel (residential) IP'den | token HTTP 200, arama HTTP 200, 50 ürün ✅ |
+| Railway'den | 0 ürün → kod sessizce `[]` dönüyor |
+| AH ürünlerinin `expiresAt`'i | **614/614 → 2026-08-08 (bugün)** |
+
+**Sonuçları:**
+1. **AH paket-dedup fix'i (`cf5716a`) hiç uygulanmadı.** Canlıdaki 614 ürün 4 Ağustos
+   snapshot'ı; "Knorr Good noodles kip" hâlâ 6 varyantla duruyor (2/4/6pack + tireli
+   halleri). Faz 1'deki "`/supermarkt/albert-heijn` pozisyonu 12,7'den düzeldi mi"
+   ölçümü **geçersiz** — ölçülecek değişiklik canlıya hiç çıkmadı.
+2. **En büyük market bugün/yarın boşalıyor** — tüm AH ürünleri bugün sona eriyor.
+3. **Sessiz arıza deseni üçüncü kez tekrarladı** (Hoogvliet/Imperva, Kruidvat/Akamai,
+   şimdi AH/Akamai): scraper 0 dönünce scheduler eski veriyi bilinçli silmiyor, hiçbir
+   uyarı çıkmıyor. Kalıcı ders: **0-ürün dönüşü bir alarm üretmeli.**
+
+**Henüz doğrulanmamış:** Railway'in tam olarak neye takıldığı. Kod doğru satırı zaten
+logluyor (`scraper/index.js:910` → `[AH] token alınamadı: …`, `:933` → `[AH] S1 p0 HTTP N`).
+Railway → backend servisi → Logs → `[AH]` araması kesin nedeni verir. **Kullanıcı kararı:
+önce log okunacak, fix ona göre yapılacak.**
+
 ### FAZ 1 — Deploy edilmiş fix'leri ölç (2-4 hafta, yeni iş başlatma)
+
+**✅ Öncü gösterge ölçüldü (2026-08-08): evergreen başlık fix'i indekse girdi.**
+
+`site:dealhunter4u.nl/supermarkt` SERP'i (headed tarayıcı — Google headless'ı CAPTCHA'ya
+düşürüyor):
+
+| Tarih | Eski hafta numarası gösteren sayfa |
+|---|---|
+| 2026-08-01 (fix öncesi) | **7 / 10** |
+| 2026-08-08 (fix sonrası) | **1 / 10** — sadece Lidl ("Week 29") |
+
+Lidl'inki kod bug'ı değil: 10 canlı sayfanın **10'u** da evergreen ("Deze Week"), yani
+Google henüz Lidl'i yeniden taramadı. Kendiliğinden düzelecek, aksiyon yok.
+→ Başlıklar artık doğru; **TO ölçümü için önkoşul sağlandı.** Asıl TO okuması yine
+2-4 hafta sonra (~21 Ağustos).
 
 Bunlar canlıda ama etkileri henüz ölçülmedi. Kendi kuralın: ölçmeden yeni iş başlatma.
 

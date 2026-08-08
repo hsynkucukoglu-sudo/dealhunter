@@ -343,6 +343,35 @@ function buildDealAlertHtml(keywords, products, unsubToken) {
 </html>`
 }
 
+/**
+ * Ops-alarm: scraper sessizce ölünce haber verir.
+ *
+ * Bu üç kez günlerce fark edilmedi (Hoogvliet/Imperva, Kruidvat/Akamai, AH/Akamai)
+ * çünkü 0 ürün dönen market silinmiyor — site eski veriyle çalışmaya devam ediyor ve
+ * hiçbir yerde uyarı çıkmıyor. Alıcı adresi yoksa sessizce atlanır (log yine düşer).
+ */
+export async function sendOpsAlert(subject, lines) {
+  const to = process.env.OPS_ALERT_EMAIL
+  if (!process.env.BREVO_API_KEY || !to || !lines?.length) return false
+  const html = `
+    <div style="font-family:system-ui,sans-serif;font-size:15px;line-height:1.6;color:#1A1A1A">
+      <h2 style="margin:0 0 12px">${escapeHtml(subject)}</h2>
+      <ul style="padding-left:18px">
+        ${lines.map(l => `<li>${escapeHtml(l)}</li>`).join('')}
+      </ul>
+      <p style="color:#6B6259;font-size:13px;margin-top:16px">
+        Kontrol: <a href="https://dealhunter-production-d900.up.railway.app/api/health/scraper">/api/health/scraper</a>
+      </p>
+    </div>`
+  try {
+    await sendTransactionalEmail(to, subject, html)
+    return true
+  } catch (e) {
+    console.error('[Email] Ops-alarm gönderilemedi:', e.message)
+    return false
+  }
+}
+
 export async function sendDealAlert(email, keywords, products, unsubToken) {
   if (!process.env.BREVO_API_KEY || !email || !products?.length) return
   const kw = keywords[0] ?? 'aanbieding'

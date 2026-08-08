@@ -4,7 +4,7 @@ import rateLimit from 'express-rate-limit'
 import { initDatabase } from './db.js'
 import { getProducts, getProduct, createProduct, deleteProduct, updateProduct, updateProductImage, updateProductCategory, clearAllProducts, clearProductsByMarket } from './models.js'
 import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite, removeUserFavorite, getSubscriptionsForFavoritedProducts, recordPriceHistory, archiveWeeklyDeals, getMinPriceMap, getPriceHistory, getKortingsindexHistory, getMatchedPriceIndex, getComparisonGroups, getScraperStats, upsertUserEmail, getEmailsForFavoritedProducts, updateSubscriptionPreferences, getUnsegmentedSubscriptions, getSegmentedSubscriptions, clearOrphanProducts, getProductCount, clearExpiredProducts, subscribeDealAlert, unsubscribeDealAlert, getMatchingAlerts, markAlertSent, recordClick, getClickStats, getDailyClicks, getAudienceStats } from './db.js'
-import { sendWeeklyNewsletter, sendWatchlistAlert, sendDealAlert, getBrevoListStats } from './email.js'
+import { sendWeeklyNewsletter, sendWatchlistAlert, sendDealAlert, getBrevoListStats, sendOpsAlert } from './email.js'
 import { findWeeklyChampion } from './productMatch.js'
 import { sendPushToAll, sendPushToSubscriptions } from './push.js'
 import { scrapeFlyerProducts } from './scraper/index.js'
@@ -301,6 +301,54 @@ app.delete('/api/products/:id', requireAdmin, asyncHandler(async (req, res) => {
 import cron from 'node-cron'
 
 // Scraper iş mantığı
+// Scraper sağlık alarmı — 0 ürün dönen market SESSİZCE eski veriyle kalıyor, çünkü
+// clearProductsByMarket aşağıda sadece ürün DÖNEN marketlere uygulanıyor. Bu sessizlik
+// üç kez günlerce fark edilmedi: Hoogvliet (Imperva), Kruidvat (Akamai) ve 2026-08-08'de
+// Albert Heijn — AH 4 gün boyunca boş döndü, kimse görmedi.
+//
+// Coop ve Hoogvliet bilinçli olarak listede DEĞİL: Coop OutSystems SPA'sı taranamıyor
+// (hidden=true), Hoogvliet Imperva arkasında ve kovalanmama kararı alındı. Her gün ötüp
+// duran alarm okunmaz hale gelir — bilinen ölüleri kapsama almak alarmı çöpe çevirir.
+const MONITORED_MARKETS = [
+  'Albert Heijn', 'Jumbo', 'Lidl', 'Aldi', 'Dirk',
+  'Plus', 'DekaMarkt', 'Vomar', 'Kruidvat',
+]
+
+async function reportScraperHealth(newProducts) {
+  const returned = new Set((newProducts ?? []).map(p => p.market))
+  const empty = MONITORED_MARKETS.filter(m => !returned.has(m))
+  if (!empty.length) {
+    console.log('🩺 Scraper sağlık: izlenen tüm marketler ürün döndürdü.')
+    return
+  }
+
+  // Kaç gündür bayat olduğunu ekle — tek günlük blip ile günlerdir ölü olanı
+  // ayırt edebilmek için. Bu sorgu başarısız olursa alarm yine de gitsin.
+  let staleness = {}
+  try {
+    const { markets } = await getScraperStats()
+    for (const row of markets) {
+      if (!row.last_scraped) continue
+      staleness[row.market] = Math.floor((Date.now() - new Date(row.last_scraped).getTime()) / 86400000)
+    }
+  } catch (e) {
+    console.error('🩺 Sağlık raporu: getScraperStats hatası:', e.message)
+  }
+
+  const lines = empty.map(m => {
+    const days = staleness[m]
+    return days == null
+      ? `${m}: 0 ürün döndü (veritabanında hiç ürünü yok)`
+      : `${m}: 0 ürün döndü — veri ${days} gündür bayat`
+  })
+  console.error(`🚨 SCRAPER ALARM: ${empty.length} market boş döndü\n  - ${lines.join('\n  - ')}`)
+
+  const sent = await sendOpsAlert(`🚨 DealHunter scraper: ${empty.join(', ')} boş döndü`, lines)
+  if (!sent) {
+    console.error('🚨 Alarm e-postası GÖNDERİLEMEDİ (OPS_ALERT_EMAIL/BREVO_API_KEY eksik olabilir) — sadece log var.')
+  }
+}
+
 async function runScraperJob() {
   if (scraperRunning) {
     console.log('⏰ Scraper zaten çalışıyor, atlanıyor...')
@@ -311,6 +359,10 @@ async function runScraperJob() {
 
   try {
   const newProducts = await scrapeFlyerProducts()
+
+  // Alarm, veritabanı yazımından ÖNCE ve await ile — yazma adımı patlarsa bile
+  // boş market bilgisi kaybolmasın.
+  await reportScraperHealth(newProducts)
 
   // Sadece ürünler başarıyla geldiyse eskileri temizle (market bazlı — başarısız market silinmez)
   if (newProducts && newProducts.length > 0) {
