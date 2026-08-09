@@ -66,6 +66,17 @@ const nextConfig: NextConfig = {
         destination: '/blog/albert-heijn-vs-jumbo-vs-lidl-wie-is-goedkoper',
         permanent: true,
       },
+      {
+        // /contact-us bestaat niet en gaf 404, maar kreeg in Clarity (7 dagen,
+        // 2026-08-09) 8 sessies — meer dan de meeste échte pagina's. Er staat
+        // nergens in onze code een link naartoe, dus het komt van buiten:
+        // affiliate-netwerken controleren standaard /contact-us en /privacy op
+        // hun compliance-crawl (admin.affilired.com stond ook in de referrers).
+        // Een 404 daar kan een programma-afkeuring opleveren.
+        source: '/contact-us',
+        destination: '/contact',
+        permanent: true,
+      },
     ]
   },
 };
