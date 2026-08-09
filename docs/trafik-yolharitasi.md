@@ -166,6 +166,44 @@ logluyor (`scraper/index.js:910` → `[AH] token alınamadı: …`, `:933` → `
 Railway → backend servisi → Logs → `[AH]` araması kesin nedeni verir. **Kullanıcı kararı:
 önce log okunacak, fix ona göre yapılacak.**
 
+### 📊 Kitle taban ölçümü — 2026-08-09 (Faz 0.4 sonucu)
+
+`/api/audience/stats` ilk kez okundu:
+
+```
+push_total 1 | push_last_30d 0 | push_segmented 0
+favorite_users 0 | favorite_items 0 | linked_emails 0
+deal_alerts_total 0 | deal_alerts_confirmed 0
+newsletter.subscribers 1
+```
+
+**Sunucu tarafı, tartışmasız:** kitle ≈ **sıfır**. 1 push + 1 bülten abonesi, ikisi de
+neredeyse kesin kendi testlerimiz. Giriş yapmış kullanıcı yok.
+
+**Ölçülemeyen (yanlış okumaya karşı uyarı):** favoriler ve watchlist localStorage
+öncelikli; favoriler DB'ye ancak Google girişi varsa yazılıyor. `favorite_users: 0`
+"kimse favorilemedi" DEĞİL, "giriş yapan yok" demek. Anonim kullanım sunucudan
+görünmüyor.
+
+**🔴 Bulunan kusur: watchlist (çan ikonu) sunucuya HİÇ yazmıyor.**
+`FavoritesContext.toggleWatch` sadece `localStorage.dh_watchlist`'e yazıyor; backend'de
+`watchlist` kelimesi tek bir yorum satırı dışında geçmiyor. Hedefli push
+(`getSubscriptionsForFavoritedProducts`) `user_favorites`'a JOIN atıyor, watchlist'e
+değil. Sonuç: kullanıcı çana bassa da — giriş yapmış olsa bile — hiçbir fiyat alarmı
+kaydı oluşmuyor. Buton görsel olarak durum değiştiriyor, arkasında bir şey yok.
+(Faz 0.3'te "prijsalert butonu zaten var, yazılacak bir şey yok" demiştim — yanlıştı,
+buton var ama işlevi yok.)
+
+**Stratejik sonuç:** retention altyapısının tamamı (push segmentasyonu, watchlist
+e-postaları, bülten, deal alerts) **1 kişiye hizmet ediyor.** 1 kişilik tabanın üstüne
+yeni retention özelliği koymak erken optimizasyon. Bu, yol haritasının ana tezini
+zayıflatmıyor — **güçlendiriyor**: önce trafik/TO (Faz 1-2), sonra dönüşüm.
+
+**Ama bir önkoşul var:** trafik geldiğinde dönüşecek bir yüzey olmalı. Şu an bülten
+CTA'sı market/blog sayfalarının en altında, kaydırma derinliği %29 — yani pratikte
+hiç görülmüyor. Bu Faz 2'deki fold çalışmasıyla birlikte çözülecek; fold üstüne ayrı
+bir CTA eklemek ilk ürün kartını daha da aşağı iter (bkz. Faz 0.3 kararı).
+
 ### FAZ 1 — Deploy edilmiş fix'leri ölç (2-4 hafta, yeni iş başlatma)
 
 **✅ Öncü gösterge ölçüldü (2026-08-08): evergreen başlık fix'i indekse girdi.**
