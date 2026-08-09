@@ -704,7 +704,8 @@ ana sayfadaki 643 adet `href="#"` link çerez onay bannerının satıcı listesi
   de fark edilmişti (huntermd90), bugün doğrulandı, kapatıldı.
 - [ ] **GSC ölçümü (2-4 hafta):** 25-26 Tem'deki SEO değişikliklerinin etkisi
   (AH-vs-Jumbo redirect, /vergelijk içeriği + noindex, merk noindex)
-- [ ] **Ürün kimliği / scraper isimlendirmesi — DOĞRULANDI (2026-08-03), UYGULAMA BEKLİYOR.**
+- [x] **Ürün kimliği — YAZMA TARAFI UYGULANDI (2026-08-09, commit `31881bb`).** price_history'ye `product_id` eklendi; AH `webshopId`, Jumbo `sku` (sadece singleProduct), Kruidvat `code` yazılıyor. **OKUMA bilinçli olarak kapalı** — `getMinPriceMap` isme göre gruplandırmaya devam ediyor, çünkü doğrudan çevirmek en büyük 3 marketin 12 haftalık geçmişini sıfırlardı. Birkaç hafta kimlik verisi biriktikten sonra okumayı çevirmek AYRI bir karar. Ayrıca aynı commit'te bulunan regresyon düzeltildi: `bulk-replace` fiyat geçmişi hiç yazmıyordu (Plus 13 haftadır yok, AH bugün o yola girmişti).
+  <details><summary>Orijinal araştırma (2026-08-03)</summary>
   `docs/outreach.md`'deki engellenmiş veri hikâyesiyle bağlantılı (jenerik isimler
   farklı ürünleri çarpıştırıyor, "Lipton" örneği). Amaç: `price_history`'ye
   `product_id` ekleyip isim çarpışmasını kökten çözmek.
@@ -733,6 +734,7 @@ ana sayfadaki 643 adet `href="#"` link çerez onay bannerının satıcı listesi
   3. Kruidvat Actions scraper'ına `code`'u aynı şekilde ekle
   4. `getMinPriceMap()`/`getPriceHistory()`'yi `product_id` varsa onu, yoksa
      `name::market` fallback'ini kullanacak şekilde güncelle (geriye dönük uyumluluk)
+  </details>
 
 ## ⚠️ Railway deploy tuzakları (tekrar lazım olacak)
 
