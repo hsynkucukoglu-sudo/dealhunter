@@ -377,6 +377,10 @@ async function scrapeJumbo() {
         source: `jumbo.com - ${deal.promoLabel.replace(/[€]/g, 'EUR')}`,
         expiresAt: EXPIRES_AT,
         campaignType: deal.campaignType,
+        // Jumbo sku — bagimsiz product(sku:) GraphQL sorgusunda kullaniliyor,
+        // kampanyaya bagli degil (2026-08-03 arastirmasi). Sadece tek urunlu
+        // tekliflerde anlamli: cok urunlu kampanyalarda sku ilk urune ait olur.
+        sourceId: (deal.singleProduct && deal.sku) ? String(deal.sku) : null,
         affiliateUrl: null, // Daisycon/Awin linkleri buraya gelecek
         ...unit,
       })
@@ -937,7 +941,7 @@ export function parseAhProducts(rawProducts, expiresAtDefault = EXPIRES_AT) {
     let expiresAt = expiresAtDefault
     if (p.bonus?.endDate) expiresAt = p.bonus.endDate
 
-    candidates.push({ ...promo, name: p.title, imageUrl, ...unitInfo, expiresAt })
+    candidates.push({ ...promo, name: p.title, imageUrl, ...unitInfo, expiresAt, sourceId: p.webshopId != null ? String(p.webshopId) : null })
   }
 
   if (!candidates.length) return []
@@ -961,6 +965,9 @@ export function parseAhProducts(rawProducts, expiresAtDefault = EXPIRES_AT) {
     // bunu bu refactor'da değiştirmiyorum (ayrı bir karar).
     expiresAt: expiresAtDefault,
     campaignType: toCampaignType(p.promoLabel),
+    // AH webshopId — ah.nl/producten/product/wi{id} resmi urun URL'sinde kullaniliyor,
+    // kalici oldugu kanitli (2026-08-03 arastirmasi)
+    sourceId: p.sourceId ?? null,
     unitSize: p.unitSize ?? null,
     unitType: p.unitType ?? null,
     unitPrice: p.unitPrice ?? null,

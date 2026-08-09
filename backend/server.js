@@ -785,10 +785,22 @@ async function replaceMarketProducts(market, products) {
       unitType: p.unitType ?? null,
       unitPrice: p.unitPrice ?? null,
       fullSizeLabel: p.fullSizeLabel ?? null,
+      // Markt-eigen permanente artikel-ID (Kruidvat code, AH webshopId, Jumbo sku)
+      sourceId: p.sourceId ?? null,
     })
     created.push(product)
   }
   console.log(`📦 bulk-replace: ${market} → ${created.length} ürün eklendi`)
+
+  // Fiyat geçmişi bu yolda HİÇ yazılmıyordu — sadece runScraperJob yazıyordu.
+  // Sonuçları: Plus 13 haftanın hiçbirinde price_history'de yok (GH Actions'a
+  // taşındığından beri), ve bugün AH'yi ah-ingest'e taşıyınca AH de bu yola girdi,
+  // yani gelecek haftadan itibaren o da birikmeyi bırakacaktı. "Laagste prijs"
+  // rozeti ve fiyat grafiği bu tablodan besleniyor.
+  // await DEĞİL: yanıt bunu beklemesin, hata da isteği düşürmesin (runScraperJob
+  // içindeki çağrı da aynı deseni kullanıyor).
+  recordPriceHistory(created).catch(e => console.error('Fiyat geçmişi kayıt hatası:', e.message))
+
   return created
 }
 

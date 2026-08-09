@@ -41,7 +41,11 @@ export async function createProduct(data) {
   }
 
   await db.createProduct(product)
-  return product
+  // sourceId BEWUST niet in `product` en dus niet in de products-tabel: het is
+  // alleen nodig om price_history aan een permanente markt-ID te koppelen
+  // (AH webshopId, Jumbo sku, Kruidvat code). De products-tabel wordt elke run
+  // toch volledig vervangen, daar voegt het niets toe.
+  return { ...product, sourceId: data.sourceId ?? null }
 }
 
 export async function deleteProduct(id) {

@@ -85,6 +85,17 @@ export async function initDatabase() {
   `)
   await pool.query(`ALTER TABLE price_history ADD COLUMN IF NOT EXISTS unit_size REAL`)
   await pool.query(`ALTER TABLE price_history ADD COLUMN IF NOT EXISTS unit_type TEXT`)
+  // product_id: markt-eigen permanente artikel-ID (AH webshopId, Jumbo sku,
+  // Kruidvat code). Generieke namen laten nu nog verschillende artikelen op één
+  // hoop belanden ("Lipton" €2,25-€19,38, zie getMinPriceMap-guard).
+  //
+  // BEWUST ALLEEN SCHRIJVEN, NOG NIET LEZEN: getMinPriceMap groepeert op naam.
+  // Direct op product_id groeperen zou de historie van AH/Jumbo/Kruidvat (de drie
+  // grootste markten) op nul zetten, want bestaande rijen hebben product_id NULL.
+  // Eerst een paar weken ID-data opbouwen, daarna is omschakelen een aparte,
+  // bewuste keuze. De UNIQUE-constraint blijft daarom ongewijzigd.
+  await pool.query(`ALTER TABLE price_history ADD COLUMN IF NOT EXISTS product_id TEXT`)
+  await pool.query(`CREATE INDEX IF NOT EXISTS idx_price_history_product_id ON price_history (product_market, product_id)`)
   await pool.query(`
     CREATE TABLE IF NOT EXISTS user_emails (
       user_id TEXT PRIMARY KEY,
@@ -260,14 +271,15 @@ export async function recordPriceHistory(products) {
     const batch = products.slice(i, i + BATCH_SIZE)
     await Promise.all(batch.map(p =>
       pool.query(
-        `INSERT INTO price_history (product_name, product_market, discounted_price, original_price, recorded_week, unit_size, unit_type)
-         VALUES ($1, $2, $3, $4, $5, $6, $7)
+        `INSERT INTO price_history (product_name, product_market, discounted_price, original_price, recorded_week, unit_size, unit_type, product_id)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
          ON CONFLICT (product_name, product_market, recorded_week)
          DO UPDATE SET discounted_price = LEAST(EXCLUDED.discounted_price, price_history.discounted_price),
                        original_price = EXCLUDED.original_price,
                        unit_size = COALESCE(EXCLUDED.unit_size, price_history.unit_size),
-                       unit_type = COALESCE(EXCLUDED.unit_type, price_history.unit_type)`,
-        [p.name, p.market, p.discountedPrice, p.originalPrice, week, p.unitSize ?? null, p.unitType ?? null]
+                       unit_type = COALESCE(EXCLUDED.unit_type, price_history.unit_type),
+                       product_id = COALESCE(EXCLUDED.product_id, price_history.product_id)`,
+        [p.name, p.market, p.discountedPrice, p.originalPrice, week, p.unitSize ?? null, p.unitType ?? null, p.sourceId ?? null]
       ).catch(() => {})
     ))
   }

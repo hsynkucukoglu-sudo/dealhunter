@@ -196,6 +196,7 @@ function findInState(obj, key, depth = 0) {
               fullSizeLabel: unit.fullSizeLabel ?? null,
               imageUrl,
               url: 'https://www.kruidvat.nl' + t.link,
+              sourceId: t.code,
               expiresAt: p.topPromotion?.endDate ? new Date(p.topPromotion.endDate).toISOString().split('T')[0] : null,
               promoText: [p.topPromotion?.description || '', t.title, t.link].join(' '),
             }
@@ -219,6 +220,9 @@ function findInState(obj, key, depth = 0) {
       fullSizeLabel: p.fullSizeLabel,
       imageUrl: p.imageUrl,
       url: p.url,
+      // Kruidvat product code — /p/{code} urun sayfasi URL'sinde, kalici oldugu
+      // kanitli (2026-08-03 arastirmasi). price_history'de product_id olarak kullaniliyor.
+      sourceId: p.sourceId ?? null,
       expiresAt: p.expiresAt,
       campaignType: toCampaignType(p.promoText),
       isCampaign: true,
