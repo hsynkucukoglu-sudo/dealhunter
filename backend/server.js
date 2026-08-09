@@ -208,21 +208,37 @@ app.post('/api/track', trackLimit, express.text({ type: '*/*' }), asyncHandler(a
   res.status(204).end()
 }))
 
-// GET /api/track/stats - Tıklama raporu (gizli anahtarla korumalı)
-app.get('/api/track/stats', asyncHandler(async (req, res) => {
-  if (!process.env.TRACK_STATS_KEY || req.query.key !== process.env.TRACK_STATS_KEY) {
-    return res.status(404).end()
+// Rapor endpoint'leri için kimlik doğrulama.
+//
+// Anahtar ÖNCE Authorization header'ından okunuyor. Query string (?key=...) hâlâ
+// kabul ediliyor ama ARTIK ÖNERİLMİYOR: URL'deki anahtar tarayıcı geçmişinde,
+// sunucu erişim loglarında ve referrer header'ında düz metin olarak kalır. İlk
+// sürüm sadece query destekliyordu — bu bir tasarım hatasıydı, header yolu eklendi.
+function checkStatsAuth(req) {
+  const key = process.env.TRACK_STATS_KEY
+  if (!key) return false
+  const auth = req.headers['authorization']
+  if (auth === `Bearer ${key}`) return true
+  if (req.query.key === key) {
+    console.warn('⚠️ stats endpoint query string ile çağrıldı — Authorization header kullan (anahtar loglara sızıyor)')
+    return true
   }
+  return false
+}
+
+// GET /api/track/stats - Tıklama raporu
+// Kullanım: curl -H "Authorization: Bearer $TRACK_STATS_KEY" .../api/track/stats?days=14
+app.get('/api/track/stats', asyncHandler(async (req, res) => {
+  if (!checkStatsAuth(req)) return res.status(404).end()
   const days = Number(req.query.days) || 14
   const [totals, daily] = await Promise.all([getClickStats(days), getDailyClicks(days)])
   res.json({ days, totals, daily })
 }))
 
-// GET /api/audience/stats - Abone sayıları (aynı gizli anahtarla korumalı)
+// GET /api/audience/stats - Abone sayıları
+// Kullanım: curl -H "Authorization: Bearer $TRACK_STATS_KEY" .../api/audience/stats
 app.get('/api/audience/stats', asyncHandler(async (req, res) => {
-  if (!process.env.TRACK_STATS_KEY || req.query.key !== process.env.TRACK_STATS_KEY) {
-    return res.status(404).end()
-  }
+  if (!checkStatsAuth(req)) return res.status(404).end()
   const [db, newsletter] = await Promise.all([getAudienceStats(), getBrevoListStats()])
   // newsletter null = BREVO_API_KEY/BREVO_LIST_ID yok of Brevo gaf een fout;
   // bewust niet als 0 gerapporteerd, dat zou "geen abonnees" suggereren.
