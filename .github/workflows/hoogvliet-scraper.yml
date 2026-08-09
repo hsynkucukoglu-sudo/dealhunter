@@ -4,12 +4,22 @@ name: Hoogvliet Scraper
 # JS-challenge. De fetch-scraper op Railway kreeg daardoor 0 producten terug
 # (stil, want een lege markt wordt bewust niet leeggemaakt). Playwright met
 # stealth komt er wel doorheen — zelfde aanpak als de Kruidvat-scraper.
+#
+# ─── DAGELIJKSE PLANNING UITGEZET (2026-08-09) ───────────────────────────────
+# Ook met Playwright+stealth blijft Imperva deze runner blokkeren: de workflow
+# faalde elke dag (laatste gezien: 6 aug, "All jobs have failed") en Hoogvliet
+# staat op 0 producten in de database. Het besluit "Hoogvliet niet verder
+# najagen" stond al vast; alleen de cron liep nog door en stuurde elke dag een
+# faalmail. Dat is meer dan ruis: het traint je om faalmails van deze repo weg
+# te klikken, en juist daardoor mis je een échte storing (AH stond 5 dagen stil).
+#
+# workflow_dispatch blijft staan — wil je het ooit opnieuw proberen, dan draai
+# je hem met de hand. Zet de cron pas terug als een handmatige run slaagt.
+# on:
+#   schedule:
+#     - cron: '20 8 * * *'
 
 on:
-  schedule:
-    # Elke dag 08:20 UTC — net na de Railway-run van 08:02, zodat de folder
-    # van Hoogvliet wordt bijgewerkt nadat de overige markten binnen zijn.
-    - cron: '20 8 * * *'
   workflow_dispatch:
 
 jobs:
