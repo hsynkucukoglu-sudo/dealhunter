@@ -29,6 +29,13 @@ const PAGE_SIZE = 50
 // Onder deze grens gaan we ervan uit dat Akamai ons (deels) heeft geblokkeerd en
 // sturen we NIETS door — liever oude data laten staan dan de markt legen.
 const MIN_RAW_PRODUCTS = 200
+// Eerste run (2026-08-09) brak af op pagina 20 van 30 met "Failed to fetch" en stuurde
+// die 2/3 tóch door — precies de stille-gedeeltelijke-storing die dit project blijft
+// raken. Nu: per pagina opnieuw proberen, rustiger tempo, en afbreken als we een te
+// klein deel van totalPages binnenhalen.
+const PAGE_RETRIES = 3
+const PAGE_DELAY_MS = 400
+const MIN_PAGE_COVERAGE = 0.9
 
 ;(async () => {
   let browser
@@ -48,8 +55,9 @@ const MIN_RAW_PRODUCTS = 200
     await page.goto('https://www.ah.nl/bonus', { waitUntil: 'domcontentloaded', timeout: 60000 })
     await page.waitForTimeout(3000)
 
-    const result = await page.evaluate(async ({ maxPages, pageSize }) => {
-      const out = { products: [], error: null, tokenOk: false, pages: 0 }
+    const result = await page.evaluate(async ({ maxPages, pageSize, retries, delayMs }) => {
+      const sleep = (ms) => new Promise(r => setTimeout(r, ms))
+      const out = { products: [], error: null, tokenOk: false, pages: 0, totalPages: null, failedPages: [] }
       try {
         const tokenRes = await fetch('https://api.ah.nl/mobile-auth/v1/auth/token/anonymous', {
           method: 'POST',
@@ -72,14 +80,33 @@ const MIN_RAW_PRODUCTS = 200
         }
         const seen = new Set()
         for (let p = 0; p < maxPages; p++) {
-          const r = await fetch(
-            `https://api.ah.nl/mobile-services/product/search/v2?bonus=true&page=${p}&size=${pageSize}`,
-            { headers: h }
-          )
-          if (!r.ok) { out.error = `search p${p} HTTP ${r.status}`; break }
-          const txt = await r.text()
-          let j
-          try { j = JSON.parse(txt) } catch { out.error = `search p${p} JSON degil: ${txt.slice(0, 120)}`; break }
+          let j = null
+          let lastErr = null
+          // Tek bir "Failed to fetch" tüm çalışmayı kesmesin — Akamai hızlı ardışık
+          // isteklerde ara sıra bağlantıyı düşürüyor, tekrar deneyince geçiyor.
+          for (let attempt = 1; attempt <= retries; attempt++) {
+            try {
+              const r = await fetch(
+                `https://api.ah.nl/mobile-services/product/search/v2?bonus=true&page=${p}&size=${pageSize}`,
+                { headers: h }
+              )
+              if (!r.ok) { lastErr = `HTTP ${r.status}`; await sleep(delayMs * attempt); continue }
+              const txt = await r.text()
+              try { j = JSON.parse(txt); lastErr = null; break }
+              catch { lastErr = `JSON degil: ${txt.slice(0, 80)}`; await sleep(delayMs * attempt) }
+            } catch (e) {
+              lastErr = e.message
+              await sleep(delayMs * attempt)
+            }
+          }
+
+          if (!j) {
+            // Sayfayı atla ama KAYDET — sonda kapsama kontrolüne giriyor.
+            out.failedPages.push({ page: p, error: lastErr })
+            if (!out.error) out.error = `p${p}: ${lastErr}`
+            continue
+          }
+
           const prods = j.products || []
           if (!prods.length) break
           for (const x of prods) {
@@ -87,24 +114,38 @@ const MIN_RAW_PRODUCTS = 200
             seen.add(x.webshopId)
             out.products.push(x)
           }
-          out.pages = p + 1
-          const totalPages = j.page?.totalPages ?? 999
-          if (p + 1 >= totalPages) break
+          out.pages++
+          const totalPages = j.page?.totalPages ?? null
+          if (totalPages != null) out.totalPages = totalPages
+          if (totalPages != null && p + 1 >= totalPages) break
+          await sleep(delayMs)
         }
       } catch (e) {
         out.error = 'evaluate: ' + e.message
       }
       return out
-    }, { maxPages: MAX_PAGES, pageSize: PAGE_SIZE })
+    }, { maxPages: MAX_PAGES, pageSize: PAGE_SIZE, retries: PAGE_RETRIES, delayMs: PAGE_DELAY_MS })
 
     await browser.close()
     browser = null
 
-    console.log(`token: ${result.tokenOk ? 'OK' : 'FAIL'} | sayfa: ${result.pages} | ham urun: ${result.products.length}`)
-    if (result.error) console.log('not: ' + result.error)
+    const expectedPages = result.totalPages != null ? Math.min(result.totalPages, MAX_PAGES) : null
+    console.log(`token: ${result.tokenOk ? 'OK' : 'FAIL'} | sayfa: ${result.pages}${expectedPages ? '/' + expectedPages : ''} | ham urun: ${result.products.length}`)
+    if (result.failedPages.length) {
+      console.log(`basarisiz sayfa (${result.failedPages.length}): ` + result.failedPages.map(f => `p${f.page}(${f.error})`).join(', '))
+    }
 
     if (result.products.length < MIN_RAW_PRODUCTS) {
       throw new Error(`Sadece ${result.products.length} ham urun (alt sinir ${MIN_RAW_PRODUCTS}) — gonderilmedi, eski veri korundu. Sebep: ${result.error || 'bilinmiyor'}`)
+    }
+
+    // Kismi veriyi SESSIZCE gondermeyi engelle. 2026-08-09'daki ilk calisma 30 sayfanin
+    // 20'sini alip yine de gonderdi; AH'nin ucte biri kayboldu ve calisma yesil gorundu.
+    if (expectedPages && result.pages / expectedPages < MIN_PAGE_COVERAGE) {
+      throw new Error(
+        `Kismi veri: ${result.pages}/${expectedPages} sayfa (esik %${MIN_PAGE_COVERAGE * 100}) — gonderilmedi, eski veri korundu. ` +
+        `Basarisiz: ${result.failedPages.map(f => 'p' + f.page).join(',') || 'yok'}`
+      )
     }
 
     const body = JSON.stringify({ products: result.products })
