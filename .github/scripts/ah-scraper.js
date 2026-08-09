@@ -120,6 +120,47 @@ const MIN_PAGE_COVERAGE = 0.9
           if (totalPages != null && p + 1 >= totalPages) break
           await sleep(delayMs)
         }
+
+        // Tweede ronde voor de pagina's die het niet haalden. De drie pogingen
+        // hierboven vallen binnen ~2 seconden; als Akamai net op dat moment
+        // dichtklapt, mislukken ze alle drie. Beide runs (09-08) sneuvelden exact
+        // op p20 terwijl p21-p29 daarna wél slaagden — dus geen harde throttle,
+        // maar een kort venster. Deze ronde probeert het opnieuw met veel meer
+        // rust, nadat de rest binnen is.
+        if (out.failedPages.length) {
+          const retryList = out.failedPages.slice()
+          out.failedPages = []
+          await sleep(5000)
+          for (const item of retryList) {
+            let ok = false
+            for (let attempt = 1; attempt <= retries && !ok; attempt++) {
+              try {
+                const r = await fetch(
+                  `https://api.ah.nl/mobile-services/product/search/v2?bonus=true&page=${item.page}&size=${pageSize}`,
+                  { headers: h }
+                )
+                if (r.ok) {
+                  const j2 = JSON.parse(await r.text())
+                  for (const x of (j2.products || [])) {
+                    if (!x.title || seen.has(x.webshopId)) continue
+                    seen.add(x.webshopId)
+                    out.products.push(x)
+                  }
+                  out.pages++
+                  out.recovered = (out.recovered || 0) + 1
+                  ok = true
+                } else {
+                  item.error = `HTTP ${r.status}`
+                  await sleep(2000 * attempt)
+                }
+              } catch (e) {
+                item.error = e.message
+                await sleep(2000 * attempt)
+              }
+            }
+            if (!ok) out.failedPages.push(item)
+          }
+        }
       } catch (e) {
         out.error = 'evaluate: ' + e.message
       }
@@ -131,6 +172,7 @@ const MIN_PAGE_COVERAGE = 0.9
 
     const expectedPages = result.totalPages != null ? Math.min(result.totalPages, MAX_PAGES) : null
     console.log(`token: ${result.tokenOk ? 'OK' : 'FAIL'} | sayfa: ${result.pages}${expectedPages ? '/' + expectedPages : ''} | ham urun: ${result.products.length}`)
+    if (result.recovered) console.log(`ikinci turda kurtarilan sayfa: ${result.recovered}`)
     if (result.failedPages.length) {
       console.log(`basarisiz sayfa (${result.failedPages.length}): ` + result.failedPages.map(f => `p${f.page}(${f.error})`).join(', '))
     }
