@@ -7,7 +7,7 @@ import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite
 import { sendWeeklyNewsletter, sendWatchlistAlert, sendDealAlert, getBrevoListStats, sendOpsAlert } from './email.js'
 import { findWeeklyChampion } from './productMatch.js'
 import { sendPushToAll, sendPushToSubscriptions } from './push.js'
-import { scrapeFlyerProducts } from './scraper/index.js'
+import { scrapeFlyerProducts, parseAhProducts, nearestSunday } from './scraper/index.js'
 import { categorize } from './categorize.js'
 
 const app = express()
@@ -73,6 +73,11 @@ const requireAdmin = (req, res, next) => {
 
 // Middleware
 app.use(cors())
+// ah-ingest HAM AH API çıktısını alıyor (~3,5 MB) — global 100 KB limitine takılırdı.
+// Yola özel parser GLOBAL parser'dan ÖNCE mount ediliyor: body-parser gövdeyi
+// ayrıştırdıktan sonra req._body işaretliyor, global olan da onu atlıyor. Limit
+// bilinçli olarak sadece bu admin-korumalı yolda yükseltildi, global değil.
+app.use('/api/scraper/ah-ingest', express.json({ limit: '12mb' }))
 app.use(express.json())
 app.use(generalLimit)
 
@@ -304,7 +309,14 @@ import cron from 'node-cron'
 // Scraper sağlık alarmı — 0 ürün dönen market SESSİZCE eski veriyle kalıyor, çünkü
 // clearProductsByMarket aşağıda sadece ürün DÖNEN marketlere uygulanıyor. Bu sessizlik
 // üç kez günlerce fark edilmedi: Hoogvliet (Imperva), Kruidvat (Akamai) ve 2026-08-08'de
-// Albert Heijn — AH 4 gün boyunca boş döndü, kimse görmedi.
+// Albert Heijn — AH 5 gün boyunca boş döndü, kimse görmedi.
+//
+// ÖLÇÜT "bu çalışmada 0 ürün döndü" DEĞİL, "verinin yaşı" — ilk sürüm bu yüzden yanlış
+// alarm verdi (2026-08-08: Plus + Kruidvat). O ikisini backend zaten taramıyor; ayrı
+// GitHub Actions workflow'ları var ve backend'den SONRA çalışıyorlar (Kruidvat 08:15,
+// Plus 09:00, backend 08:00). Backend'in onlara 0 dönmesi normal. Yaşa bakmak hem bu
+// yanlış alarmı bitiriyor hem de kapsamı genişletiyor: GH Actions workflow'u bozulursa
+// veri bayatlar ve alarm yine öter.
 //
 // Coop ve Hoogvliet bilinçli olarak listede DEĞİL: Coop OutSystems SPA'sı taranamıyor
 // (hidden=true), Hoogvliet Imperva arkasında ve kovalanmama kararı alındı. Her gün ötüp
@@ -314,36 +326,40 @@ const MONITORED_MARKETS = [
   'Plus', 'DekaMarkt', 'Vomar', 'Kruidvat',
 ]
 
+// 2 gün: GH Actions cron'u saatlerce gecikebiliyor, 1 günlük eşik tek gecikmede
+// yanlış alarm verirdi. 2 gün, gerçek arızayı ~48 saat içinde yakalar.
+const STALE_ALERT_DAYS = 2
+
 async function reportScraperHealth(newProducts) {
   const returned = new Set((newProducts ?? []).map(p => p.market))
-  const empty = MONITORED_MARKETS.filter(m => !returned.has(m))
-  if (!empty.length) {
-    console.log('🩺 Scraper sağlık: izlenen tüm marketler ürün döndürdü.')
-    return
+  const emptyThisRun = MONITORED_MARKETS.filter(m => !returned.has(m))
+  if (emptyThisRun.length) {
+    // Bilgi amaçlı — alarm DEĞİL. Plus/Kruidvat burada normalde görünür.
+    console.log(`🩺 Backend scraper'ından ürün dönmeyen market: ${emptyThisRun.join(', ')}`)
   }
 
-  // Kaç gündür bayat olduğunu ekle — tek günlük blip ile günlerdir ölü olanı
-  // ayırt edebilmek için. Bu sorgu başarısız olursa alarm yine de gitsin.
-  let staleness = {}
+  let stale = []
   try {
     const { markets } = await getScraperStats()
-    for (const row of markets) {
-      if (!row.last_scraped) continue
-      staleness[row.market] = Math.floor((Date.now() - new Date(row.last_scraped).getTime()) / 86400000)
+    const seen = new Map(markets.map(r => [r.market, r.last_scraped]))
+    for (const m of MONITORED_MARKETS) {
+      const last = seen.get(m)
+      if (!last) { stale.push(`${m}: veritabanında hiç ürünü yok`); continue }
+      const days = Math.floor((Date.now() - new Date(last).getTime()) / 86400000)
+      if (days >= STALE_ALERT_DAYS) stale.push(`${m}: veri ${days} gündür bayat (son: ${String(last).slice(0, 10)})`)
     }
   } catch (e) {
     console.error('🩺 Sağlık raporu: getScraperStats hatası:', e.message)
+    return
   }
 
-  const lines = empty.map(m => {
-    const days = staleness[m]
-    return days == null
-      ? `${m}: 0 ürün döndü (veritabanında hiç ürünü yok)`
-      : `${m}: 0 ürün döndü — veri ${days} gündür bayat`
-  })
-  console.error(`🚨 SCRAPER ALARM: ${empty.length} market boş döndü\n  - ${lines.join('\n  - ')}`)
+  if (!stale.length) {
+    console.log('🩺 Scraper sağlık: izlenen tüm marketlerin verisi taze.')
+    return
+  }
 
-  const sent = await sendOpsAlert(`🚨 DealHunter scraper: ${empty.join(', ')} boş döndü`, lines)
+  console.error(`🚨 SCRAPER ALARM: ${stale.length} market bayat\n  - ${stale.join('\n  - ')}`)
+  const sent = await sendOpsAlert(`🚨 DealHunter: ${stale.length} market bayat veri`, stale)
   if (!sent) {
     console.error('🚨 Alarm e-postası GÖNDERİLEMEDİ (OPS_ALERT_EMAIL/BREVO_API_KEY eksik olabilir) — sadece log var.')
   }
@@ -357,12 +373,11 @@ async function runScraperJob() {
   scraperRunning = true
   console.log('⏰ Otomatik Zamanlanmış Scraper Görevi Başlıyor...')
 
-  try {
-  const newProducts = await scrapeFlyerProducts()
+  // finally'de sağlık raporu için gerekli — try dışında tanımlı olmalı
+  let newProducts = []
 
-  // Alarm, veritabanı yazımından ÖNCE ve await ile — yazma adımı patlarsa bile
-  // boş market bilgisi kaybolmasın.
-  await reportScraperHealth(newProducts)
+  try {
+  newProducts = await scrapeFlyerProducts()
 
   // Sadece ürünler başarıyla geldiyse eskileri temizle (market bazlı — başarısız market silinmez)
   if (newProducts && newProducts.length > 0) {
@@ -571,6 +586,13 @@ async function runScraperJob() {
   }
   } finally {
     scraperRunning = false
+    // finally: yazma adımı patlasa da, erken return olsa da sağlık raporu çalışsın.
+    // Yazımdan SONRA olmalı — ölçüt verinin yaşı, taze kayıtlar DB'ye düşmüş olmalı.
+    try {
+      await reportScraperHealth(newProducts)
+    } catch (e) {
+      console.error('🩺 Sağlık raporu çalışmadı:', e.message)
+    }
   }
 }
 
@@ -707,11 +729,7 @@ app.get('/api/compare', asyncHandler(async (req, res) => {
 
 // POST /api/products/bulk-replace - Belirli bir market'in ürünlerini tamamen değiştirir
 // GitHub Actions gibi harici scraperlar tarafından kullanılır
-app.post('/api/products/bulk-replace', requireAdmin, asyncHandler(async (req, res) => {
-  const { market, products } = req.body
-  if (market === undefined || market === null || !Array.isArray(products)) {
-    return res.status(400).json({ error: 'market ve products[] gerekli' })
-  }
+async function replaceMarketProducts(market, products) {
   // Name-based dedup before insert (prevents race-condition duplicates)
   const seenNames = new Set()
   const uniqueProducts = products.filter(p => {
@@ -755,7 +773,43 @@ app.post('/api/products/bulk-replace', requireAdmin, asyncHandler(async (req, re
     created.push(product)
   }
   console.log(`📦 bulk-replace: ${market} → ${created.length} ürün eklendi`)
+  return created
+}
+
+app.post('/api/products/bulk-replace', requireAdmin, asyncHandler(async (req, res) => {
+  const { market, products } = req.body
+  if (market === undefined || market === null || !Array.isArray(products)) {
+    return res.status(400).json({ error: 'market ve products[] gerekli' })
+  }
+  const created = await replaceMarketProducts(market, products)
   res.json({ success: true, market, count: created.length })
+}))
+
+// POST /api/scraper/ah-ingest - GitHub Actions'tan gelen HAM AH bonus-API çıktısı
+//
+// Railway'in IP'si Akamai tarafından bloklanıyor (2026-08-08: token endpoint'i JSON
+// yerine <HTML> deny sayfası döndürdü, AH 5 gün sessizce boş kaldı). Ağ katmanı GH
+// Actions'a taşındı ama parse/dedup mantığı burada — calcAhPromo defalarca düzeltildi,
+// iki kopyaya bölünmemeli. Actions ham JSON'u kırpmadan gönderiyor ki parser yeni bir
+// alan okumaya başladığında sessizce bozulmasın.
+app.post('/api/scraper/ah-ingest', requireAdmin, asyncHandler(async (req, res) => {
+  const { products } = req.body
+  if (!Array.isArray(products)) {
+    return res.status(400).json({ error: 'products[] (ham AH API ürünleri) gerekli' })
+  }
+
+  const parsed = parseAhProducts(products, nearestSunday())
+
+  // 0 ürün çıktıysa AH'yi SİLME. Tam da bu sessizlik yüzünden 5 gün kaybedildi;
+  // bozuk bir çalışmanın canlı veriyi silmesindense eski veri kalsın, alarm ötsün.
+  if (!parsed.length) {
+    console.error(`🚨 ah-ingest: ${products.length} ham üründen 0 ürün çıktı — AH DEĞİŞTİRİLMEDİ`)
+    return res.status(422).json({ error: 'Ham veriden 0 ürün çıkarıldı, market korundu', received: products.length })
+  }
+
+  const created = await replaceMarketProducts('Albert Heijn', parsed)
+  console.log(`📦 ah-ingest: ${products.length} ham → ${parsed.length} parse → ${created.length} kaydedildi`)
+  res.json({ success: true, received: products.length, parsed: parsed.length, count: created.length })
 }))
 
 // POST /api/scraper/run - Manuel olarak scraper çalıştırır (Arayüzden tetiklendiğinde)

@@ -833,7 +833,16 @@ function parseAldiSalesUnit(salesUnit, discountedPrice) {
 // ─── AH Unit-size parser — API fields take priority over regex ───────────────
 function parseAhUnitInfo(p, discountedPrice) {
   // 1. price.unitSizeDescription: "750g", "40 wasbeurten", "1.5 l", "24 stuks"
-  const desc = (p.price?.unitSizeDescription || p.unitSizeDescription || '').trim()
+  //
+  // salesUnitSize toegevoegd 2026-08-09: de AH-API heeft van vorm gewisseld —
+  // p.price, p.unitSizeDescription en p.unitSize bestaan niet meer (gemeten op de
+  // live API: 0/50 producten), salesUnitSize zit op 50/50. Zonder deze bron zakt de
+  // eenheidsdekking van AH stil van 81% naar 0%, wat de prijs-per-kg, de "laagste
+  // prijs"-vergelijking en de €/kg-sortering onderuit haalt. De oude velden blijven
+  // eerst staan zodat het werkt als AH ze ooit terugzet.
+  // Niet afgedekt (bewust): "per stuk" (geen getal), "8 x 0,25 l" (samengesteld),
+  // "Tros" — samen ~11% van de producten, die vallen door naar geen eenheidsdata.
+  const desc = (p.price?.unitSizeDescription || p.unitSizeDescription || p.salesUnitSize || '').trim()
   if (desc) {
     const m = desc.match(/^([\d,.]+)\s*(g|gram|kg|kilo|ml|cl|dl|l|liter|stuks?|stuk|wasbeurten?|tabs?|capsu?les?|pieces?|pak)\b/i)
     if (m) {
@@ -895,6 +904,70 @@ function dedupePackVariants(products) {
   return out
 }
 
+// Hollanda'da çoğu indirim Pazar biter — en yakın Pazar'ı döndürür.
+// scrapeFlyerProducts ile aynı hesap; ah-ingest endpoint'i de buna ihtiyaç duyuyor.
+export function nearestSunday(now = new Date()) {
+  const sunday = new Date(now)
+  const daysUntilSunday = now.getDay() === 0 ? 7 : (7 - now.getDay()) % 7
+  sunday.setDate(now.getDate() + daysUntilSunday)
+  return sunday.toISOString().split('T')[0]
+}
+
+/**
+ * AH bonus API'sinin HAM ürün dizisini bizim ürün nesnelerimize çevirir.
+ *
+ * scrapeAlbertHeijn'den ayrıldı çünkü Railway'in IP'si Akamai tarafından bloklanıyor
+ * (2026-08-08: token endpoint'i JSON yerine <HTML> deny sayfası döndürdü, 5 gün sessizce
+ * boş kalındı). Ağ katmanı GitHub Actions'a taşındı; parse/dedup mantığı BURADA tek
+ * kopya kalıyor — calcAhPromo defalarca düzeltildi (sahte indirim, birim fiyat, N+M
+ * gratis), iki kopyaya bölmek o fix'lerin ayrışması demekti.
+ */
+export function parseAhProducts(rawProducts, expiresAtDefault = EXPIRES_AT) {
+  const seenIds = new Set()
+  let candidates = []
+
+  for (const p of rawProducts ?? []) {
+    if (seenIds.has(p.webshopId) || !p.title) continue
+    seenIds.add(p.webshopId)
+    const promo = calcAhPromo(p)
+    if (!promo) continue
+    const imageUrl = p.images?.find(i => i.width === 400)?.url ?? p.images?.[0]?.url ?? null
+    const unitInfo = parseAhUnitInfo(p, promo.discountedPrice)
+
+    let expiresAt = expiresAtDefault
+    if (p.bonus?.endDate) expiresAt = p.bonus.endDate
+
+    candidates.push({ ...promo, name: p.title, imageUrl, ...unitInfo, expiresAt })
+  }
+
+  if (!candidates.length) return []
+
+  const beforePackDedup = candidates.length
+  candidates = dedupePackVariants(candidates)
+  console.log(`  [AH] Verpakkingsvarianten samengevoegd: ${beforePackDedup} → ${candidates.length}`)
+
+  candidates.sort((a, b) => (a.discountedPrice / a.originalPrice) - (b.discountedPrice / b.originalPrice))
+
+  return candidates.map(p => ({
+    name: p.name,
+    market: 'Albert Heijn',
+    originalPrice: p.originalPrice,
+    discountedPrice: p.discountedPrice,
+    imageUrl: p.imageUrl,
+    isCampaign: true,
+    source: p.promoLabel ? `ah.nl/bonus - ${p.promoLabel}` : 'ah.nl/bonus',
+    // NOT: bilinçli olarak p.expiresAt DEĞİL — mevcut davranış korunuyor. Ürün bazlı
+    // bonus.endDate yukarıda hesaplanıyor ama burada haftalık tarih kullanılıyordu;
+    // bunu bu refactor'da değiştirmiyorum (ayrı bir karar).
+    expiresAt: expiresAtDefault,
+    campaignType: toCampaignType(p.promoLabel),
+    unitSize: p.unitSize ?? null,
+    unitType: p.unitType ?? null,
+    unitPrice: p.unitPrice ?? null,
+    fullSizeLabel: p.fullSizeLabel ?? null,
+  }))
+}
+
 // ─── ALBERT HEIJN — Tüm promosyon tipleri (1+1, halve prijs, X voor Y, %) ───
 async function scrapeAlbertHeijn() {
   console.log('🏪 [Albert Heijn] bonus API taranıyor...')
@@ -923,6 +996,7 @@ async function scrapeAlbertHeijn() {
 
     const seenIds = new Set()
     let candidates = []
+    const rawProducts = []
 
     // Strateji 1: bonus=true — tüm bonus ürünleri çek
     for (let page = 0; page < 30; page++) {
@@ -945,18 +1019,11 @@ async function scrapeAlbertHeijn() {
         }))
       }
 
+      // Ham ürünleri biriktir; parse işi parseAhProducts'ta (tek kopya)
       for (const p of prods) {
         if (seenIds.has(p.webshopId) || !p.title) continue
         seenIds.add(p.webshopId)
-        const promo = calcAhPromo(p)
-        if (!promo) continue
-        const imageUrl = p.images?.find(i => i.width === 400)?.url ?? p.images?.[0]?.url ?? null
-        const unitInfo = parseAhUnitInfo(p, promo.discountedPrice)
-
-        let expiresAt = EXPIRES_AT
-        if (p.bonus?.endDate) expiresAt = p.bonus.endDate
-
-        candidates.push({ ...promo, name: p.title, imageUrl, ...unitInfo, expiresAt })
+        rawProducts.push(p)
       }
 
       // Tüm ürünleri gördüysek dur
@@ -964,6 +1031,7 @@ async function scrapeAlbertHeijn() {
       if (page + 1 >= totalPages) break
     }
 
+    candidates = parseAhProducts(rawProducts, EXPIRES_AT)
     console.log(`  [AH] S1 (bonus=true): ${seenIds.size} tarandı, ${candidates.length} promosyon`)
 
     // Strateji 3: AH mobile API — farklı category ile retry (IP bloğu varsa farklı path dene)
@@ -986,12 +1054,22 @@ async function scrapeAlbertHeijn() {
               if (isNaN(discountedPrice) || discountedPrice <= 0) continue
               if (seenIds.has(p.name)) continue
               seenIds.add(p.name)
+              // parseAhProducts artık nihai şekli döndürdüğü için bu fallback de
+              // aynı şekli üretmeli (eskiden ham aday şekliydi, aşağıda map'leniyordu)
               candidates.push({
+                name: p.name,
+                market: 'Albert Heijn',
                 discountedPrice,
                 originalPrice: originalPrice > discountedPrice ? originalPrice : discountedPrice,
-                name: p.name,
                 imageUrl: p.image || null,
-                promoLabel: null,
+                isCampaign: true,
+                source: 'ah.nl/bonus',
+                expiresAt: EXPIRES_AT,
+                campaignType: null,
+                unitSize: null,
+                unitType: null,
+                unitPrice: null,
+                fullSizeLabel: null,
               })
             }
           } catch {}
@@ -1007,32 +1085,13 @@ async function scrapeAlbertHeijn() {
       return []
     }
 
-    const beforePackDedup = candidates.length
-    candidates = dedupePackVariants(candidates)
-    console.log(`  [AH] Verpakkingsvarianten samengevoegd: ${beforePackDedup} → ${candidates.length}`)
-
-    candidates.sort((a, b) => (a.discountedPrice / a.originalPrice) - (b.discountedPrice / b.originalPrice))
+    // dedupePackVariants + sort + nihai şekil artık parseAhProducts içinde
     const ahWithDiscount = candidates.filter(p => p.originalPrice > p.discountedPrice)
     const ahTotalSaving = ahWithDiscount.reduce((s, p) => s + (p.originalPrice - p.discountedPrice), 0)
     console.log(`  ✅ Albert Heijn: ${candidates.length} ürün (${candidates.filter(p => p.imageUrl).length} görsel)`)
     console.log(`  [AH] 💰 ${ahWithDiscount.length}/${candidates.length} met korting, totaal €${ahTotalSaving.toFixed(2)} besparing`)
 
-    return candidates.map(p => ({
-      name: p.name,
-      market: 'Albert Heijn',
-      originalPrice: p.originalPrice,
-      discountedPrice: p.discountedPrice,
-      imageUrl: p.imageUrl,
-      isCampaign: true,
-      source: p.promoLabel ? `ah.nl/bonus - ${p.promoLabel}` : 'ah.nl/bonus',
-      expiresAt: EXPIRES_AT,
-      campaignType: toCampaignType(p.promoLabel),
-      // Unit info — from API fields (parseAhUnitInfo), never null if API provided them
-      unitSize: p.unitSize ?? null,
-      unitType: p.unitType ?? null,
-      unitPrice: p.unitPrice ?? null,
-      fullSizeLabel: p.fullSizeLabel ?? null,
-    }))
+    return candidates
   } catch (e) {
     console.error('  ❌ Albert Heijn:', e.message)
     return []
