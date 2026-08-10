@@ -9,7 +9,7 @@ interface FavoritesContextType {
   favorites: Product[]
   watchlist: Product[]
   isFavorite: (product: Product) => boolean
-  isWatching: (id: string) => boolean
+  isWatching: (product: Product) => boolean
   toggleFavorite: (product: Product) => void
   toggleWatch: (product: Product) => void
 }
@@ -106,10 +106,19 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
     })
   }
 
+  // Naam+markt-fallback, net als toggleFavorite hierboven. Zonder die fallback werkte
+  // de volglijst maar één dag: product-ID's worden bij elke scrape opnieuw gegenereerd
+  // (uuidv4 in models.createProduct, en de tabel wordt dagelijks geleegd en opnieuw
+  // gevuld). De favorieten hadden deze fallback al, de volglijst niet — daardoor was
+  // isWatching() na de eerstvolgende scrape voor álles false en vuurde de
+  // "nog steeds in aanbieding"-melding nooit. (Gevonden 2026-08-10.)
+  const sameProduct = (a: Product, b: Product) =>
+    a.id === b.id || (a.name === b.name && a.market === b.market)
+
   const toggleWatch = (product: Product) => {
     setWatchlist(prev => {
-      const next = prev.find(p => p.id === product.id)
-        ? prev.filter(p => p.id !== product.id)
+      const next = prev.find(p => sameProduct(p, product))
+        ? prev.filter(p => !sameProduct(p, product))
         : [...prev, product]
       localStorage.setItem('dh_watchlist', JSON.stringify(next))
       return next
@@ -123,7 +132,7 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
         p.id === product.id ||
         (p.name === product.name && p.market === product.market)
       ),
-      isWatching: (id) => watchlist.some(p => p.id === id),
+      isWatching: (product) => watchlist.some(p => sameProduct(p, product)),
       toggleFavorite, toggleWatch,
     }}>
       {children}

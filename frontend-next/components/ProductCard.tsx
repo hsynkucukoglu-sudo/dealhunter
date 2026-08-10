@@ -165,13 +165,13 @@ export function ProductCard({ product, priority = false }: { product: Product; p
             </span>
           </button>
           <button
-            onClick={(e) => { e.stopPropagation(); toggleWatch(product); if (!isWatching(product.id)) trackAddWatchlist(product.name, product.market) }}
+            onClick={(e) => { e.stopPropagation(); toggleWatch(product); if (!isWatching(product)) trackAddWatchlist(product.name, product.market) }}
             className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
             style={{ background: 'rgba(255,255,255,0.9)' }}
-            aria-label={isWatching(product.id) ? `${product.name} melding uitschakelen` : `${product.name} prijs volgen`}
-            aria-pressed={isWatching(product.id)}
+            aria-label={isWatching(product) ? `${product.name} melding uitschakelen` : `${product.name} prijs volgen`}
+            aria-pressed={isWatching(product)}
           >
-            <span className="material-symbols-outlined text-base" aria-hidden="true" style={{ color: isWatching(product.id) ? '#FF8C00' : '#8C8478', fontVariationSettings: isWatching(product.id) ? '"FILL" 1' : '"FILL" 0' }}>
+            <span className="material-symbols-outlined text-base" aria-hidden="true" style={{ color: isWatching(product) ? '#FF8C00' : '#8C8478', fontVariationSettings: isWatching(product) ? '"FILL" 1' : '"FILL" 0' }}>
               notifications
             </span>
           </button>

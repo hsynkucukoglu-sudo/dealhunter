@@ -242,7 +242,12 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
 
   useEffect(() => {
     if (!watchlist.length || !products.length) return
-    const hits = watchlist.filter(w => products.some(p => p.id === w.id && p.discountedPrice <= w.discountedPrice))
+    // Naam+markt-fallback: product-ID's veranderen bij elke scrape, dus matchen op
+    // alleen id liet deze melding nooit vuren (zie FavoritesContext.sameProduct).
+    const hits = watchlist.filter(w => products.some(p =>
+      (p.id === w.id || (p.name === w.name && p.market === w.market)) &&
+      p.discountedPrice <= w.discountedPrice
+    ))
     if (hits.length > 0) {
       setWatchlistToast(hits[0].name)
       setTimeout(() => setWatchlistToast(null), 5000)
