@@ -43,6 +43,11 @@ Niet doen — ook niet als ze goedkoop zijn.
   "Lipton" of "Avocado" gooien verschillende producten op één hoop). Niet pitchen
   tot dit gefixt is.
 - ❌ Superlatieven als "de enige site die…" — niet verifieerbaar.
+- ❌ **"Foldersites publiceren alleen PDF's / hebben geen prijsdata"** — weerlegd op
+  2026-08-10. folderz.nl toont op online-aanbiedingspagina's volledige prijsdata
+  (€38,94 → €35,99, "Je bespaart €2,95"). Alleen hun folder/offline-kant is
+  prijsloos. Verdedigbaar verschil: supermarktfocus en vergelijking tussen ketens.
+  Zie `docs/rakip-analizi-2026-08-10.md`.
 - ❌ Concrete besparingsbedragen ("bespaar €30/week") — niet onderbouwd.
 
 ---

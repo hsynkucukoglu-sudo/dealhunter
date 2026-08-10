@@ -136,6 +136,12 @@ Bunları outreach/blog/basın metninde KULLANMA:
 - ❌ Somut tasarruf rakamı ("haftada €30 tasarruf") — dayanağı yok
 - ❌ Ortalama indirim ile market sıralaması — kapsama yanlılığı (bkz. 1.2)
 
+- ❌ **"Folder siteleri sadece PDF yayınlıyor, fiyat veremezler"** — 2026-08-10'da
+  ÇÜRÜTÜLDÜ. folderz.nl'in online teklif sayfalarında tam fiyat verisi var
+  (€38,94 → €35,99 + "Je bespaart €2,95"). Sadece *offline/folder* tarafı fiyatsız.
+  Savunulabilir fark: süpermarket odağı ve market-arası karşılaştırma, "fiyat verisi
+  var/yok" değil. Bkz. `docs/rakip-analizi-2026-08-10.md`.
+
 Kullanılabilir olgusal sayımlar: canlı teklif sayısı, market sayısı, güncelleme
 sıklığı, ücretsiz/hesapsız olması.
 
