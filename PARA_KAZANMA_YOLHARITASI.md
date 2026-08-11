@@ -1,114 +1,143 @@
 # DealHunter — Para Kazanma Yol Haritası
 
 **Site:** https://www.dealhunter4u.nl
-**Güncelleme:** 5 Temmuz 2026 (tam site denetimi sonrası yeniden yazıldı)
+**Güncelleme:** 11 Ağustos 2026 (5 Temmuz sürümü ölçümle çürüdü, yeniden yazıldı)
 
 ---
 
-## 📊 Mevcut Durum (5 Temmuz 2026 canlı denetim)
+## 🔴 Önce dürüst tablo: Ağustos projeksiyonu tutmadı
 
-### Trafik — momentum gerçek, tıklama darboğazı var
-- **Gösterim büyümesi: 15x bir ayda** — Haziran başı ~240/gün → Haziran sonu ~3.700/gün (GSC)
-- Tıklama hâlâ günde 1-4 → **TO %0.1-0.5, asıl darboğaz bu** (sektör: %3-5)
-- Title formülü (rakam+hafta+✓) + AH "Bonus" fix + sitemap fix bu hafta deploy edildi — **etkisi 1-2 hafta içinde ölçülecek**
-- Tek sayfa bağımlılığı riski: `/supermarkt/aldi` tek başına toplam gösterimin **%64'ü** (15.849/24.827)
-- **Kanıtlanmış format:** karşılaştırma içeriği — `/blog/albert-heijn-vs-jumbo-vs-lidl` tek başına 25 tıklama aldı (sitenin en çok tıklanan sayfası, ana sayfa hariç)
+5 Temmuz'daki plan Ağustos için **€50-150/ay** öngörüyordu. Ağustos geldi. Gerçek:
 
-### Ürün — sağlam temel
-- 1.436 ürün, 10 market, **artık günlük scraping** (5 Tem: haftalık→günlük cron fix)
-- 39 blog yazısı, `/energie` + `/zomeracties` pilot sayfaları canlı
-- PWA + push notification + favoriler/watchlist + fiyat karşılaştırma + price_history (DB'de var, henüz kullanıcıya açılmadı)
-- Android APK hazır (Play Store'a yüklenmedi), Brevo newsletter, WhatsApp kanalı (günde 8 mesaj otomasyonu)
+| Varsayım (5 Tem) | Gerçek (11 Ağu) |
+|---|---|
+| "TO %1'e çıktı, 30-50 tık/gün" | **TO %0,3 — 5,5 tık/gün** |
+| "AdSense onaylı, gelir akıyor" | Onaylı ✅ ama **kimlik doğrulama yapılmadı → €0 ödeme** |
+| "energie 1-2 switch" | `/energie` GSC ilk 21 sayfada **yok**, trafik ~0 |
+| **€50-150/ay** | **fiilen €0** |
 
-### Monetizasyon yüzeyleri — kurulu ama gelir henüz akmıyor
-- AdSense: 5 slot ana sayfada, **"low value content" düzeltmeleri sonrası re-review bekleniyor** ← en büyük tekil kaldıraç
-- ~51 affiliate linki ana sayfada, MeerBesparen widget ~70 merchant (Daisycon+Awin), Flink banner, Bol.com
-- GA4 + Clarity + affiliate_click event tracking aktif
+Sapma ~20 kat. Sebebi hesap hatası değil, **projeksiyonun olmayan trafiği varsayması.**
 
-### ⚠️ Kritik içgörü: gelir denklemi
-**Süpermarket linklerinin kendisi para kazandırmıyor** — AH/Jumbo/Lidl vb. hepsi `network: 'direct'` (süpermarketlerin affiliate programı yok, bu NL'de genel durum). Yani:
+---
 
-> **Süpermarket içeriği = trafik motoru. Para = o trafiği yüksek komisyonlu dikeylere ve reklama çevirmek.**
+## 📐 Gelir aritmetiği — neden her kanal şu an rounding error
 
-| Gelir kanalı | Komisyon profili | Durum |
+Ölçülmüş girdiler (GSC 28 gün + Clarity 7 gün, 11 Ağustos):
+
+- Organik tıklama: **155 / 28 gün** = 5,5/gün
+- Sayfa/oturum: **1,0** → gösterim başına ~1 sayfa
+- Toplam oturum (bot hariç): ~134/hafta ≈ 560/ay — ama **%16'sı** `/contact`, `/contact-us`, `/privacy` yani affiliate uyum tarayıcıları → gerçek insan ~470/ay
+- Giden tıklama: 134 oturumun **8'i** (%6) → ~28 giden tıklama/ay
+
+Bundan çıkan tavan:
+
+| Kanal | Hesap | Aylık |
 |---|---|---|
-| AdSense (RPM) | NL: ~€5-15 RPM | Re-review bekliyor 🔴 |
-| Energie switch (ENGIE, Oxxio, Pure Energie) | €20-60/switch — **en yüksek birim gelir** | `/energie` canlı, trafik yok henüz |
-| Telecom/verzekering (Ziggo, hollandsnieuwe, JW) | €10-40/lead | Widget'ta, sayfa yok |
-| Bezorging/maaltijdbox (Flink, Marley Spoon) | €5-15/order | Flink aktif, Marley Spoon: durum belirsiz |
-| Widget e-commerce (70 merchant) | %3-10 satış | Aktif, düşük hacim |
-| Bol.com ürün eşleştirme | %2-6 | Kurulu ama ürün-bazlı eşleştirme YOK |
-| Email/WhatsApp kitlesi | sponsorluk/affiliate | Altyapı var, kitle boyutu bilinmiyor |
+| AdSense | 470 sayfa görüntüleme × €5-15 RPM | **€2 – €7** |
+| Süpermarket linkleri | 28 giden tıklamanın çoğu | **€0** — `network: 'direct'`, komisyon yok (13 giriş) |
+| MeerBesparen widget (129 merchant) | kalan birkaç tıklama | **ölçülmedi, muhtemelen €0-2** |
+| Energie/telecom (yüksek birim) | trafik yok | **€0** |
+
+**Sonuç: mevcut trafikle üst sınır ~€10/ay.** Bu, monetizasyon yüzeyi eksikliğinden
+değil, trafikten kaynaklanıyor.
 
 ---
 
-## 🗺️ Yol Haritası
+## ⚠️ Yol haritasının asıl kusuru
 
-### FAZ A — Ölç ve Kilidi Aç (şimdi → 2 hafta)
-*Hiçbir yeni büyük iş başlatma; deploy edilenlerin etkisini ölç, geliri engelleyen tek şeyi (AdSense) aç.*
+**Bu, trafiği olan bir sitenin planı.** Faz A/B/C sıralaması mantıklı ama gizlediği
+şey şu: gelirin üç çarpanı var — **trafik × dönüşüm × ödeme** — ve trafik diğer
+ikisinden 2-3 kat büyüklük mertebesinde geride. Yeni merchant, yeni dikey, yeni
+widget eklemek bu denklemde **sıfırla çarpılıyor.**
 
-- [ ] **AdSense re-review takibi** — dashboard'da durum kontrolü. Onay gelirse trafik büyümesi anında gelire dönüşmeye başlar. Red gelirse gerekçeyi buraya işle ve düzelt.
-- [ ] **GSC CTR ölçümü (haftalık rutin)** — taze export al, hedef sorgular: "aldi" (TO %0.03→hedef %2+), "plus aanbiedingen", "dirk aanbiedingen", "bonus aanbiedingen". Title fix'lerinin işleyip işlemediği burada görünür.
-- [ ] **Günlük scraper cron doğrulama** (6 Tem Pzt 08:00 UTC ilk çalışma) + Kruidvat veri tazeliği (30 Haz'dan beri güncellenmedi, GH Action kontrol)
-- [ ] **Daisycon CSV export** → Housefinan, Kredanta, Minisforum (FR/EU), JW Verzekeringen'i tracked yap (şu an komisyonsuz çalışıyorlar)
-- [ ] **Energie içerik kümesi başlat** — `/energie` sayfası tek başına sıralanamaz; onu besleyecek 2-3 blog yazısı: "Energie vergelijken gids 2026", "Vast of variabel energiecontract?", "Zonnepanelen terugverdientijd" → hepsinden `/energie`'ye iç link. **Energie tek switch'te €20-60 kazandırır; 1000 market tıklamasından fazla.**
+Kurulu olan yüzeyler: AdSense (5 slot), 129 merchant widget, 86 affiliate girişi,
+energie/telecom/verzekering dikeyleri, Bol.com, Flink, maaltijdbox. **Eksik olan
+yüzey değil.**
 
-### FAZ B — TO→Trafik→Gelir Çevrimi (2-6 hafta)
-*Kanıtlanmış olanı ölçekle.*
-
-- [x] **Karşılaştırma içeriğini ölçekle (başladı)** — "Dirk vs Aldi" (562 kelime) ve "Plus vs Jumbo" (587 kelime) eklendi, 5 Tem (commit `4a4570c`). Kalan: "Kruidvat vs Etos" (Etos site'de yok, atlanabilir), "DekaMarkt vs Dirk". TO etkisini 1-2 hafta sonra GSC'de ölç.
-- [ ] **Aldi bağımlılığını çeşitlendir** — Aldi formülü çalıştıysa (15.8K gösterim) aynı derinliği Plus (3.7K gösterim, 1 tıklama!) ve Dirk sayfalarına uygula.
-- [ ] **Play Store yayını** ($25) — APK hazır, bedava dağıtım kanalı; app kullanıcısı = push bildirimi = tekrar ziyaret.
-- [ ] **Kitle büyütme CTA'ları** — newsletter/WhatsApp aboneliği şu an pasif. Blog yazısı sonuna + exit noktalarına belirgin CTA; Brevo abone sayısını ölç ve buraya işle (şu an bilinmiyor).
-- [ ] **AdSense onaylanınca:** slot yerleşim optimizasyonu — blog içi 2 slot var, market sayfalarında yerleşim gözden geçir (viewability).
-- [ ] **Fiyat geçmişini kullanıcıya aç** — `price_history` DB'de birikmiş ama görünmüyor. "Prijsgeschiedenis" grafiği = Folderz/Reclamefolder'da OLMAYAN özellik = paylaşılabilir, linklenebilir fark. (Tweakers'ın Pricewatch'ı gibi.)
-
-### FAZ C — Monetizasyon Derinleştirme (6-12 hafta)
-*Trafik kanıtı oluşunca gelir kanallarını çeşitlendir.*
-
-- [ ] **Energie pilot değerlendirmesi** — GSC'de "energie vergelijken" sorgularında hareket var mı? Varsa aynı şablonu (karşılaştırma kartları + editoryal + FAQ) **verzekering** (JW hazır) ve **telecom**'a (Ziggo, hollandsnieuwe hazır) kopyala. Yoksa nedenini analiz et.
-- [ ] **Bol.com ürün eşleştirme** — non-food süpermarket ürünlerini (elektronik, oyuncak, huishouden) Bol.com aramasına linkle; her ürün kartı potansiyel komisyon.
-- [ ] **Maaltijdbox içeriği** — `maaltijdbox-vergelijken-2026` yazısı var; Marley Spoon Awin onay durumunu kontrol et, onaylıysa affiliate linki ekle (~82 gün cookie, yüksek komisyon).
-- [ ] **Media kit + sponsored listing** — trafik 20K+/ay olunca küçük NL merkezli merchant'lara "haftalık öne çıkan deal" satışı (€50-200/hafta). GA4 ekran görüntüleriyle tek sayfalık PDF.
-- [ ] **Premium üyelik (€1,99/ay)** — SADECE trafik 50K+/ay ve push/favori kullanımı kanıtlanınca. Erken başlatma; şimdiki kitleyle anlamlı gelir üretmez, geliştirme süresini yer.
-
-### Sürekli (her hafta ~30 dk)
-- Pazartesi: GSC export → TO tablosuna işle; Daisycon/Awin mail taraması (yeni onay/kapanan program); scraper health check (`/api/health/scraper`)
+> **Karar: monetizasyon yüzeyine yeni bir şey EKLENMEYECEK.** Trafik hareket edene
+> kadar bu alandaki her yeni iş negatif beklenen değere sahip — geliştirme zamanı
+> yiyor, sayfa ağırlaştırıyor ve ölçülemiyor.
 
 ---
 
-## 💰 Gerçekçi Gelir Projeksiyonu
+## ✅ Hâlâ geçerli olan yapısal içgörü
 
-| Dönem | Varsayım | Tahmini aylık |
+> **Süpermarket içeriği = trafik motoru. Para = o trafiği yüksek komisyonlu
+> dikeylere ve reklama çevirmek.**
+
+AH/Jumbo/Lidl vb. hepsi `network: 'direct'` — Hollanda'da süpermarketlerin affiliate
+programı yok. Bu değişmedi ve doğru. Sadece sırası önemli: **önce trafik, sonra
+çevirme.**
+
+---
+
+## 🗺️ Şimdi ne yapılacak
+
+### 1. AdSense kimlik doğrulama — tek gerçek monetizasyon işi
+Reklamlar yayında, gösterim birikiyor, ama kimlik doğrulama yapılmadan **ödeme
+yapılmıyor**. Getirisi bugün €2-7/ay, yani küçük — ama maliyeti 10 dakika ve eşiğe
+gelindiğinde zaten şart. **Kullanıcı işi, panel erişimi gerekiyor.**
+
+### 2. EPC'yi ölç — merchant'lara dokunmadan önce
+7 Ağustos'tan beri first-party tıklama takibi çalışıyor (`click_events`).
+
+```bash
+curl -H "Authorization: Bearer $TRACK_STATS_KEY" \
+  https://dealhunter-production-d900.up.railway.app/api/track/stats?days=14
+```
+
+Bakılacak: 129 merchant'ın kaçı **hiç** tıklanmış? Widget sayfa ağırlığı ve dikkat
+maliyeti üretiyor; karşılığında ne aldığını bilmiyoruz. Veri gelmeden ne eklenir
+ne çıkarılır.
+
+### 3. Yeni merchant/dikey eklemeyi DONDUR
+Daisycon/Awin onayları gelmeye devam edecek. Trafik hareket edene ve EPC verisi
+oluşana kadar eklenmeyecek. (Kapanan programları temizlemek istisna — o bakım.)
+
+### 4. Trafik tarafı zaten yol haritasında
+Gelirin binding constraint'i orada: `docs/trafik-yolharitasi.md` ve
+`docs/analiz-2026-08-09.md`. Faz 1 ölçümü **21 Ağustos**.
+
+---
+
+## 📊 Gerçekçi projeksiyon (yeniden yazıldı)
+
+Eski tablo trafik varsayımı üzerine kuruluydu; bu sefer **eşik** olarak yazıyorum:
+
+| Trafik eşiği | Aylık gelir bandı | Not |
 |---|---|---|
-| **Ağustos 2026** | AdSense onaylı, TO %1'e çıktı (~30-50 tık/gün), energie 1-2 switch | €50-150 |
-| **Ekim 2026** | Trafik 15-25K/ay, energie+verzekering 5-10 lead, widget satışları | €200-500 |
-| **Ocak 2027** | Trafik 50K+/ay, 3 dikey aktif, sponsored listing 1-2 | €500-1.500 |
+| Bugün (~470 oturum/ay) | **€0-10** | AdSense doğrulaması yapılırsa €2-7 |
+| 5.000 oturum/ay | €25-75 | AdSense + ilk widget satışları |
+| 20.000 oturum/ay | €150-400 | + energie/verzekering lead'leri anlamlı olur |
+| 50.000+ oturum/ay | €500-1.500 | + sponsored listing, media kit |
 
-**En büyük 3 kaldıraç (öncelik sırasıyla):**
-1. **AdSense onayı** — trafik zaten 15x büyüdü; reklamsız her gün kayıp
-2. **TO %0.5→%2+** — aynı gösterimle 4-10x tıklama; title fix'leri deploy edildi, ölçüm bekliyor
-3. **Energie/verzekering lead'leri** — tek lead onlarca market tıklamasına bedel; içerik kümesi gerekiyor
-
-**En büyük 3 risk:**
-1. Aldi tek-sayfa bağımlılığı (%64) — Google güncellemesi o sorguda vurursa trafik yarılanır → çeşitlendir (Faz B)
-2. AdSense reddi tekrarı — içerik düzeltmeleri yapıldı ama garantisi yok → red gelirse gerekçe odaklı düzelt
-3. Genç domain + hızlı içerik temposu — Google indekslemesi seçici (bkz. GSC "Crawled not indexed") → nicelik değil derinlik
+**Tarih vermiyorum.** Önceki sürümün hatası tarih vermekti; trafik ne zaman hangi
+eşiğe gelir bilinmiyor, uydurmak yol haritasını çöpe çeviriyor.
 
 ---
 
-## Arşiv: Tamamlanan Fazlar
+## 🚫 Bilinçli olarak yapılmayacaklar
 
-<details>
-<summary>Faz 1-2 tamamlananlar (Nisan-Temmuz 2026)</summary>
+| Şey | Neden |
+|---|---|
+| Yeni merchant/dikey ekleme | Trafik hareket edene kadar sıfırla çarpılıyor |
+| Premium üyelik (€1,99/ay) | Kitle **~0** (1 push, 1 bülten abonesi — ölçüldü 9 Ağu) |
+| Media kit / sponsored listing | 20K+/ay trafik gerektirir, 470'teyiz |
+| Play Store yayını ($25) | Kitle 0 iken dağıtım kanalı değil, bakım yükü |
+| Bol.com ürün eşleştirme | Geliştirme maliyeti yüksek, mevcut trafikte ölçülemez |
 
-- SEO temeli: GSC, sitemap, schema'lar (Organization/FAQ/Product/Breadcrumb), 39 blog yazısı, market+kategori sayfaları
-- AdSense ilk onay + slotlar; sonra "low value content" bulgusu → içerik düzeltmeleri (Tem 2026), re-review bekleniyor
-- Daisycon + Awin onayları: ~70 merchant entegre (affiliate.ts tek doğruluk kaynağı)
-- 10 market scraper (günlük), fiyat karşılaştırma, PWA+push, Google OAuth, Android APK
-- Brevo newsletter + watchlist email + WhatsApp otomasyonu (8 mesaj/gün)
-- CWV düzeltmeleri (CLS, hydration), cookie banner fix, market OG image'ları
-- `/energie` + `/zomeracties` pilot sayfaları
-- GSC teşhisleri: sitemap lastModified bug fix, 6 thin blog yazısı derinleştirme, title CTR formülü
+---
 
-</details>
+## ✏️ 5 Temmuz sürümünden düzeltilenler
+
+- ❌ "AdSense re-review bekliyor" → **29 Temmuz'da ONAYLANDI**; engel kimlik doğrulama
+- ❌ "Aldi tek-sayfa bağımlılığı %64" → bağımlılık **Lidl'e kaydı (%43)**; ve
+  gerçekleşen risk Google güncellemesi değil, o gösterimlerin **%0,1 TO'da** dönmesi
+- ❌ "price_history kullanıcıya açılmadı" → **açıldı**; `PriceHistoryChart` ürün
+  kartında, "Laagste prijs" rozeti canlı
+- ❌ "Email/WhatsApp kitle boyutu bilinmiyor" → **ölçüldü: ~0** (1 push, 1 bülten)
+- ❌ "Folderz/Reclamefolder'da OLMAYAN özellik" (fiyat verisi) → folderz'in **online
+  teklif sayfalarında tam fiyat var** (10 Ağu ölçümü). Fiyat *geçmişi* grafiği hâlâ
+  farklı olabilir ama "onlarda fiyat yok" iddiası kullanılamaz.
+  Bkz. `docs/rakip-analizi-2026-08-10.md`
+- ❌ Tarihli gelir projeksiyonu → **eşik tabanlı** projeksiyona çevrildi
