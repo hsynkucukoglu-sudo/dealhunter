@@ -8,15 +8,35 @@ name: Weekly Deals Video
 # Maandagochtend omdat de Nederlandse folders dan vers zijn; 06:30 UTC ligt ruim
 # na de scraper-runs van 08:02 lokale tijd van de vorige dag.
 
+# ─── WEKELIJKSE PLANNING UITGEZET (2026-08-11) ───────────────────────────────
+# Beide afleverroutes zitten vast:
+#   1. De handmatige TikTok/Reels-route vraagt tijd die er niet is (het
+#      tijdsbudget voor social is ~0 uur per week).
+#   2. De YouTube-route heeft nooit secrets gekregen (staat open sinds 2 aug), en
+#      secrets alléén is niet genoeg: zolang de OAuth-app op "Testing" staat
+#      verloopt de refresh token na 7 dagen en faalt een wekelijkse cron sowieso
+#      elke keer.
+# Ondertussen kwam er elke maandag een faalmail (laatst 10 aug). Dat is duurder
+# dan het lijkt: het went om meldingen uit deze repo weg te klikken, en precies
+# daardoor bleven Hoogvliet en Albert Heijn dagenlang stil kapot. Nu het
+# scraper-alarm net écht is gaan mailen, mag ruis dat signaal niet overstemmen.
+#
+# De videogenerator zelf werkt en blijft staan — draai hem met de hand wanneer
+# je een video wil. Zet de cron pas terug als de YouTube-app "In production"
+# staat én een handmatige run slaagt.
+# on:
+#   schedule:
+#     - cron: '30 6 * * 1'
+
 on:
-  schedule:
-    - cron: '30 6 * * 1'
   workflow_dispatch:
     inputs:
       upload_youtube:
-        description: 'Ook naar YouTube uploaden?'
+        description: 'Ook naar YouTube uploaden? (vereist YOUTUBE_*-secrets)'
         type: boolean
-        default: true
+        # Default false: de secrets ontbreken, dus met true zou een handmatige run
+        # de video wél maken maar daarna alsnog rood eindigen op de upload-stap.
+        default: false
       privacy:
         description: 'YouTube privacy (private/unlisted/public)'
         type: string
