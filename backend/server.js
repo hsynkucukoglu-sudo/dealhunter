@@ -357,12 +357,26 @@ async function reportScraperHealth(newProducts) {
   let stale = []
   try {
     const { markets } = await getScraperStats()
-    const seen = new Map(markets.map(r => [r.market, r.last_scraped]))
+    const byMarket = new Map(markets.map(r => [r.market, r]))
     for (const m of MONITORED_MARKETS) {
-      const last = seen.get(m)
-      if (!last) { stale.push(`${m}: veritabanında hiç ürünü yok`); continue }
-      const days = Math.floor((Date.now() - new Date(last).getTime()) / 86400000)
-      if (days >= STALE_ALERT_DAYS) stale.push(`${m}: veri ${days} gündür bayat (son: ${String(last).slice(0, 10)})`)
+      const row = byMarket.get(m)
+      if (!row?.last_scraped) { stale.push(`${m}: veritabanında hiç ürünü yok`); continue }
+
+      const days = Math.floor((Date.now() - new Date(row.last_scraped).getTime()) / 86400000)
+      if (days >= STALE_ALERT_DAYS) {
+        stale.push(`${m}: veri ${days} gündür bayat (son: ${String(row.last_scraped).slice(0, 10)})`)
+        continue
+      }
+
+      // Kalite kontrolü — yaş kontrolü bunu KAÇIRIYORDU. 2026-08-11'de Aldi 76 taze
+      // ürün döndürdü ama HİÇBİRİ indirimli değildi (hepsi orij = indirimli, sadece
+      // non-food sabit fiyatlı ürünler; gıda indirimleri hiç gelmemişti). Veri taze
+      // olduğu için alarm sessiz kaldı. İndirim sitesinde 0 indirimli ürün, ölü
+      // scraper kadar kötü. İzlenen marketlerin hepsinde normalde en az birkaç
+      // düzine indirimli ürün var, yani 0 her zaman anormal.
+      if (row.total > 0 && row.with_discount === 0) {
+        stale.push(`${m}: ${row.total} ürün var ama HİÇBİRİ indirimli değil (fiyat ayrıştırma bozulmuş olabilir)`)
+      }
     }
   } catch (e) {
     console.error('🩺 Sağlık raporu: getScraperStats hatası:', e.message)
