@@ -1109,18 +1109,43 @@ async function scrapeAlbertHeijn() {
 async function scrapeAldi() {
   console.log('🏪 [Aldi] aldi.nl offer API...')
   try {
-    // Aldi offers switch on Monday. Try 'current' first, fall back to 'next'
-    // because on Monday the new week is served as 'next' until midnight rollover
-    let data = null
+    // Aldi wisselt de aanbiedingen op maandag. De oude aanpak nam 'current' zodra
+    // die niet-leeg was en probeerde 'next' dan nooit meer. Op maandag 2026-08-10
+    // (10:02 CEST) gaf 'current' 76 producten terug die állemaal non-food met een
+    // vaste prijs waren — geen enkele korting. Omdat 76 > 0 was, werd dat
+    // geaccepteerd en stond Aldi een dag lang met 0 aanbiedingen op de site.
+    //
+    // Nu halen we beide op en kiezen we op basis van het aantal producten mét
+    // streepprijs (= echte korting), met het totaal als tiebreaker. Een dataset
+    // zonder kortingen is voor een aanbiedingensite waardeloos, hoeveel producten
+    // er ook in zitten.
+    const countDiscounted = (json) =>
+      Object.values(json?.algoliaDataMap || {})
+        .filter(p => p?.currentPrice?.strikePrice?.strikePriceValue).length
+
+    const candidates = []
     for (const week of ['current', 'next']) {
-      const res = await fetch(`https://www.aldi.nl/api/offer/nl/${week}`, {
-        headers: { ...HEADERS, 'Accept': 'application/json', 'Referer': 'https://www.aldi.nl/aanbiedingen-deze-week.html' },
-      })
-      if (!res.ok) continue
-      const json = await res.json()
-      if (Object.keys(json.algoliaDataMap || {}).length > 0) { data = json; break }
+      try {
+        const res = await fetch(`https://www.aldi.nl/api/offer/nl/${week}`, {
+          headers: { ...HEADERS, 'Accept': 'application/json', 'Referer': 'https://www.aldi.nl/aanbiedingen-deze-week.html' },
+        })
+        if (!res.ok) { console.log(`  [Aldi] ${week}: HTTP ${res.status}`); continue }
+        const json = await res.json()
+        const total = Object.keys(json.algoliaDataMap || {}).length
+        if (total === 0) { console.log(`  [Aldi] ${week}: 0 ürün`); continue }
+        const discounted = countDiscounted(json)
+        console.log(`  [Aldi] ${week}: ${total} ürün, ${discounted} indirimli`)
+        candidates.push({ week, json, total, discounted })
+      } catch (e) {
+        console.log(`  [Aldi] ${week} hata: ${e.message}`)
+      }
     }
-    if (!data) throw new Error('Offer data boş döndü')
+    if (!candidates.length) throw new Error('Offer data boş döndü')
+
+    candidates.sort((a, b) => (b.discounted - a.discounted) || (b.total - a.total))
+    const chosen = candidates[0]
+    console.log(`  [Aldi] seçilen: ${chosen.week} (${chosen.total} ürün, ${chosen.discounted} indirimli)`)
+    const data = chosen.json
 
     const algoliaMap = data.algoliaDataMap
     const seen = new Set()
