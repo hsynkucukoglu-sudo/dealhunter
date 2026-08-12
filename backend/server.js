@@ -346,9 +346,48 @@ const MONITORED_MARKETS = [
 // yanlış alarm verirdi. 2 gün, gerçek arızayı ~48 saat içinde yakalar.
 const STALE_ALERT_DAYS = 2
 
+// Alarm satırlarını üretir. reportScraperHealth VE /api/health/scraper aynı
+// fonksiyonu kullanır, böylece dışarıdan bakınca alarmın NE gördüğü doğrulanabilir.
+export function computeScraperAlerts(markets) {
+  const byMarket = new Map(markets.map(r => [r.market, r]))
+  const alerts = []
+  for (const m of MONITORED_MARKETS) {
+    const row = byMarket.get(m)
+    if (!row?.last_scraped) { alerts.push(`${m}: veritabanında hiç ürünü yok`); continue }
+
+    const days = Math.floor((Date.now() - new Date(row.last_scraped).getTime()) / 86400000)
+    if (days >= STALE_ALERT_DAYS) {
+      alerts.push(`${m}: veri ${days} gündür bayat (son: ${String(row.last_scraped).slice(0, 10)})`)
+      continue
+    }
+
+    // Kalite kontrolü — yaş kontrolü bunu KAÇIRIYORDU. 2026-08-11'de Aldi 76 taze
+    // ürün döndürdü ama HİÇBİRİ indirimli değildi (hepsi orij = indirimli, sadece
+    // non-food sabit fiyatlı ürünler). Veri taze olduğu için alarm sessiz kaldı.
+    // İndirim sitesinde 0 indirimli ürün, ölü scraper kadar kötü.
+    if (row.total > 0 && row.with_discount === 0) {
+      alerts.push(`${m}: ${row.total} ürün var ama HİÇBİRİ indirimli değil (fiyat ayrıştırma bozulmuş olabilir)`)
+    }
+  }
+  return alerts
+}
+
+// Son çalışmanın izi — /api/health/scraper üzerinden dışarı veriliyor.
+//
+// NEDEN: alarm iki kez sessiz kaldı (8 Ağu: OPS_ALERT_EMAIL yoktu; 11 Ağu: sebep
+// bilinmiyor) ve Railway loguna erişimi olmayan biri "alarm tespit etmedi mi, yoksa
+// mail mi gidemedi" sorusunu ayırt edemedi. Aynı körlük Hoogvliet, AH ve Aldi'de de
+// zaman kaybettirdi. Bu iz, tespit ile teslimatı birbirinden ayırıp dışarıdan
+// görünür kılıyor. Sır içermiyor — sadece market adı, sayı ve hata mesajı.
+let lastScrapeRun = null   // { at, perMarket, empty }
+let lastAlertRun = null    // { at, alerts, emailSent, emailError }
+
 async function reportScraperHealth(newProducts) {
-  const returned = new Set((newProducts ?? []).map(p => p.market))
+  const perMarket = {}
+  for (const p of newProducts ?? []) perMarket[p.market] = (perMarket[p.market] ?? 0) + 1
+  const returned = new Set(Object.keys(perMarket))
   const emptyThisRun = MONITORED_MARKETS.filter(m => !returned.has(m))
+  lastScrapeRun = { at: new Date().toISOString(), perMarket, empty: emptyThisRun }
   if (emptyThisRun.length) {
     // Bilgi amaçlı — alarm DEĞİL. Plus/Kruidvat burada normalde görünür.
     console.log(`🩺 Backend scraper'ından ürün dönmeyen market: ${emptyThisRun.join(', ')}`)
@@ -357,39 +396,27 @@ async function reportScraperHealth(newProducts) {
   let stale = []
   try {
     const { markets } = await getScraperStats()
-    const byMarket = new Map(markets.map(r => [r.market, r]))
-    for (const m of MONITORED_MARKETS) {
-      const row = byMarket.get(m)
-      if (!row?.last_scraped) { stale.push(`${m}: veritabanında hiç ürünü yok`); continue }
-
-      const days = Math.floor((Date.now() - new Date(row.last_scraped).getTime()) / 86400000)
-      if (days >= STALE_ALERT_DAYS) {
-        stale.push(`${m}: veri ${days} gündür bayat (son: ${String(row.last_scraped).slice(0, 10)})`)
-        continue
-      }
-
-      // Kalite kontrolü — yaş kontrolü bunu KAÇIRIYORDU. 2026-08-11'de Aldi 76 taze
-      // ürün döndürdü ama HİÇBİRİ indirimli değildi (hepsi orij = indirimli, sadece
-      // non-food sabit fiyatlı ürünler; gıda indirimleri hiç gelmemişti). Veri taze
-      // olduğu için alarm sessiz kaldı. İndirim sitesinde 0 indirimli ürün, ölü
-      // scraper kadar kötü. İzlenen marketlerin hepsinde normalde en az birkaç
-      // düzine indirimli ürün var, yani 0 her zaman anormal.
-      if (row.total > 0 && row.with_discount === 0) {
-        stale.push(`${m}: ${row.total} ürün var ama HİÇBİRİ indirimli değil (fiyat ayrıştırma bozulmuş olabilir)`)
-      }
-    }
+    stale = computeScraperAlerts(markets)
   } catch (e) {
     console.error('🩺 Sağlık raporu: getScraperStats hatası:', e.message)
+    lastAlertRun = { at: new Date().toISOString(), alerts: null, emailSent: false, emailError: `getScraperStats: ${e.message}` }
     return
   }
 
   if (!stale.length) {
+    lastAlertRun = { at: new Date().toISOString(), alerts: [], emailSent: false, emailError: null }
     console.log('🩺 Scraper sağlık: izlenen tüm marketlerin verisi taze.')
     return
   }
 
   console.error(`🚨 SCRAPER ALARM: ${stale.length} market bayat\n  - ${stale.join('\n  - ')}`)
   const sent = await sendOpsAlert(`🚨 DealHunter: ${stale.length} market bayat veri`, stale)
+  lastAlertRun = {
+    at: new Date().toISOString(),
+    alerts: stale,
+    emailSent: sent,
+    emailError: sent ? null : 'sendOpsAlert false döndü (OPS_ALERT_EMAIL/BREVO_API_KEY eksik veya Brevo reddetti)',
+  }
   if (!sent) {
     console.error('🚨 Alarm e-postası GÖNDERİLEMEDİ (OPS_ALERT_EMAIL/BREVO_API_KEY eksik olabilir) — sadece log var.')
   }
@@ -877,7 +904,18 @@ app.get('/health', (req, res) => {
 // GET /api/health/scraper - Market bazında ürün sayıları ve indirim istatistikleri
 app.get('/api/health/scraper', asyncHandler(async (req, res) => {
   const stats = await getScraperStats()
-  res.json({ ...stats, scraperRunning })
+  res.json({
+    ...stats,
+    scraperRunning,
+    // Alarmın ŞU AN ne gördüğü — reportScraperHealth ile aynı fonksiyondan.
+    // Böylece "alarm tespit etmedi mi, yoksa mail mi gidemedi" sorusu Railway
+    // loguna bakmadan cevaplanabiliyor.
+    alerts: computeScraperAlerts(stats.markets),
+    // Son scraper çalışmasının izi (market başına kaç ürün döndü, hangileri boştu)
+    lastScrapeRun,
+    // Son alarm denemesi ve e-posta teslimatının sonucu
+    lastAlertRun,
+  })
 }))
 
 // POST /api/user/email - Store user email after OAuth login (for watchlist alerts)
