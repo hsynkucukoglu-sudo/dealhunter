@@ -1106,52 +1106,20 @@ async function scrapeAlbertHeijn() {
 }
 
 // ─── ALDI — /api/offer/nl/{week} JSON API ────────────────────────────────────
-async function scrapeAldi() {
-  console.log('🏪 [Aldi] aldi.nl offer API...')
-  try {
-    // Aldi wisselt de aanbiedingen op maandag. De oude aanpak nam 'current' zodra
-    // die niet-leeg was en probeerde 'next' dan nooit meer. Op maandag 2026-08-10
-    // (10:02 CEST) gaf 'current' 76 producten terug die állemaal non-food met een
-    // vaste prijs waren — geen enkele korting. Omdat 76 > 0 was, werd dat
-    // geaccepteerd en stond Aldi een dag lang met 0 aanbiedingen op de site.
-    //
-    // Nu halen we beide op en kiezen we op basis van het aantal producten mét
-    // streepprijs (= echte korting), met het totaal als tiebreaker. Een dataset
-    // zonder kortingen is voor een aanbiedingensite waardeloos, hoeveel producten
-    // er ook in zitten.
-    const countDiscounted = (json) =>
-      Object.values(json?.algoliaDataMap || {})
-        .filter(p => p?.currentPrice?.strikePrice?.strikePriceValue).length
+/**
+ * Aldi'nin ham algoliaDataMap'ini bizim urun nesnelerimize cevirir.
+ *
+ * scrapeAldi'den ayrildi cunku Railway'in IP'sinden Aldi API'sine erisim
+ * guvenilmez (2026-08-11 taramasi hic urun dondurmedi; ayni API residential
+ * IP'den 210 urun/29 indirimli veriyor). Ag katmani disari alinabilsin diye
+ * ayrildi; parse mantigi BURADA tek kopya kaliyor — ayni sebeple AH icin de
+ * boyle yapildi (bkz. parseAhProducts).
+ */
+export function parseAldiProducts(algoliaMap, expiresAtDefault = EXPIRES_AT) {
+  const seen = new Set()
+  const results = []
+  const allProds = Object.values(algoliaMap || {})
 
-    const candidates = []
-    for (const week of ['current', 'next']) {
-      try {
-        const res = await fetch(`https://www.aldi.nl/api/offer/nl/${week}`, {
-          headers: { ...HEADERS, 'Accept': 'application/json', 'Referer': 'https://www.aldi.nl/aanbiedingen-deze-week.html' },
-        })
-        if (!res.ok) { console.log(`  [Aldi] ${week}: HTTP ${res.status}`); continue }
-        const json = await res.json()
-        const total = Object.keys(json.algoliaDataMap || {}).length
-        if (total === 0) { console.log(`  [Aldi] ${week}: 0 ürün`); continue }
-        const discounted = countDiscounted(json)
-        console.log(`  [Aldi] ${week}: ${total} ürün, ${discounted} indirimli`)
-        candidates.push({ week, json, total, discounted })
-      } catch (e) {
-        console.log(`  [Aldi] ${week} hata: ${e.message}`)
-      }
-    }
-    if (!candidates.length) throw new Error('Offer data boş döndü')
-
-    candidates.sort((a, b) => (b.discounted - a.discounted) || (b.total - a.total))
-    const chosen = candidates[0]
-    console.log(`  [Aldi] seçilen: ${chosen.week} (${chosen.total} ürün, ${chosen.discounted} indirimli)`)
-    const data = chosen.json
-
-    const algoliaMap = data.algoliaDataMap
-    const seen = new Set()
-    const results = []
-
-    const allProds = Object.values(algoliaMap)
     if (process.env.DEBUG_SCRAPER && allProds[0]) {
       console.log('  [Aldi] tüm alanlar:', Object.keys(allProds[0]).join(', '))
       console.log('  [Aldi] currentPrice alanları:', Object.keys(allProds[0].currentPrice || {}).join(', '))
@@ -1197,7 +1165,7 @@ async function scrapeAldi() {
       const primary = p.assets?.find(a => a.type === 'primary')
       const expiresAt = p.currentPrice.validUntil
         ? new Date(p.currentPrice.validUntil * 1000).toISOString().split('T')[0]
-        : EXPIRES_AT
+        : expiresAtDefault
 
       results.push({
         name: p.name,
@@ -1213,6 +1181,51 @@ async function scrapeAldi() {
       })
     }
 
+  return results
+}
+
+async function scrapeAldi() {
+  console.log('🏪 [Aldi] aldi.nl offer API...')
+  try {
+    // Aldi wisselt de aanbiedingen op maandag. De oude aanpak nam 'current' zodra
+    // die niet-leeg was en probeerde 'next' dan nooit meer. Op maandag 2026-08-10
+    // (10:02 CEST) gaf 'current' 76 producten terug die állemaal non-food met een
+    // vaste prijs waren — geen enkele korting. Omdat 76 > 0 was, werd dat
+    // geaccepteerd en stond Aldi een dag lang met 0 aanbiedingen op de site.
+    //
+    // Nu halen we beide op en kiezen we op basis van het aantal producten mét
+    // streepprijs (= echte korting), met het totaal als tiebreaker. Een dataset
+    // zonder kortingen is voor een aanbiedingensite waardeloos, hoeveel producten
+    // er ook in zitten.
+    const countDiscounted = (json) =>
+      Object.values(json?.algoliaDataMap || {})
+        .filter(p => p?.currentPrice?.strikePrice?.strikePriceValue).length
+
+    const candidates = []
+    for (const week of ['current', 'next']) {
+      try {
+        const res = await fetch(`https://www.aldi.nl/api/offer/nl/${week}`, {
+          headers: { ...HEADERS, 'Accept': 'application/json', 'Referer': 'https://www.aldi.nl/aanbiedingen-deze-week.html' },
+        })
+        if (!res.ok) { console.log(`  [Aldi] ${week}: HTTP ${res.status}`); continue }
+        const json = await res.json()
+        const total = Object.keys(json.algoliaDataMap || {}).length
+        if (total === 0) { console.log(`  [Aldi] ${week}: 0 ürün`); continue }
+        const discounted = countDiscounted(json)
+        console.log(`  [Aldi] ${week}: ${total} ürün, ${discounted} indirimli`)
+        candidates.push({ week, json, total, discounted })
+      } catch (e) {
+        console.log(`  [Aldi] ${week} hata: ${e.message}`)
+      }
+    }
+    if (!candidates.length) throw new Error('Offer data boş döndü')
+
+    candidates.sort((a, b) => (b.discounted - a.discounted) || (b.total - a.total))
+    const chosen = candidates[0]
+    console.log(`  [Aldi] seçilen: ${chosen.week} (${chosen.total} ürün, ${chosen.discounted} indirimli)`)
+    const data = chosen.json
+
+    const results = parseAldiProducts(data.algoliaDataMap, EXPIRES_AT)
     console.log(`  ✅ Aldi: ${results.length} ürün`)
     return results
   } catch (e) {

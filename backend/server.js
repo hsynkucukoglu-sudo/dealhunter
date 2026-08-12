@@ -7,7 +7,7 @@ import { saveSubscription, deleteSubscription, getUserFavorites, addUserFavorite
 import { sendWeeklyNewsletter, sendWatchlistAlert, sendDealAlert, getBrevoListStats, sendOpsAlert } from './email.js'
 import { findWeeklyChampion } from './productMatch.js'
 import { sendPushToAll, sendPushToSubscriptions } from './push.js'
-import { scrapeFlyerProducts, parseAhProducts, nearestSunday } from './scraper/index.js'
+import { scrapeFlyerProducts, parseAhProducts, parseAldiProducts, nearestSunday } from './scraper/index.js'
 import { categorize } from './categorize.js'
 
 const app = express()
@@ -78,6 +78,8 @@ app.use(cors())
 // ayrıştırdıktan sonra req._body işaretliyor, global olan da onu atlıyor. Limit
 // bilinçli olarak sadece bu admin-korumalı yolda yükseltildi, global değil.
 app.use('/api/scraper/ah-ingest', express.json({ limit: '12mb' }))
+// Aldi ham algoliaDataMap ~0,23 MB — global 100 KB limitini aşıyor. Aynı desen.
+app.use('/api/scraper/aldi-ingest', express.json({ limit: '4mb' }))
 app.use(express.json())
 app.use(generalLimit)
 
@@ -879,6 +881,37 @@ app.post('/api/scraper/ah-ingest', requireAdmin, asyncHandler(async (req, res) =
   const created = await replaceMarketProducts('Albert Heijn', parsed)
   console.log(`📦 ah-ingest: ${products.length} ham → ${parsed.length} parse → ${created.length} kaydedildi`)
   res.json({ success: true, received: products.length, parsed: parsed.length, count: created.length })
+}))
+
+// POST /api/scraper/aldi-ingest - Aldi'nin HAM algoliaDataMap'i
+//
+// Railway'in IP'sinden Aldi API'sine erişim güvenilmez: 2026-08-11 taraması hiç
+// ürün döndürmedi, aynı API residential IP'den 210 ürün/29 indirimli veriyor.
+// Ağ katmanı dışarı alındı, parse burada tek kopya (ah-ingest ile aynı desen).
+app.post('/api/scraper/aldi-ingest', requireAdmin, asyncHandler(async (req, res) => {
+  const { algoliaDataMap } = req.body
+  if (!algoliaDataMap || typeof algoliaDataMap !== 'object') {
+    return res.status(400).json({ error: 'algoliaDataMap (ham Aldi offer API çıktısı) gerekli' })
+  }
+
+  const parsed = parseAldiProducts(algoliaDataMap, nearestSunday())
+  const withDiscount = parsed.filter(p => p.originalPrice > p.discountedPrice).length
+
+  // 0 ürün çıktıysa Aldi'yi SİLME — ah-ingest ile aynı koruma.
+  if (!parsed.length) {
+    console.error(`🚨 aldi-ingest: ${Object.keys(algoliaDataMap).length} ham üründen 0 ürün çıktı — ALDİ DEĞİŞTİRİLMEDİ`)
+    return res.status(422).json({ error: 'Ham veriden 0 ürün çıkarıldı, market korundu' })
+  }
+  // 0 İNDİRİMLİ de reddediliyor: 10 Ağustos'ta tam bu veri seti (76 ürün, hepsi
+  // non-food sabit fiyatlı) kaydedildi ve site bir gün Aldi'de 0 aanbieding gösterdi.
+  if (withDiscount === 0) {
+    console.error(`🚨 aldi-ingest: ${parsed.length} ürün var ama 0 indirimli — ALDİ DEĞİŞTİRİLMEDİ`)
+    return res.status(422).json({ error: 'Hiçbir ürün indirimli değil, market korundu', parsed: parsed.length })
+  }
+
+  const created = await replaceMarketProducts('Aldi', parsed)
+  console.log(`📦 aldi-ingest: ${Object.keys(algoliaDataMap).length} ham → ${parsed.length} parse (${withDiscount} indirimli) → ${created.length} kaydedildi`)
+  res.json({ success: true, parsed: parsed.length, withDiscount, count: created.length })
 }))
 
 // POST /api/scraper/run - Manuel olarak scraper çalıştırır (Arayüzden tetiklendiğinde)
