@@ -78,17 +78,35 @@ Reklamlar yayında, gösterim birikiyor, ama kimlik doğrulama yapılmadan **öd
 yapılmıyor**. Getirisi bugün €2-7/ay, yani küçük — ama maliyeti 10 dakika ve eşiğe
 gelindiğinde zaten şart. **Kullanıcı işi, panel erişimi gerekiyor.**
 
-### 2. EPC'yi ölç — merchant'lara dokunmadan önce
-7 Ağustos'tan beri first-party tıklama takibi çalışıyor (`click_events`).
+### 2. EPC ölçüldü ✅ (11 Ağustos, ilk veri)
 
-```bash
-curl -H "Authorization: Bearer $TRACK_STATS_KEY" \
-  https://dealhunter-production-d900.up.railway.app/api/track/stats?days=14
-```
+`click_events` 7 Ağustos'tan beri topluyor. İlk 5 günün tamamı:
 
-Bakılacak: 129 merchant'ın kaçı **hiç** tıklanmış? Widget sayfa ağırlığı ve dikkat
-maliyeti üretiyor; karşılığında ne aldığını bilmiyoruz. Veri gelmeden ne eklenir
-ne çıkarılır.
+| Kanal | Hedef | Tıklama |
+|---|---|---|
+| market | Plus | 2 |
+| market | Dirk | 2 |
+| market | Vomar | 1 |
+| market | Aldi | 1 |
+| sponsor | `test-verify` | 1 — doğrulama tıklaması, gerçek kullanıcı değil |
+
+**Gerçek kullanıcı tıklaması: 6.** Sıfır olanlar: `sponsor` (129 merchant), `share`,
+`whatsapp`, `flink`, `blog`.
+
+**Yorum sınırı:** 6 tıklama, kendi kuralımızın (20 tıklama) çok altında. Merchant
+düzeyinde "widget değersiz" sonucu **çıkarılamaz**.
+
+**Ama yapısal olarak söylenebilecek:** ölçülen giden tıklamaların **%100'ü komisyon
+ödemeyen hedeflere** gitti. Bu artık varsayım değil, first-party ölçüm. Sonucu:
+widget'ın tıklanma oranı 10 katına çıksa bile gelir €0 kalır — sorun tıklama hacmi
+değil, **trafiğin ne istediği**. Bize gelen kullanıcı süpermarket fırsatı arıyor;
+süpermarketler ödemiyor.
+
+**Olumlu doğrulama:** izleme altyapısı çalışıyor (4 market, 4 ayrı gün, gerçek
+kullanıcı trafiği).
+
+**Karar noktası ~21 Ağustos:** 2 haftalık veriyle tekrar bak. Sponsor kanalı hâlâ
+sıfırsa widget'ın sayfa ağırlığı/dikkat maliyeti tartışılır — o zaman veriyle.
 
 ### 3. Yeni merchant/dikey eklemeyi DONDUR
 Daisycon/Awin onayları gelmeye devam edecek. Trafik hareket edene ve EPC verisi
