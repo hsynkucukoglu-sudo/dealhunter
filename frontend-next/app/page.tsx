@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { getProducts } from '@/lib/api'
 import { buildHomePageSchema, buildFaqSchema, buildHomeDealsSchema } from '@/lib/schema'
 import { ProductsPage } from '@/components/ProductsPage'
+import { computeMarketStats } from '@/lib/marketStats'
 
 const HOME_FAQS = [
   {
@@ -94,7 +95,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homeDealsSchema) }}
       />
-      <ProductsPage initialProducts={initialProducts} initialSearch={q ?? ''} marketCounts={marketCounts} totalCount={allProducts.length} totalSavings={totalSavings} />
+      <ProductsPage initialProducts={initialProducts} initialSearch={q ?? ''} marketCounts={marketCounts} totalCount={allProducts.length} totalSavings={totalSavings} marketStats={computeMarketStats(allProducts)} />
     </>
   )
 }

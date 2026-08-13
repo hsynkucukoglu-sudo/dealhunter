@@ -1,37 +1,30 @@
 'use client'
 import { useMemo } from 'react'
 import { Product, MARKET_COLORS } from '@/lib/types'
+import { computeMarketStats, type MarketStat } from '@/lib/marketStats'
 
-interface MarketStat {
-  market: string
-  avgDiscount: number
-  dealCount: number
-  topDeal: Product | null
-}
-
-export function MarketIndexWidget({ products }: { products: Product[] }) {
-  const stats = useMemo<MarketStat[]>(() => {
-    const byMarket = new Map<string, Product[]>()
-    for (const p of products) {
-      if (!byMarket.has(p.market)) byMarket.set(p.market, [])
-      byMarket.get(p.market)!.push(p)
-    }
-
-    return [...byMarket.entries()]
-      .map(([market, prods]) => {
-        const discounted = prods.filter(p => p.originalPrice > p.discountedPrice && p.originalPrice > 0)
-        const avgDiscount = discounted.length
-          ? Math.round(discounted.reduce((s, p) => s + ((p.originalPrice - p.discountedPrice) / p.originalPrice) * 100, 0) / discounted.length)
-          : 0
-        const topDeal = discounted.sort((a, b) =>
-          ((b.originalPrice - b.discountedPrice) / b.originalPrice) - ((a.originalPrice - a.discountedPrice) / a.originalPrice)
-        )[0] ?? null
-        return { market, avgDiscount, dealCount: discounted.length, topDeal }
-      })
-      .filter(s => s.dealCount > 0)
-      .sort((a, b) => b.avgDiscount - a.avgDiscount)
+export function MarketIndexWidget({ products, marketStats }: {
+  products: Product[]
+  /** Serverside berekend over ALLE actieve deals. Zonder deze prop rekent het
+      widget over `products`, en dat is op de homepage tot de idle-fetch alleen
+      de 60 diepst afgeprijsde producten — zie computeMarketStats. */
+  marketStats?: MarketStat[]
+}) {
+  // Sorteren op de diepste deal, niet op het gemiddelde.
+  //
+  // Het gemiddelde straft juist de ketens die we goed uitlezen: Albert Heijn
+  // levert 347 aanbiedingen inclusief kleine kortingen (gem. -12%), Hoogvliet
+  // alleen de 14 kopdeals uit de folder (gem. -42%). Dat verschil zit in onze
+  // scrapedekking, niet in de winkel — lib/kortingsindex.ts documenteert dezelfde
+  // meting over 12 weken en sorteert daarom bewust alfabetisch.
+  //
+  // De diepste deal heeft die scheefheid niet: méér uitlezen kan een keten alleen
+  // maar helpen. En het is letterlijk wat de kop belooft ("beste kortingen").
+  const stats = useMemo<MarketStat[]>(() =>
+    [...(marketStats ?? computeMarketStats(products))]
+      .sort((a, b) => b.maxDiscount - a.maxDiscount)
       .slice(0, 5)
-  }, [products])
+  , [products, marketStats])
 
   if (stats.length === 0) return null
 
@@ -72,13 +65,15 @@ export function MarketIndexWidget({ products }: { products: Product[] }) {
               </div>
               <div className="flex sm:flex-col items-center sm:items-start gap-2 sm:gap-0 sm:mt-2">
                 <span className="text-xl font-black" style={{ color: isTop ? '#E33D26' : color }}>
-                  -{s.avgDiscount}%
+                  -{s.maxDiscount}%
                 </span>
                 <span className="text-[11px]" style={{ color: isTop ? 'rgba(255,255,255,0.6)' : '#9C9389' }}>
-                  gem. korting
+                  beste deal
                 </span>
+                {/* Het gemiddelde blijft staan als context — het is bruikbare
+                    informatie, alleen geen eerlijke ranglijst (zie de sortering). */}
                 <span className="text-[11px] font-semibold sm:mt-1" style={{ color: isTop ? 'rgba(255,255,255,0.5)' : '#C9C1B6' }}>
-                  {s.dealCount} deals
+                  {s.dealCount} deals · gem. -{s.avgDiscount}%
                 </span>
               </div>
             </div>

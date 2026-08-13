@@ -24,6 +24,7 @@ import { trackMarketFilter, trackCategoryFilter, trackCampaignFilter, trackSearc
 import { trackClick } from '@/lib/track'
 import { WHATSAPP_GROUP_URL } from '@/lib/social'
 import { MarketIndexWidget } from './MarketIndexWidget'
+import type { MarketStat } from '@/lib/marketStats'
 import { CombinatieDealsWidget } from './CombinatieDealsWidget'
 import { MeerBesparenWidget } from './MeerBesparenWidget'
 import { MarktenShowcase } from './MarktenShowcase'
@@ -118,7 +119,7 @@ function PushPromptBanner() {
   )
 }
 
-export function ProductsPage({ initialProducts, initialSearch = '', marketCounts, totalCount, totalSavings: totalSavingsProp, defaultSort = 'discount', heroOverride }: {
+export function ProductsPage({ initialProducts, initialSearch = '', marketCounts, totalCount, totalSavings: totalSavingsProp, marketStats, defaultSort = 'discount', heroOverride }: {
   initialProducts: Product[]
   initialSearch?: string
   /** Sunucudan gelen gerçek market→ürün sayıları — client'ta sadece top 60 yüklüyken
@@ -129,6 +130,10 @@ export function ProductsPage({ initialProducts, initialSearch = '', marketCounts
   /** Sunucudan gelen gerçek toplam besparing (Hero social-proof sayacı için) — aynı
       "client sadece top 60 yüklüyken düşük gösterme" sorunu totalCount ile aynı. */
   totalSavings?: number
+  /** Sunucudan gelen market istatistikleri (MarketIndexWidget için). Aynı sorunun
+      en zararlı hâli: client'ın top-60'ı indirime göre sıralı olduğu için widget
+      her markete ~%60 ortalama biçiyordu. */
+  marketStats?: MarketStat[]
   /** Homepage: yüksek indirim önce. /deals: yakında sona eren önce — aynı component'in
       homepage ile birebir aynı sıralama/içerik göstermesini önler (GSC duplicate-content bulgusu). */
   defaultSort?: 'discount' | 'expiring'
@@ -1309,7 +1314,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
 
         {/* MARKET INDEX WIDGET */}
         {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
-          <div className="cv-auto"><MarketIndexWidget products={products} /></div>
+          <div className="cv-auto"><MarketIndexWidget products={products} marketStats={marketStats} /></div>
         )}
 
         {/* COMBINATIE DEALS WIDGET */}
