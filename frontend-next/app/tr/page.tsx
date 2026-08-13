@@ -3,6 +3,7 @@ import { getProducts } from '@/lib/api'
 import { buildHomePageSchema, buildFaqSchema, buildHomeDealsSchema } from '@/lib/schema'
 import { ProductsPage } from '@/components/ProductsPage'
 import { computeMarketStats, computeMarketCounts, computeTotalSavings } from '@/lib/marketStats'
+import { buildComparisonGroups } from '@/lib/similarity'
 
 export const revalidate = 3600
 export const dynamic = 'force-dynamic'
@@ -97,7 +98,7 @@ export default async function TrHome() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homeDealsSchema) }}
       />
-      <ProductsPage initialProducts={initialProducts} initialSearch="" marketCounts={marketCounts} totalCount={allProducts.length} totalSavings={totalSavings} marketStats={computeMarketStats(allProducts)} />
+      <ProductsPage initialProducts={initialProducts} initialSearch="" marketCounts={marketCounts} totalCount={allProducts.length} totalSavings={totalSavings} marketStats={computeMarketStats(allProducts)} comparisonGroups={buildComparisonGroups(allProducts)} />
     </>
   )
 }

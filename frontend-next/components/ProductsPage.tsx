@@ -10,7 +10,7 @@ import { useShoppingList } from '@/context/ShoppingListContext'
 import { useLanguage } from '@/context/LanguageContext'
 import { DealHunterLogo } from './DealHunterLogo'
 import { AdBanner } from './AdBanner'
-import { buildComparisonGroups } from '@/lib/similarity'
+import { buildComparisonGroups, type ComparisonGroup } from '@/lib/similarity'
 import { parseProductMeta } from '@/lib/productMeta'
 import { useFavorites } from '@/context/FavoritesContext'
 import { useHotDeals } from '@/context/HotDealsContext'
@@ -119,7 +119,7 @@ function PushPromptBanner() {
   )
 }
 
-export function ProductsPage({ initialProducts, initialSearch = '', marketCounts, totalCount, totalSavings: totalSavingsProp, marketStats, defaultSort = 'discount', heroOverride }: {
+export function ProductsPage({ initialProducts, initialSearch = '', marketCounts, totalCount, totalSavings: totalSavingsProp, marketStats, comparisonGroups: comparisonGroupsProp, defaultSort = 'discount', heroOverride }: {
   initialProducts: Product[]
   initialSearch?: string
   /** Sunucudan gelen gerçek market→ürün sayıları — client'ta sadece top 60 yüklüyken
@@ -134,6 +134,9 @@ export function ProductsPage({ initialProducts, initialSearch = '', marketCounts
       en zararlı hâli: client'ın top-60'ı indirime göre sıralı olduğu için widget
       her markete ~%60 ortalama biçiyordu. */
   marketStats?: MarketStat[]
+  /** Sunucudan gelen "aynı ürün, en düşük fiyat hangi markette" grupları. Aynı
+      sorunun bir başka yüzü — bkz. comparisonGroups tanımı. */
+  comparisonGroups?: ComparisonGroup[]
   /** Homepage: yüksek indirim önce. /deals: yakında sona eren önce — aynı component'in
       homepage ile birebir aynı sıralama/içerik göstermesini önler (GSC duplicate-content bulgusu). */
   defaultSort?: 'discount' | 'expiring'
@@ -544,7 +547,16 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
     }).slice(0, 8)
   }, [products, topDeals])
 
-  const comparisonGroups = useMemo(() => buildComparisonGroups(products), [products])
+  // Zelfde reden als marketStats: op de homepage is `products` tot de idle-fetch
+  // de top-60 SSR-subset, gesorteerd op kortingsdiepte — geen enkele reden waarom
+  // "hetzelfde product bij twee ketens" daar zou zitten. Gemeten 2026-08-13: 2
+  // vergelijkingsgroepen op die 60, tegen ~80 over de volle 1239. De balk die de
+  // "laagste prijs per winkel" belooft, toonde dus letterlijk 2 opties aan elke
+  // eerste bezoeker en aan Google — vandaar altijd de servercomputed set als die
+  // er is, dezelfde voorkeur als bij marketStats.
+  const comparisonGroups = useMemo(() =>
+    comparisonGroupsProp ?? buildComparisonGroups(products)
+  , [products, comparisonGroupsProp])
 
   const activeFilterCount = (selectedCategory !== 'all' ? 1 : 0) + (selectedCampaign !== 'all' ? 1 : 0)
 
@@ -964,20 +976,30 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           )}
         </AnimatePresence>
 
-        {/* VERGELIJK BAR — zelfde product, laagste prijs per winkel */}
+        {/* VERGELIJK BAR — zelfde product, laagste prijs per winkel.
+            Stond hier al vlak boven de Hero — het zichtbaarheidsprobleem zat niet
+            in de positie maar in de data: op de SSR-subset (top-60 op kortingsdiepte)
+            leverde dit vaak maar 2 groepen op tegen ~80 over de volle catalogus
+            (gemeten 2026-08-13). Nu die rijkdom er staat (comparisonGroups-prop
+            hierboven), verdient het blok ook visueel het gewicht van een feature
+            in plaats van een utility-strip: groene tint i.p.v. bijna-onzichtbaar
+            wit-op-crème, en een aantal in het label. */}
         {comparisonGroups.length > 0 && searchTerm === '' && selectedMarket === 'all' && !showCampaignsOnly && (
-          <div className="mb-6 p-3 rounded-2xl" style={{ background: 'rgba(255,255,255,0.6)', border: '1px solid rgba(201,193,182,0.3)' }}>
+          <div className="mb-6 p-3.5 rounded-2xl" style={{ background: '#EAF7EE', border: '1px solid #B9E4C4' }}>
             <div className="flex items-center gap-1.5 mb-2.5">
-              <span className="material-symbols-outlined text-sm" style={{ color: '#1B9E4B' }}>compare_arrows</span>
-              <span className="text-[11px] font-bold uppercase tracking-widest" style={{ color: '#1A1A1A', fontFamily: 'JetBrains Mono' }}>
+              <span className="material-symbols-outlined text-base" style={{ color: '#1B9E4B' }}>compare_arrows</span>
+              <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#1A1A1A', fontFamily: 'JetBrains Mono' }}>
                 {lang === 'tr' ? 'Karşılaştır' : lang === 'en' ? 'Compare prices' : 'Prijsvergelijking'}
               </span>
-              <span className="text-[11px]" style={{ color: '#9C9389', fontFamily: 'Hanken Grotesk' }}>
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full flex-none" style={{ background: '#1B9E4B', color: 'white' }}>
+                {comparisonGroups.length}
+              </span>
+              <span className="text-[11px]" style={{ color: '#5B7A63', fontFamily: 'Hanken Grotesk' }}>
                 — {lang === 'tr' ? 'Aynı ürün, en düşük fiyat hangi markette?' : lang === 'en' ? 'Same product, lowest price per store' : 'Zelfde product, laagste prijs per winkel'}
               </span>
             </div>
             <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
-              {comparisonGroups.slice(0, 10).map((group, gi) => {
+              {comparisonGroups.slice(0, 16).map((group, gi) => {
                 const cheapest = group.cheapest
                 const mostExpensive = group.products.reduce((a, b) => a.discountedPrice > b.discountedPrice ? a : b)
                 const rawSaving = mostExpensive.discountedPrice - cheapest.discountedPrice

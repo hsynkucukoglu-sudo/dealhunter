@@ -3,6 +3,7 @@ import { getProducts } from '@/lib/api'
 import { buildHomePageSchema, buildFaqSchema, buildHomeDealsSchema } from '@/lib/schema'
 import { ProductsPage } from '@/components/ProductsPage'
 import { computeMarketStats, computeMarketCounts, computeTotalSavings } from '@/lib/marketStats'
+import { buildComparisonGroups } from '@/lib/similarity'
 
 const HOME_FAQS = [
   {
@@ -85,7 +86,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homeDealsSchema) }}
       />
-      <ProductsPage initialProducts={initialProducts} initialSearch={q ?? ''} marketCounts={marketCounts} totalCount={allProducts.length} totalSavings={totalSavings} marketStats={computeMarketStats(allProducts)} />
+      <ProductsPage initialProducts={initialProducts} initialSearch={q ?? ''} marketCounts={marketCounts} totalCount={allProducts.length} totalSavings={totalSavings} marketStats={computeMarketStats(allProducts)} comparisonGroups={buildComparisonGroups(allProducts)} />
     </>
   )
 }

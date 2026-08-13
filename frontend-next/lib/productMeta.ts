@@ -27,17 +27,29 @@ function extractVolumeMl(name: string): { amount: number; label: string } | null
     unit === 'cl' ? amount * 10 :
     unit === 'dl' ? amount * 100 :
     amount * 1000
+  if (ml < MIN_PLAUSIBLE_SIZE) return null
   return { amount: ml, label: `${match[1]} ${match[2]}` }
 }
 
+// Zelfde fix als backend/scraper/index.js (_extractWeightG): hoofdletter 'G' komt
+// nooit als gram voor in productnamen, wel als modelnaam ("Andy en Cif en 3G
+// Professioneel"). Deze kopie voedt de "laagste prijs per winkel"-vergelijking
+// (lib/similarity.ts) — een verzonnen 3g-formaat sluit een product ten onrechte
+// uit van zijn eigen vergelijkingsgroep (ratio-check hieronder faalt op 3g vs
+// een echt gewicht). 'l' blijft hoofdletterongevoelig: "1,5L" komt wél echt voor.
+const WEIGHT_RE = /(\d+[,.]\d+|\d+)\s*(kg|kilo|kilogram|gram)\b/i
+const WEIGHT_RE_G = /(\d+[,.]\d+|\d+)\s*(g)\b/
+const MIN_PLAUSIBLE_SIZE = 10
+
 function extractWeightG(name: string): { amount: number; label: string } | null {
-  const match = name.match(/(\d+[,.]\d+|\d+)\s*(kg|kilo|kilogram|gram|g)\b/i)
+  const match = name.match(WEIGHT_RE) || name.match(WEIGHT_RE_G)
   if (!match) return null
   const amount = parseNum(match[1])
   const unit = match[2].toLowerCase()
   const g =
     unit === 'g' || unit === 'gram' ? amount :
     amount * 1000
+  if (g < MIN_PLAUSIBLE_SIZE) return null
   return { amount: g, label: `${match[1]} ${match[2]}` }
 }
 
