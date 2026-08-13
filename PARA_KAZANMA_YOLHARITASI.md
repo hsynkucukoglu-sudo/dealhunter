@@ -105,6 +105,18 @@ süpermarketler ödemiyor.
 **Olumlu doğrulama:** izleme altyapısı çalışıyor (4 market, 4 ayrı gün, gerçek
 kullanıcı trafiği).
 
+**Ağ tarafından bağımsız doğrulama (13 Ağustos, Daisycon paneli):**
+
+| Metrik | Değer |
+|---|---|
+| Tıklama (31 gün) | **7** |
+| Onaylanan işlem | **€0** |
+| **Onaylı bakiye (toplam)** | **€1,87** |
+
+İki bağımsız kaynak aynı şeyi söylüyor: bizim first-party ölçümümüz (5 günde 6
+tıklama, hepsi komisyonsuz süpermarket) ve Daisycon'un kendi paneli. **129
+merchant'lık widget bugüne kadar toplam €1,87 üretmiş.**
+
 **Karar noktası ~21 Ağustos:** 2 haftalık veriyle tekrar bak. Sponsor kanalı hâlâ
 sıfırsa widget'ın sayfa ağırlığı/dikkat maliyeti tartışılır — o zaman veriyle.
 
