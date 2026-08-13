@@ -1808,7 +1808,7 @@ export const POSTS: BlogPost[] = [
 <p>Bij regelmatig bestellen is het <strong>Jumbo-abonnement</strong> vaak de goedkoopste optie voor thuisbezorging.</p>
 
 <h2>Flink en andere flitsbezorgers</h2>
-<p><a href="/go?m=Flink">Flink</a> en vergelijkbare flitsbezorgers leveren boodschappen binnen 10-15 minuten — ideaal als je iets vergeten bent of geen tijd hebt om te winkelen.</p>
+<p><a href="/go?m=Flink&c=blog">Flink</a> en vergelijkbare flitsbezorgers leveren boodschappen binnen 10-15 minuten — ideaal als je iets vergeten bent of geen tijd hebt om te winkelen.</p>
 <ul>
   <li><strong>Bezorgkosten:</strong> €1,00–€2,00 per bezorging, soms gratis vanaf een bepaald bedrag</li>
   <li><strong>Assortiment:</strong> beperkter dan een volledige supermarkt — vooral basisproducten, snacks en verse producten</li>
@@ -4545,9 +4545,9 @@ export const POSTS: BlogPost[] = [
 <h2>Drie leveranciers om te vergelijken</h2>
 <p>DealHunter4U werkt samen met de volgende energieleveranciers — vergelijk hun actuele voorwaarden direct via onderstaande links:</p>
 <ul>
-  <li><strong><a href="/go?m=ENGIE">ENGIE</a></strong> — gevestigde landelijke leverancier met keuze uit vaste en variabele contracten, ook geschikt voor zakelijke energie en laadpalen.</li>
-  <li><strong><a href="/go?m=Oxxio">Oxxio</a></strong> — bekend om scherpe vaste tarieven en een alles-in-1 pakket inclusief slimme meter, zonder gedoe bij de overstap.</li>
-  <li><strong><a href="/go?m=Pure Energie">Pure Energie</a></strong> — 100% Nederlandse groene stroom van eigen windmolens en zonneparken, met transparante tariefopbouw.</li>
+  <li><strong><a href="/go?m=ENGIE&c=blog">ENGIE</a></strong> — gevestigde landelijke leverancier met keuze uit vaste en variabele contracten, ook geschikt voor zakelijke energie en laadpalen.</li>
+  <li><strong><a href="/go?m=Oxxio&c=blog">Oxxio</a></strong> — bekend om scherpe vaste tarieven en een alles-in-1 pakket inclusief slimme meter, zonder gedoe bij de overstap.</li>
+  <li><strong><a href="/go?m=Pure Energie&c=blog">Pure Energie</a></strong> — 100% Nederlandse groene stroom van eigen windmolens en zonneparken, met transparante tariefopbouw.</li>
 </ul>
 <p>Bekijk de volledige vergelijking, inclusief zonnepanelen-aanbieders, op onze <a href="/energie">energie vergelijken pagina</a>.</p>
 
@@ -4638,7 +4638,7 @@ export const POSTS: BlogPost[] = [
 <p>Een huurder met een strak maandbudget en weinig buffer voor tegenvallers kiest doorgaans voor een <strong>vast contract</strong> — de voorspelbaarheid weegt zwaarder dan een mogelijk iets lagere prijs. Een huiseigenaar met zonnepanelen en een thuisbatterij, die zijn verbruik kan afstemmen op goedkope momenten, overweegt eerder een <strong>variabel of dynamisch contract</strong> om te profiteren van prijsschommelingen. De juiste keuze hangt dus niet alleen af van risicobereidheid, maar ook van hoeveel controle je hebt over wanneer je energie verbruikt.</p>
 
 <h2>Vergelijk beide contractvormen</h2>
-<p>Niet elke leverancier biedt beide vormen even scherp aan. <a href="/go?m=ENGIE">ENGIE</a> biedt bijvoorbeeld keuze uit vast én variabel, terwijl <a href="/go?m=Oxxio">Oxxio</a> zich vooral richt op scherpe vaste tarieven. Vergelijk de actuele voorwaarden van beide op onze <a href="/energie">energie vergelijken pagina</a> voordat je een keuze maakt.</p>
+<p>Niet elke leverancier biedt beide vormen even scherp aan. <a href="/go?m=ENGIE&c=blog">ENGIE</a> biedt bijvoorbeeld keuze uit vast én variabel, terwijl <a href="/go?m=Oxxio&c=blog">Oxxio</a> zich vooral richt op scherpe vaste tarieven. Vergelijk de actuele voorwaarden van beide op onze <a href="/energie">energie vergelijken pagina</a> voordat je een keuze maakt.</p>
 
 <h2>Conclusie</h2>
 <p>Er is geen universeel beste keuze — vast en variabel dienen verschillende behoeften. Bepaal eerst hoeveel risico je wilt dragen en hoeveel controle je hebt over je verbruiksmomenten, en vergelijk daarna de leveranciers die de contractvorm van jouw voorkeur het scherpst aanbieden.</p>
@@ -4677,7 +4677,7 @@ export const POSTS: BlogPost[] = [
 </ul>
 
 <h2>Waarom een offerte op maat het beste startpunt is</h2>
-<p>Omdat de terugverdientijd zo sterk verschilt per dak, verbruik en regio, is een algemene vuistregel niet betrouwbaar genoeg om op te sturen. Een offerte op maat — bijvoorbeeld via <a href="/go?m=noSun">noSun</a> — brengt je dakligging, verbruik en de actuele regelgeving samen in een concreet terugverdienplaatje, inclusief installatiekosten en verwacht rendement.</p>
+<p>Omdat de terugverdientijd zo sterk verschilt per dak, verbruik en regio, is een algemene vuistregel niet betrouwbaar genoeg om op te sturen. Een offerte op maat — bijvoorbeeld via <a href="/go?m=noSun&c=blog">noSun</a> — brengt je dakligging, verbruik en de actuele regelgeving samen in een concreet terugverdienplaatje, inclusief installatiekosten en verwacht rendement.</p>
 
 <h2>Waar moet een goede offerte op letten?</h2>
 <p>Een degelijke offerte gaat verder dan alleen een prijs per paneel. Let op of de aanbieder rekening houdt met:</p>
@@ -4690,7 +4690,7 @@ export const POSTS: BlogPost[] = [
 <p>Vraag bij twijfel meerdere offertes op en vergelijk niet alleen de prijs, maar ook de onderbouwing van het verwachte rendement.</p>
 
 <h2>Kleinschalige alternatieven</h2>
-<p>Heb je geen geschikt dak, huur je je woning, of zoek je een kleinere eerste stap? Dan zijn balkonpanelen of mobiele zonne-oplossingen een laagdrempelig alternatief. <a href="/go?m=Renogy">Renogy</a> biedt bijvoorbeeld losse panelen en accu's die geschikt zijn voor camper, tuinhuis of off-grid gebruik — een kleinere investering met een navenant kleinere maar wel directe opbrengst.</p>
+<p>Heb je geen geschikt dak, huur je je woning, of zoek je een kleinere eerste stap? Dan zijn balkonpanelen of mobiele zonne-oplossingen een laagdrempelig alternatief. <a href="/go?m=Renogy&c=blog">Renogy</a> biedt bijvoorbeeld losse panelen en accu's die geschikt zijn voor camper, tuinhuis of off-grid gebruik — een kleinere investering met een navenant kleinere maar wel directe opbrengst.</p>
 
 <h2>Onderhoud en levensduur</h2>
 <p>Zonnepanelen vragen weinig onderhoud: regelmatig schoonhouden (regen doet het meeste werk) en een periodieke check van de bekabeling en omvormer volstaan meestal. De omvormer — het onderdeel dat opgewekte gelijkstroom omzet naar bruikbare wisselstroom — heeft doorgaans een kortere levensduur dan de panelen zelf en moet op een gegeven moment vervangen worden. Vraag bij je offerte na wat de garantietermijnen zijn voor zowel panelen als omvormer, dit verschilt per aanbieder en fabrikant.</p>

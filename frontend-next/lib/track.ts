@@ -1,6 +1,9 @@
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
-export type TrackChannel = 'sponsor' | 'market' | 'flink' | 'blog' | 'share' | 'whatsapp'
+// Backend TRACK_CHANNELS whitelist'iyle birebir: bir kanal burada eklenmeden
+// backend'e eklenirse (veya tersi) trackClick() sessizce hiçbir şey yazmaz —
+// tam olarak 'blog' kanalının başına gelen buydu.
+export type TrackChannel = 'sponsor' | 'market' | 'flink' | 'blog' | 'share' | 'whatsapp' | 'other'
 
 /**
  * First-party tıklama takibi — GA4'e ek olarak (reklam engelleyicilerden

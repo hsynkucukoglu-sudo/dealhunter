@@ -2,6 +2,14 @@
 import { useEffect, useState, useRef, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { getMarketDestination, isAllowedAffiliateUrl } from '@/lib/affiliate'
+import { trackClick, type TrackChannel } from '@/lib/track'
+
+// Alleen kanalen die hier ook echt vandaan linken. 'blog' stond al in
+// TRACK_CHANNELS op de backend, maar niets riep het ooit aan — /go deed enkel
+// een GA4-event, nooit de first-party trackClick(). Elke affiliate-link in een
+// blogpost (lib/posts.ts, 7 links) en op /energie (2 links) liep hierdoorheen
+// zonder ooit in /api/track/stats te verschijnen.
+const GO_CHANNELS = new Set<TrackChannel>(['blog', 'sponsor'])
 
 const MARKET_COLORS: Record<string, string> = {
   'Albert Heijn': '#00A0E2',
@@ -20,6 +28,11 @@ function GoInner() {
   const market = params.get('m') ?? ''
   const product = params.get('p') ?? ''
   const customUrl = params.get('u')
+  // Bron van de link, door de aanroeper meegegeven (?c=blog, ?c=sponsor).
+  // Onbekend/ontbrekend valt terug op 'other' — beter een vage rij in de stats
+  // dan een click die stilzwijgend nergens in meetelt.
+  const rawChannel = params.get('c')
+  const channel: TrackChannel = GO_CHANNELS.has(rawChannel as TrackChannel) ? (rawChannel as TrackChannel) : 'other'
 
   // Özel affiliate URL'i yalnızca onaylı host listesindeyse kullan (open-redirect koruması),
   // yoksa market'in merkezi (gerekirse tracking'e sarılmış) linkine düş.
@@ -38,6 +51,11 @@ function GoInner() {
       // @ts-ignore
       if (typeof gtag !== 'undefined') gtag('event', 'deal_redirect', { market, product })
     } catch {}
+
+    // First-party log — EPC hesabı için (bkz. backend /api/track/stats).
+    // sendBeacon kullanır (trackClick içinde), bu yüzden hemen ardından gelen
+    // yönlendirme/navigasyon isteği garantiler.
+    trackClick(channel, market || 'unknown', product || undefined)
 
     // Capacitor uygulaması: harici market sitesi WebView içinde açılamaz (allowNavigation'da yok).
     // Sistem tarayıcısında (Chrome Custom Tab) aç, sonra WebView'ı ana sayfaya geri al.
@@ -72,7 +90,7 @@ function GoInner() {
     }, 1000)
 
     return () => clearInterval(timer)
-  }, [destination, market, product])
+  }, [destination, market, product, channel])
 
   if (!destination) {
     return (
