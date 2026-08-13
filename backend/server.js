@@ -8,7 +8,7 @@ import { sendWeeklyNewsletter, sendWatchlistAlert, sendDealAlert, getBrevoListSt
 import { findWeeklyChampion } from './productMatch.js'
 import { sendPushToAll, sendPushToSubscriptions } from './push.js'
 import { scrapeFlyerProducts, parseAhProducts, parseAldiProducts, nearestSunday } from './scraper/index.js'
-import { categorize } from './categorize.js'
+import { normalizeCategory } from './categorize.js'
 
 const app = express()
 app.set('trust proxy', 1)
@@ -462,7 +462,7 @@ async function runScraperJob() {
       const disc = parseFloat(p.discountedPrice)
       if (isNaN(orig) || isNaN(disc) || disc <= 0) continue
       try {
-        const saved = await createProduct({ ...p, originalPrice: orig, discountedPrice: disc, category: categorize(p.name) })
+        const saved = await createProduct({ ...p, originalPrice: orig, discountedPrice: disc, category: normalizeCategory(p.category, p.name) })
         createdProducts.push(saved)
       } catch (e) {
         console.error(`  ⚠️ Ürün kaydedilemedi (${p.name}):`, e.message)
@@ -816,7 +816,11 @@ async function replaceMarketProducts(market, products) {
       expiresAt: p.expiresAt || new Date(Date.now() + 7 * 86400000).toISOString().split('T')[0],
       createdAt: new Date().toISOString(),
       campaignType: p.campaignType || null,
-      category: p.category || 'overig',
+      // Ruwe scraperwaarde werd hier ongefilterd opgeslagen. Plus schreef zo zijn
+      // eigen labels ("Aardappelen, groente, fruit") in de kolom en Kruidvat/AH
+      // sturen niets, dus stonden die drie markten (587 producten, 2026-08-13)
+      // volledig buiten de categoriefilters.
+      category: normalizeCategory(p.category, p.name),
       brand: p.brand || null,
       // Eenheidsvelden werden hier niet doorgegeven, terwijl de GitHub
       // Actions-scrapers (Plus, Kruidvat, Dirk) hun markt via deze route volledig

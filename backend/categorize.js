@@ -118,13 +118,71 @@ const CATEGORIES = [
   },
 ]
 
+// Trefwoorden matchten eerder met een kale includes(), dus ook midden in een woord.
+// "Kr(ui)dvat" viel daardoor onder uien en "(Sla)apknuffel" onder sla — 20 van de
+// 107 Kruidvat-producten (pleisters, wattenschijfjes, een knuffel) stonden zo in
+// groente-fruit. Alleen het BEGIN is nu een woordgrens, zodat Nederlandse
+// samenstellingen blijven werken: 'appel' vangt nog appelmoes, 'kip' nog kipsaté.
+//
+// Deze korte woorden zijn óók het begin van iets heel anders (uitverkoop,
+// slaapmutsje, lamp, hamster, ijzer, sappig) en moeten daarom heel staan.
+const WHOLE_WORD_ONLY = new Set(['ui', 'sla', 'lam', 'ham', 'ijs', 'sap', 'axe'])
+
+function toPattern(keyword) {
+  const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  return WHOLE_WORD_ONLY.has(keyword) ? `\\b${escaped}\\b` : `\\b${escaped}`
+}
+
+const CATEGORY_PATTERNS = CATEGORIES.map(cat => ({
+  id: cat.id,
+  re: new RegExp(cat.keywords.map(toPattern).join('|'), 'i'),
+}))
+
 export function categorize(name) {
   if (!name) return 'overig'
-  const lower = name.toLowerCase()
-  for (const cat of CATEGORIES) {
-    if (cat.keywords.some(kw => lower.includes(kw))) return cat.id
+  for (const cat of CATEGORY_PATTERNS) {
+    if (cat.re.test(name)) return cat.id
   }
   return 'overig'
+}
+
+// Marktspecifieke categorielabels → eigen slugs.
+//
+// Plus stuurt zijn eigen Nederlandse labels mee ("Aardappelen, groente, fruit").
+// Die matchen nergens op de site, waardoor alle 133 Plus-producten buiten elk
+// categoriefilter en elke /categorie/*-pagina vielen (gemeten op de live API,
+// 2026-08-13: 17 groente-aanbiedingen onvindbaar).
+//
+// Dubbelzinnige Plus-labels staan hier bewust NIET in: "Kaas, vleeswaren, tapas"
+// en "Diepvries" bevatten producten uit meerdere site-categorieën, die zijn per
+// product beter via de naam te bepalen. "Wonen, bloemen, service" staat er wél
+// in — als overig — omdat de naam daar juist misleidt ("fruitboxen" → fruit).
+const CATEGORY_LABEL_MAP = {
+  // Plus (plus.nl/aanbiedingen)
+  'aardappelen, groente, fruit': 'groente-fruit',
+  'zuivel, eieren, boter': 'zuivel',
+  'vlees, kip, vis, vega': 'vlees-vis',
+  'brood, gebak, bakproducten': 'bakkerij',
+  'ontbijtgranen, broodbeleg, tussendoor': 'bakkerij',
+  'snoep, koek, chocolade, chips, noten': 'snacks',
+  'frisdrank, sappen, koffie, thee': 'dranken',
+  'wijn, bier, sterke drank': 'dranken',
+  'soepen, conserven, sauzen, smaakmakers': 'maaltijden',
+  'pasta, rijst, internationale keuken': 'maaltijden',
+  'verse kant-en-klaarmaaltijden': 'maaltijden',
+  'baby, drogisterij': 'verzorging',
+  'huishouden': 'huishouden',
+  'wonen, bloemen, service': 'overig',
+}
+
+const VALID_IDS = new Set(CATEGORIES.map(c => c.id))
+
+// Scrapers leveren drie soorten categorie: een geldige site-slug, een
+// marktspecifiek label, of niets. Alleen de eerste is direct bruikbaar.
+export function normalizeCategory(rawCategory, name) {
+  const raw = (rawCategory || '').trim().toLowerCase()
+  if (VALID_IDS.has(raw)) return raw
+  return CATEGORY_LABEL_MAP[raw] || categorize(name)
 }
 
 export const CATEGORY_LIST = [
