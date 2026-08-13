@@ -104,6 +104,12 @@ export function ProductCard({ product, priority = false }: { product: Product; p
             <span
               className="text-[9px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap flex items-center gap-0.5"
               style={{ background: '#1B9E4B', color: 'white', fontFamily: 'JetBrains Mono' }}
+              // Label zelf blijft ongewijzigd, maar had nergens uitleg — de FAQ die
+              // ernaar verwees beschreef bovendien het verkeerde mechanisme (zie
+              // app/page.tsx HOME_FAQS). Dit is een prijsgeschiedenis-vergelijking
+              // (dit product bij deze winkel, ≥3 weken), geen vergelijking tussen
+              // winkels — vandaar hier expliciet, on hover.
+              title="Laagste prijs die dit product bij deze winkel de afgelopen weken heeft gehad"
             >
               ✓ Laagste prijs
             </span>

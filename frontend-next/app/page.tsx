@@ -20,7 +20,14 @@ const HOME_FAQS = [
   },
   {
     question: 'Kan ik zien hoeveel ik bespaar?',
-    answer: 'Ja. Bij elk product zie je het kortingspercentage en de besparing ten opzichte van de normale prijs. Een "Laagste prijs"-label geeft aan welke supermarkt op dat moment het goedkoopst is voor een vergelijkbaar product.',
+    // "Laagste prijs" komt uit isLowestPrice() (context/PriceHistoryContext.tsx): een
+    // vergelijking van de huidige prijs met de eigen prijsgeschiedenis van dát product
+    // bij dié winkel (≥3 weken data) — geen vergelijking tussen winkels. Deze tekst
+    // beweerde het tegenovergestelde ("welke supermarkt het goedkoopst is"), wat als
+    // FAQPage-schema ook zo aan Google werd doorgegeven. De vergelijking tussen winkels
+    // gebeurt door de Prijsvergelijking-balk, een apart component — die noemen we hier
+    // expliciet zodat de vraag ("kan ik vergelijken") alsnog goed beantwoord wordt.
+    answer: 'Ja. Bij elk product zie je het kortingspercentage en de besparing ten opzichte van de normale prijs. Een "Laagste prijs"-label geeft aan dat de huidige prijs de laagste is die dat product bij die winkel de afgelopen weken heeft gehad. Wil je prijzen tussen winkels vergelijken, gebruik dan de Prijsvergelijking-balk boven de aanbiedingen.',
   },
   {
     question: 'Zijn de aanbiedingen op DealHunter4U altijd actueel?',

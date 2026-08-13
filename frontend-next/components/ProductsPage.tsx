@@ -1686,10 +1686,13 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             </div>
             <div>
               <p className="font-bold mb-1" style={{ color: '#1A1A1A' }}>Kan ik zien hoeveel ik bespaar?</p>
+              {/* Zelfde correctie als app/page.tsx HOME_FAQS — dit blok stond hier
+                  los, in platte JSX i.p.v. via die array, dus miste de eerdere fix. */}
               <p className="leading-relaxed" style={{ color: '#5A534B' }}>
                 Ja. Bij elk product zie je het kortingspercentage en de besparing ten opzichte van de normale
-                prijs. Een &quot;Laagste prijs&quot;-label geeft aan welke supermarkt op dat moment het
-                goedkoopst is voor een vergelijkbaar product.
+                prijs. Een &quot;Laagste prijs&quot;-label geeft aan dat de huidige prijs de laagste is die dat
+                product bij die winkel de afgelopen weken heeft gehad. Wil je prijzen tussen winkels vergelijken,
+                gebruik dan de Prijsvergelijking-balk boven de aanbiedingen.
               </p>
             </div>
           </div>
