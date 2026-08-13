@@ -3,6 +3,7 @@
  * Render free tier (512MB) ile uyumlu.
  */
 import * as cheerio from 'cheerio'
+import { canonicalBrand, extractBrand } from '../brand.js'
 
 let EXPIRES_AT = ''
 
@@ -1488,23 +1489,11 @@ function _extractCount(name) {
   return null
 }
 
-const KNOWN_BRANDS = new Set([
-  'ariel','persil','bold','dash','dreft','fairy','glorix','dettol',
-  'coca','pepsi','fanta','sprite','heineken','amstel','grolsch',
-  'activia','danone','milka','kinder','ferrero','haribo',
-  'lays','pringles','duyvis','remia','calve','calvé',
-  'knorr','maggi','conimex','honig','unox','campina','friso',
-  'becel','flora','benecol','lurpak','president','philadelphia',
-  'bonduelle','iglo','mora','simba','sensodyne','colgate',
-  'oral','gillette','dove','nivea','head','pantene','axe','rexona',
-])
-
-function _extractBrand(name) {
-  const fw = name.split(/\s+/)[0]?.toLowerCase().replace(/[^a-z]/g, '')
-  if (fw && KNOWN_BRANDS.has(fw)) return name.split(/\s+/)[0]
-  const m = name.match(/^([A-Z][a-zA-Z]{2,})(?:\s|$)/)
-  return m ? m[1] : null
-}
+// Merkherkenning staat in backend/brand.js: de bulk-replace-route in server.js
+// gebruikt dezelfde whitelist, zodat de standalone GitHub Actions-scrapers (die
+// deze module niet kunnen importeren) niet alsnog rauwe merkwaarden wegschrijven.
+const _canonicalBrand = canonicalBrand
+const _extractBrand = extractBrand
 
 function enrichProductMeta(name, price) {
   if (!price || price <= 0) return {}
@@ -2068,7 +2057,11 @@ async function scrapePlus() {
 
         results.push({
           name,
-          brand: offer.Brand?.split(',')[0]?.trim() || undefined,
+          // Plus' eigen Brand-veld is geen merkveld: het bevat winkelnamen
+          // ("PLUS"), promotielabels ("PLUS Kies & Mix", "Alle Ambre Solaire")
+          // en soms een echt merk ("Campina"). Door dezelfde whitelist halen,
+          // met de productnaam als tweede kans.
+          brand: _canonicalBrand(offer.Brand) ?? _extractBrand(name) ?? undefined,
           discountedPrice: newPrice,
           originalPrice: origPrice > newPrice ? origPrice : newPrice,
           market: 'Plus',

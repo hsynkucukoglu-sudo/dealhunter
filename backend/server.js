@@ -9,6 +9,7 @@ import { findWeeklyChampion } from './productMatch.js'
 import { sendPushToAll, sendPushToSubscriptions } from './push.js'
 import { scrapeFlyerProducts, parseAhProducts, parseAldiProducts, nearestSunday } from './scraper/index.js'
 import { normalizeCategory } from './categorize.js'
+import { canonicalBrand, extractBrand } from './brand.js'
 
 const app = express()
 app.set('trust proxy', 1)
@@ -821,7 +822,11 @@ async function replaceMarketProducts(market, products) {
       // sturen niets, dus stonden die drie markten (587 producten, 2026-08-13)
       // volledig buiten de categoriefilters.
       category: normalizeCategory(p.category, p.name),
-      brand: p.brand || null,
+      // Zelfde reden als de categorie hierboven: de standalone Actions-scrapers
+      // sturen rauwe merkwaarden ("Pepsi," van Plus) en de oude heuristiek maakte
+      // van elk hoofdletterwoord een merk. Hier is het enige punt waar álle
+      // scrapers langskomen, dus hier wordt het merk gevalideerd.
+      brand: canonicalBrand(p.brand) ?? extractBrand(p.name),
       // Eenheidsvelden werden hier niet doorgegeven, terwijl de GitHub
       // Actions-scrapers (Plus, Kruidvat, Dirk) hun markt via deze route volledig
       // vervangen. De backend-scraper vult ze om 08:02 wel, waarna de Actions-run
