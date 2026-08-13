@@ -1467,15 +1467,34 @@ function _extractVolumeMl(name) {
   const a = _parseNum(m[1])
   const u = m[2].toLowerCase()
   const ml = u === 'ml' ? a : u === 'cl' ? a * 10 : u === 'dl' ? a * 100 : a * 1000
+  if (ml < MIN_PLAUSIBLE_SIZE) return null
   return { amount: ml, label: `${m[1]} ${m[2]}` }
 }
 
+// 'g' staat hier ongeacht hoofdlettergebruik, in tegenstelling tot de 'l' in
+// _extractVolumeMl — dat verschil is bewust. "1,5L", "643L" komen als echte
+// literwaarden voor in productnamen (Coca-Cola, Campina, opbergboxen), maar een
+// hoofdletter G kwam in de hele live catalogus nooit voor als gram. Wél als
+// modelnaam: "Andy en Cif en 3G Professioneel" (schoonmaakmiddel) matchte hier
+// als "3 gram" en gaf €166,33/100g — 13x de op één na hoogste €/100g-waarde in
+// 390 gematchte producten (gemeten 2026-08-13). Vandaar hier wel een
+// hoofdlettergevoelige 'g', de volledige woorden (gram/kilo/kg) blijven vrij.
+const WEIGHT_RE = /(\d+[,.]\d+|\d+)\s*(kg|kilo|kilogram|gram)\b/i
+const WEIGHT_RE_G = /(\d+[,.]\d+|\d+)\s*(g)\b/
+
+// Ondergrens op het extractie-resultaat zelf, niet op de uitkomstprijs: de
+// kleinste échte waarden in de catalogus zijn 30g (parfum) en 30ml (gel) — een
+// vondst onder de 10 is per definitie geen verpakking, welk woord er ook
+// matchte. Vangt dezelfde soort fout op zonder de exacte "3G" casus te kennen.
+const MIN_PLAUSIBLE_SIZE = 10
+
 function _extractWeightG(name) {
-  const m = name.match(/(\d+[,.]\d+|\d+)\s*(kg|kilo|kilogram|gram|g)\b/i)
+  const m = name.match(WEIGHT_RE) || name.match(WEIGHT_RE_G)
   if (!m) return null
   const a = _parseNum(m[1])
   const u = m[2].toLowerCase()
   const g = (u === 'g' || u === 'gram') ? a : a * 1000
+  if (g < MIN_PLAUSIBLE_SIZE) return null
   return { amount: g, label: `${m[1]} ${m[2]}` }
 }
 
