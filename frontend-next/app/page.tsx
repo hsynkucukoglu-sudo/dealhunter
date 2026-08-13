@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { getProducts } from '@/lib/api'
 import { buildHomePageSchema, buildFaqSchema, buildHomeDealsSchema } from '@/lib/schema'
 import { ProductsPage } from '@/components/ProductsPage'
-import { computeMarketStats } from '@/lib/marketStats'
+import { computeMarketStats, computeMarketCounts, computeTotalSavings } from '@/lib/marketStats'
 
 const HOME_FAQS = [
   {
@@ -65,21 +65,11 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
   // Top 20 ürün — Google rich snippet (ItemList + Product + Offer)
   const homeDealsSchema = buildHomeDealsSchema(initialProducts)
 
-  // Gerçek market sayıları — client'ta top 60 yüklüyken market kartlarının
-  // "Aldi 1 deals" / eksik market ("9 winkels") göstermemesi için sunucudan geçirilir.
-  const marketCounts: Record<string, number> = {}
-  for (const p of allProducts) {
-    marketCounts[p.market] = (marketCounts[p.market] ?? 0) + 1
-  }
-
-  // Totale besparing over ALLE actieve deals (niet alleen de 60 SSR'de) — social
-  // proof in de hero. Reëel getal (som van originalPrice-discountedPrice), geen
-  // geschat/verzonnen bezoekersgedrag — dat tracken we serverside niet.
-  const totalSavings = allProducts.reduce((sum, p) => {
-    return p.originalPrice > p.discountedPrice && p.originalPrice > 0
-      ? sum + (p.originalPrice - p.discountedPrice)
-      : sum
-  }, 0)
+  // Alle cijfers die de pagina als sitebreed feit toont, over ALLE actieve deals —
+  // niet over de 60 die SSR meestuurt. Gedeeld met /tr, dat een kopie van deze
+  // pagina is en de berekeningen eerder niet had overgenomen.
+  const marketCounts = computeMarketCounts(allProducts)
+  const totalSavings = computeTotalSavings(allProducts)
 
   return (
     <>

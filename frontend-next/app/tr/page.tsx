@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { getProducts } from '@/lib/api'
 import { buildHomePageSchema, buildFaqSchema, buildHomeDealsSchema } from '@/lib/schema'
 import { ProductsPage } from '@/components/ProductsPage'
+import { computeMarketStats, computeMarketCounts, computeTotalSavings } from '@/lib/marketStats'
 
 export const revalidate = 3600
 export const dynamic = 'force-dynamic'
@@ -74,6 +75,14 @@ export default async function TrHome() {
 
   const homeDealsSchema = buildHomeDealsSchema(initialProducts)
 
+  // Dezelfde serverside cijfers als de NL-homepage. Ontbraken hier volledig,
+  // terwijl deze pagina wél dezelfde top-60 slice doet: de Turkse bezoeker zag
+  // de besparing van 60 producten (~€900 i.p.v. €2.938) en een merkenrij met
+  // kortingspercentages die over die 60 diepste deals waren berekend (~-60%
+  // voor elke keten, gemeten 2026-08-13).
+  const marketCounts = computeMarketCounts(allProducts)
+  const totalSavings = computeTotalSavings(allProducts)
+
   return (
     <>
       <script
@@ -88,7 +97,7 @@ export default async function TrHome() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homeDealsSchema) }}
       />
-      <ProductsPage initialProducts={initialProducts} initialSearch="" />
+      <ProductsPage initialProducts={initialProducts} initialSearch="" marketCounts={marketCounts} totalCount={allProducts.length} totalSavings={totalSavings} marketStats={computeMarketStats(allProducts)} />
     </>
   )
 }

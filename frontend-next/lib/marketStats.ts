@@ -23,6 +23,28 @@ export const MIN_DEALS_FOR_RANKING = 5
  * een gemiddelde daarover geeft elke keten ~60%. Gemeten 2026-08-13: over die 60
  * kwam Kruidvat op -62%, over alle 1239 op -46%; Plus -59% tegen -35%.
  */
+/**
+ * Som van alle kortingen over de meegegeven producten.
+ *
+ * Hoort net als computeMarketStats over de VOLLEDIGE lijst te gaan. Stond eerst
+ * los in app/page.tsx; /tr is daar een kopie van en had de berekening én de prop
+ * niet overgenomen, waardoor de Turkse homepage de client-subset toonde.
+ */
+export function computeTotalSavings(products: Product[]): number {
+  return products.reduce((sum, p) =>
+    p.originalPrice > p.discountedPrice && p.originalPrice > 0
+      ? sum + (p.originalPrice - p.discountedPrice)
+      : sum
+  , 0)
+}
+
+/** Producten per supermarkt — voorkomt "Aldi 1 deals" zolang de client op 60 staat. */
+export function computeMarketCounts(products: Product[]): Record<string, number> {
+  const counts: Record<string, number> = {}
+  for (const p of products) counts[p.market] = (counts[p.market] ?? 0) + 1
+  return counts
+}
+
 export function computeMarketStats(products: Product[]): MarketStat[] {
   const byMarket = new Map<string, Product[]>()
   for (const p of products) {
