@@ -469,10 +469,6 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
   }, [filteredProducts, visibleCount, deferredMarket, deferredCategory, deferredSearch, deferredCampaignsOnly, deferredFavoritesOnly, defaultSort])
   const hasMore = filteredProducts.length > visibleCount
 
-  const potentialSavings = useMemo(() =>
-    filteredProducts.reduce((sum, p) => sum + (p.originalPrice > p.discountedPrice ? p.originalPrice - p.discountedPrice : 0), 0)
-  , [filteredProducts])
-
   const topDeals = useMemo(() => {
     // Strip size/count tokens to get a base product name for dedup
     const baseName = (name: string) =>
@@ -1202,7 +1198,13 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
               </div>
               <div className="flex flex-col items-center justify-center text-center" style={{ borderLeft: '1px solid rgba(228,190,183,0.3)' }}>
                 <span className="font-headline font-bold mb-1" style={{ fontSize: 'clamp(1.75rem, 4vw, 2.75rem)', color: '#1B9E4B', fontFamily: 'Space Grotesk' }}>
-                  €{potentialSavings >= 1000 ? `${(potentialSavings / 1000).toFixed(1)}K` : potentialSavings.toFixed(0)}+
+                  {/* Zelfde waarde én zelfde notatie als de hero-teller hierboven.
+                      Dit blok telde eerst over filteredProducts — dus alleen de 60
+                      SSR-producten — en zette "€911+" onder een hero die "€2.938"
+                      claimde. Twee bedragen voor hetzelfde begrip op één scherm
+                      lezen als een fout, niet als twee statistieken. De "K"-afkorting
+                      is ook weg: "€2.9K+" naast "€2.938" oogt nog steeds anders. */}
+                  €{Math.round(totalSavings).toLocaleString('nl-NL')}
                 </span>
                 <span className="text-xs font-medium uppercase tracking-widest" style={{ color: '#9C9389', fontFamily: 'Hanken Grotesk' }}>
                   {lang === 'nl' ? 'Mogelijke Besparing' : lang === 'en' ? 'Potential Savings' : 'Potansiyel Tasarruf'}
