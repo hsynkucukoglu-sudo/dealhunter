@@ -998,8 +998,13 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                 — {lang === 'tr' ? 'Aynı ürün, en düşük fiyat hangi markette?' : lang === 'en' ? 'Same product, lowest price per store' : 'Zelfde product, laagste prijs per winkel'}
               </span>
             </div>
-            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
-              {comparisonGroups.slice(0, 16).map((group, gi) => {
+            {/* Zelfde rand-fade-fix als CategoryPage.tsx en StickyFilterBar — deze
+                rij is ook overflow-x-auto no-scrollbar zonder signaal dat er meer
+                staat. Fade naar het groene kaartje-eigen #EAF7EE, niet naar de
+                paginacrème: deze rij zit ín het groene blok, niet erbuiten. */}
+            <div className="relative">
+              <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
+                {comparisonGroups.slice(0, 16).map((group, gi) => {
                 const cheapest = group.cheapest
                 const mostExpensive = group.products.reduce((a, b) => a.discountedPrice > b.discountedPrice ? a : b)
                 const rawSaving = mostExpensive.discountedPrice - cheapest.discountedPrice
@@ -1029,6 +1034,12 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
                   </button>
                 )
               })}
+              </div>
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute top-0 right-0 bottom-1 w-10"
+                style={{ background: 'linear-gradient(to right, transparent, #EAF7EE)' }}
+              />
             </div>
           </div>
         )}

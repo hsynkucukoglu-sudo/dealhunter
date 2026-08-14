@@ -54,52 +54,69 @@ export function StickyFilterBar({
             boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
           }}
         >
-          {/* Market row */}
-          <div className="flex gap-2 overflow-x-auto no-scrollbar px-3 pt-2 pb-1.5">
-            <button
-              onClick={() => onMarket('all')}
-              className="flex-none flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all"
-              style={{
-                background: selectedMarket === 'all' ? '#1A1A1A' : 'rgba(0,0,0,0.06)',
-                color: selectedMarket === 'all' ? 'white' : '#6B6259',
-              }}
-            >
-              Alles
-            </button>
-            {availableMarkets.map(market => (
+          {/* Market row. Zelfde rand-fade als CategoryPage.tsx: overflow-x-auto +
+              no-scrollbar zonder enig signaal liet gebruikers denken dat een
+              afgekapte rij compleet was (gerapporteerd op /categorie/vlees-vis,
+              dit is dezelfde rij-stijl elders op de site). */}
+          <div className="relative">
+            <div className="flex gap-2 overflow-x-auto no-scrollbar px-3 pt-2 pb-1.5">
               <button
-                key={market}
-                onClick={() => onMarket(selectedMarket === market ? 'all' : market)}
-                className="flex-none flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold transition-all"
+                onClick={() => onMarket('all')}
+                className="flex-none flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all"
                 style={{
-                  background: selectedMarket === market
-                    ? (MARKET_COLORS[market] || '#1A1A1A')
-                    : 'rgba(0,0,0,0.06)',
-                  color: selectedMarket === market ? 'white' : '#6B6259',
+                  background: selectedMarket === 'all' ? '#1A1A1A' : 'rgba(0,0,0,0.06)',
+                  color: selectedMarket === 'all' ? 'white' : '#6B6259',
                 }}
               >
-                <MarketLogo market={market} size={18} />
-                {shortName(market)}
+                Alles
               </button>
-            ))}
+              {availableMarkets.map(market => (
+                <button
+                  key={market}
+                  onClick={() => onMarket(selectedMarket === market ? 'all' : market)}
+                  className="flex-none flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold transition-all"
+                  style={{
+                    background: selectedMarket === market
+                      ? (MARKET_COLORS[market] || '#1A1A1A')
+                      : 'rgba(0,0,0,0.06)',
+                    color: selectedMarket === market ? 'white' : '#6B6259',
+                  }}
+                >
+                  <MarketLogo market={market} size={18} />
+                  {shortName(market)}
+                </button>
+              ))}
+            </div>
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute top-0 right-0 bottom-1.5 w-8"
+              style={{ background: 'linear-gradient(to right, transparent, #F5EDE3)' }}
+            />
           </div>
 
-          {/* Category row */}
-          <div className="flex gap-2 overflow-x-auto no-scrollbar px-3 pb-2">
-            {CATEGORIES.map(cat => (
-              <button
-                key={cat.id}
-                onClick={() => onCategory(selectedCategory === cat.id ? 'all' : cat.id)}
-                className="flex-none flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold transition-all whitespace-nowrap"
-                style={{
-                  background: selectedCategory === cat.id ? '#E33D26' : 'rgba(0,0,0,0.05)',
-                  color: selectedCategory === cat.id ? 'white' : '#8C8478',
-                }}
-              >
-                <span>{cat.emoji}</span>
-                {CATEGORY_LABELS[cat.id]?.[lang] ?? cat.label}
-              </button>
-            ))}
+          {/* Category row — zelfde rand-fade. */}
+          <div className="relative">
+            <div className="flex gap-2 overflow-x-auto no-scrollbar px-3 pb-2">
+              {CATEGORIES.map(cat => (
+                <button
+                  key={cat.id}
+                  onClick={() => onCategory(selectedCategory === cat.id ? 'all' : cat.id)}
+                  className="flex-none flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold transition-all whitespace-nowrap"
+                  style={{
+                    background: selectedCategory === cat.id ? '#E33D26' : 'rgba(0,0,0,0.05)',
+                    color: selectedCategory === cat.id ? 'white' : '#8C8478',
+                  }}
+                >
+                  <span>{cat.emoji}</span>
+                  {CATEGORY_LABELS[cat.id]?.[lang] ?? cat.label}
+                </button>
+              ))}
+            </div>
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute top-0 right-0 bottom-2 w-8"
+              style={{ background: 'linear-gradient(to right, transparent, #F5EDE3)' }}
+            />
           </div>
 
           {/* Active filter indicator + clear */}
