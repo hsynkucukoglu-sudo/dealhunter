@@ -4,6 +4,7 @@
  */
 import * as cheerio from 'cheerio'
 import { canonicalBrand, extractBrand } from '../brand.js'
+import { tokenize } from '../productMatch.js'
 
 let EXPIRES_AT = ''
 
@@ -1239,6 +1240,64 @@ async function scrapeAldi() {
 const VOMAR_PUBLITAS_GROUP = 'folder-deze-week'
 const VOMAR_PUBLITAS_BASE = 'https://view.publitas.com'
 
+// Vomar's eigen productcatalogus — publiek, geen auth nodig (2026-08-15 gevonden
+// via DevTools Network tab, geen documentatie beschikbaar). Alleen voor foto's:
+// Publitas blijft de bron voor WELKE producten in de aanbieding zijn en tegen
+// welke prijs — deze API kent geen actie/van-voor-prijs, alleen de huidige
+// winkelprijs.
+const VOMAR_GATEWAY = 'https://gateway.vomar.nl'
+const VOMAR_IMG_CDN = 'https://d3vricquk1sjgf.cloudfront.net'
+const VOMAR_IMG_CONCURRENCY = 5
+
+// Meerdere producten in één folderregel ("Alle Sensodyne", "Rode paprika of
+// courgette") kun je niet aan één foto koppelen — zelfde categorie die
+// PriceHistoryContext.tsx al uitsluit voor "laagste prijs ooit"-labels.
+const VOMAR_MULTI_VARIANT = /^alle\b|\bof\b|\bt\/m\b|\bdiverse\b|\bassorti/i
+
+async function _fetchVomarImage(dealName) {
+  if (VOMAR_MULTI_VARIANT.test(dealName)) return null
+  const dealTokens = tokenize(dealName)
+  if (dealTokens.length < 2) return null
+  const dealSet = new Set(dealTokens)
+  // Getest op de volle live catalogus vóór deploy (2026-08-15): woordoverlap
+  // alleen liet "Knorr Cup a Soup" matchen met "Unox Cup A Soup Champignon" —
+  // ander merk, want "Cup a Soup" is generiek genoeg om de merknaam te
+  // overstemmen. Als de dealnaam een bekend merk bevat, moet de kandidaat
+  // hetzelfde merk hebben (of geen bekend merk — dan geen tegenspraak).
+  const dealBrand = extractBrand(dealName)
+
+  try {
+    const res = await fetch(
+      `${VOMAR_GATEWAY}/products/search?SearchTerm=${encodeURIComponent(dealName)}`,
+      { signal: AbortSignal.timeout(8000) }
+    )
+    if (!res.ok) return null
+    const data = await res.json()
+    const candidates = data?.products || []
+
+    // "Verkeerde foto is erger dan geen foto" (zie scrapeVomar): ≥2 gedeelde
+    // woorden is niet genoeg als de dealnaam er tien heeft — eis dat de match
+    // de MEERDERHEID van de betekenisvolle woorden dekt, niet een toevallige 2.
+    let best = null
+    for (const entry of candidates) {
+      const fileName = entry?.product?.images?.[0]?.fileName
+      if (!fileName) continue
+      if (dealBrand) {
+        const candBrand = canonicalBrand(entry.product.brand)
+        if (candBrand && candBrand !== dealBrand) continue
+      }
+      const candTokens = tokenize(entry.product.description || '')
+      const overlap = candTokens.filter(t => dealSet.has(t)).length
+      if (overlap < 2 || overlap / dealTokens.length < 0.6) continue
+      if (!best || entry.rank < best.rank) best = { rank: entry.rank, fileName }
+    }
+    if (!best) return null
+    return `${VOMAR_IMG_CDN}/${best.fileName}?width=400&height=400&mode=fill`
+  } catch {
+    return null
+  }
+}
+
 // Parse discounted products from Publitas OCR page text.
 // Format in PDF pages: "ORIG_PRICE DISC_CENTS . Product name ..."
 // where DISC_CENTS is 3-4 digits without decimal (399 = €3.99, 1499 = €14.99)
@@ -1444,12 +1503,26 @@ async function scrapeVomar() {
     // Open Food Facts görsel eşleştirmesi KALDIRILDI (2026-07-08) — tekst benzerliği
     // kategori farkını görmüyor: "STUK" → keçi peyniri, "Slagers Filet Americain"
     // (gerçek et) → "De Vegetarische Slager" vejetaryen alternatifi gibi yanlış/
-    // yanıltıcı eşleşmeler defalarca çıktı. Yanlış görsel, görsel yoktan kötü —
-    // imageUrl artık her zaman null, ProductCard'ın mevcut fallback ikonu devreye girer.
-
-    const withSavings = results.filter(r => r.originalPrice > r.discountedPrice)
-    console.log(`  ✅ Vomar: ${results.length} ürün (${withSavings.length} met besparing)`)
-    return results
+    // yanıltıcı eşleşmeler defalarca çıktı. Yanlış görsel, görsel yoktan kötü.
+    //
+    // 2026-08-15: Vomar'ın KENDİ ürün API'si bulundu (gateway.vomar.nl/products/search,
+    // herkese açık, auth yok) — genel bir üçüncü taraf veritabanı değil, marketin
+    // resmi kataloğu. Aynı riski (yanlış eşleşme) taşıdığı için aynı disiplin
+    // uygulandı: çok-varyantlı teklifler ("Alle X", "X of Y") hiç denenmiyor —
+    // hangi varyantın görseli gösterilecek belli değil. Kalanlarda token
+    // örtüşmesinin SADECE ≥2 değil, teklif adının kelimelerinin ÇOĞUNLUĞUNU
+    // (≥%60) karşılaması şart — 2 tesadüfi ortak kelime artık yetmiyor. Eşleşme
+    // yoksa imageUrl null kalır, ProductCard'ın market-logolu fallback'i devreye girer.
+    const enriched = []
+    for (let i = 0; i < results.length; i += VOMAR_IMG_CONCURRENCY) {
+      const batch = results.slice(i, i + VOMAR_IMG_CONCURRENCY)
+      const imgs = await Promise.all(batch.map(r => _fetchVomarImage(r.name)))
+      enriched.push(...batch.map((r, idx) => ({ ...r, imageUrl: imgs[idx] })))
+    }
+    const withImage = enriched.filter(r => r.imageUrl).length
+    const withSavings = enriched.filter(r => r.originalPrice > r.discountedPrice)
+    console.log(`  ✅ Vomar: ${enriched.length} ürün (${withSavings.length} met besparing, ${withImage} met foto)`)
+    return enriched
   } catch (e) {
     console.error('  ❌ Vomar:', e.message)
     return []

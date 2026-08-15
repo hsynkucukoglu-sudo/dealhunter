@@ -15,7 +15,7 @@ const STOP_WORDS = new Set([
 
 const SIZE_RE = /\b\d+[,.]\d+\b|\b\d+[-\s]*(g|gr|ml|cl|dl|l|kg|kilo|x|stuks?|stuk|pack|pak|pck)\b/gi
 
-function tokenize(name) {
+export function tokenize(name) {
   return name
     .replace(SIZE_RE, ' ')
     .toLowerCase()
