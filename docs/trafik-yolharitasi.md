@@ -6,6 +6,15 @@ status: active
 
 # Trafik Analizi & Yol Haritası — 2026-08-08
 
+> **Durum güncellemesi 2026-08-15** (detay: `docs/analiz-2026-08-15.md`)
+> - ✅ Faz 1 bloğu (AH scraper ölümü) çözüldü — ölçüm artık yapılabilir
+> - ✅ Faz 0 deploy edildi ve canlıda doğrulandı
+> - 🟢 İlk olumlu sinyal: tıklama/gün **3,8 → 4,6 → 5,5**; `/supermarkt/lidl`
+>   Temmuz'un en çok büyüyen sayfası (+17)
+> - 🔴 EPC ölçümü kapandı: gerçek giden tıklama **ayda ~6**
+> - 🔴 Outreach: 4 gönderim → 1 bounce, 0 yanıt
+> - Bir sonraki ölçüm **21 Ağustos**, üç soru revize edildi (bkz. bölüm 6)
+
 **Kısıt (kullanıcı kararı, 2026-08-08):** sosyal medyaya ayrılabilecek zaman **~0 saat/hafta**.
 Elle post gerektiren hiçbir plan bu dokümanda önerilmiyor. Aktif tek sosyal kanal: WhatsApp
 grubu (GitHub Actions, günde 8 mesaj).
@@ -136,9 +145,17 @@ gerçek HTML kontrol edildi — market sayfasında 49 paylaş butonu (48 kart + 
 "Deel dit artikel" render oluyor, kişisel WhatsApp numarası sitede **0 yerde** kaldı.
 Backend `node --check` temiz.
 
-> ⚠️ Henüz commit/deploy edilmedi.
+> ✅ **Deploy edildi ve canlıda doğrulandı (2026-08-15).** Paylaş butonu ürün
+> kartlarında render oluyor, kişisel WhatsApp numarası sitede **0 yerde**,
+> `/api/audience/stats` yanıt veriyor.
 
-### 🔴 FAZ 1 BLOKE — AH scraper 4 gündür sessizce ölü (2026-08-08 bulundu)
+### ✅ FAZ 1 BLOĞU ÇÖZÜLDÜ (2026-08-15)
+
+AH scraper tekrar çalışıyor: **367 ürün, son tarama 2026-08-15 08:42.** Aşağıdaki
+teşhis tarihsel kayıt olarak duruyor; Faz 1 ölçümü artık yapılabilir durumda.
+
+<details>
+<summary>Orijinal arıza kaydı (2026-08-08)</summary>
 
 Faz 1'in öncü gösterge kontrolü sırasında ortaya çıktı. **Ölçüm işi değil, canlı arıza.**
 
@@ -165,6 +182,13 @@ Faz 1'in öncü gösterge kontrolü sırasında ortaya çıktı. **Ölçüm işi
 logluyor (`scraper/index.js:910` → `[AH] token alınamadı: …`, `:933` → `[AH] S1 p0 HTTP N`).
 Railway → backend servisi → Logs → `[AH]` araması kesin nedeni verir. **Kullanıcı kararı:
 önce log okunacak, fix ona göre yapılacak.**
+
+</details>
+
+> **Not (2026-08-15):** AH artık `ah-ingest` yoluyla besleniyor (ağ katmanı GitHub
+> Actions'ta, parse backend'de) — bu deseni Aldi de kullanıyor. "0 ürün dönerse
+> markete dokunma" koruması o endpoint'lerde mevcut, yani aynı sessiz arıza artık
+> canlı veriyi silmiyor.
 
 ### 📊 Kitle taban ölçümü — 2026-08-09 (Faz 0.4 sonucu)
 
@@ -223,13 +247,24 @@ Google henüz Lidl'i yeniden taramadı. Kendiliğinden düzelecek, aksiyon yok.
 
 Bunlar canlıda ama etkileri henüz ölçülmedi. Kendi kuralın: ölçmeden yeni iş başlatma.
 
-- [ ] `064b899` — başlıklardan hafta numarası kaldırıldı (evergreen). **Market sayfası TO'su
+- [~] `064b899` — başlıklardan hafta numarası kaldırıldı (evergreen). **Market sayfası TO'su
       %0,07'den kıpırdadı mı?** Bu tek başına tablonun en büyük kalemi.
+      → **İlk sinyal olumlu (2026-08-15):** Temmuz GSC e-postasında `/supermarkt/lidl`
+      **+17 tıklamayla sitenin en çok büyüyen sayfası** ve 17 tıklamayla ana sayfayı
+      (15) geçip 2. sıraya çıktı. Market sayfalarının "donmuş" olduğu tezinin ilk
+      istisnası, zaman olarak bu fix'le örtüşüyor. **Tek sayfa/tek ay — kanıt değil.**
+      21 Ağustos'un 1 numaralı sorusu: yayıldı mı, yoksa Lidl'e özel bir SERP olayı mıydı?
 - [ ] `500c531` — `/vergelijk/` başlıkları "goedkoper" niyetiyle eşleştirildi
 - [ ] `7fe29a8` — 5 vergelijk çifti index'e açıldı
 - [ ] `cf5716a` — AH paket dedup (614→368); `/supermarkt/albert-heijn` pozisyonu (12,7)
-      diğerlerine (8,5-9,0) yaklaştı mı?
-- [ ] `788c9ad` — tıklama takibi; **~21 Ağustos'ta** `?days=14` ile EPC hesabı
+      diğerlerine (8,5-9,0) yaklaştı mı? *(AH scraper 8-15 Ağu arası ölüydü, fix o
+      pencerede canlıya çıkmamıştı — artık çalışıyor, ölçüm geçerli.)*
+- [x] `788c9ad` — tıklama takibi; ~~`?days=14` ile EPC hesabı~~
+      → **EPC ölçülemez, madde kapandı (2026-08-15).** `?days=30` ilk kez okundu:
+      17 market tıklaması, ama **11'i tek günde ve beş market 8 saniye içinde**
+      (affiliate uyum botu deseni). Burst dışında **6 tıklama/30 gün**. Bu hacimde
+      kanal karlılığı hesaplanamaz. Soru "EPC nedir"den **"giden tıklama hacmi nasıl
+      ölçülebilir seviyeye çıkar"**a dönüştü.
 
 ### FAZ 2 — Asıl kaldıraç: TO + niyet yüzeyi (4-8 hafta)
 
@@ -263,7 +298,15 @@ sayıyla cevap veremiyorlar.
 
 - [ ] **🔴 GECİKMİŞ: One Broke Girl takip maili** — 26 Tem'de gönderildi, takip ~5 Ağustos
       planlanmıştı (`docs/outreach.md`), bugün 8 Ağustos. Tek mail, bir kez, sonra bırak.
+      → **15 Ağustos: hâlâ gönderilmedi, gecikme 10 gün.** Gmail'den doğrulandı.
+- [ ] **🔴 sparenenbesparen.nl hiç ulaşmamış** — 26 Tem gönderimi `550 No such recipient`
+      ile **bounce** etti (Gmail'de doğrulandı, 2026-08-15'te fark edildi). Adres yanlış
+      veya kapanmış; alternatif adres bulunmadıkça bu hedef listeden düşer.
 - [ ] Mr FOB için alternatif iletişim kanalı (contact sayfası 404)
+
+> **Outreach bilançosu (2026-08-15, Gmail'den doğrulandı):** 4 gönderim
+> (dejongebelegger.nl + sante.nl 16 Tem, One Broke Girl + sparenenbesparen 26 Tem)
+> → **1 bounce, 0 yanıt, 0 takip.** Kanal şu ana kadar sonuç üretmedi.
 - [ ] Fiyat geçmişi verisi güvenilir hale gelince (%87 kayıt maat bilgisi eksik) yeni bir
       outreach dalgası — **o güne kadar prijsgeschiedenis pitch'i yapılmayacak**
 
@@ -283,10 +326,55 @@ sayıyla cevap veremiyorlar.
 
 ## 6. Bir sonraki ölçüm
 
-**~21 Ağustos** (Faz 1 penceresinin sonu + tıklama takibi 2 haftalık verisi):
-taze GSC export + Clarity çekimi + `/api/track/stats?days=14`.
+**~21 Ağustos** (Faz 1 penceresinin sonu): taze GSC export + Clarity çekimi.
 
-Bakılacak üç sayı:
-1. `/supermarkt/*` TO'su %0,07'den yukarı kıpırdadı mı? (evergreen başlık fix'i)
-2. Sayfa/oturum 1,02'den kıpırdadı mı? (iç linkleme + Faz 0 CTA'ları)
-3. Tıklama başına kanal dağılımı — market mi, sponsor mu, Flink mi para getiriyor?
+> **Üç soru 2026-08-15'te revize edildi** (gerekçe: `docs/analiz-2026-08-15.md`).
+> Panellere ajan erişimi yok — GSC export'unu ve Clarity çekimini kullanıcı almalı.
+
+1. **Lidl'deki hareket diğer market sayfalarına yayıldı mı?**
+   Yayıldıysa evergreen fix çalışıyor ve market sayfası yüzeyi "kazanılamaz"
+   kategorisinden çıkar. Yayılmadıysa Lidl tekil bir SERP olayıydı.
+2. **Tıklama/gün 5,5'ten yukarı devam etti mi?**
+   TO **kasıtlı olarak bırakıldı**: Temmuz'da 111 sayfa ilk kez gösterim aldı
+   (Haziran'da 23), payda şişti ve TO mekanik olarak sulandı. Aynı dönemde
+   tıklama/gün kesintisiz yükseliyor: **3,8 (Haz) → 4,6 (Tem) → 5,5 (son 28g).**
+   Bu pencerede asıl gösterge tıklama/gün.
+3. **Sayfa/oturum 1,0'dan kıpırdadı mı?** (iç linkleme + Faz 0 CTA'ları)
+   Clarity'den; 9 Ağustos'tan beri ölçülmedi.
+
+~~4. Tıklama başına kanal dağılımı / EPC~~ — hacim yetersiz, bkz. Faz 1 listesi.
+
+## 7. 2026-08-15 turunda yapılanlar
+
+Ölçüm beklemeden yapılabilecek "kayıp durdurma" işleri (roadmap'in kendi sırası:
+önce kayıp durdurma, sonra ölçüm).
+
+**A1 — Boş `/product/` sayfaları indeksten çıkarıldı.** 20 slug'ın tamamı canlı
+ölçüldü: luiers 0 ürün/305 kelime, diepvries 0/302, shampoo 1/345, airfryer 2/377
+(karşılaştırma: yoghurt 34/1.427). Bu sayfalar Google'a "Aanbieding Deze Week ✓
+Vergelijk Alle Winkels" vaat edip "geen aanbiedingen gevonden" gösteriyordu,
+`robots` meta yoktu ve sitemap'teydiler. `MIN_PRODUCTS_FOR_INDEX = 3` altındaysa
+noindex + sitemap dışı. Sitemap 20→16. Sayfa ziyaretçiye açık kalıyor (deal-alert
+CTA'sıyla), envanter dolunca kendiliğinden geri geliyor.
+
+**A2 — Kategori sayfaları ölçüldü, temiz.** Aynı desen var mı diye bakıldı: en
+düşük 36 kart (bakkerij). Değişiklik gerekmedi.
+
+**Affiliate: 3 ölü hedef bulundu ve düzeltildi.** Tüm doğrudan mağaza URL'leri
+tarandı (tracking linklerine dokunulmadan — çağırmak sahte tıklama üretirdi):
+- Holland & Barrett: `/aanbiedingen` → **404** → `/shop/aanbiedingen/`
+- BioProphyl: `.com` **sertifika uyuşmazlığı** (`*.your-server.de`) → tarayıcı
+  güvenlik uyarısı gösteriyordu → `.be`
+- Libelle Shop: `shop.libelle.nl` **DNS'te yok** → `winkelen.libelle.nl`
+
+Doğru hedefler tahminle değil ağdan alındı: tracking linkini hedef parametresi
+olmadan çağırınca ağ kendi kayıtlı landing page'ine yönlendiriyor. (Tahmin
+tehlikeliydi: `bioprophyl.nl` denendi, **satılık park domain** çıktı.)
+
+**Tek kaynak birleştirmesi.** Aynı satıcı iki yerde tanımlıydı (`AFFILIATE_MAP` +
+widget `DEALS`) ve ortak kaynak değildi — yukarıdaki 3 hatanın 2'si tam bu
+sapmadan doğdu. 56 örtüşen giriş `M('Ad')` ile map'ten okuyor; bilinmeyen isimde
+**throw ediyor**, yani sapma artık sessiz ölü link değil build hatası.
+Davranış koruması kanıtlandı: dönüşüm öncesi/sonrası **119/119 URL birebir aynı**.
+
+**Kitle (bir hafta sonra, değişmedi):** push 1, bülten 1, favori 0, deal-alert 0.
