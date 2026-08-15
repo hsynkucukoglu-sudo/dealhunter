@@ -7,7 +7,7 @@ RUN npm ci
 
 COPY . .
 
-RUN npm run build && echo "google.com, pub-4113343151276849, DIRECT, f08c47fec0942fa0" > /app/public/ads.txt
+RUN npm run build && echo "google.com, pub-6266103134639533, DIRECT, f08c47fec0942fa0" > /app/public/ads.txt
 
 EXPOSE 3000
 
