@@ -58,7 +58,10 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   // in dat widget); die twee zijn geen gedeelde bron en kunnen dus uit elkaar lopen.
   'Holland & Barrett': { destinationUrl: 'https://www.hollandandbarrett.nl/shop/aanbiedingen/', network: 'awin', programId: '8108', rel: REL },
   // Bol.com — kendi partner ağı (site ID 1527078)
-  'Bol.com': { destinationUrl: 'https://www.bol.com/', network: 'bol', rel: REL },
+  // /nl/nl/ i.p.v. / — bol.com stuurt / tóch daarheen, dit scheelt een redirect.
+  // (Was al de waarde in MeerBesparenWidget; hier gelijkgetrokken bij het
+  // samenvoegen van de twee lijsten tot één bron.)
+  'Bol.com': { destinationUrl: 'https://www.bol.com/nl/nl/', network: 'bol', rel: REL },
 
   // ── Awin — onaylı ─────────────────────────────────────────────────────────
   // .com serveerde een certificaat voor *.your-server.de (hostname mismatch) —
