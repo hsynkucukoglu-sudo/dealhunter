@@ -51,7 +51,12 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   // Flink App (NL) — Daisycon onaylı (si=16070=program ID, li=1691645, jf79.net)
   Flink: { destinationUrl: 'https://jf79.net/c/?si=16070&li=1691645&wi=420902', network: 'daisycon', rel: REL },
   // Holland & Barrett NL — Awin onaylı (merchant ID 8108)
-  'Holland & Barrett': { destinationUrl: 'https://www.hollandandbarrett.nl/aanbiedingen', network: 'awin', programId: '8108', rel: REL },
+  // /aanbiedingen gaf 404 (gemeten 2026-08-15, ook via de Awin-redirect: die geeft
+  // de ued-parameter gewoon door en de bezoeker landt op de 404). De juiste pad is
+  // /shop/aanbiedingen/ — dat was in MeerBesparenWidget.tsx al correct, alleen deze
+  // kopie liep achter. Let op: dit merk staat op twee plekken (hier + de DEALS-lijst
+  // in dat widget); die twee zijn geen gedeelde bron en kunnen dus uit elkaar lopen.
+  'Holland & Barrett': { destinationUrl: 'https://www.hollandandbarrett.nl/shop/aanbiedingen/', network: 'awin', programId: '8108', rel: REL },
   // Bol.com — kendi partner ağı (site ID 1527078)
   'Bol.com': { destinationUrl: 'https://www.bol.com/', network: 'bol', rel: REL },
 
