@@ -80,6 +80,15 @@ export function findMarketEquivalents(seed: Product, candidates: Product[]): Mar
   return Array.from(byMarket.entries()).map(([market, product]) => ({ market, product }))
 }
 
+// Meerdere producten in één folderregel ("Alle Dove, Axe, Rexona of Vaseline",
+// "Alle A-merk IJsrepen") kun je niet als één vergelijkbaar product tonen — welke
+// variant is bij de andere winkel goedkoper? Zelfde patroon als CATEGORY_OFFER in
+// context/PriceHistoryContext.tsx (daar voor "laagste prijs ooit"-labels) en
+// VOMAR_MULTI_VARIANT in backend/scraper/index.js (daar voor foto-matching):
+// dezelfde dubbelzinnigheid, dus dezelfde uitsluiting. Alleen de SEED wordt hier
+// getoetst — die bepaalt de naam die de Prijsvergelijking-balk toont.
+const MULTI_VARIANT = /^alle\b|\bof\b|\bt\/m\b|\bdiverse\b|\bassorti/i
+
 export function buildComparisonGroups(products: Product[]): ComparisonGroup[] {
   const used = new Set<string>()
   const groups: ComparisonGroup[] = []
@@ -101,6 +110,7 @@ export function buildComparisonGroups(products: Product[]): ComparisonGroup[] {
 
   for (const product of products) {
     if (used.has(product.id)) continue
+    if (MULTI_VARIANT.test(product.name)) continue
 
     const tokens = new Set(tokenMap.get(product.id))
     if (tokens.size < 2) continue
