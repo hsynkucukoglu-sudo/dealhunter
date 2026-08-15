@@ -153,7 +153,10 @@ const DEALS = [
       // dl= parameter breekt (dubbele URL, canlı test 2026-07-06) — geen dl
       { name: 'Sinner',            tagline: 'Sport & outdoorkleding',     cta: 'Bekijk collectie', color: '#D40000', url: 'https://ds1.nl/c/?si=16070&li=79935&wi=420902' },
       { name: 'Vitaminstore',      tagline: 'Vitamines & supplementen',   cta: 'Bekijk aanbod',    color: '#00A651', url: 'https://ds1.nl/c/?si=16070&li=1266442&wi=420902' },
-      { name: 'BioProphyl',        tagline: 'Kwalitatieve supplementen',  cta: 'Bekijk aanbod',    color: '#2E7D32', url: AW(22561,  'https://www.bioprophyl.com/') },
+      // .com had een kapot certificaat (*.your-server.de) → beveiligingswaarschuwing
+      // i.p.v. de winkel. .be is de landingspagina die Awin zelf voor dit programma
+      // registreert, met geldig cert en Nederlandstalig. Zie lib/affiliate.ts.
+      { name: 'BioProphyl',        tagline: 'Kwalitatieve supplementen',  cta: 'Bekijk aanbod',    color: '#2E7D32', url: AW(22561,  'https://www.bioprophyl.be/') },
       { name: 'Happy Mammoth',     tagline: 'Gut health & supplementen',  cta: 'Bekijk aanbod',    color: '#FF6B35', url: 'https://glp8.net/c/?si=19600&li=1839644&wi=420902' },
       { name: 'Plein.nl',          tagline: 'Drogist & gezondheid online', cta: 'Bekijk aanbod',   color: '#0071BC', url: 'https://fr135.net/c/?si=3366&li=1161224&wi=420902' },
       { name: "Levi's",            tagline: 'Jeans & kleding sale',       cta: 'Shop collectie',   color: '#C8102E', url: 'https://glp8.net/c/?si=19949&li=1850890&wi=420902' },

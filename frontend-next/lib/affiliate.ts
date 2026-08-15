@@ -61,7 +61,15 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   'Bol.com': { destinationUrl: 'https://www.bol.com/', network: 'bol', rel: REL },
 
   // ── Awin — onaylı ─────────────────────────────────────────────────────────
-  BioProphyl:       { destinationUrl: 'https://www.bioprophyl.com/',      network: 'awin', programId: '22561',  rel: REL },
+  // .com serveerde een certificaat voor *.your-server.de (hostname mismatch) —
+  // elke browser toonde een volledige beveiligingswaarschuwing i.p.v. de winkel
+  // (gemeten 2026-08-15; met -k wél 200, dus de server draait, het cert klopt niet).
+  // .be is geen gok: cread.php zónder ued-parameter laat zien welke landingspagina
+  // Awin zelf voor programma 22561 heeft geregistreerd, en dat is bioprophyl.be.
+  // Geldig cert (CN=bioprophyl.be), Nederlandstalig (lang="nl"), dus ook voor NL
+  // bezoekers de juiste taal — en tracking loopt gegarandeerd, want het is Awins
+  // eigen bestemming voor dit programma.
+  BioProphyl:       { destinationUrl: 'https://www.bioprophyl.be/',       network: 'awin', programId: '22561',  rel: REL },
   Eonon:            { destinationUrl: 'https://www.eonon.com/',           network: 'awin', programId: '2471',   rel: REL },
   'Vitaepro NL':    { destinationUrl: 'https://www.vitaepro.nl/',         network: 'awin', programId: '18520',  rel: REL },
   'Direct Running': { destinationUrl: 'https://www.direct-running.nl/',   network: 'awin', programId: '71531',  rel: REL },
@@ -85,7 +93,12 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   'AD Webwinkel':       { destinationUrl: 'https://lt45.net/c/?si=13048&li=1574297&wi=420902',               network: 'daisycon',  rel: REL },
   'Volkskrant Webwinkel': { destinationUrl: 'https://lt45.net/c/?si=15810&li=1684197&wi=420902',    network: 'daisycon',  rel: REL },
   'Nu.nl Shop':         { destinationUrl: 'https://lt45.net/c/?si=15818&li=1684335&wi=420902',                   network: 'daisycon',  rel: REL },
-  'Libelle Shop':       { destinationUrl: 'https://shop.libelle.nl/',              network: 'daisycon', trackingBase: 'https://lt45.net/c/?si=15819&li=1684336&wi=420902',  rel: REL },
+  // shop.libelle.nl bestaat niet meer (DNS lost niet op, gemeten 2026-08-15). De
+  // winkel draaide door onder winkelen.libelle.nl — bevestigd door de tracking-link
+  // zónder dl-parameter aan te roepen: Daisycon stuurt dan naar de bestemming die
+  // het zelf voor dit programma kent, en dat is winkelen.libelle.nl (200, geldig
+  // cert, titel "Libelle Shop").
+  'Libelle Shop':       { destinationUrl: 'https://winkelen.libelle.nl/',          network: 'daisycon', trackingBase: 'https://lt45.net/c/?si=15819&li=1684336&wi=420902',  rel: REL },
   XLLease:              { destinationUrl: 'https://fr135.net/c/?si=20255&li=1864272&wi=420902',               network: 'daisycon', rel: REL },
   DutchLease:           { destinationUrl: 'https://fr135.net/c/?si=20456&li=1868213&wi=420902',            network: 'daisycon', rel: REL },
   XLEasy:               { destinationUrl: 'https://fr135.net/c/?si=15775&li=1682823&wi=420902',               network: 'daisycon', rel: REL },
