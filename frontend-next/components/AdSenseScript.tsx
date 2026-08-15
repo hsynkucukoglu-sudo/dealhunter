@@ -1,7 +1,17 @@
 'use client'
 import { useEffect } from 'react'
 
-const CLIENT_ID = 'ca-pub-6266103134639533'
+// 2026-08-15: 6266103134639533 hersteld naar 4113343151276849. Dat laatste is
+// het echte, in behandeling zijnde AdSense-account (welkomstmail 1 mei, "bijna
+// geactiveerd" 13 mei, "kleine correcties nodig" 26 mei — Gmail-geschiedenis).
+// Het andere ID heeft geen enkel spoor in die geschiedenis. Commit b4a2fb4
+// (27 mei, exact 1 dag na de "correcties nodig"-mail) verving het echte ID
+// door dit spooknummer in AdSenseScript.tsx — vermoedelijk een eerdere
+// agent-fout. Een ads.txt/site die een ander account claimt dan het account
+// in beoordeling is een harde, mechanische blokkade voor goedkeuring, los van
+// contentkwaliteit — dit verklaart mogelijk de aanhoudende afwijzing beter dan
+// de content-theorieën die deze hele sessie zijn onderzocht.
+const CLIENT_ID = 'ca-pub-4113343151276849'
 
 function initConsentMode(hasConsent: boolean) {
   // Google Consent Mode v2 — always called before adsbygoogle loads

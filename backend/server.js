@@ -935,7 +935,7 @@ app.post('/api/scraper/run', requireAdmin, scraperLimit, (req, res) => {
 
 app.get('/api/ads-txt', (req, res) => {
   res.setHeader('Content-Type', 'text/plain; charset=utf-8')
-  res.send('google.com, pub-6266103134639533, DIRECT, f08c47fec0942fa0\n')
+  res.send('google.com, pub-4113343151276849, DIRECT, f08c47fec0942fa0\n')
 })
 
 // ===== Health Check =====
