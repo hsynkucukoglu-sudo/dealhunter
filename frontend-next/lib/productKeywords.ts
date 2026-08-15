@@ -36,6 +36,48 @@ export function getKeyword(slug: string): ProductKeyword | null {
   return PRODUCT_KEYWORDS.find(k => k.slug === slug) ?? null
 }
 
+// Onder deze grens gaat de pagina op noindex en uit de sitemap.
+//
+// Deze pagina's zijn dynamisch: hoeveel producten ze tonen hangt af van de folder
+// van die week. Gemeten op de live site 2026-08-15 (alle 20 slugs):
+//
+//   luiers 0 items / 305 woorden   diepvries 0 / 302   shampoo 1 / 345
+//   airfryer 2 / 377               olijfolie 3 / 411   …   yoghurt 34 / 1.427
+//
+// De noindex-notitie in app/merk/[slug]/page.tsx voert /product/* op als
+// tegenvoorbeeld met "671-1011 woorden" — dat klopte toen, maar bij 0-2 items
+// zakt deze pagina naar 302-377 woorden en zit daarmee middenin de 342-396-band
+// die daar juist als "te dun om te verdedigen" is afgeserveerd (AdSense-afwijzing
+// 13-07-2026, "laagwaardige content").
+//
+// Concreet probleem bovenop de dunheid: de title belooft "Aanbieding Deze Week ✓
+// Vergelijk Alle Winkels" terwijl de body "Momenteel geen actieve aanbiedingen
+// gevonden" toont. Die belofte-breuk kost de klik én verdunt de sitebrede CTR
+// (impressies zonder clicks) — zie docs/analiz-2026-08-15.md §3.
+//
+// 3 is de ondergrens waarboven de pagina de eigen belofte kan waarmaken: onder de
+// 3 items is er niets te "vergelijken". De pagina blijft gewoon bereikbaar voor
+// bezoekers — inclusief de deal-alert CTA, die juist op een lege pagina nuttig is.
+// follow blijft aan, dus interne links tellen door (zelfde keuze als /merk/).
+export const MIN_PRODUCTS_FOR_INDEX = 3
+
+function matchProducts(keyword: ProductKeyword, all: Product[]): Product[] {
+  return all.filter(p => {
+    const name = p.name.toLowerCase()
+    return keyword.searchTerms.some(t => name.includes(t.toLowerCase()))
+      && p.originalPrice > p.discountedPrice
+  })
+}
+
+/** Slugs die deze week genoeg aanbod hebben om ingediend te worden bij Google. */
+export async function getIndexableProductSlugs(): Promise<string[]> {
+  // Eén fetch voor alle 20 keywords — niet getProductKeywordData() per slug.
+  const all = await getProducts()
+  return PRODUCT_KEYWORDS
+    .filter(k => matchProducts(k, all).length >= MIN_PRODUCTS_FOR_INDEX)
+    .map(k => k.slug)
+}
+
 export interface ProductKeywordData {
   keyword: ProductKeyword
   products: Product[]
@@ -49,11 +91,7 @@ export async function getProductKeywordData(slug: string): Promise<ProductKeywor
   if (!keyword) return null
 
   const all = await getProducts()
-  const products = all.filter(p => {
-    const name = p.name.toLowerCase()
-    return keyword.searchTerms.some(t => name.includes(t.toLowerCase()))
-      && p.originalPrice > p.discountedPrice
-  })
+  const products = matchProducts(keyword, all)
 
   if (products.length === 0) return { keyword, products: [], marketCount: 0, avgDiscount: 0, cheapestMarket: null }
 

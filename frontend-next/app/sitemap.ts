@@ -3,7 +3,7 @@ import { VISIBLE_MARKETS as MARKETS, CATEGORIES } from '@/lib/types'
 import { getAllPosts } from '@/lib/posts'
 import { currentWeekSlug } from '@/lib/weeklyDeals'
 import { getAllPairs, isIndexedPair } from '@/lib/vergelijk'
-import { PRODUCT_KEYWORDS } from '@/lib/productKeywords'
+import { getIndexableProductSlugs } from '@/lib/productKeywords'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const base = 'https://www.dealhunter4u.nl'
@@ -48,8 +48,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.75,
   }))
 
-  const productPages = PRODUCT_KEYWORDS.map(k => ({
-        url: `${base}/product/${k.slug}`,
+  // Alleen slugs met genoeg aanbod deze week. Een pagina die op noindex staat
+  // óók indienen is een tegenstrijdig signaal — zelfde reden als bij /merk/
+  // hierboven. Zie MIN_PRODUCTS_FOR_INDEX voor de meting achter de grens.
+  const indexableSlugs = await getIndexableProductSlugs()
+  const productPages = indexableSlugs.map(slug => ({
+        url: `${base}/product/${slug}`,
         lastModified: today,
         changeFrequency: 'weekly' as const,
         priority: 0.65,

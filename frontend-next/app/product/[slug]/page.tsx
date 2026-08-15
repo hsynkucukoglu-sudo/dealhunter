@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { PRODUCT_KEYWORDS, getProductKeywordData } from '@/lib/productKeywords'
+import { PRODUCT_KEYWORDS, getProductKeywordData, MIN_PRODUCTS_FOR_INDEX } from '@/lib/productKeywords'
 import { buildBreadcrumbSchema, buildFaqSchema, buildMultiMarketProductListSchema, getISOWeek } from '@/lib/schema'
 import { DealHunterLogo } from '@/components/DealHunterLogo'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
@@ -33,6 +33,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     openGraph: { title, description, url, siteName: 'DealHunter4U', locale: 'nl_NL', type: 'website' },
     alternates: { canonical: url },
+    // Te weinig aanbod deze week -> uit de index houden. De title belooft
+    // "Vergelijk Alle Winkels"; met minder dan MIN_PRODUCTS_FOR_INDEX items kan
+    // de pagina die belofte niet waarmaken en zakt hij naar de woordendichtheid
+    // die bij /merk/ al als te dun is beoordeeld. Zie de constante voor de
+    // meting. Zodra de folder van die week wél aanbod heeft, wordt de pagina
+    // vanzelf weer indexeerbaar (revalidate = 3600).
+    ...(products.length < MIN_PRODUCTS_FOR_INDEX
+      ? { robots: { index: false, follow: true } }
+      : {}),
   }
 }
 
