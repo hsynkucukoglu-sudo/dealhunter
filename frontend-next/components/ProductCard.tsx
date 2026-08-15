@@ -17,6 +17,7 @@ import { isRealBrand, slugify } from '@/lib/brands'
 import { MARKETS } from '@/lib/types'
 import { PriceHistoryChart } from './PriceHistoryChart'
 import { ShareButton } from './ShareButton'
+import { MarketLogo } from './MarketLogo'
 
 const SITE_URL = 'https://www.dealhunter4u.nl'
 const MARKET_SLUG: Record<string, string> = Object.fromEntries(MARKETS.map(m => [m.name, m.slug]))
@@ -154,8 +155,19 @@ export function ProductCard({ product, priority = false }: { product: Product; p
             />
           )
         ) : (
+          // Vomar levert structureel geen productfoto's — de scraper leest de
+          // weekfolder via Publitas' volltekstzoek-API, die geen beeld- of
+          // coördinaatdata per product teruggeeft (alleen paginanummer + platte
+          // OCR-tekst). Een pagina-render zou headless Chrome vereisen, wat de
+          // scraper bewust niet gebruikt (fetch-only, past op de 512MB free
+          // tier). Marktlogo i.p.v. het generieke bestekicoon: geen ontbrekende
+          // foto, maar een herkenbare "dit is een Vomar-deal"-placeholder.
           <div className="w-full h-full flex items-center justify-center">
-            <span className="material-symbols-outlined" style={{ fontSize: 56, color: '#C9C1B6' }}>nutrition</span>
+            {product.market === 'Vomar' ? (
+              <MarketLogo market={product.market} size={64} />
+            ) : (
+              <span className="material-symbols-outlined" style={{ fontSize: 56, color: '#C9C1B6' }}>nutrition</span>
+            )}
           </div>
         )}
         <div className="absolute top-2 left-2 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
