@@ -11,8 +11,8 @@ je lezers kan helpen"-benadering.
 
 | Doelwit | Adres | Gmail-concept | Opmerking |
 |---|---|---|---|
-| Sparen en Besparen | `info@sparenenbesparen.nl` | ⛔ **bounced** | Verstuurd 26-07, direct bounced (550 No such recipient here). Site publiceert alleen dit adres — geen contactformulier, geen social links, geen naam ("Ons team" anoniem). Gecontroleerd 28-07: nog steeds hetzelfde adres, geen alternatief kanaal gevonden. Niet opnieuw proberen zonder nieuw contactpunt. |
-| One Broke Girl | `info@onebrokegirl.nl` | ✅ aangemaakt | Iris Newman. Commercieel (One Girl Media B.V., Media Kit + shop) → verwacht mogelijk een tarievenkaart terug |
+| Sparen en Besparen | `info@sparenenbesparen.nl` | ⛔ **bounced** | Verstuurd 26-07, direct bounced (550 No such recipient here). Site publiceert alleen dit adres — geen contactformulier, geen social links, geen naam ("Ons team" anoniem). Gecontroleerd 28-07: nog steeds hetzelfde adres, geen alternatief kanaal gevonden. **Herbevestigd 16-08:** site is online (HTTP 200), contactpagina bevat alléén zoekformulieren, nog steeds geen social links, en het gepubliceerde adres is onveranderd het adres dat bounced. **Doelwit gesloten** — niet opnieuw proberen zonder nieuw contactpunt. |
+| One Broke Girl | `info@onebrokegirl.nl` | ✅ verstuurd 26-07 | Iris Newman. Commercieel (One Girl Media B.V., Media Kit + shop) → verwacht mogelijk een tarievenkaart terug. **Geen reactie.** Opvolging stond gepland ~05-08 maar is blijven liggen; concept opgesteld 16-08 (zie §3). Dit is de enige opvolging — daarna loslaten, conform verzendtips. |
 | Mr FOB | — | ❌ niet aangemaakt | Contactpagina geeft 404, geen e-mailadres te vinden. Eventueel via hun nieuwsbrief-reply of social |
 | Bespaartop100 | — | ⛔ **bewust overgeslagen** | Zie waarschuwing hieronder |
 
@@ -155,6 +155,36 @@ Groet,
 Hüseyin
 dealhunter4u.nl
 ```
+
+### Opvolging (concept 16-08-2026 — één keer, daarna loslaten)
+
+Origineel verstuurd 26-07, geen reactie. Verzendtips zeggen: max één opvolging na
+~10 dagen. Die is blijven liggen; nu 21 dagen. Bewust kort gehouden en met een
+expliciete afsluiting, zodat er geen tweede opvolging nodig is.
+
+**Onderwerp:** Re: Tip erbij voor je lijst met bespaartips?
+
+```
+Hoi Iris,
+
+Korte follow-up op mijn mail van eind juli — waarschijnlijk gewoon
+ondergesneeuwd, dat snap ik.
+
+In het kort: dealhunter4u.nl zet de weekaanbiedingen van tien supermarkten naast
+elkaar, gratis en zonder account. Op dit moment 1.342 actuele aanbiedingen,
+dagelijks ververst.
+
+Past het niet bij je lezers? Ook prima — dan laat ik het hierbij en val ik je
+niet nog een keer lastig.
+
+Groet,
+Hüseyin
+dealhunter4u.nl
+```
+
+Cijfers geverifieerd op de live API (16-08-2026): 1.342 actuele aanbiedingen,
+10 winkels, gemiddeld 26% korting. Geen claims uit de NIET-gebruiken-lijst.
+
 
 ---
 
