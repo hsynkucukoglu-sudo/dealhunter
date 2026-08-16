@@ -655,6 +655,13 @@ export const POSTS: BlogPost[] = [
 <p><strong>Ja — Lidl is structureel 15–25% goedkoper dan Albert Heijn op basisprijzen.</strong> Op vers vlees, groenten en zuivel is het verschil het grootst. Albert Heijn wint alleen tijdelijk op A-merken tijdens diepe bonusacties.</p>
 <p>De slimste strategie: <strong>combineer beide</strong>. Doe je basisboodschappen bij Lidl en sla A-merken in bij AH wanneer er een 1+1 bonus loopt. Vergelijk elke week de actuele deals op <a href="/supermarkt/lidl">DealHunter4U — Lidl aanbiedingen</a> en <a href="/supermarkt/albert-heijn">Albert Heijn aanbiedingen</a> naast elkaar, en betaal nooit te veel.</p>
     `.trim(),
+    dealEmbed: {
+      title: 'Lidl vs Albert Heijn — actuele deals',
+      markets: ['Lidl', 'Albert Heijn'],
+      limit: 3,
+      ctaHref: '/supermarkt/lidl',
+      ctaLabel: 'Alle Lidl aanbiedingen',
+    },
   },
   {
     slug: 'is-lidl-goedkoper-dan-jumbo',
@@ -807,6 +814,13 @@ export const POSTS: BlogPost[] = [
 <p><strong>Ja — Lidl is structureel 10–20% goedkoper dan Jumbo op basisprijzen.</strong> Op vers vlees, groenten en zuivel is het verschil het grootst. Jumbo compenseert met een veel breder assortiment, meer A-merken en thuisbezorging.</p>
 <p>De slimste strategie: <strong>combineer beide</strong>. Doe je basisboodschappen bij Lidl voor de laagste prijs, en ga naar Jumbo voor specifieke merken, weekaanbiedingen of wanneer je thuisbezorging nodig hebt. Vergelijk elke week de actuele deals op <a href="/supermarkt/lidl">DealHunter4U — Lidl aanbiedingen</a> en <a href="/supermarkt/jumbo">Jumbo aanbiedingen</a> naast elkaar.</p>
     `.trim(),
+    dealEmbed: {
+      title: 'Lidl vs Jumbo — actuele deals',
+      markets: ['Lidl', 'Jumbo'],
+      limit: 3,
+      ctaHref: '/supermarkt/lidl',
+      ctaLabel: 'Alle Lidl aanbiedingen',
+    },
   },
   {
     slug: 'is-aldi-goedkoper-dan-lidl',
@@ -1733,6 +1747,12 @@ export const POSTS: BlogPost[] = [
 <h2>Online bestellen: welke dag is het slimst?</h2>
 <p>Voor thuisbezorging en afhalen geldt een eigen ritme: bezorgslots aan het begin van de week zijn goedkoper en ruimer beschikbaar dan donderdag–zaterdag. Bestel je online, plaats de bestelling dan direct na de folderwissel (woensdag bij de meeste ketens, maandag bij Lidl/Aldi-achtigen) — dan zijn actieproducten nog leverbaar. Populaire aanbiedingen zijn online vaak eerder "op" dan in de fysieke winkel.</p>
     `.trim(),
+    dealEmbed: {
+      title: 'Deals die vandaag geldig zijn',
+      limit: 3,
+      ctaHref: '/deals',
+      ctaLabel: 'Bekijk alle deals',
+    },
   },
   {
     slug: 'supermarkt-thuisbezorging-vergelijken',
@@ -2625,6 +2645,12 @@ export const POSTS: BlogPost[] = [
 
 <p>→ <a href="/">Vergelijk vandaag alle supermarktdeals op DealHunter4U</a></p>
     `.trim(),
+    dealEmbed: {
+      title: 'Scherpste aanbiedingen van dit moment',
+      limit: 3,
+      ctaHref: '/kortingsindex',
+      ctaLabel: 'Bekijk de Kortingsindex',
+    },
   },
   {
     slug: 'barbecue-aanbieding-supermarkt-2026',
@@ -4960,6 +4986,13 @@ export const POSTS: BlogPost[] = [
 <p><strong>Het hangt af van je boodschappenlijst.</strong> Voor vlees blijft Dirk de scherpste keuze; voor een brede, gevarieerde boodschappenlijst met combi-deals op vers en zuivel is DekaMarkt vaak voordeliger. De slimste aanpak: vergelijk per week welke van de twee de beste deal heeft voor wat je nodig hebt.</p>
 <p>Bekijk de actuele deals van <a href="/supermarkt/dekamarkt">DealHunter4U — DekaMarkt aanbiedingen</a> en <a href="/supermarkt/dirk">Dirk aanbiedingen</a> naast elkaar.</p>
     `.trim(),
+    dealEmbed: {
+      title: 'DekaMarkt vs Dirk — actuele deals',
+      markets: ['DekaMarkt', 'Dirk'],
+      limit: 3,
+      ctaHref: '/supermarkt/dirk',
+      ctaLabel: 'Alle Dirk aanbiedingen',
+    },
   },
   {
     slug: 'is-kruidvat-goedkoper-dan-etos',

@@ -153,12 +153,45 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         {/* Reklam — başlık altı, okuyucu henüz engaged */}
         <AdBanner slot="7882410354" format="auto" className="mb-6" minHeight={280} />
 
-        {/* Article body */}
-        <div
-          style={{ background: 'white', borderRadius: 20, padding: '36px 40px', boxShadow: '0 4px 0 #DDD0C4', border: '1px solid rgba(201,193,182,0.3)' }}
-          className="blog-content"
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
+        {/* Article body — met dealEmbed NA de intro i.p.v. onderaan.
+            Reden (gemeten 2026-08-15): dit is de meest bezochte landingspagina van
+            de site (33 van 142 GSC-clicks) en op mobiel is de pagina 13.553px hoog,
+            terwijl bezoekers gemiddeld 32% ver scrollen (Clarity). Binnen die 32%
+            stonden 3 interne links, waarvan één /privacy — de dealmodule en alle
+            marktlinks zaten in de onderste helft en werden dus nooit gezien.
+            Dat verklaart pagina's/sessie = 1,0 mechanisch.
+            De intro is bij alle 46 posts 211-558 tekens en elke post heeft een
+            <h2>, dus splitsen op de eerste <h2> is een veilig, uniform snijpunt:
+            intro → actuele deals → rest van het artikel. */}
+        {(() => {
+          const cut = post.dealEmbed ? post.content.indexOf('<h2') : -1
+          if (cut <= 0) {
+            return (
+              <div
+                style={{ background: 'white', borderRadius: 20, padding: '36px 40px', boxShadow: '0 4px 0 #DDD0C4', border: '1px solid rgba(201,193,182,0.3)' }}
+                className="blog-content"
+                dangerouslySetInnerHTML={{ __html: post.content }}
+              />
+            )
+          }
+          return (
+            <>
+              <div
+                style={{ background: 'white', borderRadius: '20px 20px 0 0', padding: '36px 40px 8px', borderLeft: '1px solid rgba(201,193,182,0.3)', borderRight: '1px solid rgba(201,193,182,0.3)', borderTop: '1px solid rgba(201,193,182,0.3)' }}
+                className="blog-content"
+                dangerouslySetInnerHTML={{ __html: post.content.slice(0, cut) }}
+              />
+              <div style={{ background: 'white', padding: '0 40px', borderLeft: '1px solid rgba(201,193,182,0.3)', borderRight: '1px solid rgba(201,193,182,0.3)' }}>
+                <EmbeddedDeals config={post.dealEmbed!} />
+              </div>
+              <div
+                style={{ background: 'white', borderRadius: '0 0 20px 20px', padding: '8px 40px 36px', boxShadow: '0 4px 0 #DDD0C4', borderLeft: '1px solid rgba(201,193,182,0.3)', borderRight: '1px solid rgba(201,193,182,0.3)', borderBottom: '1px solid rgba(201,193,182,0.3)' }}
+                className="blog-content"
+                dangerouslySetInnerHTML={{ __html: post.content.slice(cut) }}
+              />
+            </>
+          )
+        })()}
 
         {/* Delen — direct na het artikel, waar de lezer klaar is met lezen */}
         <div style={{ marginTop: 20 }}>
@@ -172,8 +205,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           />
         </div>
 
-        {/* Canlı deal embed (post'ta dealEmbed config varsa) */}
-        {post.dealEmbed && <EmbeddedDeals config={post.dealEmbed} />}
+        {/* dealEmbed hier weggehaald: staat nu ná de intro (zie Article body).
+            Twee keer dezelfde module tonen zou de pagina alleen langer maken —
+            en lengte is precies het probleem dat we oplossen. */}
 
         {/* Reklam — yazı gövdesinden sonra, in-content yerleşim */}
         <AdBanner slot="6629568666" format="auto" className="mt-8" minHeight={280} />
