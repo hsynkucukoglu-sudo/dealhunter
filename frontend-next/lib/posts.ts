@@ -127,7 +127,7 @@ export const POSTS: BlogPost[] = [
 
 <h2>De slimme keuze voor jouw boodschappen</h2>
 <p>We hebben alle supermarktaanbiedingen van Nederland verzameld op één overzichtelijk platform. Jij kiest wat je wilt eten, wij vinden de beste deal voor jouw budget. Geen folders meer doorzoeken, geen apps per supermarkt afzonderlijk — alles staat op één plek.</p>
-<p>DealHunter4U vergelijkt elke week de aanbiedingen van meer dan tien supermarkten: Albert Heijn, Jumbo, Lidl, Aldi, Dirk, Hoogvliet, Vomar, DekaMarkt, Kruidvat en meer. Samen vertegenwoordigen deze ketens het overgrote deel van de Nederlandse supermarktmarkt. Jij hoeft er niet meer zelf achteraan te gaan.</p>
+<p>DealHunter4U vergelijkt elke week de aanbiedingen van meer dan tien supermarkten: <a href="/supermarkt/albert-heijn">Albert Heijn</a>, Jumbo, Lidl, Aldi, Dirk, <a href="/supermarkt/hoogvliet">Hoogvliet</a>, Vomar, <a href="/supermarkt/dekamarkt">DekaMarkt</a>, Kruidvat en meer. Samen vertegenwoordigen deze ketens het overgrote deel van de Nederlandse supermarktmarkt. Jij hoeft er niet meer zelf achteraan te gaan.</p>
 
 <h2>Waarom kiezen voor DealHunter4U?</h2>
 <ul>
@@ -196,7 +196,7 @@ export const POSTS: BlogPost[] = [
 <p class="lead">De gemiddelde Nederlander geeft ruim <strong>€4.200 per jaar</strong> uit aan boodschappen. Met een paar slimme gewoontes kun je daar makkelijk <strong>€500 tot €1.000</strong> per jaar op besparen — zonder in te leveren op kwaliteit.</p>
 
 <h2>1. Vergelijk aanbiedingen vóór je naar de supermarkt gaat</h2>
-<p>De grootste fout die mensen maken: ze gaan naar hun vaste supermarkt zonder te weten wat er in de aanbieding is. Albert Heijn, Jumbo, Lidl en Aldi hebben allemaal andere acties. Op <a href="https://www.dealhunter4u.nl">DealHunter4U</a> zie je in één oogopslag de beste deals van alle supermarkten.</p>
+<p>De grootste fout die mensen maken: ze gaan naar hun vaste supermarkt zonder te weten wat er in de aanbieding is. <a href="/supermarkt/albert-heijn">Albert Heijn</a>, <a href="/supermarkt/jumbo">Jumbo</a>, <a href="/supermarkt/lidl">Lidl</a> en Aldi hebben allemaal andere acties. Op <a href="https://www.dealhunter4u.nl">DealHunter4U</a> zie je in één oogopslag de beste deals van alle supermarkten.</p>
 
 <h2>2. Gebruik 1+1 gratis acties strategisch</h2>
 <p>Bij een <strong>1+1 gratis actie</strong> betaal je effectief 50% korting. Koop producten die lang houdbaar zijn (pasta, rijst, ingeblikte groenten, toiletartikelen) altijd dubbel als ze in de aanbieding zijn. Dit scheelt op jaarbasis tientallen euro's.</p>
@@ -313,7 +313,7 @@ export const POSTS: BlogPost[] = [
     ],
     content: `
 <p style="font-size:12px; color:#9C9389; margin-bottom:8px;">📅 Bijgewerkt: juni 2026 — actuele weekaanbiedingen verwerkt</p>
-<p class="lead">Wie is goedkoper: Albert Heijn of Jumbo? Dit is de meest gestelde vraag onder Nederlandse boodschappers. Het korte antwoord: <strong>Jumbo is gemiddeld 2–5% goedkoper op basisprijzen</strong>, maar Albert Heijn biedt diepere bonusaanbiedingen. In dit artikel vergelijken we beide supermarkten op prijs, aanbiedingen en huismerken — zodat jij de slimste keuze maakt.</p>
+<p class="lead">Wie is goedkoper: <a href="/supermarkt/albert-heijn">Albert Heijn</a> of <a href="/supermarkt/jumbo">Jumbo</a>? Dit is de meest gestelde vraag onder Nederlandse boodschappers. Het korte antwoord: <strong>Jumbo is gemiddeld 2–5% goedkoper op basisprijzen</strong>, maar Albert Heijn biedt diepere bonusaanbiedingen. In dit artikel vergelijken we beide supermarkten op prijs, aanbiedingen en huismerken — zodat jij de slimste keuze maakt.</p>
 
 <h2>Snel antwoord: wie is goedkoopst in 2026?</h2>
 <table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
@@ -346,7 +346,7 @@ export const POSTS: BlogPost[] = [
     </tr>
   </tbody>
 </table>
-<p><strong>Rangschikking van goedkoopst naar duurste:</strong> Lidl → Jumbo → Albert Heijn. Maar met actief gebruik van de AH Bonus kan Albert Heijn tijdelijk goedkoper uitpakken dan Jumbo.</p>
+<p><strong>Rangschikking van goedkoopst naar duurste:</strong> <a href="/supermarkt/lidl">Lidl</a> → Jumbo → Albert Heijn. Maar met actief gebruik van de AH Bonus kan Albert Heijn tijdelijk goedkoper uitpakken dan Jumbo.</p>
 
 <h2>Wie is goedkoper: AH of Jumbo op basisprijzen?</h2>
 <p>Op basisprijzen (zonder kortingen) is <strong>Jumbo gemiddeld 2–5% goedkoper</strong> dan Albert Heijn. Dat klinkt klein, maar bij een gemiddeld boodschappenbudget van €150 per week scheelt dat al snel <strong>€3–8 per week</strong> — ruim €150 per jaar.</p>
@@ -536,7 +536,7 @@ export const POSTS: BlogPost[] = [
     ],
     content: `
 <p style="font-size:12px; color:#9C9389; margin-bottom:8px;">📅 Bijgewerkt: juli 2026 — actuele weekaanbiedingen verwerkt</p>
-<p class="lead">Is Lidl goedkoper dan Albert Heijn? Het korte antwoord: <strong>ja, Lidl is gemiddeld 15–25% goedkoper</strong> dan AH op basisprijzen. Op vers vlees, groenten en zuivel loopt dat verschil zelfs op tot 30%. Maar Albert Heijn slaat terug met diepe bonusaanbiedingen. In dit artikel vergelijken we Lidl en Albert Heijn op prijs, kwaliteit en aanbiedingen — zodat jij precies weet waar je het goedkoopst uit bent.</p>
+<p class="lead">Is <a href="/supermarkt/lidl">Lidl</a> goedkoper dan <a href="/supermarkt/albert-heijn">Albert Heijn</a>? Het korte antwoord: <strong>ja, Lidl is gemiddeld 15–25% goedkoper</strong> dan AH op basisprijzen. Op vers vlees, groenten en zuivel loopt dat verschil zelfs op tot 30%. Maar Albert Heijn slaat terug met diepe bonusaanbiedingen. In dit artikel vergelijken we Lidl en Albert Heijn op prijs, kwaliteit en aanbiedingen — zodat jij precies weet waar je het goedkoopst uit bent.</p>
 
 <h2>Snel antwoord: is Lidl goedkoper dan AH?</h2>
 <table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
@@ -695,7 +695,7 @@ export const POSTS: BlogPost[] = [
     ],
     content: `
 <p style="font-size:12px; color:#9C9389; margin-bottom:8px;">📅 Bijgewerkt: juli 2026 — actuele weekaanbiedingen verwerkt</p>
-<p class="lead">Is Lidl goedkoper dan Jumbo? Het korte antwoord: <strong>ja, Lidl is gemiddeld 10–20% goedkoper</strong> dan Jumbo op basisprijzen. Het verschil is het grootst op vers vlees, groenten en zuivel. Jumbo compenseert met een veel breder assortiment en meer A-merken. In dit artikel vergelijken we Lidl en Jumbo op prijs, kwaliteit en aanbiedingen.</p>
+<p class="lead">Is <a href="/supermarkt/lidl">Lidl</a> goedkoper dan <a href="/supermarkt/jumbo">Jumbo</a>? Het korte antwoord: <strong>ja, Lidl is gemiddeld 10–20% goedkoper</strong> dan Jumbo op basisprijzen. Het verschil is het grootst op vers vlees, groenten en zuivel. Jumbo compenseert met een veel breder assortiment en meer A-merken. In dit artikel vergelijken we Lidl en Jumbo op prijs, kwaliteit en aanbiedingen.</p>
 
 <h2>Snel antwoord: is Lidl goedkoper dan Jumbo?</h2>
 <table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
@@ -854,7 +854,7 @@ export const POSTS: BlogPost[] = [
     ],
     content: `
 <p style="font-size:12px; color:#9C9389; margin-bottom:8px;">📅 Bijgewerkt: juli 2026 — actuele weekaanbiedingen verwerkt</p>
-<p class="lead">Is Aldi goedkoper dan Lidl? Het korte antwoord: <strong>nauwelijks — Aldi en Lidl zijn vrijwel gelijk geprijsd.</strong> Beide discounters zijn structureel 20-30% goedkoper dan Albert Heijn en Jumbo, maar tussen Aldi en Lidl onderling is het verschil te klein om een duidelijke winnaar aan te wijzen. In dit artikel vergelijken we beide op prijs, assortiment en aanbiedingen.</p>
+<p class="lead">Is <a href="/supermarkt/aldi">Aldi</a> goedkoper dan <a href="/supermarkt/lidl">Lidl</a>? Het korte antwoord: <strong>nauwelijks — Aldi en Lidl zijn vrijwel gelijk geprijsd.</strong> Beide discounters zijn structureel 20-30% goedkoper dan <a href="/supermarkt/albert-heijn">Albert Heijn</a> en Jumbo, maar tussen Aldi en Lidl onderling is het verschil te klein om een duidelijke winnaar aan te wijzen. In dit artikel vergelijken we beide op prijs, assortiment en aanbiedingen.</p>
 
 <h2>Snel antwoord: is Aldi goedkoper dan Lidl?</h2>
 <table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
@@ -983,7 +983,7 @@ export const POSTS: BlogPost[] = [
     ],
     content: `
 <p style="font-size:12px; color:#9C9389; margin-bottom:8px;">📅 Bijgewerkt: juli 2026 — actuele weekaanbiedingen verwerkt</p>
-<p class="lead">Is Aldi goedkoper dan Jumbo? Het korte antwoord: <strong>ja, Aldi is gemiddeld 20–30% goedkoper</strong> dan Jumbo op basisprijzen. Het verschil is het grootst op vlees, zuivel en huismerkproducten. Jumbo compenseert met een veel breder assortiment, meer A-merken en thuisbezorging. In dit artikel vergelijken we Aldi en Jumbo op prijs, kwaliteit en aanbiedingen.</p>
+<p class="lead">Is <a href="/supermarkt/aldi">Aldi</a> goedkoper dan <a href="/supermarkt/jumbo">Jumbo</a>? Het korte antwoord: <strong>ja, Aldi is gemiddeld 20–30% goedkoper</strong> dan Jumbo op basisprijzen. Het verschil is het grootst op vlees, zuivel en huismerkproducten. Jumbo compenseert met een veel breder assortiment, meer A-merken en thuisbezorging. In dit artikel vergelijken we Aldi en Jumbo op prijs, kwaliteit en aanbiedingen.</p>
 
 <h2>Snel antwoord: is Aldi goedkoper dan Jumbo?</h2>
 <table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
@@ -1109,10 +1109,10 @@ export const POSTS: BlogPost[] = [
     readTime: 7,
     category: 'Supermarkt gids',
     content: `
-<p class="lead">Aldi is één van de goedkoopste supermarkten van Nederland. Met slimme weekaanbiedingen en vaste lage prijzen bespaar je hier structureel op je boodschappen. Maar hoe haal je het maximale uit de <strong>Aldi aanbiedingen</strong>?</p>
+<p class="lead"><a href="/supermarkt/aldi">Aldi</a> is één van de goedkoopste supermarkten van Nederland. Met slimme weekaanbiedingen en vaste lage prijzen bespaar je hier structureel op je boodschappen. Maar hoe haal je het maximale uit de <strong>Aldi aanbiedingen</strong>?</p>
 
 <h2>Wanneer start de Aldi aanbieding?</h2>
-<p>Aldi vernieuwt haar aanbiedingen elke <strong>maandag</strong>. In tegenstelling tot Albert Heijn en Jumbo, die op woensdag beginnen, start Aldi al aan het begin van de week. Dit betekent dat je op maandagochtend als eerste kunt profiteren van de nieuwe deals — voordat populaire producten uitverkopen.</p>
+<p>Aldi vernieuwt haar aanbiedingen elke <strong>maandag</strong>. In tegenstelling tot <a href="/supermarkt/albert-heijn">Albert Heijn</a> en <a href="/supermarkt/jumbo">Jumbo</a>, die op woensdag beginnen, start Aldi al aan het begin van de week. Dit betekent dat je op maandagochtend als eerste kunt profiteren van de nieuwe deals — voordat populaire producten uitverkopen.</p>
 <p>De aanbiedingen lopen van maandag tot en met zondag — een volledige week. Bij populaire producten zoals kipfilet of biefstuk geldt: wacht niet te lang. Op vrijdag- en zaterdagmiddag zijn de beste vleesaanbiedingen vaak al uitverkocht.</p>
 
 <h2>Wat maakt Aldi aanbiedingen uniek?</h2>
@@ -1198,7 +1198,7 @@ export const POSTS: BlogPost[] = [
     readTime: 7,
     category: 'Supermarkt gids',
     content: `
-<p class="lead">Albert Heijn is de grootste supermarkt van Nederland. De <strong>AH Bonus</strong> is het bekendste aanbiedingssysteem in het land. Maar weet je echt hoe je er maximaal van profiteert?</p>
+<p class="lead"><a href="/supermarkt/albert-heijn">Albert Heijn</a> is de grootste supermarkt van Nederland. De <strong>AH Bonus</strong> is het bekendste aanbiedingssysteem in het land. Maar weet je echt hoe je er maximaal van profiteert?</p>
 
 <h2>Wanneer beginnen de AH Bonus aanbiedingen?</h2>
 <p>De Albert Heijn Bonus Week start elke <strong>woensdag</strong>. Nieuwe aanbiedingen gaan om middernacht online en zijn de volgende ochtend in de winkels beschikbaar. De aanbiedingen lopen van woensdag tot en met dinsdag — 7 dagen per bonus periode.</p>
@@ -1285,10 +1285,10 @@ export const POSTS: BlogPost[] = [
     readTime: 7,
     category: 'Supermarkt gids',
     content: `
-<p class="lead">Jumbo is de tweede grootste supermarkt van Nederland en staat bekend om haar "Altijd de laagste prijs"-belofte. Maar hoe haal je echt het meeste uit de <strong>Jumbo aanbiedingen</strong>?</p>
+<p class="lead"><a href="/supermarkt/jumbo">Jumbo</a> is de tweede grootste supermarkt van Nederland en staat bekend om haar "Altijd de laagste prijs"-belofte. Maar hoe haal je echt het meeste uit de <strong>Jumbo aanbiedingen</strong>?</p>
 
 <h2>Wanneer beginnen de Jumbo aanbiedingen?</h2>
-<p>Jumbo vernieuwt haar aanbiedingen elke <strong>woensdag</strong>, tegelijk met Albert Heijn. De aanbiedingen gelden van woensdag t/m dinsdag. Sommige speciale acties lopen langer, zoals de Jumbo Spaaracties die meerdere weken duren.</p>
+<p>Jumbo vernieuwt haar aanbiedingen elke <strong>woensdag</strong>, tegelijk met <a href="/supermarkt/albert-heijn">Albert Heijn</a>. De aanbiedingen gelden van woensdag t/m dinsdag. Sommige speciale acties lopen langer, zoals de Jumbo Spaaracties die meerdere weken duren.</p>
 <p>Handig om te weten: op <strong>dinsdagavond laat</strong> kun je via de Jumbo-app al een preview zien van de nieuwe aanbiedingen voor woensdag. Zo kun je alvast je boodschappenlijst plannen.</p>
 
 <h2>De Jumbo Prijsbelofte</h2>
@@ -1376,7 +1376,7 @@ export const POSTS: BlogPost[] = [
     readTime: 7,
     category: 'Supermarkt gids',
     content: `
-<p class="lead">Lidl is de snelst groeiende supermarkt van Nederland. Met structureel lage prijzen en sterke weekaanbiedingen trekt Lidl steeds meer boodschappers. Maar wanneer zijn de beste <strong>Lidl aanbiedingen</strong> en hoe profiteer je optimaal?</p>
+<p class="lead"><a href="/supermarkt/lidl">Lidl</a> is de snelst groeiende supermarkt van Nederland. Met structureel lage prijzen en sterke weekaanbiedingen trekt Lidl steeds meer boodschappers. Maar wanneer zijn de beste <strong>Lidl aanbiedingen</strong> en hoe profiteer je optimaal?</p>
 
 <h2>Wanneer beginnen de Lidl aanbiedingen?</h2>
 <p>Lidl heeft twee aanbiedingscycli:</p>
@@ -1411,7 +1411,7 @@ export const POSTS: BlogPost[] = [
 <h2>Lidl's sterkste categorieën</h2>
 <p>Lidl blinkt uit op specifieke gebieden:</p>
 <ul>
-  <li><strong>Vers vlees:</strong> Biefstuk, kipfilet en lamskoteletten tegen prijzen die AH en Jumbo niet halen</li>
+  <li><strong>Vers vlees:</strong> Biefstuk, kipfilet en lamskoteletten tegen prijzen die AH en <a href="/supermarkt/jumbo">Jumbo</a> niet halen</li>
   <li><strong>Bakkerij:</strong> Lidl's afbakbrood en croissants zijn populair en goedkoop</li>
   <li><strong>Kaas:</strong> Een breed assortiment kaas van Europese origine, vaak goedkoper dan Nederlandse merken</li>
   <li><strong>Internationale producten:</strong> Italiaanse pasta, Spaanse olijfolie, Franse wijnen — met uitstekende prijs-kwaliteitsverhouding</li>
@@ -1498,9 +1498,9 @@ export const POSTS: BlogPost[] = [
 <h2>Wanneer is vlees het goedkoopst?</h2>
 <p>De goedkoopste vleesaanbiedingen verschijnen op vaste momenten:</p>
 <ul>
-  <li><strong>Maandag bij Aldi:</strong> Aldi vernieuwt haar vleesaanbiedingen elke maandag. Kipfilet, varkensvlees en gehakt zijn dan het voordeligst.</li>
-  <li><strong>Woensdag bij AH en Jumbo:</strong> De Bonus Week start op woensdag. Vlees is een van de meest gepromote categorieën.</li>
-  <li><strong>Woensdag bij DekaMarkt:</strong> DekaMarkt vernieuwt haar aanbiedingen elke woensdag — regelmatig scherpe vleesdeals.</li>
+  <li><strong>Maandag bij <a href="/supermarkt/aldi">Aldi</a>:</strong> Aldi vernieuwt haar vleesaanbiedingen elke maandag. Kipfilet, varkensvlees en gehakt zijn dan het voordeligst.</li>
+  <li><strong>Woensdag bij AH en <a href="/supermarkt/jumbo">Jumbo</a>:</strong> De Bonus Week start op woensdag. Vlees is een van de meest gepromote categorieën.</li>
+  <li><strong>Woensdag bij <a href="/supermarkt/dekamarkt">DekaMarkt</a>:</strong> DekaMarkt vernieuwt haar aanbiedingen elke woensdag — regelmatig scherpe vleesdeals.</li>
   <li><strong>Donderdag bij Lidl:</strong> Lidl heeft vaak sterke vlees-weekaanbiedingen op donderdag, met name op vers vlees.</li>
 </ul>
 <p>Tip: plan je weekmenu op de aanbiedingsdag van je supermarkt — dan koop je vlees altijd op het laagste punt.</p>
@@ -1598,7 +1598,7 @@ export const POSTS: BlogPost[] = [
 </ol>
 
 <h2>Voorbeeld weekmenu voor €50 (2 personen)</h2>
-<p><strong>Maandag:</strong> Pasta met gehaktsaus (gehakt in aanbieding bij Aldi ~€2)</p>
+<p><strong>Maandag:</strong> Pasta met gehaktsaus (gehakt in aanbieding bij <a href="/supermarkt/aldi">Aldi</a> ~€2)</p>
 <p><strong>Dinsdag:</strong> Omelet met groenten en aardappels (~€3)</p>
 <p><strong>Woensdag:</strong> Kipfilet met rijst en groenten (kip in AH Bonus ~€4)</p>
 <p><strong>Donderdag:</strong> Erwtensoep van blik of vers (goedkoop, voedzaam ~€2,50)</p>
@@ -1620,8 +1620,8 @@ export const POSTS: BlogPost[] = [
 <p>Je hoeft niet altijd naar één supermarkt. De meest efficiënte combinatie:</p>
 <ul>
   <li><strong>Aldi/Lidl:</strong> Vlees, zuivel, pasta, rijst — basis en vers</li>
-  <li><strong>Albert Heijn:</strong> Persoonlijke bonusproducten en 1+1 acties (gebruik de app)</li>
-  <li><strong>Dirk, Vomar of DekaMarkt:</strong> Goedkope huismerken en regionale aanbiedingen</li>
+  <li><strong><a href="/supermarkt/albert-heijn">Albert Heijn</a>:</strong> Persoonlijke bonusproducten en 1+1 acties (gebruik de app)</li>
+  <li><strong>Dirk, Vomar of <a href="/supermarkt/dekamarkt">DekaMarkt</a>:</strong> Goedkope huismerken en regionale aanbiedingen</li>
 </ul>
 
 <h2>Besparingstips die echt werken</h2>
@@ -1669,9 +1669,9 @@ export const POSTS: BlogPost[] = [
 <h2>Wanneer beginnen de weekaanbiedingen?</h2>
 <p>Elke supermarkt heeft zijn eigen aanbiedingsritme:</p>
 <ul>
-  <li><strong>Maandag — Aldi:</strong> Nieuwe weekdeals op vers vlees, zuivel en kruidenierswaren</li>
-  <li><strong>Maandag — Lidl:</strong> Nieuwe supermarktaanbiedingen + start Lidl Plus bonussen</li>
-  <li><strong>Woensdag — Albert Heijn:</strong> AH Bonus Week start, inclusief persoonlijke bonussen in de app</li>
+  <li><strong>Maandag — <a href="/supermarkt/aldi">Aldi</a>:</strong> Nieuwe weekdeals op vers vlees, zuivel en kruidenierswaren</li>
+  <li><strong>Maandag — <a href="/supermarkt/lidl">Lidl</a>:</strong> Nieuwe supermarktaanbiedingen + start Lidl Plus bonussen</li>
+  <li><strong>Woensdag — <a href="/supermarkt/albert-heijn">Albert Heijn</a>:</strong> AH Bonus Week start, inclusief persoonlijke bonussen in de app</li>
   <li><strong>Woensdag — Jumbo:</strong> Nieuwe weekaanbiedingen, tegelijk met AH</li>
   <li><strong>Woensdag — Dirk:</strong> Nieuwe aanbiedingen, iets later op de dag online</li>
   <li><strong>Woensdag — Hoogvliet &amp; Vomar:</strong> Nieuwe weekaanbiedingen</li>
@@ -1777,7 +1777,7 @@ export const POSTS: BlogPost[] = [
       },
     ],
     content: `
-<p class="lead">Steeds meer Nederlanders laten hun boodschappen thuisbezorgen. Maar welke dienst is het goedkoopst en het handigst? We vergelijken <strong>Albert Heijn Bezorgen, Jumbo Thuisbezorgd, Picnic en Flink</strong> op prijs, service en aanbiedingen.</p>
+<p class="lead">Steeds meer Nederlanders laten hun boodschappen thuisbezorgen. Maar welke dienst is het goedkoopst en het handigst? We vergelijken <strong><a href="/supermarkt/albert-heijn">Albert Heijn</a> Bezorgen, <a href="/supermarkt/jumbo">Jumbo</a> Thuisbezorgd, Picnic en Flink</strong> op prijs, service en aanbiedingen.</p>
 
 <h2>Het grote verschil: vaste bezorgkosten</h2>
 <p>De grootste kostenpost bij thuisbezorging is de bezorgfee. Hier het overzicht:</p>
@@ -2167,7 +2167,7 @@ export const POSTS: BlogPost[] = [
     readTime: 4,
     category: 'Supermarkt gids',
     content: `
-<p class="lead">Hoogvliet Supermarkt is een geliefde regionale supermarkt in Zuid-Holland met meer dan 70 filialen. Met een goede balans tussen prijs en kwaliteit trekt Hoogvliet een trouwe klantenkring. Maar hoe haal je het maximale uit de <strong>Hoogvliet aanbiedingen</strong>?</p>
+<p class="lead"><a href="/supermarkt/hoogvliet">Hoogvliet</a> Supermarkt is een geliefde regionale supermarkt in Zuid-Holland met meer dan 70 filialen. Met een goede balans tussen prijs en kwaliteit trekt Hoogvliet een trouwe klantenkring. Maar hoe haal je het maximale uit de <strong>Hoogvliet aanbiedingen</strong>?</p>
 
 <h2>Wanneer beginnen de Hoogvliet aanbiedingen?</h2>
 <p>Hoogvliet vernieuwt zijn weekaanbiedingen elke <strong>woensdag</strong>. De aanbiedingen lopen van woensdag tot en met dinsdag — zeven dagen per actieperiode. Tip: check de Hoogvliet website of DealHunter4U op woensdagochtend voor de nieuwste deals.</p>
@@ -2177,7 +2177,7 @@ export const POSTS: BlogPost[] = [
 
 <h2>Wat maakt Hoogvliet bijzonder?</h2>
 <ul>
-  <li><strong>Breed assortiment:</strong> Hoogvliet voert een uitgebreid assortiment inclusief A-merken, biologisch en regionaal — vergelijkbaar met AH of Jumbo.</li>
+  <li><strong>Breed assortiment:</strong> Hoogvliet voert een uitgebreid assortiment inclusief A-merken, biologisch en regionaal — vergelijkbaar met AH of <a href="/supermarkt/jumbo">Jumbo</a>.</li>
   <li><strong>Scherpe weekaanbiedingen:</strong> Wekelijks 50+ producten met kortingen van 20–40%, vergelijkbaar met de AH Bonus.</li>
   <li><strong>Eigen huismerk:</strong> Hoogvliet heeft een eigen merk (Huismerk) dat structureel 20–30% goedkoper is dan A-merken.</li>
   <li><strong>Spaarsysteem:</strong> Hoogvliet heeft regelmatig spaarcampagnes met punten voor gratis producten of voordelen.</li>
@@ -2194,7 +2194,7 @@ export const POSTS: BlogPost[] = [
 </ul>
 
 <h2>Hoogvliet vs. Albert Heijn: wie is goedkoper?</h2>
-<p>Op basisprijzen is Hoogvliet gemiddeld <strong>5–10% goedkoper</strong> dan Albert Heijn. Op weekaanbiedingen zijn ze vergelijkbaar — beide hebben diepte kortingen. De verschillen:</p>
+<p>Op basisprijzen is Hoogvliet gemiddeld <strong>5–10% goedkoper</strong> dan <a href="/supermarkt/albert-heijn">Albert Heijn</a>. Op weekaanbiedingen zijn ze vergelijkbaar — beide hebben diepte kortingen. De verschillen:</p>
 <ul>
   <li><strong>Basisprijzen:</strong> Hoogvliet iets goedkoper</li>
   <li><strong>Persoonlijke bonussen:</strong> AH wint met de app-gebaseerde persoonlijke aanbiedingen</li>
@@ -2573,9 +2573,9 @@ export const POSTS: BlogPost[] = [
 <h2>Ranglijst: goedkoopste supermarkten Nederland 2026</h2>
 <p>Op basis van een mandje met 50 gangbare producten (zuivel, vlees, groenten, houdbaar, dranken):</p>
 <ol>
-  <li><strong>Aldi</strong> — gemiddeld €85–€95 voor standaard boodschappenmand</li>
-  <li><strong>Lidl</strong> — gemiddeld €87–€97</li>
-  <li><strong>Dirk van den Broek</strong> — gemiddeld €95–€105 (Randstad)</li>
+  <li><strong><a href="/supermarkt/aldi">Aldi</a></strong> — gemiddeld €85–€95 voor standaard boodschappenmand</li>
+  <li><strong><a href="/supermarkt/lidl">Lidl</a></strong> — gemiddeld €87–€97</li>
+  <li><strong><a href="/supermarkt/dirk">Dirk</a> van den Broek</strong> — gemiddeld €95–€105 (Randstad)</li>
   <li><strong>Vomar</strong> — gemiddeld €96–€106 (Noord-Holland)</li>
   <li><strong>Jumbo</strong> — gemiddeld €105–€115</li>
   <li><strong>DekaMarkt</strong> — gemiddeld €107–€117</li>
@@ -2682,9 +2682,9 @@ export const POSTS: BlogPost[] = [
 <ul>
   <li><strong>Kippenbouten (1 kg)</strong>
     <ul>
-      <li>Aldi: ±€3,49 — structureel goedkoopst</li>
-      <li>Lidl: ±€3,69</li>
-      <li>Dirk: ±€3,99</li>
+      <li><a href="/supermarkt/aldi">Aldi</a>: ±€3,49 — structureel goedkoopst</li>
+      <li><a href="/supermarkt/lidl">Lidl</a>: ±€3,69</li>
+      <li><a href="/supermarkt/dirk">Dirk</a>: ±€3,99</li>
       <li>AH Bonus: ±€4,99 (normaal ±€6,49)</li>
       <li>Jumbo weekdeal: ±€4,79</li>
     </ul>
@@ -2807,7 +2807,7 @@ export const POSTS: BlogPost[] = [
       },
     ],
     content: `
-<p class="lead">Albert Heijn Huismerk, Jumbo Huismerk, Aldi eigen merk, Lidl Favorina — supermarkten hebben de afgelopen jaren hun eigen merken enorm verbeterd. Maar zijn ze echt net zo goed als Ariel, Pampers of Coca-Cola? En hoeveel bespaar je precies?</p>
+<p class="lead"><a href="/supermarkt/albert-heijn">Albert Heijn</a> Huismerk, <a href="/supermarkt/jumbo">Jumbo</a> Huismerk, Aldi eigen merk, <a href="/supermarkt/lidl">Lidl</a> Favorina — supermarkten hebben de afgelopen jaren hun eigen merken enorm verbeterd. Maar zijn ze echt net zo goed als Ariel, Pampers of Coca-Cola? En hoeveel bespaar je precies?</p>
 
 <h2>Huismerk vs. A-merk: de cijfers</h2>
 <p>Op een standaard boodschappenmand van €100 aan A-merken bespaar je met huismerken gemiddeld:</p>
@@ -2925,9 +2925,9 @@ export const POSTS: BlogPost[] = [
 <ul>
   <li><strong>Komkommer (1 stuk)</strong>
     <ul>
-      <li>Aldi: €0,49 — goedkoopst</li>
-      <li>Lidl: €0,59</li>
-      <li>Dirk: €0,59</li>
+      <li><a href="/supermarkt/aldi">Aldi</a>: €0,49 — goedkoopst</li>
+      <li><a href="/supermarkt/lidl">Lidl</a>: €0,59</li>
+      <li><a href="/supermarkt/dirk">Dirk</a>: €0,59</li>
       <li>AH: €0,79 (±€0,59 bij bonus)</li>
     </ul>
   </li>
@@ -3078,7 +3078,7 @@ export const POSTS: BlogPost[] = [
 <p>De Jumbo-app doet veel van wat de AH-app doet, maar met een iets eenvoudiger interface.</p>
 <p><strong>Wat kun je:</strong></p>
 <ul>
-  <li><strong>Jumbo Extra's:</strong> persoonlijke kortingscoupons, vergelijkbaar met AH</li>
+  <li><strong><a href="/supermarkt/jumbo">Jumbo</a> Extra's:</strong> persoonlijke kortingscoupons, vergelijkbaar met AH</li>
   <li><strong>Jumbo Koningsmarkt:</strong> loyaliteitsprogramma met stempelkaarten</li>
   <li><strong>Boodschappenlijst met prijsindicatie</strong></li>
   <li><strong>Online bestellen</strong> voor bezorging of afhalen</li>
@@ -3087,7 +3087,7 @@ export const POSTS: BlogPost[] = [
 <p><strong>Beoordeling: 8/10</strong></p>
 
 <h2>Lidl Plus App: de beste gratis coupons</h2>
-<p>De Lidl Plus-app valt op door zijn eenvoud en de royale coupons die je per week kunt activeren.</p>
+<p>De <a href="/supermarkt/lidl">Lidl</a> Plus-app valt op door zijn eenvoud en de royale coupons die je per week kunt activeren.</p>
 <p><strong>Wat kun je:</strong></p>
 <ul>
   <li><strong>Digitale coupons:</strong> 3–5 coupons per week met €0,50–€2,00 korting per product</li>
@@ -3099,7 +3099,7 @@ export const POSTS: BlogPost[] = [
 <p><strong>Beoordeling: 8/10</strong> — bijzonder sterk voor de wekelijkse coupons.</p>
 
 <h2>Aldi App: eenvoudig maar effectief</h2>
-<p>Aldi heeft een soberdere app dan de concurrenten, maar levert toch nuttige functies.</p>
+<p><a href="/supermarkt/aldi">Aldi</a> heeft een soberdere app dan de concurrenten, maar levert toch nuttige functies.</p>
 <p><strong>Wat kun je:</strong></p>
 <ul>
   <li><strong>Weekfolder:</strong> digitale versie van de papieren folder</li>
@@ -3179,8 +3179,8 @@ export const POSTS: BlogPost[] = [
 <h2>Stap 2: de beste supermarkt-strategie voor gezinnen</h2>
 <p>Eén supermarkt gebruiken voor alles is comfortabel maar duur. Het alternatief:</p>
 <ul>
-  <li><strong>Aldi of Lidl:</strong> voor zuivel, eieren, pasta, rijst, diepvries, huismerk-alles</li>
-  <li><strong>Dirk of Vomar (als in de regio):</strong> voor vlees, verse groenten, brood</li>
+  <li><strong><a href="/supermarkt/aldi">Aldi</a> of <a href="/supermarkt/lidl">Lidl</a>:</strong> voor zuivel, eieren, pasta, rijst, diepvries, huismerk-alles</li>
+  <li><strong><a href="/supermarkt/dirk">Dirk</a> of Vomar (als in de regio):</strong> voor vlees, verse groenten, brood</li>
   <li><strong>AH of Jumbo:</strong> alleen voor A-merk producten die je echt wil én die in aanbieding zijn</li>
 </ul>
 <p>Klinkt als veel supermarkten — maar in de praktijk gaat het om 1-2 extra stops per week. Besparing: €80–€120 per maand voor een gezin van vier.</p>
@@ -3264,9 +3264,9 @@ export const POSTS: BlogPost[] = [
 <h2>Biologisch bij de grote supermarkten: vergelijking</h2>
 <p>Elke grote supermarkt heeft zijn eigen biologische lijn:</p>
 <ul>
-  <li><strong>Albert Heijn AH Biologisch:</strong> uitgebreid assortiment, 300+ producten. Wekelijks meerdere bio-producten in de Bonus. Prijs: 20–50% hoger dan regulier AH-product.</li>
-  <li><strong>Jumbo Biologisch:</strong> vergelijkbaar assortiment, ook regelmatig in de aanbieding. Jumbo biedt soms 1+1 op biologische producten.</li>
-  <li><strong>Lidl Bio Organic:</strong> beperkt maar scherp geprijsd assortiment. Lidl bio-producten zijn gemiddeld 15–25% goedkoper dan AH Biologisch.</li>
+  <li><strong><a href="/supermarkt/albert-heijn">Albert Heijn</a> AH Biologisch:</strong> uitgebreid assortiment, 300+ producten. Wekelijks meerdere bio-producten in de Bonus. Prijs: 20–50% hoger dan regulier AH-product.</li>
+  <li><strong><a href="/supermarkt/jumbo">Jumbo</a> Biologisch:</strong> vergelijkbaar assortiment, ook regelmatig in de aanbieding. Jumbo biedt soms 1+1 op biologische producten.</li>
+  <li><strong><a href="/supermarkt/lidl">Lidl</a> Bio Organic:</strong> beperkt maar scherp geprijsd assortiment. Lidl bio-producten zijn gemiddeld 15–25% goedkoper dan AH Biologisch.</li>
   <li><strong>Aldi (bio-producten):</strong> Aldi heeft een selectie biologische producten — yoghurt, zuivel, eieren — tegen discounterprijzen.</li>
 </ul>
 
@@ -3391,7 +3391,7 @@ export const POSTS: BlogPost[] = [
 <h2>Brood: welke supermarkt is het goedkoopst?</h2>
 <p>Brood is een dagelijks product dat snel duur kan worden. Vergelijking per supermarkt:</p>
 <ul>
-  <li><strong>Witbrood (800g):</strong> Aldi ±€1,19 | Lidl ±€1,25 | Dirk ±€1,29 | AH Huismerk ±€1,39</li>
+  <li><strong>Witbrood (800g):</strong> <a href="/supermarkt/aldi">Aldi</a> ±€1,19 | <a href="/supermarkt/lidl">Lidl</a> ±€1,25 | <a href="/supermarkt/dirk">Dirk</a> ±€1,29 | AH Huismerk ±€1,39</li>
   <li><strong>Volkoren (800g):</strong> Aldi ±€1,49 | Jumbo huismerk ±€1,59 | AH ±€1,69</li>
   <li><strong>Ambachtelijk brood (Lidl/AH bakkerij):</strong> Lidl ±€1,69–€2,49 | AH in-store bakkerij ±€2,49–€3,99</li>
 </ul>
@@ -3536,9 +3536,9 @@ export const POSTS: BlogPost[] = [
   <li><strong>Lay's (175g regulier zakje)</strong>
     <ul>
       <li>AH Bonus: ±€1,29 (normaal ±€1,99) — elke 3-4 weken</li>
-      <li>Jumbo weekdeal: ±€1,39</li>
-      <li>Dirk: structureel ±€1,49</li>
-      <li>Aldi eigen merk (175g): ±€0,79 — 60% goedkoper</li>
+      <li><a href="/supermarkt/jumbo">Jumbo</a> weekdeal: ±€1,39</li>
+      <li><a href="/supermarkt/dirk">Dirk</a>: structureel ±€1,49</li>
+      <li><a href="/supermarkt/aldi">Aldi</a> eigen merk (175g): ±€0,79 — 60% goedkoper</li>
     </ul>
   </li>
   <li><strong>Lay's multipak (5×25g of 6×40g)</strong>
@@ -3692,8 +3692,8 @@ export const POSTS: BlogPost[] = [
 
 <h3>Eiwitten (±€16)</h3>
 <ul>
-  <li>Kippenbouten 1 kg (Aldi): €3,49</li>
-  <li>Gehakt rundergehakt 500g (Dirk of Lidl bonus): €3,99</li>
+  <li>Kippenbouten 1 kg (<a href="/supermarkt/aldi">Aldi</a>): €3,49</li>
+  <li>Gehakt rundergehakt 500g (<a href="/supermarkt/dirk">Dirk</a> of <a href="/supermarkt/lidl">Lidl</a> bonus): €3,99</li>
   <li>Eieren 12 stuks (Aldi): €2,49</li>
   <li>Rode linzen 500g (Jumbo/AH huismerk): €1,39</li>
   <li>Kikkererwten blik 400g x2 (AH of Lidl): €1,38</li>
@@ -3802,7 +3802,7 @@ export const POSTS: BlogPost[] = [
 <h2>Melk: grote prijsverschillen per supermarkt</h2>
 <p>Melk is een dagelijks product waar de prijsverschillen per supermarkt flink oplopen:</p>
 <ul>
-  <li><strong>Volle melk 1L:</strong> Aldi €0,79 | Lidl €0,85 | Jumbo huismerk €0,95 | AH huismerk €0,99 | Campina (AH) €1,19</li>
+  <li><strong>Volle melk 1L:</strong> <a href="/supermarkt/aldi">Aldi</a> €0,79 | <a href="/supermarkt/lidl">Lidl</a> €0,85 | <a href="/supermarkt/jumbo">Jumbo</a> huismerk €0,95 | AH huismerk €0,99 | Campina (AH) €1,19</li>
   <li><strong>Halfvolle melk 1L:</strong> Aldi €0,79 | Dirk €0,89 | AH huismerk €0,99</li>
   <li><strong>Plantaardige melk (havermelk, 1L):</strong> Aldi €0,89 | Oatly (AH Bonus) €1,79 (normaal €2,79)</li>
 </ul>
@@ -3940,7 +3940,7 @@ export const POSTS: BlogPost[] = [
   <li><strong>Pampers Baby-Dry (maat 3):</strong>
     <ul>
       <li>AH Bonus: ±€0,18–€0,22 per luier (normaal ±€0,28–€0,32)</li>
-      <li>Jumbo weekdeal: ±€0,20 per luier</li>
+      <li><a href="/supermarkt/jumbo">Jumbo</a> weekdeal: ±€0,20 per luier</li>
       <li>Reguliere prijs: ±€0,28–€0,35 per luier</li>
     </ul>
   </li>
@@ -3950,8 +3950,8 @@ export const POSTS: BlogPost[] = [
       <li>Reguliere prijs: ±€0,26–€0,32 per luier</li>
     </ul>
   </li>
-  <li><strong>Aldi Mamia (huismerk):</strong> ±€0,09–€0,12 per luier — <strong>60% goedkoper dan Pampers</strong></li>
-  <li><strong>Lidl Lupilu (huismerk):</strong> ±€0,10–€0,13 per luier</li>
+  <li><strong><a href="/supermarkt/aldi">Aldi</a> Mamia (huismerk):</strong> ±€0,09–€0,12 per luier — <strong>60% goedkoper dan Pampers</strong></li>
+  <li><strong><a href="/supermarkt/lidl">Lidl</a> Lupilu (huismerk):</strong> ±€0,10–€0,13 per luier</li>
   <li><strong>AH Huismerk luiers:</strong> ±€0,13–€0,16 per luier</li>
 </ul>
 <p><strong>Jaarlijkse kosten (2.500 luiers):</strong></p>
@@ -4054,11 +4054,11 @@ export const POSTS: BlogPost[] = [
 
 <h3>Ham (gekookt, gesneden)</h3>
 <ul>
-  <li><strong>Dirk van den Broek:</strong> ±€1,29–€1,49 — structureel goedkoopst</li>
-  <li><strong>Aldi eigen merk:</strong> ±€1,19–€1,39</li>
+  <li><strong><a href="/supermarkt/dirk">Dirk</a> van den Broek:</strong> ±€1,29–€1,49 — structureel goedkoopst</li>
+  <li><strong><a href="/supermarkt/aldi">Aldi</a> eigen merk:</strong> ±€1,19–€1,39</li>
   <li><strong>AH Huismerk:</strong> ±€1,49–€1,69</li>
   <li><strong>AH Bonus (merken als Stegeman):</strong> ±€1,79 (normaal ±€2,49)</li>
-  <li><strong>Jumbo weekdeal:</strong> ±€1,89 voor 200g — beste waarde bij aanbieding</li>
+  <li><strong><a href="/supermarkt/jumbo">Jumbo</a> weekdeal:</strong> ±€1,89 voor 200g — beste waarde bij aanbieding</li>
 </ul>
 
 <h3>Salami (gesneden)</h3>
@@ -4202,7 +4202,7 @@ export const POSTS: BlogPost[] = [
     </ul>
   </li>
 </ul>
-<p><strong>Vergelijking met zelf koken:</strong> voor dezelfde maaltijden bij Aldi of Lidl betaal je €2–4 per portie. Een maaltijdbox kost je gemiddeld €20–30 meer per week ten opzichte van slim supermarkt boodschappen doen.</p>
+<p><strong>Vergelijking met zelf koken:</strong> voor dezelfde maaltijden bij <a href="/supermarkt/aldi">Aldi</a> of <a href="/supermarkt/lidl">Lidl</a> betaal je €2–4 per portie. Een maaltijdbox kost je gemiddeld €20–30 meer per week ten opzichte van slim supermarkt boodschappen doen.</p>
 
 <h2>HelloFresh Nederland: betrouwbaar en gevarieerd</h2>
 <p>HelloFresh is de marktleider in Nederland en dat is niet voor niets. Met meer dan 35 recepten per week heb je elke week voldoende keuze. De recepten zijn goed getest en ook voor beginners in de keuken eenvoudig te volgen.</p>
@@ -4759,7 +4759,7 @@ export const POSTS: BlogPost[] = [
     ],
     content: `
 <p style="font-size:12px; color:#9C9389; margin-bottom:8px;">📅 Bijgewerkt: juli 2026 — actuele weekaanbiedingen verwerkt</p>
-<p class="lead">Is Dirk goedkoper dan Aldi? Het antwoord hangt af van <strong>hoe</strong> je vergelijkt: Dirk en Aldi zijn allebei prijsvechters, maar met een fundamenteel ander verdienmodel. Dirk werkt met sterk wisselende, diepe weekacties — Aldi met het hele jaar door constant lage huismerkprijzen. In dit artikel leggen we het verschil uit en zeggen we wanneer je bij welke moet zijn.</p>
+<p class="lead">Is <a href="/supermarkt/dirk">Dirk</a> goedkoper dan <a href="/supermarkt/aldi">Aldi</a>? Het antwoord hangt af van <strong>hoe</strong> je vergelijkt: Dirk en Aldi zijn allebei prijsvechters, maar met een fundamenteel ander verdienmodel. Dirk werkt met sterk wisselende, diepe weekacties — Aldi met het hele jaar door constant lage huismerkprijzen. In dit artikel leggen we het verschil uit en zeggen we wanneer je bij welke moet zijn.</p>
 
 <h2>Snel antwoord: is Dirk goedkoper dan Aldi?</h2>
 <table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
@@ -4845,7 +4845,7 @@ export const POSTS: BlogPost[] = [
     ],
     content: `
 <p style="font-size:12px; color:#9C9389; margin-bottom:8px;">📅 Bijgewerkt: juli 2026 — actuele weekaanbiedingen verwerkt</p>
-<p class="lead">Is Plus goedkoper dan Jumbo? Op basisprijzen ontlopen de twee elkaar niet veel — beide zijn volwaardige supermarkten, geen discounters. Het echte verschil zit in de wekelijkse aanbiedingen en de winkelervaring. In dit artikel vergelijken we Plus en Jumbo op prijs, aanbiedingen en assortiment.</p>
+<p class="lead">Is Plus goedkoper dan <a href="/supermarkt/jumbo">Jumbo</a>? Op basisprijzen ontlopen de twee elkaar niet veel — beide zijn volwaardige supermarkten, geen discounters. Het echte verschil zit in de wekelijkse aanbiedingen en de winkelervaring. In dit artikel vergelijken we Plus en Jumbo op prijs, aanbiedingen en assortiment.</p>
 
 <h2>Snel antwoord: is Plus goedkoper dan Jumbo?</h2>
 <table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
@@ -4927,7 +4927,7 @@ export const POSTS: BlogPost[] = [
     ],
     content: `
 <p style="font-size:12px; color:#9C9389; margin-bottom:8px;">📅 Bijgewerkt: juli 2026 — actuele weekaanbiedingen verwerkt</p>
-<p class="lead">Is DekaMarkt goedkoper dan Dirk? Beide zijn regionale prijsvechters die elkaar in Noord-Holland en Utrecht regelmatig beconcurreren, maar met een verschillend actiemodel: DekaMarkt zet in op combi-deals, Dirk op scherpe losse vleesprijzen. In dit artikel vergelijken we beide op prijs, actievorm en assortiment.</p>
+<p class="lead">Is <a href="/supermarkt/dekamarkt">DekaMarkt</a> goedkoper dan <a href="/supermarkt/dirk">Dirk</a>? Beide zijn regionale prijsvechters die elkaar in Noord-Holland en Utrecht regelmatig beconcurreren, maar met een verschillend actiemodel: DekaMarkt zet in op combi-deals, Dirk op scherpe losse vleesprijzen. In dit artikel vergelijken we beide op prijs, actievorm en assortiment.</p>
 
 <h2>Snel antwoord: is DekaMarkt goedkoper dan Dirk?</h2>
 <table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
@@ -5026,7 +5026,7 @@ export const POSTS: BlogPost[] = [
     ],
     content: `
 <p style="font-size:12px; color:#9C9389; margin-bottom:8px;">📅 Bijgewerkt: juli 2026 — actuele actieprijzen verwerkt</p>
-<p class="lead">Is Kruidvat goedkoper dan Etos? Het korte antwoord: <strong>ja, Kruidvat is op basisprijzen 10–20% goedkoper</strong> dan Etos. Op shampoo, vitaminen en verzorgingsproducten is het verschil het grootst. In dit artikel vergelijken we beide drogisten op prijs, assortiment en aanbiedingen.</p>
+<p class="lead">Is <a href="/supermarkt/kruidvat">Kruidvat</a> goedkoper dan Etos? Het korte antwoord: <strong>ja, Kruidvat is op basisprijzen 10–20% goedkoper</strong> dan Etos. Op shampoo, vitaminen en verzorgingsproducten is het verschil het grootst. In dit artikel vergelijken we beide drogisten op prijs, assortiment en aanbiedingen.</p>
 
 <h2>Snel antwoord: Kruidvat vs Etos</h2>
 <table style="width:100%; border-collapse:collapse; margin:1.5rem 0;">
