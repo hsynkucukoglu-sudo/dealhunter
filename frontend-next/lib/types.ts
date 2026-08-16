@@ -69,8 +69,15 @@ export const MARKETS = [
     name: 'Lidl',
     color: '#0050AA',
     ctaTitle: 'Lidl Aanbiedingen Deze Week ✓ 15-25% Goedkoper dan AH | DealHunter4U',
-    description: 'Gemiddeld 15-25% goedkoper dan AH. Non-food, verse producten & deals elke week.',
-    keywords: 'lidl deals, lidl aanbiedingen, deals lidl, lidl deal van de dag, lidl actie, lidl folder, lidl nederland aanbieding, lidl aanbieding deze week, lidl korting',
+    description: 'Geen vaste dagdeal bij Lidl — wel dagelijks wisselend aanbod. 15-25% goedkoper dan AH.',
+    keywords: 'lidl deals, lidl aanbiedingen, deals lidl, lidl dagdeal, lidl dagaanbieding, deal van de dag lidl, lidl actie, lidl folder, lidl nederland aanbieding, lidl aanbieding deze week, lidl korting',
+    // GSC 18 Tem–14 Ağu: `lidl dagdeal` 616 gösterim / konum 5,6 ama TO %0,2 —
+    // buna karşılık `lidl dagaanbieding` neredeyse aynı konumda (4,3) %5,5 dönüyor.
+    // Aynı sayfa, aynı bölge, 27 kat fark: eksik olan başlıkta kelime eşleşmesi.
+    // Sayfa bu niyeti zaten dürüstçe cevaplıyor (marketContent: "Lidl werkt niet
+    // met één vaste dagdeal, maar heeft wél dagelijks wisselende aanbiedingen"),
+    // sadece title/description o cevabı taşımıyordu. Bkz. docs/analiz-2026-08-15.md §6.6.
+    intentTerm: 'Dagdeal',
   },
   {
     slug: 'dirk',
@@ -93,8 +100,11 @@ export const MARKETS = [
     name: 'Hoogvliet',
     color: '#164194',
     ctaTitle: 'Hoogvliet Aanbiedingen Deze Week ✓ Actuele Weekdeals | DealHunter4U',
-    description: 'Vlees & zuivel tot 40% goedkoper dan AH. Noord-Hollands scherpste weekdeals.',
-    keywords: 'hoogvliet acties, hoogvliet aanbiedingen, hoogvliet aanbieding deze week, hoogvliet folder, hoogvliet deals, hoogvliet korting, hoogvliet actie, hoogvliet supermarkt aanbieding',
+    description: 'Vlees & zuivel tot 40% goedkoper dan AH. Noord-Hollands scherpste dagdeals.',
+    keywords: 'hoogvliet acties, hoogvliet aanbiedingen, hoogvliet dagdeals, hoogvliet weekdeals, hoogvliet aanbieding deze week, hoogvliet folder, hoogvliet deals, hoogvliet korting, hoogvliet actie, hoogvliet supermarkt aanbieding',
+    // Zelfde patroon als Lidl: `hoogvliet dagdeals` 199 gösterim / konum 9,8 / TO %0,5,
+    // `hoogvliet weekdeals` 27 / 8,6 / %3,7. Konum Lidl'inkinden kötü ama sorgu ailesi aynı.
+    intentTerm: 'Dagdeals',
   },
   {
     slug: 'vomar',

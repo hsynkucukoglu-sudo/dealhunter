@@ -36,14 +36,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Rakiplerin hiçbiri hafta no kullanmıyor; hepsi "deze week" evergreen ifadesinde.
   const brandTerm = (market as { dealBrandTerm?: string }).dealBrandTerm
   const brandPrefix = brandTerm ? `${brandTerm} ` : ''
+  // intentTerm: bu markette GSC'de kanıtlanmış AYRI bir sorgu ailesi varsa başlığa
+  // girer (şu an Lidl "Dagdeal", Hoogvliet "Dagdeals"). Sebep: aynı sayfa, aynı
+  // SERP bölgesi, ama sorgunun kelimesi başlıkta geçmediğinde TO 27 kata kadar
+  // düşüyor (`lidl dagaanbieding` %5,5 / konum 4,3 ↔ `lidl dagdeal` %0,2 / 5,6).
+  // Head-term title optimizasyonuyla KARIŞTIRILMAMALI — o 4 kez çürütüldü ve
+  // konum 8-9 bandındaydı; burası 4-6 bandı, yani kazanılabilir bölge.
+  // "Vandaag" doğru bir ifade: gösterilen tüm aanbiedingen bugün geçerli.
+  const intentTerm = (market as { intentTerm?: string }).intentTerm
   const baseTitle = market.ctaTitle ?? `${market.name} Aanbiedingen Deze Week | DealHunter4U`
   const pageTitle = dealCount > 0
-    ? `${market.name} ${brandPrefix}Aanbiedingen Deze Week ✓ ${dealCount} Actuele Deals | DealHunter4U`
+    ? intentTerm
+      ? `${market.name} ${intentTerm} & Aanbiedingen Vandaag ✓ ${dealCount} Deals | DealHunter4U`
+      : `${market.name} ${brandPrefix}Aanbiedingen Deze Week ✓ ${dealCount} Actuele Deals | DealHunter4U`
     : baseTitle
 
   const discountStr = topDiscount > 0 ? ` — tot ${topDiscount}% korting` : ''
   const dynamicDesc = dealCount > 0
-    ? `✓ ${dealCount} actuele ${market.name} ${brandPrefix}aanbiedingen van deze week${discountStr}. ${market.description}`
+    ? intentTerm
+      ? `✓ ${dealCount} ${market.name} aanbiedingen die vandaag geldig zijn${discountStr}. ${market.description}`
+      : `✓ ${dealCount} actuele ${market.name} ${brandPrefix}aanbiedingen van deze week${discountStr}. ${market.description}`
     : market.description
 
   return {
