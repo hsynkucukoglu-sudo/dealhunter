@@ -152,8 +152,43 @@ const CATEGORY_PATTERNS = CATEGORIES.map(cat => ({
   re: new RegExp(cat.keywords.map(toPattern).join('|'), 'i'),
 }))
 
+// Nederlandse samenstellingen zijn HOOFD-FINAAL: het laatste deel zegt wát het
+// product is, de rest is bepaling. "Frambozensiroop" is siroop (drank), geen
+// framboos. Onze patronen zoeken een woordgrens aan het BEGIN, dus ze pakken
+// juist de bepaling — daardoor stond siroop onder groente-fruit en boterhamworst
+// onder zuivel.
+//
+// Deze lijst draait dat om voor kernwoorden die alleen als SAMENSTELLINGSDEEL
+// voorkomen (vandaar de verplichte letter ervoor: een los "Siroop" wordt gewoon
+// door de normale trefwoordscan afgehandeld).
+//
+// BEWUST WEGGELATEN — hier liegt het hoofd, gemeten op de live catalogus:
+//   kaas   → "pindakaas" is broodbeleg, geen zuivel (6 producten)
+//   pasta  → "tandpasta" is verzorging (5), "hazelnootpasta" is broodbeleg
+//   taart  → "LEGO 40815 Verjaardagstaart" is speelgoed
+//   koek   → "ontbijtkoek" hoort al bij bakkerij
+//   melk   → "Nutrilon" is babyvoeding, geen zuivelschap
+// Een blinde "laatste deel wint"-regel zou die vijf allemaal stukmaken.
+const COMPOUND_HEADS = [
+  ['dranken', ['siroop', 'limonade', 'koffie', 'thee', 'bier', 'drank']],
+  ['zuivel', ['yoghurt', 'kwark', 'vla']],
+  ['bakkerij', ['brood', 'broodje', 'stroop']],
+  ['vlees-vis', ['worst', 'filet', 'spek', 'gehakt']],
+  ['maaltijden', ['salade', 'saus', 'soep']],
+  ['snacks', ['zoutjes']],
+]
+
+const COMPOUND_HEAD_PATTERNS = COMPOUND_HEADS.map(([id, heads]) => ({
+  id,
+  re: new RegExp(heads.map(h => `[a-z]${h}(?![a-z])`).join('|'), 'i'),
+}))
+
 export function categorize(name) {
   if (!name) return 'overig'
+  // Hoofd van de samenstelling gaat vóór de bepaling.
+  for (const cat of COMPOUND_HEAD_PATTERNS) {
+    if (cat.re.test(name)) return cat.id
+  }
   for (const cat of CATEGORY_PATTERNS) {
     if (cat.re.test(name)) return cat.id
   }
