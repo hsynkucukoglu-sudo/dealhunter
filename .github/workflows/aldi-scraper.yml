@@ -1,0 +1,35 @@
+name: Aldi Scraper
+
+on:
+  schedule:
+    # Elke dag 08:20 UTC — ná de backend-cron (08:00), zodat deze run de
+    # Aldi-data overschrijft die Railway zelf niet betrouwbaar kan ophalen.
+    # 08:10 is AH en 08:15 is Kruidvat, vandaar 08:20.
+    #
+    # Aldi wisselt zijn folder op maandag (weekSwitchPer: "Monday"), dus een
+    # dagelijkse run is nodig: draait hij alleen wekelijks, dan mist hij de
+    # blokken die pas op woensdag/vrijdag/zaterdag live gaan.
+    - cron: '20 8 * * *'
+  workflow_dispatch:
+
+jobs:
+  scrape-aldi:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      # Geen npm install: aldi-scraper.js gebruikt alleen de ingebouwde fetch,
+      # geen Playwright en geen dependencies.
+      #
+      # BEWUST GEEN continue-on-error, net als bij AH: die vlag verborg bij
+      # Hoogvliet maandenlang een stille storing.
+      - name: Run Aldi scraper
+        working-directory: .github/scripts
+        env:
+          BACKEND_URL: ${{ secrets.BACKEND_URL }}
+          ADMIN_TOKEN: ${{ secrets.ADMIN_TOKEN }}
+        run: node aldi-scraper.js
