@@ -4,6 +4,7 @@
  */
 import * as cheerio from 'cheerio'
 import { canonicalBrand, extractBrand } from '../brand.js'
+import { pickCategoryLabel } from '../categorize.js'
 import { tokenize } from '../productMatch.js'
 
 let EXPIRES_AT = ''
@@ -1169,9 +1170,18 @@ export function parseAldiProducts(algoliaMap, expiresAtDefault = EXPIRES_AT) {
         ? new Date(p.currentPrice.validUntil * 1000).toISOString().split('T')[0]
         : expiresAtDefault
 
+      // Aldi's eigen indeling is preciezer dan onze naamherkenning: die zette
+      // Sperziebonen, Paksoi en Spitskool op 'overig' terwijl Aldi ze onder
+      // "Aardappels, groente en fruit" heeft staan. Slechts ~29 van de ~190
+      // producten dragen deze velden (de rest heeft mainCategoryID 'offer'),
+      // dus het is een aanvulling op naamherkenning, geen vervanging:
+      // undefined laat normalizeCategory terugvallen op categorize(name).
+      const category = pickCategoryLabel(p.hierarchicalCategories?.lvl0)
+
       results.push({
         name: p.name,
         market: 'Aldi',
+        category,
         originalPrice,
         discountedPrice,
         imageUrl: primary?.url || null,

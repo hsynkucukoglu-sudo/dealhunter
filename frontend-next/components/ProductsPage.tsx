@@ -848,30 +848,33 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
       {/* MAIN CONTENT */}
       <main className="max-w-[1280px] mx-auto px-4 md:px-16 pt-16 pb-32">
 
-        {/* FILTER ROW — sadeleştirildi: markten showcase'e taşındı */}
-        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-2">
+        {/* FILTER ROW — sadeleştirildi: markten showcase'e taşındı.
+            WRAPT, scrollt niet horizontaal: dezelfde reden als de marktrij op
+            /categorie/* (zie CategoryPage.tsx). no-scrollbar verbergt de
+            scrollbar, dus pillen die buiten beeld vielen waren onvindbaar. */}
+        <div className="flex flex-wrap items-center gap-2 pb-2 mb-2">
           <motion.button whileTap={{ scale: 0.95 }}
             onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setShowKassakoopjes(false); setShowHotOnly(false); setSelectedCampaign('all'); setSelectedCategory('all') })}
-            className={`market-pill flex-none ${selectedMarket === 'all' && !showCampaignsOnly && !showFavoritesOnly && !showKassakoopjes && !showHotOnly ? 'market-pill-active' : ''}`}>
+            className={`market-pill market-pill-compact flex-none ${selectedMarket === 'all' && !showCampaignsOnly && !showFavoritesOnly && !showKassakoopjes && !showHotOnly ? 'market-pill-active' : ''}`}>
             <span className="material-symbols-outlined text-base">bolt</span>
             {t.allMarkets}
           </motion.button>
           <motion.button whileTap={{ scale: 0.95 }}
             onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(true); setSelectedCampaign('all'); setSelectedCategory('all'); setShowKassakoopjes(false); setShowHotOnly(false) })}
-            className={`market-pill flex-none ${showCampaignsOnly ? 'market-pill-active' : ''}`}>
+            className={`market-pill market-pill-compact flex-none ${showCampaignsOnly ? 'market-pill-active' : ''}`}>
             <span className="material-symbols-outlined text-base">local_fire_department</span>
             {t.campaignsOnly}
           </motion.button>
           <motion.button whileTap={{ scale: 0.95 }}
             onClick={() => startTransition(() => { setSelectedMarket('all'); setShowKassakoopjes(!showKassakoopjes); setShowCampaignsOnly(false); setShowHotOnly(false); setSelectedCategory('all'); setSelectedCampaign('all') })}
-            className={`market-pill flex-none ${showKassakoopjes ? 'market-pill-active' : ''}`}>
+            className={`market-pill market-pill-compact flex-none ${showKassakoopjes ? 'market-pill-active' : ''}`}>
             <span className="material-symbols-outlined text-base">payments</span>
             Kassakoopjes &lt;€5
           </motion.button>
           {hotCount > 0 && (
             <motion.button whileTap={{ scale: 0.95 }}
               onClick={() => startTransition(() => { setShowHotOnly(!showHotOnly); setShowCampaignsOnly(false); setShowKassakoopjes(false); setSelectedMarket('all'); setSelectedCategory('all') })}
-              className={`market-pill flex-none ${showHotOnly ? 'market-pill-active' : ''}`}>
+              className={`market-pill market-pill-compact flex-none ${showHotOnly ? 'market-pill-active' : ''}`}>
               <span style={{ fontSize: 15 }}>🔥</span>
               Mijn hot deals{hotCount > 0 ? ` (${hotCount})` : ''}
             </motion.button>
@@ -879,7 +882,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           {favorites.length > 0 && (
             <motion.button whileTap={{ scale: 0.95 }}
               onClick={() => startTransition(() => setShowFavoritesOnly(!showFavoritesOnly))}
-              className={`market-pill flex-none ${showFavoritesOnly ? 'market-pill-active' : ''}`}>
+              className={`market-pill market-pill-compact flex-none ${showFavoritesOnly ? 'market-pill-active' : ''}`}>
               <span className="material-symbols-outlined text-base"
                 style={{ fontVariationSettings: showFavoritesOnly ? '"FILL" 1' : '"FILL" 0' }}>favorite</span>
               {lang === 'tr' ? 'Favoriler' : lang === 'en' ? 'Favorites' : 'Favorieten'}
@@ -888,9 +891,8 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           {/* Seçili market varsa pill olarak göster + temizle butonu */}
           {selectedMarket !== 'all' && (
             <>
-              <div className="w-px h-6 flex-none" style={{ background: '#C9C1B6' }} />
               <div
-                className="market-pill flex-none market-pill-active flex items-center gap-1.5"
+                className="market-pill market-pill-compact flex-none market-pill-active flex items-center gap-1.5"
                 style={{ background: MARKET_COLORS[selectedMarket] || '#1A1A1A', borderColor: 'transparent', color: 'white' }}
               >
                 <MarketLogo market={selectedMarket} size={20} />
@@ -904,11 +906,10 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
               </div>
             </>
           )}
-          <div className="w-px h-6 flex-none" style={{ background: '#C9C1B6' }} />
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={() => setShowFilterPanel(prev => !prev)}
-            className="market-pill flex-none"
+            className="market-pill market-pill-compact flex-none"
             style={activeFilterCount > 0 || showFilterPanel ? { background: '#1A1A1A', color: 'white', borderColor: '#1A1A1A' } : {}}
           >
             <span className="material-symbols-outlined text-base">tune</span>
@@ -1386,24 +1387,23 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
               </div>
 
               {availableMarkets.length > 0 && (
-                <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-2 mb-8">
+                <div className="flex flex-wrap items-center gap-2 mb-8">
                   <motion.button
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setSelectedMarket('all')}
-                    className={`market-pill ${selectedMarket === 'all' ? 'market-pill-active' : ''}`}
+                    className={`market-pill market-pill-compact ${selectedMarket === 'all' ? 'market-pill-active' : ''}`}
                   >
                     <span className="material-symbols-outlined text-base">bolt</span>
                     {t.allMarkets}
                   </motion.button>
-                  <div className="w-px h-6 flex-none" style={{ background: '#C9C1B6' }} />
                   {availableMarkets.map(market => (
                     <motion.button
                       key={market}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => setSelectedMarket(market)}
-                      className={`market-pill ${selectedMarket === market ? 'market-pill-active' : ''}`}
+                      className={`market-pill market-pill-compact ${selectedMarket === market ? 'market-pill-active' : ''}`}
                     >
-                      <MarketLogo market={market} size={22} className="flex-none" />
+                      <MarketLogo market={market} size={18} className="flex-none" />
                       {market}
                     </motion.button>
                   ))}
@@ -1430,16 +1430,16 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
 
               {/* Market seçiliyken: kategori sekmeleri */}
               {selectedMarket !== 'all' && (
-                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-6">
+                <div className="flex flex-wrap items-center gap-2 mb-6">
                   <motion.button whileTap={{ scale: 0.95 }}
                     onClick={() => startTransition(() => setSelectedCategory('all'))}
-                    className={`market-pill flex-none ${selectedCategory === 'all' ? 'market-pill-active' : ''}`}>
+                    className={`market-pill market-pill-compact ${selectedCategory === 'all' ? 'market-pill-active' : ''}`}>
                     {lang === 'tr' ? 'Tümü' : lang === 'en' ? 'All' : 'Alles'}
                   </motion.button>
                   {CATEGORIES.filter(cat => products.some(p => p.market === selectedMarket && p.category === cat.id)).map(cat => (
                     <motion.button key={cat.id} whileTap={{ scale: 0.95 }}
                       onClick={() => startTransition(() => setSelectedCategory(cat.id))}
-                      className={`market-pill flex-none ${selectedCategory === cat.id ? 'market-pill-active' : ''}`}>
+                      className={`market-pill market-pill-compact ${selectedCategory === cat.id ? 'market-pill-active' : ''}`}>
                       {CATEGORY_LABELS[cat.id]?.[lang] ?? cat.label}
                     </motion.button>
                   ))}

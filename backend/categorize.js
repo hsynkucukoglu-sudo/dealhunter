@@ -35,6 +35,10 @@ const CATEGORIES = [
       'koffie', 'thee', 'cappuccino', 'espresso', 'nescafé', 'douwe egberts',
       'energy drink', 'red bull', 'monster energy', 'sportdrank', 'aquarius',
       'ijsthee', 'ijskoffie', 'frappuccino', 'starbucks', 'vruchtenwijn', 'cider',
+      // 'siroop' staat hier en niet bij groente-fruit: "Sinaasappel- of
+      // frambozensiroop" belandde op groente-fruit omdat 'sinaasappel' matcht.
+      // Dranken wordt eerder gecontroleerd, dus dit wint.
+      'siroop',
     ],
   },
   {
@@ -91,6 +95,16 @@ const CATEGORIES = [
       'paddenstoel', 'champignon', 'avocado', 'paprika\'s', 'rucola', 'veldsla',
       'aardappelen', 'zoete aardappel', 'ui', 'uien', 'knoflook',
       'groentepakket', 'fruitmix', 'saladekruiden',
+      // Ontbraken tot 2026-08-17: Aldi's eigen categorie zette Sperziebonen,
+      // Paksoi en Spitskool onder "Aardappels, groente en fruit" terwijl onze
+      // naamherkenning ze op 'overig' gooide. De rest hieronder zijn Nederlandse
+      // basisgroenten uit dezelfde blinde vlek. Samengestelde koolnamen voluit,
+      // want 'kool' als prefix vangt ook koolzuur/koolhydraten.
+      // Enkelvoud én meervoud: het Nederlandse meervoud van -boon is -bonen met
+      // één o, dus de prefix 'sperzieboon' vangt "Sperziebonen" juist NIET.
+      'sperzieboon', 'sperziebonen', 'snijboon', 'snijbonen',
+      'paksoi', 'spitskool', 'boerenkool', 'rodekool',
+      'witlof', 'venkel', 'radijs', 'peultjes', 'doperwt',
     ],
   },
   {
@@ -173,9 +187,41 @@ const CATEGORY_LABEL_MAP = {
   'baby, drogisterij': 'verzorging',
   'huishouden': 'huishouden',
   'wonen, bloemen, service': 'overig',
+
+  // Aldi (hierarchicalCategories.lvl0). Let op: Aldi schrijft het nét anders
+  // dan Plus ("Aardappels, groente en fruit" vs "aardappelen, groente, fruit"),
+  // dus beide varianten moeten hier staan.
+  'aardappels, groente en fruit': 'groente-fruit',
+  'vlees, vis en vega': 'vlees-vis',
+  'zuivel, eieren en boter': 'zuivel',
+  'brood, bakkerij en bakken': 'bakkerij',
+  'bier, mixdranken, aperitieven en likeuren': 'dranken',
+  'maaltijden en salades': 'maaltijden',
+  'borrelhapjes': 'snacks',
+  // Bewust NIET gemapt: "ALDI merken", "Speciaal assortiment",
+  // "Winnaarsproducten", "Paasassortiment", "Diepvries", "Kaas en vleeswaren".
+  // Dat zijn dwarsdoorsnedes, geen productcategorieën — "Blauwe kaas" staat
+  // onder Winnaarsproducten en "Gegrilde beenham" onder Kaas en vleeswaren.
+  // Ze blijven onvertaald zodat pickCategoryLabel doorloopt naar het volgende
+  // label of terugvalt op de productnaam.
 }
 
 const VALID_IDS = new Set(CATEGORIES.map(c => c.id))
+
+/**
+ * Kiest uit een lijst marktlabels het eerste dat we kennen.
+ *
+ * Aldi levert lvl0 als array en de eerste is niet altijd de echte categorie:
+ * "Blauwe kaas" komt binnen als ["Winnaarsproducten", "Kaas en vleeswaren"].
+ * Daarom doorlopen we de hele lijst i.p.v. blind [0] te pakken.
+ *
+ * @param {string[]} labels
+ * @returns {string|undefined} marktlabel dat normalizeCategory kan vertalen
+ */
+export function pickCategoryLabel(labels) {
+  if (!Array.isArray(labels)) return undefined
+  return labels.find(l => CATEGORY_LABEL_MAP[String(l || '').trim().toLowerCase()])
+}
 
 // Scrapers leveren drie soorten categorie: een geldige site-slug, een
 // marktspecifiek label, of niets. Alleen de eerste is direct bruikbaar.
