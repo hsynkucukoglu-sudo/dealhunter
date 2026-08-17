@@ -1308,9 +1308,12 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           </section>
         )}
 
-        {/* AD #1 — Stats altı, ortalama kaydırma derinliği (%21) İÇİNDE kalsın diye
-            burada: önceden Verloopt Binnenkort + widget'ların altındaydı (%31 derinlik),
-            ortalama ziyaretçi hiç görmüyordu (bkz. docs/ctr-takip.md monetizasyon analizi) */}
+        {/* AD #1 — Stats altı. Deze plek is gemeten, niet toevallig: het blok
+            stond ooit ónder Verloopt Binnenkort + widgets (31% diepte) waar de
+            gemiddelde bezoeker nooit kwam (bkz. docs/ctr-takip.md).
+            Toen de catalogus in 2026-08-17 naar boven ging, is dit blok
+            bewust MEE naar boven gegaan i.p.v. onder het grid te blijven —
+            het is maar ~120px en het staat nu op ~10% diepte. */}
         {/* minHeight 90→120: 90px, full-width-responsive horizontal reklamın mobildeki
             gerçek render yüksekliğinin altındaydı — Clarity CLS 0.147 (needs improvement,
             2026-07-15) ile tutarlı, en olası kaynak bu slottu (tek istisna: diğer tüm
@@ -1330,87 +1333,35 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
           />
         )}
 
-        {/* NEWSLETTER — compacte variant binnen de %21 scroll-depth zone (bkz. AD #1
-            commentaar). De volle NewsletterSignup blijft onderaan als tweede kans;
-            deze staat hier omdat de meeste mobiele bezoekers dat punt nooit bereiken. */}
+        {/* NEWSLETTER — compacte variant, boven de catalogus (zelfde reden als
+            AD #1 hierboven). De volle NewsletterSignup blijft onderaan als
+            tweede kans; de meeste mobiele bezoekers halen dat punt nooit. */}
         {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
           <NewsletterSignupCompact />
         )}
 
-        {/* FLINK AFFILIATE BANNER */}
-        <a
-          href="https://jf79.net/c/?si=16070&li=1878997&wi=420902&ws="
-          target="_blank"
-          rel="noopener sponsored"
-          className="hidden sm:flex items-center gap-3 rounded-2xl px-4 py-3 mb-6 transition-opacity hover:opacity-90"
-          style={{ background: 'linear-gradient(90deg, #ff6b00 0%, #ff8c00 100%)', textDecoration: 'none' }}
-        >
-          <span className="text-2xl">🛒</span>
-          <div className="flex-1 min-w-0">
-            <p className="text-white font-bold text-sm leading-tight">Thuis laten bezorgen?</p>
-            <p className="text-orange-100 text-xs">Bestel via Flink — snel en makkelijk</p>
-          </div>
-          <span className="text-white text-xs font-semibold whitespace-nowrap bg-white/20 rounded-full px-3 py-1">Probeer Flink →</span>
-        </a>
+        {/* ANA KATALOG — bewust hier, boven de widgetstapel.
 
-        {/* MARKTEN SHOWCASE — ana vitrin, sadece default view'da, Top 5'ten sonra */}
-        {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && !showFavoritesOnly && (
-          <div className="cv-auto">
-            <MarktenShowcase
-              products={products}
-              serverCounts={marketCounts}
-              onSelectMarket={(m) => { trackMarketFilter(m); startTransition(() => { setSelectedMarket(m); setShowCampaignsOnly(false); setSelectedCategory('all') }) }}
-            />
-          </div>
-        )}
+            Stond hiervoor onder de widgetstapel. Gemeten op de live pagina
+            (mobiel 390px, 2026-08-17): de pagina is ~22.500px en het
+            hoofdgrid begon pas op ~7.700px = 34% diepte. Tussen het einde van
+            Top 5 (~2.000px) en het grid zat 5.700px met in totaal 8 producten:
+              MarktenShowcase        993px   0 productkaarten
+              Verloopt Binnenkort  1.798px   8 productkaarten
+              MarketIndexWidget      421px   0 productkaarten
+              CombinatieDeals      1.442px   0 productkaarten
+            Clarity (30 dagen, 621 sessies) zegt dat ~27% van de bezoekers 34%
+            diepte haalt, tegen ~72% op 9% diepte. Oftewel: driekwart van de
+            bezoekers zag de catalogus van 1.200 producten nooit.
 
-        {/* SON GEÇERLİLİK TARİHİ UYARISI */}
-        {expiringSoon.length > 0 && searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
-          <section className="mb-10 cv-auto">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="material-symbols-outlined material-filled animate-pulse" style={{ color: '#E33D26' }}>alarm</span>
-              <h2 className="text-xl font-headline font-bold" style={{ color: '#1A1A1A' }}>
-                {lang === 'tr' ? 'Son Geçerlilik Tarihi' : lang === 'en' ? 'Expiring Soon' : 'Verloopt Binnenkort'}
-              </h2>
-              <span className="text-[11px] font-bold px-2.5 py-1 rounded-full" style={{ background: '#E33D26', color: 'white' }}>
-                {lang === 'tr' ? 'Son 2 gün!' : lang === 'en' ? 'Last 2 days!' : 'Laatste 2 dagen!'}
-              </span>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-              {expiringSoon.map((product, i) => {
-                const daysLeft = Math.ceil((new Date(product.expiresAt).getTime() - Date.now()) / 86400000)
-                const isToday = daysLeft === 0
-                return (
-                  <motion.div
-                    key={product.id}
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: i * 0.06 }}
-                    style={{
-                      borderRadius: '24px',
-                      outline: `2px solid ${isToday ? '#E33D26' : '#FF8C00'}`,
-                      outlineOffset: '-2px',
-                      boxShadow: isToday ? '0 0 20px rgba(227,61,38,0.18)' : '0 0 14px rgba(255,140,0,0.14)',
-                    }}
-                  >
-                    <ProductCard product={product} />
-                  </motion.div>
-                )
-              })}
-            </div>
-          </section>
-        )}
+            De widgets staan nu ná het grid. Ze verdwijnen niet — ze staan
+            alleen niet meer vóór de reden waarvoor mensen komen.
 
-        {/* MARKET INDEX WIDGET */}
-        {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
-          <div className="cv-auto"><MarketIndexWidget products={products} marketStats={marketStats} /></div>
-        )}
-
-        {/* COMBINATIE DEALS WIDGET */}
-        {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
-          <div className="cv-auto"><CombinatieDealsWidget products={products} /></div>
-        )}
-
+            UITZONDERING: stats, AD #1, MEER BESPAREN en NewsletterSignupCompact
+            staan bewust nog steeds bóven het grid. Die vier zijn samen ~420px en
+            hun plek was al eerder op scrolldiepte gekozen (zie AD #1). Ze mee naar
+            beneden nemen zou de advertentie- en affiliate-inkomsten weggooien om
+            een probleem op te lossen dat ze niet veroorzaakten. */}
         {/* ANA LAYOUT: sol içerik + sağ Prijsvergelijking sidebar */}
         <div className="flex gap-8 items-start">
 
@@ -1580,6 +1531,81 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         </AnimatePresence>
           </div>
         </div>
+
+        {/* FLINK AFFILIATE BANNER */}
+        <a
+          href="https://jf79.net/c/?si=16070&li=1878997&wi=420902&ws="
+          target="_blank"
+          rel="noopener sponsored"
+          className="hidden sm:flex items-center gap-3 rounded-2xl px-4 py-3 mb-6 transition-opacity hover:opacity-90"
+          style={{ background: 'linear-gradient(90deg, #ff6b00 0%, #ff8c00 100%)', textDecoration: 'none' }}
+        >
+          <span className="text-2xl">🛒</span>
+          <div className="flex-1 min-w-0">
+            <p className="text-white font-bold text-sm leading-tight">Thuis laten bezorgen?</p>
+            <p className="text-orange-100 text-xs">Bestel via Flink — snel en makkelijk</p>
+          </div>
+          <span className="text-white text-xs font-semibold whitespace-nowrap bg-white/20 rounded-full px-3 py-1">Probeer Flink →</span>
+        </a>
+
+        {/* MARKTEN SHOWCASE — ana vitrin, sadece default view'da, Top 5'ten sonra */}
+        {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && !showFavoritesOnly && (
+          <div className="cv-auto">
+            <MarktenShowcase
+              products={products}
+              serverCounts={marketCounts}
+              onSelectMarket={(m) => { trackMarketFilter(m); startTransition(() => { setSelectedMarket(m); setShowCampaignsOnly(false); setSelectedCategory('all') }) }}
+            />
+          </div>
+        )}
+
+        {/* SON GEÇERLİLİK TARİHİ UYARISI */}
+        {expiringSoon.length > 0 && searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
+          <section className="mb-10 cv-auto">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="material-symbols-outlined material-filled animate-pulse" style={{ color: '#E33D26' }}>alarm</span>
+              <h2 className="text-xl font-headline font-bold" style={{ color: '#1A1A1A' }}>
+                {lang === 'tr' ? 'Son Geçerlilik Tarihi' : lang === 'en' ? 'Expiring Soon' : 'Verloopt Binnenkort'}
+              </h2>
+              <span className="text-[11px] font-bold px-2.5 py-1 rounded-full" style={{ background: '#E33D26', color: 'white' }}>
+                {lang === 'tr' ? 'Son 2 gün!' : lang === 'en' ? 'Last 2 days!' : 'Laatste 2 dagen!'}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+              {expiringSoon.map((product, i) => {
+                const daysLeft = Math.ceil((new Date(product.expiresAt).getTime() - Date.now()) / 86400000)
+                const isToday = daysLeft === 0
+                return (
+                  <motion.div
+                    key={product.id}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: i * 0.06 }}
+                    style={{
+                      borderRadius: '24px',
+                      outline: `2px solid ${isToday ? '#E33D26' : '#FF8C00'}`,
+                      outlineOffset: '-2px',
+                      boxShadow: isToday ? '0 0 20px rgba(227,61,38,0.18)' : '0 0 14px rgba(255,140,0,0.14)',
+                    }}
+                  >
+                    <ProductCard product={product} />
+                  </motion.div>
+                )
+              })}
+            </div>
+          </section>
+        )}
+
+        {/* MARKET INDEX WIDGET */}
+        {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
+          <div className="cv-auto"><MarketIndexWidget products={products} marketStats={marketStats} /></div>
+        )}
+
+        {/* COMBINATIE DEALS WIDGET */}
+        {searchTerm === '' && selectedMarket === 'all' && selectedCategory === 'all' && !showCampaignsOnly && (
+          <div className="cv-auto"><CombinatieDealsWidget products={products} /></div>
+        )}
+
       </main>
 
       {/* BOTTOM MOBILE NAV */}
