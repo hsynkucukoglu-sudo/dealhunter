@@ -112,38 +112,33 @@ export function CategoryPage({ category, initialProducts, relatedPosts = [], rel
           </p>
         </div>
 
-        {/* Market pills. "Alle markten" + tot 9 marktpillen (logo + volledige naam)
-            passen op smallere viewports niet naast elkaar — de rij scrollt dan
-            horizontaal, maar no-scrollbar verbergt de native scrollbar zonder een
-            alternatief signaal. Zonder enige aanwijzing dat er meer staat, leek de
-            rij "compleet" terwijl de laatste 1-2 pillen (alfabetisch vaak Plus/Vomar)
-            buiten beeld bleven — gerapporteerd door een gebruiker op /categorie/vlees-vis.
-            Rand-fade lost dat op zonder de no-scrollbar-stijl van de rest van de site
-            te breken. */}
+        {/* Market pills — WRAPPEN, niet horizontaal scrollen.
+            Eerdere opzet was één scrollrij met een rand-fade als hint. Gemeten op
+            /categorie/groente-fruit: 9 pillen, scrollWidth 1.475px tegen een
+            clientWidth van 358px = 1.117px overflow. De laatste twee (de lijst is
+            alfabetisch, dus meestal Plus en Vomar) waren pas bereikbaar na ~3
+            schermbreedtes zijwaarts vegen op een strook van ~40px hoog. Een fade
+            vertelt dát er meer is, maar maakt het niet bereikbaar — twee
+            gebruikersmeldingen op rij gingen hierover.
+            Wrappen lost het op: alle markten staan tegelijk in beeld, geen
+            zijwaartse gebaren meer. market-pill-compact houdt de extra hoogte
+            beperkt (zie globals.css). */}
         {markets.length > 0 && (
-          <div className="relative mb-6">
-            <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-2">
-              <motion.button whileTap={{ scale: 0.95 }}
-                onClick={() => setSelectedMarket('all')}
-                className={`market-pill ${selectedMarket === 'all' ? 'market-pill-active' : ''}`}>
-                <span className="material-symbols-outlined text-base">bolt</span>
-                {ui.allMarkets}
+          <div className="flex flex-wrap items-center gap-2 mb-6">
+            <motion.button whileTap={{ scale: 0.95 }}
+              onClick={() => setSelectedMarket('all')}
+              className={`market-pill market-pill-compact ${selectedMarket === 'all' ? 'market-pill-active' : ''}`}>
+              <span className="material-symbols-outlined text-base">bolt</span>
+              {ui.allMarkets}
+            </motion.button>
+            {markets.map(m => (
+              <motion.button key={m} whileTap={{ scale: 0.95 }}
+                onClick={() => setSelectedMarket(m)}
+                className={`market-pill market-pill-compact ${selectedMarket === m ? 'market-pill-active' : ''}`}>
+                <MarketLogo market={m} size={18} className="flex-none" />
+                {m}
               </motion.button>
-              <div className="w-px h-6 flex-none" style={{ background: '#C9C1B6' }} />
-              {markets.map(m => (
-                <motion.button key={m} whileTap={{ scale: 0.95 }}
-                  onClick={() => setSelectedMarket(m)}
-                  className={`market-pill ${selectedMarket === m ? 'market-pill-active' : ''}`}>
-                  <MarketLogo market={m} size={22} className="flex-none" />
-                  {m}
-                </motion.button>
-              ))}
-            </div>
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute top-0 right-0 bottom-2 w-10"
-              style={{ background: 'linear-gradient(to right, transparent, #F5EDE3)' }}
-            />
+            ))}
           </div>
         )}
 

@@ -229,6 +229,15 @@
     background: var(--color-surface-warm);
     border-color: var(--color-outline-light);
   }
+  /* Compacte variant voor filterrijen die WRAPPEN i.p.v. horizontaal scrollen.
+     Op /categorie/* stonden 9 pillen (Alle markten + 8 markten) in één
+     scrollrij: 1.117px overflow op een 358px-viewport, dus de laatste twee
+     (alfabetisch Plus en Vomar) waren alleen bereikbaar na ~3 schermbreedtes
+     zijwaarts vegen op een smalle strook. Wrappen maakt ze allemaal zichtbaar;
+     minder padding houdt de extra hoogte beperkt. */
+  .market-pill-compact {
+    @apply px-3 py-1.5 gap-1.5 text-[13px];
+  }
   .market-pill-active {
     background: var(--color-secondary);
     color: white;
