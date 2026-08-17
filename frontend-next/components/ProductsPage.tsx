@@ -1809,7 +1809,7 @@ const FLINK_URL      = 'https://jf79.net/c/?si=16070&li=1878997&wi=420902&ws='
 
 const PAGE_SIZE = 48
 
-function ProductGrid({ products, t, searchTerm = '', fetchError = false, onRetry }: { products: Product[]; t: { noProducts: string; noProductsDesc: string }; searchTerm?: string; fetchError?: boolean; onRetry?: () => void }) {
+function ProductGrid({ products, t, searchTerm = '', fetchError = false, onRetry }: { products: Product[]; t: { noProducts: string; noProductsDesc: string; searchNoMatch: string; notifyPriceDrop: string }; searchTerm?: string; fetchError?: boolean; onRetry?: () => void }) {
   const [visibleCount, setVisibleCount] = React.useState(PAGE_SIZE)
   React.useEffect(() => { setVisibleCount(PAGE_SIZE) }, [products])
   if (fetchError) {
@@ -1843,7 +1843,7 @@ function ProductGrid({ products, t, searchTerm = '', fetchError = false, onRetry
         {searchTerm && (
           <div className="inline-flex flex-col items-center gap-3">
             <p className="text-sm font-medium" style={{ color: '#6B6259' }}>
-              <span style={{ color: '#E33D26' }}>"{searchTerm}"</span> şu an indirimde değil
+              <span style={{ color: '#E33D26' }}>"{searchTerm}"</span> {t.searchNoMatch}
             </p>
             <a
               href="/api/auth/signin"
@@ -1851,7 +1851,7 @@ function ProductGrid({ products, t, searchTerm = '', fetchError = false, onRetry
               style={{ background: '#E33D26', color: 'white' }}
             >
               <span className="material-symbols-outlined text-base">notifications</span>
-              Fiyatı düşünce haber ver
+              {t.notifyPriceDrop}
             </a>
           </div>
         )}
