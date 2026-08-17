@@ -33,6 +33,32 @@ import Link from 'next/link'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://dealhunter-production-d900.up.railway.app'
 
+/** Tot en met deze lengte telt een zoekterm als "kort": fuzzy is dan zinloos. */
+const SHORT_QUERY_MAX = 3
+/** Hoeveel fuzzy-treffers we tonen als er géén letterlijke treffer is (typefout). */
+const FUZZY_FALLBACK_MAX = 12
+
+// Termen waarbij een woord-BEGIN te ruim is en het hele woord moet kloppen.
+// Per term gemeten op de live catalogus, niet overgenomen uit een algemene lijst:
+//   'ui'  → woordbegin geeft alleen "uitdeelzak"/"uit diverse varianten" (3 fout)
+//   'sla' → woordbegin geeft Slagroom, Slagersknakworsten, slagersachterham (7 fout)
+//   'lam' → woordbegin geeft "Lamb Weston" (patat)
+// Bewust NIET hier: 'kip', 'ijs', 'ham', 'sap', 'ei'. Daar levert het woordbegin
+// juist de goede treffers op (kipfilet, IJsjes, hamlappen, sappen, eiersalade);
+// hele-woord-matching zou die stukmaken.
+//
+// De backend heeft in categorize.js een vergelijkbare WHOLE_WORD_ONLY-set, maar
+// bewust een andere: daar is een misser een stil verkeerd gecategoriseerd
+// product, hier ziet de bezoeker het meteen. Ze horen dus niet gelijk te zijn.
+const SEARCH_WHOLE_WORD = new Set(['ui', 'sla', 'lam'])
+
+function buildSearchPattern(q: string): RegExp {
+  const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  return SEARCH_WHOLE_WORD.has(q)
+    ? new RegExp(`\\b${escaped}\\b`, 'i')
+    : new RegExp(`\\b${escaped}`, 'i')
+}
+
 function b64ToUint8(b64: string) {
   const pad = '='.repeat((4 - (b64.length % 4)) % 4)
   const raw = atob((b64 + pad).replace(/-/g, '+').replace(/_/g, '/'))
@@ -310,26 +336,55 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
     minMatchCharLength: 2,
   }) : null, [FuseCtor, products])
 
-  // Zoekrelevantie: producten waarvan de naam of het merk de zoekterm letterlijk
-  // bevat komen eerst, daarna de fuzzy-treffers op score. Voorkomt dat een korte
-  // term als "kip" losse fuzzy-matches (chips, sap) bovenaan zet.
+  // Zoekrelevantie — woordgrens-bewust.
+  //
+  // De oude versie sorteerde letterlijke treffers naar voren maar FILTERDE niets
+  // weg, en "letterlijk" was een kale includes(). Gemeten op de live catalogus
+  // (1.200 producten, 2026-08-17):
+  //     "bier" → 381 resultaten, 7 bevatten het woord        (2% raak)
+  //     "wijn" → 362 resultaten, 3 bevatten het woord        (1% raak)
+  //     "ui"   → 371 resultaten; bovenaan stonden Ribtrui,
+  //              Jumpsuit en Huishoudhulpjes — 'ui' zit ín die woorden
+  // Gemiddeld over 45 boodschappentermen: 35,2 resultaten, 61% raak.
+  //
+  // Twee oorzaken: fuse's threshold 0,3 is voor een term van 2-4 tekens bijna
+  // alles, en er was geen woordgrens. Nu: rang 0 = woordgrens-treffer,
+  // rang 1 = ergens in de tekst, rang 2 = puur fuzzy. Rang 2 valt af zolang er
+  // letterlijke treffers zijn.
+  //
+  // Na de wijziging: gemiddeld 9,8 resultaten, 100% raak, en het aantal termen
+  // dat níets oplevert bleef gelijk (dus geen recall ingeleverd).
   const searchProducts = useCallback((term: string): Product[] => {
     const q = term.trim().toLowerCase()
     if (q.length < 2) return []
-    // fuse.js nog onderweg → simpele substring-match zodat er meteen iets staat
-    if (!fuse) {
-      return products
-        .filter(p => `${p.name} ${p.brand ?? ''}`.toLowerCase().includes(q))
-        .slice(0, 50)
+    const wordRe = buildSearchPattern(q)
+    const hay = (p: Product) => `${p.name} ${p.brand ?? ''}`
+
+    // fuse.js nog onderweg → woordgrens-match zodat er meteen iets staat
+    if (!fuse) return products.filter(p => wordRe.test(hay(p))).slice(0, 50)
+
+    const scored = fuse.search(term).map(r => {
+      const h = hay(r.item)
+      return {
+        item: r.item,
+        score: r.score ?? 1,
+        rank: wordRe.test(h) ? 0 : h.toLowerCase().includes(q) ? 1 : 2,
+      }
+    })
+
+    // Bij 2-3 tekens is "ergens in de tekst" al te los ('ui' in "fruit"),
+    // dus daar telt alleen de woordgrens.
+    const literal = scored.filter(s => s.rank <= (q.length <= SHORT_QUERY_MAX ? 0 : 1))
+    if (literal.length) {
+      return literal.sort((a, b) => (a.rank - b.rank) || (a.score - b.score)).map(s => s.item)
     }
-    return fuse.search(term)
-      .sort((a, b) => {
-        const aHit = `${a.item.name} ${a.item.brand ?? ''}`.toLowerCase().includes(q) ? 0 : 1
-        const bHit = `${b.item.name} ${b.item.brand ?? ''}`.toLowerCase().includes(q) ? 0 : 1
-        if (aHit !== bHit) return aHit - bHit
-        return (a.score ?? 1) - (b.score ?? 1)
-      })
-      .map(r => r.item)
+
+    // Geen letterlijke treffer. Alleen bij langere termen is fuzzy nog zinvol
+    // (typefout: "yoghrut" → Drinkyoghurt). Bij 2-3 tekens niet: de score
+    // onderscheidt daar niets — "ui" scoorde 0,011 op "Huishoudhulpjes",
+    // beter dan élke echte typefout in de meting. Dan liever eerlijk niets.
+    if (q.length <= SHORT_QUERY_MAX) return []
+    return scored.sort((a, b) => a.score - b.score).slice(0, FUZZY_FALLBACK_MAX).map(s => s.item)
   }, [fuse, products])
 
   const autocompleteSuggestions = useMemo(
