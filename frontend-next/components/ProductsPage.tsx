@@ -20,7 +20,7 @@ import { detectCampaignType, CAMPAIGN_FILTERS, CampaignType } from '@/lib/campai
 import { StickyFilterBar } from './StickyFilterBar'
 import { NewsletterSignup } from './NewsletterSignup'
 import { NewsletterSignupCompact } from './NewsletterSignupCompact'
-import { trackMarketFilter, trackCategoryFilter, trackCampaignFilter, trackSearch, trackPwaInstall } from '@/lib/analytics'
+import { trackMarketFilter, trackCategoryFilter, trackCampaignFilter, trackQuickFilter, trackSearch, trackPwaInstall } from '@/lib/analytics'
 import { trackClick } from '@/lib/track'
 import { WHATSAPP_GROUP_URL } from '@/lib/social'
 import { MarketIndexWidget } from './MarketIndexWidget'
@@ -301,12 +301,10 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
 
   useEffect(() => {
     const t = setTimeout(() => {
-      const trimmed = searchTerm.trim()
-      setDebouncedSearch(trimmed)
-      if (trimmed.length >= 2) trackSearch(trimmed, filteredProducts.length)
+      setDebouncedSearch(searchTerm.trim())
     }, 500)
     return () => clearTimeout(t)
-  }, [searchTerm]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [searchTerm])
 
   // fuse.js (~133 KB parse-werk) wordt pas geladen zodra iemand echt zoekt.
   // Statisch importeren kostte élke bezoeker dat werk op het kritieke pad,
@@ -495,6 +493,16 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
       return pctB - pctA
     })
   }, [products, deferredSearch, searchProducts, deferredCampaignsOnly, deferredKassakoopjes, deferredMarket, deferredCategory, deferredFavoritesOnly, favorites, deferredCampaign, deferredHotOnly, hotIds, defaultSort])
+
+  // Zoekopdracht pas loggen als filteredProducts bij díe zoekterm hoort. Stond
+  // eerder in de debounce-timeout hierboven, maar daar loopt de teller twee
+  // renders achter (searchTerm -> 500ms debounce -> useDeferredValue), dus
+  // result_count was altijd dat van de vórige zoekopdracht. Gemeten 2026-08-18:
+  // "xyzqw" met 0 treffers werd als 21 treffers gelogd. Alleen op deferredSearch
+  // keyen — filteredProducts meenemen zou bij elke filterklik opnieuw vuren.
+  useEffect(() => {
+    if (deferredSearch.length >= 2) trackSearch(deferredSearch, filteredProducts.length)
+  }, [deferredSearch]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const displayedProducts = useMemo(() => {
     // Default view: ensure min. 2 products per market in the first visible slot.
@@ -909,26 +917,26 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             scrollbar, dus pillen die buiten beeld vielen waren onvindbaar. */}
         <div className="flex flex-wrap items-center gap-2 pb-2 mb-2">
           <motion.button whileTap={{ scale: 0.95 }}
-            onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setShowKassakoopjes(false); setShowHotOnly(false); setSelectedCampaign('all'); setSelectedCategory('all') })}
+            onClick={() => { trackQuickFilter('all'); startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(false); setShowKassakoopjes(false); setShowHotOnly(false); setSelectedCampaign('all'); setSelectedCategory('all') }) }}
             className={`market-pill market-pill-compact flex-none ${selectedMarket === 'all' && !showCampaignsOnly && !showFavoritesOnly && !showKassakoopjes && !showHotOnly ? 'market-pill-active' : ''}`}>
             <span className="material-symbols-outlined text-base">bolt</span>
             {t.allMarkets}
           </motion.button>
           <motion.button whileTap={{ scale: 0.95 }}
-            onClick={() => startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(true); setSelectedCampaign('all'); setSelectedCategory('all'); setShowKassakoopjes(false); setShowHotOnly(false) })}
+            onClick={() => { trackQuickFilter('campaigns_only'); startTransition(() => { setSelectedMarket('all'); setShowCampaignsOnly(true); setSelectedCampaign('all'); setSelectedCategory('all'); setShowKassakoopjes(false); setShowHotOnly(false) }) }}
             className={`market-pill market-pill-compact flex-none ${showCampaignsOnly ? 'market-pill-active' : ''}`}>
             <span className="material-symbols-outlined text-base">local_fire_department</span>
             {t.campaignsOnly}
           </motion.button>
           <motion.button whileTap={{ scale: 0.95 }}
-            onClick={() => startTransition(() => { setSelectedMarket('all'); setShowKassakoopjes(!showKassakoopjes); setShowCampaignsOnly(false); setShowHotOnly(false); setSelectedCategory('all'); setSelectedCampaign('all') })}
+            onClick={() => { trackQuickFilter('kassakoopjes'); startTransition(() => { setSelectedMarket('all'); setShowKassakoopjes(!showKassakoopjes); setShowCampaignsOnly(false); setShowHotOnly(false); setSelectedCategory('all'); setSelectedCampaign('all') }) }}
             className={`market-pill market-pill-compact flex-none ${showKassakoopjes ? 'market-pill-active' : ''}`}>
             <span className="material-symbols-outlined text-base">payments</span>
             Kassakoopjes &lt;€5
           </motion.button>
           {hotCount > 0 && (
             <motion.button whileTap={{ scale: 0.95 }}
-              onClick={() => startTransition(() => { setShowHotOnly(!showHotOnly); setShowCampaignsOnly(false); setShowKassakoopjes(false); setSelectedMarket('all'); setSelectedCategory('all') })}
+              onClick={() => { trackQuickFilter('hot_deals'); startTransition(() => { setShowHotOnly(!showHotOnly); setShowCampaignsOnly(false); setShowKassakoopjes(false); setSelectedMarket('all'); setSelectedCategory('all') }) }}
               className={`market-pill market-pill-compact flex-none ${showHotOnly ? 'market-pill-active' : ''}`}>
               <span style={{ fontSize: 15 }}>🔥</span>
               Mijn hot deals{hotCount > 0 ? ` (${hotCount})` : ''}
@@ -1673,7 +1681,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
         </button>
         {hotCount > 0 && (
           <button
-            onClick={() => startTransition(() => { setShowHotOnly(!showHotOnly); setShowCampaignsOnly(false); setShowKassakoopjes(false); setSelectedMarket('all'); setSelectedCategory('all') })}
+            onClick={() => { trackQuickFilter('hot_deals'); startTransition(() => { setShowHotOnly(!showHotOnly); setShowCampaignsOnly(false); setShowKassakoopjes(false); setSelectedMarket('all'); setSelectedCategory('all') }) }}
             className="flex flex-col items-center justify-center p-2 cursor-pointer"
             style={{ color: showHotOnly ? '#E33D26' : '#6B6259' }}
           >

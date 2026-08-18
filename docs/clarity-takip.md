@@ -338,9 +338,70 @@ oturumluk ölü tıklamanın hem de düşük kaydırma derinliğinin muhtemel ka
 
 | # | İş | Neden | Büyüklük |
 |---|---|---|---|
-| A | Arama/filtre etkileşimini olay olarak işaretle | Sayfa/oturum'un gerçek mi artefakt mı olduğu ayrılmadan strateji kararı verilemez | küçük |
+| A | Arama/filtre etkileşimini olay olarak işaretle | Sayfa/oturum'un gerçek mi artefakt mı olduğu ayrılmadan strateji kararı verilemez | ✅ **yapıldı** |
 | B | Arama sonuçlarını reklamın üstüne al | 1 numaralı etkileşimin çıktısı 390px reklamın arkasında | küçük |
 | C | İki onay diyaloğunu teke indir | Ziyaretçi içeriğe varmadan iki engel geçiyor | orta |
 
 **A, eski 3 ve 4 numaralı stratejik maddelerin önüne geçiyor** — çünkü o iki
 maddenin dayandığı metrik şu an güvenilir değil.
+
+
+## ✅ A uygulandı (18 Ağu) — Clarity artık sayfa içi etkileşimi görüyor
+
+**Bulunan asıl boşluk:** projede zaten tam bir analitik katmanı vardı
+(`lib/analytics.ts`) ama **yalnızca GA4'e** gönderiyordu. Sayfa/oturum ve
+davranışı okuduğumuz araç olan Clarity, arama ve filtrelerden **hiç sinyal
+almıyordu**. Panodaki "Ara: 10 oturum" Clarity'nin kendi sezgisel tahminiydi,
+bizim verimiz değil.
+
+Düzeltme tek fonksiyonda: `track()` artık aynı olayı Clarity'ye de özel olay
+olarak yolluyor. Böylece mevcut tüm olaylar (arama, market/kategori/kampanya
+filtresi, favori, watchlist, bülten, PWA, ürün tıklaması) tek satırla Clarity'de
+filtrelenebilir hale geldi.
+
+### 🐛 Yol üstünde bulunan gerçek hata: `result_count` bir arama geriden geliyormuş
+
+`trackSearch(trimmed, filteredProducts.length)` 500 ms'lik debounce'un **içinde**
+çağrılıyordu. Ama `filteredProducts` iki gecikmenin arkasında:
+`searchTerm` → 500 ms debounce → `debouncedSearch` → `useDeferredValue` →
+`deferredSearch`. Yani sayaç her zaman **bir önceki sorgunun** sonucunu
+raporluyordu.
+
+Ölçüldü: `"xyzqw"` (0 sonuç) `search_result: hit` olarak loglandı. Bu, GA4'ün
+`search` olayındaki `result_count` alanını da aylardır bozuyordu — yalnızca
+Clarity eklemesi sayesinde görünür oldu.
+
+Düzeltme: izleme debounce'tan çıkarıldı, `deferredSearch`'e bağlı ayrı bir
+efekte taşındı. Tekrar ölçüldü: `melk` → `hit`, `xyzqw` → `empty`. ✅
+
+### 🐛 İkinci boşluk: fold üstündeki iki filtre hiç izlenmiyordu
+
+Kategori çipleri, kampanya tipi ve market seçimi izleniyordu; ama sayfanın en
+üstündeki **"Alleen Acties"**, **"Kassakoopjes <€5"**, **"Alle"** ve
+**"Mijn hot deals"** düğmelerinde hiç izleme yoktu — yani en görünür filtre
+satırı ölçüm dışıydı. `trackQuickFilter()` eklendi, dördü de bağlandı.
+
+### Doğrulama (mobil emülasyon, gerçek Clarity etiketi engellenerek)
+
+| Eylem | Clarity'ye giden |
+|---|---|
+| `melk` ara (21 sonuç) | `event:search` + `set:search_result=hit` |
+| `xyzqw` ara (0 sonuç) | `event:search` + `set:search_result=empty` |
+| "Alleen Acties" | `event:filter_quick` |
+| "Kassakoopjes <€5" | `event:filter_quick` |
+| Kategori çipi (Groente & Fruit) | `event:filter_category` |
+
+`tsc --noEmit` temiz, `next build` başarılı.
+
+> **Not:** ilk doğrulama denemesi yanlış negatif verdi — gerçek Clarity etiketi
+> yüklendiğinde `window.clarity`'yi kendi implementasyonuyla değiştiriyor ve test
+> stub'ını devre dışı bırakıyor. Doğru yöntem: `clarity.ms` isteğini engelleyip
+> stub'ı `writable:false` ile tanımlamak.
+
+### Şimdi ne bekliyoruz
+
+20-21 Ağustos çekiminde Clarity'de artık şunlar okunabilecek:
+- Kaç oturum gerçekten arama yapıyor (panonun sezgisel "10" tahmini değil)
+- Kaç arama boş sonuçla bitiyor (`search_result=empty` segmenti)
+- Kaç oturum hiç etkileşim kurmadan çıkıyor — **sayfa/oturum 1,01'in gerçek terk
+  mi ölçüm körlüğü mü olduğu ancak bu ayrımla cevaplanır**
