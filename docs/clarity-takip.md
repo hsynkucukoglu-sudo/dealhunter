@@ -340,7 +340,7 @@ oturumluk ölü tıklamanın hem de düşük kaydırma derinliğinin muhtemel ka
 |---|---|---|---|
 | A | Arama/filtre etkileşimini olay olarak işaretle | Sayfa/oturum'un gerçek mi artefakt mı olduğu ayrılmadan strateji kararı verilemez | ✅ **yapıldı** |
 | B | Arama sonuçlarını reklamın üstüne al | 1 numaralı etkileşimin çıktısı 390px reklamın arkasında | ✅ **yapıldı** |
-| C | İki onay diyaloğunu teke indir | Ziyaretçi içeriğe varmadan iki engel geçiyor | orta |
+| C | İki onay diyaloğunu teke indir | Ziyaretçi içeriğe varmadan iki engel geçiyor | ✅ **yapıldı** |
 
 **A, eski 3 ve 4 numaralı stratejik maddelerin önüne geçiyor** — çünkü o iki
 maddenin dayandığı metrik şu an güvenilir değil.
@@ -441,3 +441,85 @@ Bu, `ProductsPage.tsx` 1355-1372'deki "AD #1 ve MEER BESPAREN bilerek grid'in
 karar *gezinme* akışı içindi, arama akışı için değil.
 
 `tsc --noEmit` temiz, `next build` başarılı.
+
+
+# 🔴 C uygulandı (18 Ağu) — ve "geri dönen kullanıcı %0" bulgusu ÇÜRÜDÜ
+
+C'yi yaparken onay sisteminin üç ayrı arızası çıktı. Üçü de canlıda ölçüldü.
+
+## ⛔ ÖNCE BUNU OKU: bugünkü en büyük bulgu bir düzeltme
+
+Bu dokümanda 18 Ağustos sabahı **"619 oturum, 619 benzersiz kullanıcı, 0 geri
+dönen — otuz günde siteyi ikinci kez açan tek bir insan yok"** yazıyordu ve bu
+"sert bir sinyal" diye nitelenmişti. 4 numaralı aksiyon (*retention altyapısını
+ya canlandır ya kapat*) tamamen buna dayanıyordu.
+
+**Bu bir davranış bulgusu değil, ölçüm arızasıydı.**
+
+Clarity'nin kimlik çerezleri `_clck` / `_clsk` **hiç yazılmıyordu**, çünkü
+`clarity('consent')` kodun hiçbir yerinde çağrılmıyordu. Çerez olmayınca Clarity
+aynı kişiyi ikinci ziyaretinde tanıyamaz — **her oturum tanım gereği yeni
+kullanıcıdır.** %0 rakamı ziyaretçilerin geri dönmediğini değil, geri dönseler
+bile sayılamayacağını gösteriyor.
+
+Kanıt (canlı site, 18 Ağu):
+
+| Adım | `_clck` çerezi |
+|---|---|
+| Sayfa açıldı | **YOK** |
+| `clarity('consent')` elle çağrıldı | **_clck, _clsk oluştu** |
+| Sayfa yenilendi | **kimlik korundu** |
+
+**Sonuç: 4 numaralı aksiyon iptal.** Retention altyapısı hakkında hiçbir karar
+bu veriyle verilemez. Geri dönen kullanıcı oranı ilk kez 18 Ağustos'tan sonra
+gerçek anlam taşıyacak ve anlamlı bir okuma için en az 2-3 hafta gerekiyor.
+
+> Geçmiş veri kurtarılamaz. 20 Ağustos'tan itibaren geri dönen kullanıcı sayısı
+> yükselirse **bu davranış değişikliği değil, ölçümün ilk kez çalışmasıdır.**
+
+## Arıza 2: Google'ın kendi CMP'si Consent Mode'a hiçbir şey söylemiyordu
+
+Funding Choices bu sitede gerçek bir TCF v2 CMP olarak çalışıyor (cmpId 300,
+`__tcfapi` mevcut, `gdprApplies: true`). "Alles accepteren" tıklandığında TCF
+tarafında her şey doğru: 1/3/4/7/8 amaçlarının hepsi `true`, 824 karakterlik
+TC dizesi üretiliyor.
+
+**Ama `dataLayer` `ad_storage: denied` olarak kalıyordu.** Yani Google'ın kendi
+onay ekranında her şeyi kabul eden ziyaretçi, bizim tarafta hâlâ reddetmiş
+sayılıyordu → kişiselleştirilmemiş reklam → düşük RPM. Ziyaretçinin bunu
+düzeltmesinin tek yolu ikinci bandı da kabul etmekti.
+
+TCF → Consent Mode köprüsü eklendi (`AdSenseScript.tsx`).
+
+## Arıza 3: kendi bandımızın onayı da geçmiyor olabilirdi
+
+Band kabul edilince `gtag('consent', 'default', ...)` çağrılıyordu — **ikinci kez
+`default`.** Consent Mode ikinci bir `default` çağrısını yok sayar; doğrusu
+`update`. Düzeltildi.
+
+## Sonuç: tek diyalog + çalışan ölçüm (canlı doğrulama)
+
+| | Önce | Sonra |
+|---|---|---|
+| Açılışta gösterilen diyalog | FC **+** kendi bandımız | yalnızca FC |
+| FC kabul → Consent Mode | `denied` ❌ | `update: granted` ✅ |
+| FC kabul → Clarity çerezi | yok ❌ | `_clck, _clsk` ✅ |
+| İkinci gtag çağrısı | `default` (yok sayılır) | `update` ✅ |
+
+Kendi bandımız **silinmedi**, fallback'e alındı: TCF CMP varsa hiç
+gösterilmiyor, yoksa (CMP yok veya `gdprApplies: false`) eskisi gibi tek onay
+sorusu olarak çıkıyor. Böylece EEA dışı trafikte onay toplama kaybolmuyor.
+
+## Bugünün ders özeti
+
+Bugün üç ayrı "kullanıcı davranışı" bulgusunun ikisi ölçüm arızası çıktı:
+
+| Sabah yazılan | Gerçek |
+|---|---|
+| "Arama az kullanılıyor, tavanı düşük" | Arama sitenin **1 numaralı** etkileşimi (38 tıklama) — tamamlanan aramayı ölçmüştüm |
+| "Geri dönen kullanıcı %0, retention ölü" | Clarity kimlik çerezi hiç yazılmıyordu — **ölçülemiyordu** |
+| "Sayfa/oturum 1,01, iç linkleme tutmadı" | Arama/filtre URL değiştirmiyor — kısmen ölçüm körlüğü (A ile ayrılacak) |
+
+**Kalıcı ders: bir metrik "hiç kıpırdamıyorsa", önce o metriğin ölçülüp
+ölçülmediğini doğrula.** Üçü de tam olarak bu desendi: 1,00 · %0 · %1,6 —
+şüphe uyandıracak kadar temiz rakamlar.
