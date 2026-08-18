@@ -19,7 +19,8 @@ dönem ölçülmemiş.
 | 2026-08-09 | — | — | 1,0 | %32,7 | 33s | — | %0 | %0 | `analiz-2026-08-15.md` §5 |
 | 2026-08-12–15 | 38 | 51 | 1,0 | %30,9 | 54s | 0 | %0 | %0 | Giden tıklama 1 oturum |
 | **2026-08-16–18** | **37** | **178** | **1,0** | **%30,5** | **58s** | **0** | **%10,81 (4)** | **%0** | Giden 4 ot., arama 2 ot. |
-| **30 gün (20 Tem–18 Ağu)** | **619** | **883** | **1,00** | **%31,9** | **33s** | **—** | **%5,65 (35)** | **%0** | **En güvenilir taban** |
+| 30 gün ham (20 Tem–18 Ağu) | 619 | 883 | 1,00 | %31,9 | 33s | — | %5,65 (35) | %0 | ⚠️ TradeTracker botu dahil |
+| **30 gün TEMİZ (segment)** | **536** | **883** | **1,01** | **%32,5** | **36s** | **—** | **%6,16 (33)** | **%0** | **✅ Asıl taban — bundan oku** |
 
 ## 🔴 2026-07-22 ana bulgu: TradeTracker bot kirliliği
 
@@ -65,8 +66,13 @@ okundu: bugün / dün / 3 gün / 7 gün / 30 gün.
 
 ### 1. Sayfa/oturum = 1,00 — artık küçük örneklem mazereti yok
 
-30 günlük pencerede **619 oturum, ortalama 1,00 sayfa.** 22 Temmuz'da "94 oturum,
-yargı için erken" denmişti. Artık 619 oturum var ve rakam **tam olarak aynı**.
+30 günlük temiz pencerede **536 gerçek oturum, ortalama 1,01 sayfa.** 22 Temmuz'da
+"94 oturum, yargı için erken" denmişti. Artık 536 oturum var ve rakam pratikte
+aynı yerde.
+
+(Ham veride 1,00 görünüyordu; TradeTracker botları tam olarak 1,00 sayfa
+üretip ortalamayı aşağı çektiği için. Gerçek insanlar 1,01 — fark yok denecek
+kadar küçük, sonuç değişmiyor.)
 
 Bu süre içinde denenen ve **hiçbiri metriği oynatmayan** müdahaleler:
 iç linkleme (34 blog yazısına 87 market linki, commit `28362fa`), Faz 0 CTA'ları,
@@ -76,10 +82,11 @@ fold-üstü karşılaştırma kartı, blog fırsat modülünün girişe taşınm
 gitmesi için verilen her davet reddedildi. Bu bir "link eksikliği" sorunu değil —
 sorun, ikinci sayfada gitmeye değer yeni bir şey olduğuna ikna olmamaları.
 
-### 2. Geri dönen kullanıcı = 0 kişi / 619 oturum
+### 2. Geri dönen kullanıcı = 0 kişi / 536 oturum
 
-619 oturum, **619 benzersiz kullanıcı, 0 geri dönen oturum.** Otuz gün boyunca
-siteyi ikinci kez açan tek bir insan yok.
+536 gerçek oturum, **536 benzersiz kullanıcı, 0 geri dönen oturum.** Otuz gün
+boyunca siteyi ikinci kez açan tek bir insan yok. Bot temizliği bu rakamı
+**hiç değiştirmedi** — sıfırdı, sıfır kaldı.
 
 Bu, retention altyapısının (push bildirimi, bülten, watchlist, PWA install prompt)
 ölçülebilir etkisinin **sıfır** olduğunun kanıtı. `analiz-2026-08-15.md` §6.5'te
@@ -87,19 +94,24 @@ Bu, retention altyapısının (push bildirimi, bülten, watchlist, PWA install p
 
 ### 3. Arama neredeyse hiç kullanılmıyor — dünkü düzeltmenin tavanı düşük
 
-Akıllı olay kırılımı (30 gün): **Giden 30 oturum · Ara 10 oturum** · Tekrar dene 3 ·
-Daha fazla göster 2 · Form gönder 1.
+Akıllı olay kırılımı (30 gün, temiz): **Giden 26 oturum · Ara 10 oturum** ·
+Tekrar dene 3 · Daha fazla göster 2 · Form gönder 1.
 
 17 Ağustos'ta arama isabeti %65 → %96'ya çıkarıldı (`529e74d`, `b4b03c8`) ve boş
 sonuç ekranı düzeltildi (`b27f4fb`). Düzeltmeler doğruydu ama **arama 30 günde
-619 oturumun 10'unda (%1,6) kullanılıyor** — bu işin gelir/engagement etkisi
+536 oturumun 10'unda (%1,9) kullanılıyor** — bu işin gelir/engagement etkisi
 matematiksel olarak küçük kalacak. Aramayı düzeltmek gerekliydi; aramayı
 *büyütmek* ayrı bir karar.
 
-### 4. Giden tıklama: 30 oturum / 30 gün (%4,8)
+### 4. 🔴 Giden tıklama: 30 değil **26** oturum / 30 gün (%4,9)
 
-Affiliate gelirinin tabanı bu. 3 günlük pencerede 4 oturum — 12-15 Ağustos'taki
-1 oturuma göre yükseliş, ama 4'e karşı 1, istatistiksel olarak yorum kaldırmaz.
+Ham veri 30 oturum diyordu. TradeTracker botu ayrıldığında **26**'ya düşüyor —
+giden tıklamaların **4'ü botun kendisiydi**. (Ters segmentte doğrudan görüldü:
+82 TradeTracker oturumu, 4 giden tıklama.) Affiliate gelir tabanı sandığımızdan
+**%13 daha düşük.**
+
+3 günlük pencerede 4 oturum — 12-15 Ağustos'taki 1 oturuma göre yükseliş, ama
+4'e karşı 1, istatistiksel olarak yorum kaldırmaz.
 
 ### 5. Dead click %5,65 (30g) — izlemede, alarm değil
 
@@ -107,10 +119,13 @@ Affiliate gelirinin tabanı bu. 3 günlük pencerede 4 oturum — 12-15 Ağustos
 |---|---|---|---|---|
 | 3 gün | 4 / 37 | **%10,81** | 4 | 6 |
 | 7 gün | 5 / 95 | %5,26 | — | — |
-| **30 gün** | **35 / 619** | **%5,65** | **36** | **55** |
+| 30 gün ham | 35 / 619 | %5,65 | 36 | 55 |
+| **30 gün temiz** | **33 / 536** | **%6,16** | — | — |
 
-3 günlük %10,81 ilk bakışta sıçrama gibi duruyor ama 4 oturum. 30 günlük taban
-%5,65 ve bu 22 Temmuz'daki %5,32 ile aynı seviyede — **yeni bir regresyon yok**.
+3 günlük %10,81 ilk bakışta sıçrama gibi duruyor ama 4 oturum. 30 günlük temiz
+taban %6,16 ve bu 22 Temmuz'daki %5,32 ile aynı mertebede — **yeni bir regresyon
+yok**. Dikkat: bot temizliği oranı **düşürmedi, yükseltti** (%5,65 → %6,16) —
+yani ölü tıklama gerçek kullanıcı davranışı, bot artefaktı değil.
 Öfke tıklaması, aşırı kaydırma ve hızlı geri dönüş üç pencerede de **%0**.
 
 ### 6. ✅ Core Web Vitals iyileşti — INP artık "iyi" bandında
@@ -194,7 +209,7 @@ hipotezi bu veriyle test edilemez.
 | # | İş | Gerekçe | Durum |
 |---|---|---|---|
 | 1a | Clarity etiketini affiliate-ağ referrer'ında yükleme (kod) | 94/619 oturum (%15) kirlilik | ✅ **yapıldı** |
-| 1b | Panelde "Kaynak → Seçimi dışla" segmenti kaydet (geçmiş veri için) | 1a yalnızca bundan sonrasını temizler | **kullanıcı** |
+| 1b | Panelde "Tradetracker Hariç" segmenti kaydet (geçmiş veri için) | 1a yalnızca bundan sonrasını temizler | ✅ **yapıldı** |
 | 2 | 20-21 Ağu'da deploy sonrası çekim | Tek gerçek ölçüm penceresi | planlandı |
 | 3 | Sayfa/oturum için link değil **içerik** müdahalesi | 619 oturumda 4 farklı linkleme denemesi başarısız | tartışılmadı |
 | 4 | Geri dönen %0 → retention altyapısını ya canlandır ya kapat | 30 günde 0 geri dönen kullanıcı | tartışılmadı |
@@ -209,3 +224,33 @@ Yapısal metrikler `clarity.microsoft.com/api` GraphQL yanıtlarından
 (`projectFeatures.dashboard`) alınabiliyor; gerisi panel `innerText`'inden.
 Detay: [[gstack-browser-limitation]] — gstack headed mode bu makinede çalışmıyor,
 ham Puppeteer çalışıyor.
+
+## 📌 Temiz taban nasıl okunur (18 Ağu itibarıyla)
+
+Panelde **"Tradetracker Hariç"** adlı segment kayıtlı (Filtreler → Trafik → Kaynak →
+`merchant.tradetracker.com` + `tradetracker.com` → *Seçimi dışla*). Bundan sonraki her
+okuma bu segmentle yapılmalı; segmentsiz görünüm 30 günlük pencerede %13 şişik.
+
+**İki kaldıraç birlikte çalışıyor:**
+- **Kod (1a, commit `3139c4d`):** 18 Ağu'dan sonraki bot oturumları Clarity'ye hiç
+  kaydedilmiyor. Bir süre sonra segment gereksizleşecek.
+- **Segment (1b):** 18 Ağu öncesi geçmiş veriyi temiz okumak için gerekli.
+
+### Bot temizliğinin gerçekten değiştirdiği tek karar
+
+| Metrik | Ham | Temiz | Karar değişti mi? |
+|---|---|---|---|
+| Sayfa/oturum | 1,00 | 1,01 | hayır |
+| Geri dönen kullanıcı | 0 | 0 | hayır |
+| Kaydırma | %31,9 | %32,5 | hayır |
+| **Giden tıklama** | **30 ot.** | **26 ot.** | ✅ **evet — gelir tabanı %13 düştü** |
+| Ölü tıklama | %5,65 | %6,16 | kısmen (bot değil, gerçek kullanıcı) |
+
+Diğer her metrikte bot temizliği **hiçbir sonucu değiştirmedi.** Tek gerçek etkisi
+affiliate gelir tabanında: aylık giden tıklama 30 değil 26.
+
+### TradeTracker botunun profili (ters segment, 82 oturum)
+
+Sayfa/oturum 1,00 · kaydırma %28,5 · etkin süre 13 sn · **giden tıklama 4 oturum** ·
+ölü tıklama %2,44. Yani bot sayfayı açıyor, kısmen kaydırıyor ve affiliate linke
+tıklayıp doğrulamasını yapıp çıkıyor — tam olarak beklenen davranış.
