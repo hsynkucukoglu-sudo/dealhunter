@@ -133,8 +133,23 @@ Yönlendiren (30 gün): `www.google.com` 178 · **`merchant.tradetracker.com` 82
 `duckduckgo.com` 5 · `l.wl.co` 5 · `chatgpt.com` 4 · `ui.awin.com` 4 ·
 `uygulama.awin.com` 3 · `www.bing.com` 3.
 
-TradeTracker hâlâ Google'dan sonra en büyük ikinci kaynak ve tamamı doğrulama
-botu. 22 Temmuz'da önerilen Clarity bot-filtreleme ayarı **hâlâ uygulanmadı**.
+TradeTracker hâlâ Google'dan sonra en büyük ikinci kaynak ve tamamı doğrulama botu.
+
+> **22 Temmuz'daki aksiyon önerisi hatalıydı — düzeltildi.** "Clarity bot
+> filtering'e referrer ekle" diye bir ayar **yok**. Clarity'nin tek kalıcı
+> dışlama mekanizması **IP** (`Ayarlar → IP`), ve ziyaretçi IP'sini panelde
+> göstermediği için TradeTracker'ın IP'si elde edilemiyor. Panel filtresinde
+> `Trafik → Gönderen site` serbest metin ve **dışlama kutusu yok** (yalnızca
+> dahil etmeye yarıyor); dışlama sadece `Kaynak` / `Orta` alanlarında var.
+>
+> **Uygulanan çözüm (18 Ağu):** Clarity etiketi `layout.tsx`'te referrer'a göre
+> kapılandı — `tradetracker.com`, `awin.com`, `daisycon.com`, `daisycon.io` ve
+> alt alan adlarından gelen ziyarette etiket hiç yüklenmiyor. Puppeteer ile
+> uçtan uca doğrulandı: google referrer → 5 `clarity.ms` isteği; tradetracker
+> ve awin referrer → 0 istek, script DOM'a hiç girmiyor.
+>
+> `l.wl.co` (5 oturum) **bilerek listeye alınmadı** — affiliate doğrulama botu
+> olduğu kesin değil, gerçek ziyaretçiyi kaybetme riskine değmez.
 Not: `gemini.google.com` 8 + `chatgpt.com` 4 = **12 oturum LLM yönlendirmesi** —
 küçük ama sıfır değil, AEO tarafında ilk sinyal.
 
@@ -178,7 +193,8 @@ hipotezi bu veriyle test edilemez.
 
 | # | İş | Gerekçe | Durum |
 |---|---|---|---|
-| 1 | Clarity bot filtresine `merchant.tradetracker.com` ekle | 82 oturum / 30g kirlilik, 22 Tem'den beri bekliyor | **kullanıcı kararı** |
+| 1a | Clarity etiketini affiliate-ağ referrer'ında yükleme (kod) | 94/619 oturum (%15) kirlilik | ✅ **yapıldı** |
+| 1b | Panelde "Kaynak → Seçimi dışla" segmenti kaydet (geçmiş veri için) | 1a yalnızca bundan sonrasını temizler | **kullanıcı** |
 | 2 | 20-21 Ağu'da deploy sonrası çekim | Tek gerçek ölçüm penceresi | planlandı |
 | 3 | Sayfa/oturum için link değil **içerik** müdahalesi | 619 oturumda 4 farklı linkleme denemesi başarısız | tartışılmadı |
 | 4 | Geri dönen %0 → retention altyapısını ya canlandır ya kapat | 30 günde 0 geri dönen kullanıcı | tartışılmadı |

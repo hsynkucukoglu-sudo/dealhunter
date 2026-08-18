@@ -5,6 +5,12 @@ import { headers } from 'next/headers'
 
 // Countries producing only scraper/bot traffic — no analytics needed
 const BOT_COUNTRIES = new Set(['US', 'CN', 'RU', 'SG', 'JP', 'AU', 'BR', 'IN'])
+
+// Affiliate networks crawl our outbound links with validation bots that execute JS,
+// so Clarity counted them as real visitors: 82 of 619 sessions (13%) over 30 days came
+// from merchant.tradetracker.com alone. Clarity has no referrer-based exclusion setting
+// (only IP), so the tag is gated here instead. See docs/clarity-takip.md 2026-08-18.
+const AFFILIATE_BOT_HOSTS = ['tradetracker.com', 'awin.com', 'daisycon.com', 'daisycon.io']
 import { ShoppingListProvider } from '@/context/ShoppingListContext'
 import { LanguageProvider } from '@/context/LanguageContext'
 import { CookieBanner } from '@/components/CookieBanner'
@@ -135,7 +141,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Script
             id="clarity"
             strategy="afterInteractive"
-            src="https://www.clarity.ms/tag/x232q20xdj"
+            dangerouslySetInnerHTML={{
+              __html: `try{var h='';try{h=document.referrer?new URL(document.referrer).hostname:''}catch(e){}
+var bots=${JSON.stringify(AFFILIATE_BOT_HOSTS)};
+if(!(h&&bots.some(function(d){return h===d||h.endsWith('.'+d)}))){
+var s=document.createElement('script');s.async=true;s.src='https://www.clarity.ms/tag/x232q20xdj';document.head.appendChild(s)}}catch(e){}`,
+            }}
           />
         )}
       </body>
