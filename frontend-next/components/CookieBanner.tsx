@@ -8,8 +8,25 @@ export function CookieBanner() {
   const { t } = useLanguage()
 
   useEffect(() => {
-    const consent = localStorage.getItem('cookie_consent')
-    if (!consent) setShow(true)
+    if (localStorage.getItem('cookie_consent')) return
+
+    // Funding Choices (Google's CMP) vraagt op EEA-verkeer al om toestemming en
+    // schrijft die via de TCF-brug in AdSenseScript naar cookie_consent. Vroeger
+    // verscheen deze banner daar bovenop, dus kreeg de bezoeker twee
+    // toestemmingsdialogen achter elkaar (gemeten 2026-08-18: full-screen FC,
+    // daarna nog eens 141px vaste balk). Daarom wachten we eerst even af; komt
+    // er geen CMP-besluit, dan is deze banner alsnog de enige vraag.
+    const resolved = () => setShow(false)
+    window.addEventListener('cookie_consent_resolved', resolved)
+
+    const t = setTimeout(() => {
+      if (!localStorage.getItem('cookie_consent')) setShow(true)
+    }, 2500)
+
+    return () => {
+      clearTimeout(t)
+      window.removeEventListener('cookie_consent_resolved', resolved)
+    }
   }, [])
 
   const accept = () => {
