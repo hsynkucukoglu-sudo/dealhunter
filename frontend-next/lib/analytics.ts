@@ -51,6 +51,21 @@ export function trackCampaignFilter(campaignType: string) {
   track('filter_campaign', { campaign_type: campaignType })
 }
 
+// MeerBesparen-drawer geopend. Zonder dit was niet te scheiden of affiliate-
+// inkomsten €0 zijn omdat niemand de drawer opent, of omdat wie hem opent niet
+// doorklikt — zie docs/analiz-2026-08-15.md §10 (TradeTracker: 1 klik in een jaar).
+export function trackMeerBesparenOpen(category: string) {
+  track('meer_besparen_open', { category })
+}
+
+// Affiliate-klik. Stond eerder twee keer als losse inline gtag-call in
+// MeerBesparenWidget, waardoor Clarity hem niet zag en de first-party log er
+// los naast liep. Nu één plek: GA4 + Clarity + first-party.
+export function trackAffiliateClick(name: string, category: string, source?: string) {
+  track('affiliate_click', { affiliate_name: name, affiliate_category: category, ...(source ? { affiliate_source: source } : {}) })
+  trackClick('sponsor', name)
+}
+
 // Snelfilterrij bovenaan de pagina (Alle / Alleen Acties / Kassakoopjes / hot).
 // Deze knoppen stonden als enige filters níet in de tracking, terwijl ze wel
 // boven de vouw staan — zie docs/clarity-takip.md 2026-08-18.

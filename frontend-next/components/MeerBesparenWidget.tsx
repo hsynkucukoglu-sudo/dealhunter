@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { trackClick } from '@/lib/track'
+import { trackAffiliateClick, trackMeerBesparenOpen } from '@/lib/analytics'
 import { getMarketDestination } from '@/lib/affiliate'
 
 // M: haal de URL uit AFFILIATE_MAP (lib/affiliate.ts) i.p.v. hem hier nog een keer
@@ -270,6 +270,16 @@ export function MeerBesparenWidget({ open, onClose, onOpen, activeCategory }: Pr
     if (open && activeCategory) setTab(activeCategory)
   }, [open, activeCategory])
 
+  // Op de open-flank meten, niet op de triggerknop: zo tellen álle openingen mee
+  // (chip, "Meer besparen"-knop, programmatisch) en precies één keer per opening.
+  const gemeld = useRef(false)
+  useEffect(() => {
+    if (!open) { gemeld.current = false; return }
+    if (gemeld.current) return
+    gemeld.current = true
+    trackMeerBesparenOpen(activeCategory ?? tab)
+  }, [open, activeCategory, tab])
+
   // Close on Escape
   useEffect(() => {
     if (!open) return
@@ -318,11 +328,7 @@ export function MeerBesparenWidget({ open, onClose, onOpen, activeCategory }: Pr
                   target="_blank"
                   rel="noopener sponsored"
                   onClick={(e) => {
-                    try {
-                      // @ts-ignore
-                      if (typeof gtag !== 'undefined') gtag('event', 'affiliate_click', { affiliate_name: b.name, affiliate_category: b.category, affiliate_source: 'featured_chip' })
-                    } catch {}
-                    trackClick('sponsor', b.name)
+                    trackAffiliateClick(b.name, b.category, 'featured_chip')
                     window.open(url, '_blank', 'noopener,noreferrer')
                     e.preventDefault()
                   }}
@@ -469,11 +475,7 @@ export function MeerBesparenWidget({ open, onClose, onOpen, activeCategory }: Pr
                         rel="noopener noreferrer sponsored"
                         onClick={(e) => {
                           e.stopPropagation()
-                          try {
-                            // @ts-ignore
-                            if (typeof gtag !== 'undefined') gtag('event', 'affiliate_click', { affiliate_name: item.name, affiliate_category: activeGroup.id })
-                          } catch {}
-                          trackClick('sponsor', item.name)
+                          trackAffiliateClick(item.name, activeGroup.id, 'drawer')
                           window.open(item.url, '_blank', 'noopener,noreferrer')
                           e.preventDefault()
                         }}
