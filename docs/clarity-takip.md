@@ -339,7 +339,7 @@ oturumluk ölü tıklamanın hem de düşük kaydırma derinliğinin muhtemel ka
 | # | İş | Neden | Büyüklük |
 |---|---|---|---|
 | A | Arama/filtre etkileşimini olay olarak işaretle | Sayfa/oturum'un gerçek mi artefakt mı olduğu ayrılmadan strateji kararı verilemez | ✅ **yapıldı** |
-| B | Arama sonuçlarını reklamın üstüne al | 1 numaralı etkileşimin çıktısı 390px reklamın arkasında | küçük |
+| B | Arama sonuçlarını reklamın üstüne al | 1 numaralı etkileşimin çıktısı 390px reklamın arkasında | ✅ **yapıldı** |
 | C | İki onay diyaloğunu teke indir | Ziyaretçi içeriğe varmadan iki engel geçiyor | orta |
 
 **A, eski 3 ve 4 numaralı stratejik maddelerin önüne geçiyor** — çünkü o iki
@@ -405,3 +405,39 @@ satırı ölçüm dışıydı. `trackQuickFilter()` eklendi, dördü de bağland
 - Kaç arama boş sonuçla bitiyor (`search_result=empty` segmenti)
 - Kaç oturum hiç etkileşim kurmadan çıkıyor — **sayfa/oturum 1,01'in gerçek terk
   mi ölçüm körlüğü mü olduğu ancak bu ayrımla cevaplanır**
+
+
+## ✅ B uygulandı (18 Ağu) — arama sonucu artık fold içinde
+
+### Mekanizma: reklamlar arama yapılınca yukarı "çıkıyordu"
+
+Arama yapılınca hero ile grid arasındaki bütün bloklar gizleniyor (Top 5,
+Prijsvergelijking, MarktenShowcase — hepsi `searchTerm === ''` koşullu). Ama
+aradaki **iki reklam gizlenmiyordu**, dolayısıyla arama kutusunun hemen altına
+kayıyorlardı. Kimse bunu böyle tasarlamadı — gezinme düzeninde o reklamlar
+y=2187 ve y=2825'te, yani makul yerdeler.
+
+### Ölçüm (mobil 390×844, canlı site)
+
+| | Arama yok | "melk" — ÖNCE | "melk" — SONRA |
+|---|---|---|---|
+| Arama kutusu | y=406 | y=267 | y=267 |
+| Reklam `7882410354` | y=2187 | **y=508** | y=6489 |
+| Reklam `6569328687` | y=2825 | **y=922** | y=6903 |
+| **İlk sonuç** | **y=691** ✅ | **y=1448** ❌ | **y=604** ✅ |
+
+Önce: arama kutusuyla ilk sonuç arasında **780px reklam**, ilk sonucu görmek
+için **604px kaydırma** (ekranın %72'si). Sonra: arada reklam yok, ilk sonuç
+fold içinde.
+
+### Gelir korundu
+
+Reklamlar **silinmedi**, arama aktifken sol sütunun sonuna — sonuçların altına —
+taşındı (`isSearching` bayrağı). Üç slot da sayfada duruyor. Gezinme düzenine
+hiç dokunulmadı: arama yokken ilk ürün hâlâ y=691.
+
+Bu, `ProductsPage.tsx` 1355-1372'deki "AD #1 ve MEER BESPAREN bilerek grid'in
+üstünde bırakıldı, aşağı almak reklam gelirini çöpe atar" notuna da uyuyor — o
+karar *gezinme* akışı içindi, arama akışı için değil.
+
+`tsc --noEmit` temiz, `next build` başarılı.

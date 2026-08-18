@@ -207,6 +207,15 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
   const deferredCampaign = useDeferredValue(selectedCampaign)
   const deferredSearch = useDeferredValue(debouncedSearch)
 
+  // Zodra er gezocht wordt verdwijnen alle blokken tussen de hero en het grid
+  // (Top 5, Prijsvergelijking, MarktenShowcase — allemaal `searchTerm === ''`).
+  // De twee advertenties daartussen bleven wél staan en schoven daardoor omhoog
+  // tot pal onder het zoekveld: gemeten 2026-08-18 op mobiel stond het eerste
+  // zoekresultaat op y=1448 met 780px advertentie ertussen, terwijl het bij
+  // gewoon bladeren op y=691 staat — binnen de vouw. Wie zoekt zag dus nooit een
+  // resultaat. De advertenties worden niet verwijderd maar ónder het grid gezet.
+  const isSearching = debouncedSearch.trim() !== ''
+
   // Reset pagination when any filter changes
   useEffect(() => {
     setVisibleCount(36)
@@ -1326,7 +1335,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             gerçek render yüksekliğinin altındaydı — Clarity CLS 0.147 (needs improvement,
             2026-07-15) ile tutarlı, en olası kaynak bu slottu (tek istisna: diğer tüm
             AdBanner çağrıları 280 kullanıyor). */}
-        <AdBanner slot="7882410354" format="horizontal" className="mb-6" minHeight={120} />
+        {!isSearching && <AdBanner slot="7882410354" format="horizontal" className="mb-6" minHeight={120} />}
 
         {/* MEER BESPAREN — compact trigger + drawer. Reklam#1'in hemen ardına taşındı
             (önceden Flink banner'ın da altındaydı) — asıl komisyon kaynağı (energie/telecom/
@@ -1461,7 +1470,7 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
               )}
 
               {/* AD */}
-              <AdBanner slot="6569328687" format="auto" className="mb-10" minHeight={280} />
+              {!isSearching && <AdBanner slot="6569328687" format="auto" className="mb-10" minHeight={280} />}
 
               {/* Product Grid */}
               <section>
@@ -1537,6 +1546,15 @@ const deferredPromptRef = useRef<Event & { prompt: () => void; userChoice: Promi
             </motion.div>
           )}
         </AnimatePresence>
+
+            {/* Advertenties uit de posities hierboven, verplaatst naar ná de
+                resultaten zolang er gezocht wordt. Zie isSearching. */}
+            {isSearching && (
+              <>
+                <AdBanner slot="7882410354" format="horizontal" className="mt-10 mb-6" minHeight={120} />
+                <AdBanner slot="6569328687" format="auto" className="mb-10" minHeight={280} />
+              </>
+            )}
           </div>
         </div>
 
