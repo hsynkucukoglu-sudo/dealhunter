@@ -15,8 +15,14 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const PROFILE = 'C:/Users/ASUS/Downloads/gsc-profile'
 const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe'
+
+// Servis başına AYRI profil. Tek profile iki Google hesabı koymak denendi ve
+// kırdı: 18 Ağustos'ta AdSense hesabı eklenince GSC mülküne erişimi olan hesap
+// profilden düştü ve GSC + Clarity aynı anda boş dönmeye başladı. Bir profil =
+// bir kimlik kuralı, /u/0 · /u/1 indeks tahmini gerektirmediği için de sağlam.
+const METRICS_PROFILE = 'C:/Users/ASUS/Downloads/metrics-profile'  // hsyn.kucukoglu@gmail.com → GSC + Clarity
+const ADSENSE_PROFILE = 'C:/Users/ASUS/Downloads/gsc-profile'      // hyuseyink@gmail.com → AdSense
 const CLARITY_ID = 'x232q20xdj'
 const GSC_RES = 'https%3A%2F%2Fwww.dealhunter4u.nl%2F'
 const ADSENSE_PUB = 'pub-6266103134639533'
@@ -129,25 +135,33 @@ async function adsense(page) {
 const bugun = new Date().toISOString().slice(0, 10)
 const rapor = { tarih: bugun }
 
-const browser = await puppeteer.launch({
-  headless: false,
-  executablePath: CHROME,
-  userDataDir: PROFILE,
-  defaultViewport: { width: 1700, height: 1200 },
-  args: ['--no-first-run', '--no-default-browser-check'],
-})
-const page = (await browser.pages())[0] || await browser.newPage()
-
-for (const [ad, fn] of [['clarity', clarity], ['gscIndex', gscIndex], ['gscPerf', gscPerf], ['adsense', adsense]]) {
+async function profildeCalistir(profil, isler) {
+  const browser = await puppeteer.launch({
+    headless: false,
+    executablePath: CHROME,
+    userDataDir: profil,
+    defaultViewport: { width: 1700, height: 1200 },
+    args: ['--no-first-run', '--no-default-browser-check'],
+  })
   try {
-    rapor[ad] = await fn(page)
-    console.log(`✓ ${ad}`)
-  } catch (e) {
-    rapor[ad] = { hata: 'ALINAMADI: ' + e.message }
-    console.log(`✗ ${ad}: ${e.message}`)
+    const page = (await browser.pages())[0] || await browser.newPage()
+    for (const [ad, fn] of isler) {
+      try {
+        rapor[ad] = await fn(page)
+        console.log(`✓ ${ad}`)
+      } catch (e) {
+        rapor[ad] = { hata: 'ALINAMADI: ' + e.message }
+        console.log(`✗ ${ad}: ${e.message}`)
+      }
+    }
+  } finally {
+    await browser.close()
   }
 }
-await browser.close()
+
+// Sırayla: iki Chrome aynı anda açılmıyor, profiller birbirini kilitlemesin.
+await profildeCalistir(METRICS_PROFILE, [['clarity', clarity], ['gscIndex', gscIndex], ['gscPerf', gscPerf]])
+await profildeCalistir(ADSENSE_PROFILE, [['adsense', adsense]])
 
 const dataDir = path.join(ROOT, 'docs', 'data')
 fs.mkdirSync(dataDir, { recursive: true })

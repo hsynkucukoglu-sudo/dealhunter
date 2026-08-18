@@ -14,24 +14,24 @@
     "arama": null
    },
    "g7": {
-    "oturum": 104,
-    "bot": 315,
-    "sayfaOturum": 1.02,
-    "kaydirma": 31.52,
-    "etkinSure": "50 sn",
+    "oturum": 116,
+    "bot": 319,
+    "sayfaOturum": 1.06,
+    "kaydirma": 31.85,
+    "etkinSure": "52 sn",
     "geriDonen": 0,
-    "oluTiklama": 6.73,
+    "oluTiklama": 6.9,
     "giden": 7,
     "arama": 2
    },
    "g30": {
-    "oturum": 628,
-    "bot": 909,
-    "sayfaOturum": 1.01,
-    "kaydirma": 31.88,
+    "oturum": 640,
+    "bot": 913,
+    "sayfaOturum": 1.02,
+    "kaydirma": 31.94,
     "etkinSure": "33 sn",
     "geriDonen": 0,
-    "oluTiklama": 5.89,
+    "oluTiklama": 5.94,
     "giden": 31,
     "arama": 10
    }
@@ -52,7 +52,11 @@
    "konum": "9,8"
   },
   "adsense": {
-   "hata": "ERISIM YOK — hyuseyink@gmail.com bu Chrome profiline bir kez giris yapmali"
+   "hesapIndex": 0,
+   "bugun": "€0,10",
+   "dun": "€0,08",
+   "son7": "€0,41",
+   "buAy": "€1,18"
   }
  }
 ]
