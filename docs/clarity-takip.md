@@ -254,3 +254,93 @@ affiliate gelir tabanında: aylık giden tıklama 30 değil 26.
 Sayfa/oturum 1,00 · kaydırma %28,5 · etkin süre 13 sn · **giden tıklama 4 oturum** ·
 ölü tıklama %2,44. Yani bot sayfayı açıyor, kısmen kaydırıyor ve affiliate linke
 tıklayıp doğrulamasını yapıp çıkıyor — tam olarak beklenen davranış.
+
+# 🔬 18 Ağustos — ısı haritası + canlı mobil test: sayfa/oturum yorumu değişti
+
+Yukarıdaki "sayfa/oturum 1,01 = ziyaretçi ikinci sayfaya gitmiyor" çıkarımını
+test etmek için ana sayfanın tıklama ısı haritası okundu ve canlı site mobil
+emülasyonda (iPhone 390×844) elle kullanıldı.
+
+## 1. 🔴 Arama kutusu sitenin 1 numaralı etkileşimi — dün yanlış okumuşum
+
+Mobil ana sayfa, 30 gün, en çok tıklanan öğeler:
+
+| # | Öğe | Tıklama | Pay |
+|---|---|---|---|
+| **1** | **`INPUT` — arama kutusu** | **38** | **%11,69** |
+| 2 | hero gövdesi (boş alan) | 9 | %2,77 |
+| 3 | `MAIN>DIV[8]` | 7 | %2,15 |
+| 5 | "Filtreleri ayarla" | 6 | %1,85 |
+| 6 | "Ontdek Aanbiedingen" | 6 | %1,85 |
+
+Arama kutusu ikinci sıradakinin **4 katı** tıklama alıyor.
+
+**Bu, 18 Ağustos sabahındaki "arama 30 günde 10 oturumda kullanılıyor (%1,9),
+tavanı düşük" çıkarımını çürütüyor.** O rakam *tamamlanan* aramaydı; *niyet*
+altı kat yüksek ve sitedeki en güçlü tek sinyal. 17 Ağustos'taki arama isabeti
+düzeltmesi (%65 → %96, `529e74d`) sanılandan çok daha değerli.
+
+## 2. Arama teknik olarak çalışıyor — canlı mobil testte doğrulandı
+
+| Sorgu | Görünen ürün kartı |
+|---|---|
+| (arama yok) | 41 |
+| `melk` | 21 |
+| `kaas` | 36 |
+| `xyzqw` | 0 + **"Geen producten gevonden"** mesajı ✅ |
+
+Kutu odaklanıyor, yazılıyor, filtreliyor; boş sonuç ekranı (`b27f4fb`) çalışıyor.
+JS hatası yok. **Arama bozuk değil.**
+
+## 3. 🟡 Ama arama URL değiştirmiyor — sayfa/oturum 1,01'in mekanik sebebi bu olabilir
+
+Arama yerinde filtreleme yapıyor; `/` URL'i hiç değişmiyor. Yani **arayan
+kullanıcı yeni bir sayfa görüntülemesi üretmiyor.**
+
+Sonuç: "sayfa/oturum 1,01" mutlaka "ziyaretçi tek sayfa görüp kaçıyor" demek
+değil. Ziyaretçi arıyor, filtreliyor, kategori değiştiriyor — hepsi tek URL'de.
+Clarity ve GA bunu göremiyor.
+
+> **Bu, yukarıdaki 3 numaralı aksiyonun gerekçesini zayıflatıyor.** "İç linkleme
+> tutmadı, içerik müdahalesi lazım" demeden önce, tek-sayfa görünümünün ne
+> kadarının gerçek terk, ne kadarının ölçüm artefaktı olduğu ayrılmalı.
+>
+> **Ayırma yöntemi:** arama/filtre etkileşimlerini sanal sayfa görüntülemesi
+> (veya Clarity özel olayı) olarak işaretle. Ondan sonra sayfa/oturum gerçek
+> davranışı gösterir. Ölçüm düzeltmeden strateji değiştirmek riskli.
+
+## 4. 🔴 Arama kutusunun hemen altında 390px reklam var
+
+Mobil dikey yerleşim (ekran 844px):
+
+| Öğe | Y |
+|---|---|
+| Arama kutusu | 267px |
+| **Reklam (390px yüksekliğinde)** | **652px** |
+| Arama sonuçları | reklamın altında |
+
+Kullanıcı arama yapıyor, sonuçları görmek için **390px'lik reklamı geçmek
+zorunda.** Sitenin 1 numaralı etkileşiminin çıktısı reklamın arkasında.
+
+## 5. 🔴 İki onay diyaloğu üst üste
+
+1. **Google Funding Choices** — tam ekran (390×844), `z-index: 2147483644`,
+   `pointer-events: auto`. Kapatılmadan sayfadaki hiçbir şeye dokunulamıyor
+   (`elementFromPoint` arama kutusunun merkezinde diyaloğun footer'ını
+   döndürüyor).
+2. Bu kapatıldıktan **sonra** sitenin kendi çerez bandı çıkıyor — 141px, `fixed`,
+   `z-index: 200`, ekranın alt **%17'si**.
+
+Ziyaretçi içeriğe ulaşmadan önce iki ayrı onay ekranı geçiyor. Bu, hem 33
+oturumluk ölü tıklamanın hem de düşük kaydırma derinliğinin muhtemel kaynağı.
+
+## Bu bulgulardan çıkan yeni aksiyon sırası
+
+| # | İş | Neden | Büyüklük |
+|---|---|---|---|
+| A | Arama/filtre etkileşimini olay olarak işaretle | Sayfa/oturum'un gerçek mi artefakt mı olduğu ayrılmadan strateji kararı verilemez | küçük |
+| B | Arama sonuçlarını reklamın üstüne al | 1 numaralı etkileşimin çıktısı 390px reklamın arkasında | küçük |
+| C | İki onay diyaloğunu teke indir | Ziyaretçi içeriğe varmadan iki engel geçiyor | orta |
+
+**A, eski 3 ve 4 numaralı stratejik maddelerin önüne geçiyor** — çünkü o iki
+maddenin dayandığı metrik şu an güvenilir değil.
