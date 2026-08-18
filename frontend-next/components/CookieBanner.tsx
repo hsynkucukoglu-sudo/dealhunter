@@ -16,16 +16,20 @@ export function CookieBanner() {
     // toestemmingsdialogen achter elkaar (gemeten 2026-08-18: full-screen FC,
     // daarna nog eens 141px vaste balk). Daarom wachten we eerst even af; komt
     // er geen CMP-besluit, dan is deze banner alsnog de enige vraag.
+    let cmpActive = false
     const resolved = () => setShow(false)
+    const onCmp = () => { cmpActive = true; setShow(false) }
     window.addEventListener('cookie_consent_resolved', resolved)
+    window.addEventListener('cmp_active', onCmp)
 
     const t = setTimeout(() => {
-      if (!localStorage.getItem('cookie_consent')) setShow(true)
+      if (!cmpActive && !localStorage.getItem('cookie_consent')) setShow(true)
     }, 2500)
 
     return () => {
       clearTimeout(t)
       window.removeEventListener('cookie_consent_resolved', resolved)
+      window.removeEventListener('cmp_active', onCmp)
     }
   }, [])
 

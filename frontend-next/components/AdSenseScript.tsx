@@ -59,10 +59,14 @@ function setupTcfBridge() {
     if (typeof w.__tcfapi !== 'function') return false
     w.__tcfapi('addEventListener', 2, (tc, ok) => {
       if (!ok || !tc) return
-      // Alleen handelen als de CMP daadwerkelijk een besluit heeft. Bij
-      // gdprApplies === false toont Funding Choices niets; dan blijft de eigen
-      // banner de enige toestemmingsvraag — daarom hier niets doen.
+      // Bij gdprApplies === false toont Funding Choices niets; dan blijft de
+      // eigen banner de enige toestemmingsvraag — daarom hier niets doen.
       if (tc.gdprApplies !== true) return
+
+      // Zodra vaststaat dát er een CMP is, moet de eigen banner zich niet meer
+      // laten zien — ook niet in de seconden dat de CMP-dialoog nog openstaat.
+      window.dispatchEvent(new Event('cmp_active'))
+
       if (tc.eventStatus !== 'tcloaded' && tc.eventStatus !== 'useractioncomplete') return
 
       const consent = mapTcfToConsent(tc)
