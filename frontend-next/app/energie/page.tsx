@@ -164,6 +164,7 @@ export default function EnergiePage() {
                 </div>
                 <Link
                   href={`/go?m=${encodeURIComponent(s.market)}&c=sponsor`}
+                  rel="nofollow"
                   style={{
                     flex: '0 0 auto', background: s.color, color: 'white',
                     padding: '12px 24px', borderRadius: 30, textDecoration: 'none',
@@ -195,6 +196,7 @@ export default function EnergiePage() {
                 <p style={{ fontSize: 13, color: '#6B6259', marginBottom: 14 }}>{s.tagline}</p>
                 <Link
                   href={`/go?m=${encodeURIComponent(s.market)}&c=sponsor`}
+                  rel="nofollow"
                   style={{
                     display: 'inline-block', background: s.color, color: 'white',
                     padding: '10px 20px', borderRadius: 30, textDecoration: 'none',
