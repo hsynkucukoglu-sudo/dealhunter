@@ -74,24 +74,24 @@
     "arama": null
    },
    "g7": {
-    "oturum": 105,
-    "bot": 293,
+    "oturum": 106,
+    "bot": 295,
     "sayfaOturum": 1.07,
-    "kaydirma": 32.5,
-    "etkinSure": "56 sn",
+    "kaydirma": 32.32,
+    "etkinSure": "55 sn",
     "geriDonen": 0,
-    "oluTiklama": 6.67,
+    "oluTiklama": 6.6,
     "giden": 7,
     "arama": 2
    },
    "g30": {
-    "oturum": 589,
-    "bot": 891,
+    "oturum": 590,
+    "bot": 893,
     "sayfaOturum": 1.01,
-    "kaydirma": 32.54,
+    "kaydirma": 32.51,
     "etkinSure": "35 sn",
     "geriDonen": 0,
-    "oluTiklama": 5.94,
+    "oluTiklama": 5.93,
     "giden": 28,
     "arama": 10
    }

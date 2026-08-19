@@ -20,25 +20,6 @@ Dizine eklenen **168** · eklenmeyen **108** (noindex 32 · robots 32 · keşfed
 ### AdSense
 bugün €0,10 · dün €0,08 · son 7 gün €0,41 · bu ay €1,18 (hesap /u/0)
 
-## 2026-08-19
-
-### Clarity
-| Pencere | Oturum | Sayfa/ot | Kaydırma | Etkin süre | Geri dönen | Giden tık | Arama |
-|---|---|---|---|---|---|---|---|
-| Dün | 24 | 1.29 | 30.84% | 53 sn | 0 | 1 | — |
-| 7 gün | 105 | 1.07 | 32.5% | 56 sn | 0 | 7 | 2 |
-| 30 gün | 589 | 1.01 | 32.54% | 35 sn | 0 | 28 | 10 |
-
-### GSC
-Dizine eklenen **168** · eklenmeyen **108** (noindex 32 · robots 32 · keşfedildi 29 · tarandı 8 · kopya 3)
-
-28 gün: tıklama **141** · gösterim **60,4 B** · TO 0,2 · konum 9,8
-
-### AdSense
-bugün €0,00 · dün €0,10 · son 7 gün €0,45 · bu ay €1,18 (hesap /u/0)
-
----
-
 ## Okuma notları (19 Ağustos)
 
 **İlk gün-üstü-gün karşılaştırma.** Yorum buraya değil `analiz-2026-08-15.md`'ye
@@ -81,3 +62,20 @@ güvenilecek bir savunma değil.
   GSC'de karşılaştırma sorgularının en yüksek TO'lu grup olması bulgusuyla
   tutarlı.
 - Kaydırma iki bağımsız pencerede de +0,6 puan (7g %32,5 · 30g %32,5).
+
+## 2026-08-19
+
+### Clarity
+| Pencere | Oturum | Sayfa/ot | Kaydırma | Etkin süre | Geri dönen | Giden tık | Arama |
+|---|---|---|---|---|---|---|---|
+| Dün | 24 | 1.29 | 30.84% | 53 sn | 0 | 1 | — |
+| 7 gün | 106 | 1.07 | 32.32% | 55 sn | 0 | 7 | 2 |
+| 30 gün | 590 | 1.01 | 32.51% | 35 sn | 0 | 28 | 10 |
+
+### GSC
+Dizine eklenen **168** · eklenmeyen **108** (noindex 32 · robots 32 · keşfedildi 29 · tarandı 8 · kopya 3)
+
+28 gün: tıklama **141** · gösterim **60,4 B** · TO 0,2 · konum 9,8
+
+### AdSense
+bugün €0,00 · dün €0,10 · son 7 gün €0,45 · bu ay €1,18 (hesap /u/0)

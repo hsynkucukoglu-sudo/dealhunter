@@ -8,6 +8,7 @@ import { DealHunterLogo } from '@/components/DealHunterLogo'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { MarketLogo } from '@/components/MarketLogo'
 import { MarketFAQ } from '@/components/MarketFAQ'
+import { AdBanner } from '@/components/AdBanner'
 
 export const revalidate = 3600
 
@@ -197,6 +198,10 @@ export default async function VergelijkPage({ params }: Props) {
             </div>
           ))}
         </div>
+
+        {/* Reklam — vergelijkingskaarten staan boven, SEO-tekst eronder; hier valt
+            de natuurlijke pauze. Zelfde plek als op MarketPage en CategoryPage. */}
+        <AdBanner slot="6569328687" format="auto" className="mb-10" minHeight={280} />
 
         {/* SEO tekst */}
         <section className="rounded-3xl p-6 md:p-8 mb-10" style={{ background: 'rgba(255,255,255,0.7)', border: '1px solid rgba(201,193,182,0.4)' }}>

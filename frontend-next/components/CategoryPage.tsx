@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Product, CATEGORIES, CATEGORY_LABELS } from '@/lib/types'
 import { MarketLogo } from './MarketLogo'
 import { ProductCard } from './ProductCard'
+import { AdBanner } from './AdBanner'
 import { ShoppingListSidebar } from './ShoppingListSidebar'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { useShoppingList } from '@/context/ShoppingListContext'
@@ -188,6 +189,13 @@ export function CategoryPage({ category, initialProducts, relatedPosts = [], rel
               </motion.div>
             ))}
           </div>
+        )}
+
+        {/* Reklam — ürün gridi ile SEO içeriği arasında doğal mola.
+            Aynı yerleşim MarketPage'de kullanılıyor. Ürün yoksa gösterilmiyor:
+            boş bir kategoride tek içerik reklam olurdu. */}
+        {filtered.length > 0 && (
+          <AdBanner slot="6569328687" format="auto" className="mt-12" minHeight={280} />
         )}
 
         {/* Categorie content — unieke redactionele tekst voor SEO */}
