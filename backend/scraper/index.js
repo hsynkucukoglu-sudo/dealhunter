@@ -269,7 +269,7 @@ async function scrapeJumbo() {
     for (let i = 0; i < skuDeals.length; i += GQL_BATCH) {
       const batch = skuDeals.slice(i, i + GQL_BATCH)
       // subtitle = maatlabel ("570 ml", "500 g"); komt gratis mee in dezelfde call
-      const aliases = batch.map((d, j) => `p${j}: product(sku: "${d.sku}") { price { price } image subtitle }`).join(' ')
+      const aliases = batch.map((d, j) => `p${j}: product(sku: "${d.sku}") { price { price } image subtitle brand }`).join(' ')
       try {
         const r = await fetch(JUMBO_GQL_URL, {
           method: 'POST',
@@ -285,6 +285,7 @@ async function scrapeJumbo() {
           if (cents && cents > 0) d.regularPrice = cents / 100
           if (prod?.image) d.imageUrl = prod.image
           if (prod?.subtitle) d.sizeLabel = prod.subtitle
+          if (prod?.brand) d.brand = prod.brand
         })
       } catch {}
     }
@@ -299,7 +300,7 @@ async function scrapeJumbo() {
           const r = await fetch(JUMBO_GQL_URL, {
             method: 'POST',
             headers: JUMBO_GQL_HEADERS,
-            body: JSON.stringify({ query: `{ product(sku: "${deal.sku}") { price { price } image subtitle } }` }),
+            body: JSON.stringify({ query: `{ product(sku: "${deal.sku}") { price { price } image subtitle brand } }` }),
             signal: AbortSignal.timeout(8000),
           })
           if (!r.ok) continue
@@ -309,6 +310,7 @@ async function scrapeJumbo() {
           if (cents && cents > 0) deal.regularPrice = cents / 100
           if (prod?.image) deal.imageUrl = prod.image
           if (prod?.subtitle) deal.sizeLabel = prod.subtitle
+          if (prod?.brand) deal.brand = prod.brand
         } catch {}
       }
     }
@@ -373,6 +375,7 @@ async function scrapeJumbo() {
       results.push({
         name: deal.name,
         market: 'Jumbo',
+        brand: sourceBrand(deal.brand),
         originalPrice,
         discountedPrice,
         imageUrl: deal.imageUrl,
