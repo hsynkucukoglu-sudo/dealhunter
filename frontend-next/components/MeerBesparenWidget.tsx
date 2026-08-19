@@ -106,7 +106,13 @@ const DEALS = [
       { name: 'Thermae 2000',            tagline: 'Wellness & thermaalbadenpark',  cta: 'Bekijk aanbod',  color: '#7B9DC4', url: 'https://lt45.net/c/?si=11710&li=1519100&wi=420902' },
       { name: 'Vipio',                   tagline: 'Unieke ervaringen & uitjes',    cta: 'Bekijk ervaringen', color: '#8B5CF6', url: 'https://fr135.net/c/?si=15569&li=1672748&wi=420902' },
       { name: '123Helikoptervluchten',   tagline: 'Helikoptervlucht cadeau',       cta: 'Bekijk vluchten', color: '#F59E0B', url: 'https://jdt8.net/c/?si=17893&li=1774970&wi=420902' },
-      { name: 'Smartbox & Bongo',        tagline: 'Cadeaubon voor beleving',       cta: 'Bekijk aanbod',  color: '#C8102E', url: DC('https://glp8.net/c/?si=21185&li=1902306&wi=420902',   'https://www.smartbox.com/nl-nl/') },
+      // 2026-08-19: smartbox.com/nl-nl/, /nl/ en /nl-be/ geven allemaal 503 — de NL-site is
+      // naar bongo.nl verhuisd (smartbox.com linkt er zelf naartoe). dl=bongo.nl is
+      // getest en wordt door het programma NIET geaccepteerd: het dwingt de bestemming
+      // terug naar smartbox.com en dat pad geeft weer 503. Daarom dl= helemaal weggelaten;
+      // de kale trackinglink landt op smartbox.com zelf (200, wel de corporate pagina).
+      // Zelfde patroon als de 3 energie-merchants hierboven waar dl= ook brak.
+      { name: 'Smartbox & Bongo',        tagline: 'Cadeaubon voor beleving',       cta: 'Bekijk aanbod',  color: '#C8102E', url: 'https://glp8.net/c/?si=21185&li=1902306&wi=420902' },
       { name: 'Leukstetickets',          tagline: 'Uitjes, events & shows',        cta: 'Bekijk tickets', color: '#FF4500', url: M('Leukstetickets') },
       { name: 'UplandParcs',             tagline: 'Luxe vakantieverblijven DE/AT', cta: 'Bekijk verblijven', color: '#6D4C41', url: 'https://fr135.net/c/?si=15690&li=1680158&wi=420902' },
       { name: 'Lavida Travel',           tagline: 'Vakanties & tours online',      cta: 'Bekijk reizen',  color: '#00796B', url: 'https://ds1.nl/c/?si=6141&li=1285507&wi=420902' },
@@ -187,7 +193,7 @@ const DEALS = [
       { name: 'Wolfswinkel NL',    tagline: 'Outdoor gear & sportmode',   cta: 'Bekijk aanbod',    color: '#388E3C', url: M('Wolfswinkel NL') },
       { name: '123watches',        tagline: 'Horloges & accessoires',     cta: 'Bekijk collectie', color: '#C62828', url: M('123watches') },
       { name: 'Erverte Paris',     tagline: 'Duurzame heren mode uit Parijs', cta: 'Bekijk collectie', color: '#2F4F3E', url: M('Erverte Paris') },
-      { name: 'Bjorn Borg',  tagline: 'Sportkleding & ondergoed',    cta: 'Bekijk collectie', color: '#003594', url: DC('https://bdt9.net/c/?si=18683&li=1810656&wi=420902',  'https://www.bjornborg.com/nl-nl/') },
+      { name: 'Bjorn Borg',  tagline: 'Sportkleding & ondergoed',    cta: 'Bekijk collectie', color: '#003594', url: DC('https://bdt9.net/c/?si=18683&li=1810656&wi=420902',  'https://www.bjornborg.com/nl/') }, // 2026-08-19: /nl-nl/ gaf 404 (redirect naar /nl/nl-nl/), juiste pad is /nl/
       { name: 'Tsar Bomba',      tagline: 'Horloges & premium accessoires', cta: 'Bekijk collectie', color: '#8B0000', url: 'https://glp8.net/c/?si=21716&li=1916762&wi=420902' },
       { name: 'Sportiek.com',    tagline: 'Sportschoenen & kleding',       cta: 'Bekijk aanbod',    color: '#F97316', url: 'https://ds1.nl/c/?si=8485&li=1389201&wi=420902' },
       { name: 'Primal Focus EU', tagline: 'Focus & energie supplementen',  cta: 'Bekijk aanbod',    color: '#0F766E', url: 'https://glp8.net/c/?si=21577&li=1913855&wi=420902' },
