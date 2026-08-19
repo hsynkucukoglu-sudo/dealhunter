@@ -153,13 +153,16 @@ serbest — WhatsApp grubunda olmayan iki avantaj.
 ## Sıra ve gerekçe
 
 ```
-Faz 0  ✅ bugün — bozuk linkler (canlı arıza)
-Faz 1     tek kaynak        ← bugünkü arızanın tekrarını engeller
-Faz 2     ortak kart        ← ikinci kanaldan ÖNCE, yoksa kopyala-yapıştır
-Faz 3     kanal etiketi     ← yeni kanaldan ÖNCE, yoksa ölçemeyiz
-Faz 4     Telegram
-Faz 5     Shorts (paralel, kullanıcıyı bekliyor)
+Faz 0  ✅ bozuk linkler (canlı arıza)          — a94cd32
+Faz 1  ✅ tek kaynak · data/affiliates.json    — ef6bec5
+Faz 2  ✅ ortak kart · scripts/lib/deal-card   — ef6bec5
+Faz 3  ✅ kanal etiketi · ?c=whatsapp          — ef6bec5
+Faz 4  🟡 Telegram — kod hazır, secret bekliyor
+Faz 5  🟡 Shorts   — kod hazır, OAuth bekliyor
 ```
+
+Faz 1-3 aynı gün tamamlandı. Kalan ikisi de **yalnızca kullanıcı tarafındaki
+kurulumu** bekliyor; kod tarafında yapılacak iş yok.
 
 Faz 1-3 "yeni kanal" değil **altyapı**: onlarsız her yeni kanal aynı sapmayı ve
 aynı ölçüm körlüğünü üretir. Üçü birlikte ~1 gün.
@@ -190,3 +193,38 @@ Amaç ölçülebilir bir taban kurmak ve hangisinin işe yaradığını **veriyl
 | TikTok (şimdilik) | Denetim + sessiz video cezası; Shorts verisi geldikten sonra yeniden bakılır |
 | Pepper.nl otomasyonu | Ban riski. Elle paylaşım en yüksek getirili sosyal seçenek ama insan zamanı şart (`trafik-yolharitasi.md` §5) |
 | Affiliate listesini widget'la tamamen birleştirmek | Widget'ta kategori/renk/CTA yapısı var; yalnızca **liste** ortaklaştırılıyor, görsel katman ayrı kalıyor |
+
+
+---
+
+## Faz 4 durumu — kod hazır (2026-08-19)
+
+| Parça | Dosya | Durum |
+|---|---|---|
+| Gönderici | `scripts/telegram-sender.mjs` | ✅ kuru test edildi |
+| Workflow | `.github/workflows/telegram-sender.yml` | ✅ hazır, **cron kapalı** |
+| Kart | `scripts/lib/deal-card.mjs` | ✅ ortak, HTML kaçışı doğrulandı |
+| Liste | `data/affiliates.json` | ✅ 10 kayıt, `kanallar: [whatsapp, telegram]` |
+
+### WhatsApp'tan iki farkı
+
+**Ürünler fotoğraflı gidiyor.** Telegram `sendPhoto` + bijschrift destekliyor ve
+kartta zaten `imageUrl` var. WhatsApp grubuna yalnızca metin gidiyor. Fotoğraf
+reddedilirse (hotlink engeli, boyut) script metne düşüyor — fırsat yine de
+gidiyor.
+
+**4 dakika sonra gönderiyor** (`:11` vs `:07`). Tek bir aksaklık iki kanalı
+birden vurmasın ve loglardan hangisinin düştüğü hemen görülsün diye.
+
+### Sen döndüğünde (5 dakika)
+
+1. **@BotFather** → `/newbot` → token al
+2. Açık kanal aç (ör. `@dealhunter4u`), botu **yönetici** yap
+3. Secrets → `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` (`@kanaladi` yeterli)
+4. Actions → *Telegram Deal Sender* → `dry_run: true` ile çalıştır, çıktıyı gör
+5. Sonra `dry_run: false` — kanala ilk gerçek mesaj
+6. Geçtiyse haber ver, cron'u ben açarım
+
+> Cron bilerek kapalı. Secret yokken her çalışma kırmızı biter; ağustosta o
+> faalmail alışkanlığı Hoogvliet ve AH'nin günlerce sessizce bozuk kalmasına yol
+> açtı. Önce elle bir geçiş, sonra otomatik.

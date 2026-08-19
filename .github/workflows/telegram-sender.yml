@@ -1,0 +1,54 @@
+name: Telegram Deal Sender
+
+# Zelfde ritme als whatsapp-sender.yml, maar 4 minuten later. Zo raakt één
+# hapering (API-storing, Actions-vertraging) nooit beide kanalen tegelijk en is
+# in de logs meteen te zien welk kanaal het liet afweten.
+#
+# ─── CRON UIT TOT DE SECRETS ER ZIJN (2026-08-19) ───────────────────────────
+# Zonder TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID faalt elke run rood. Dagelijkse
+# faalmails uit deze repo zijn duurder dan ze lijken: in augustus wende het om
+# ze weg te klikken en daardoor bleven Hoogvliet en Albert Heijn dagenlang stil
+# kapot. Zet de cron pas aan ná een geslaagde handmatige run.
+#
+# Aanzetten:
+#   1. @BotFather → /newbot → TELEGRAM_BOT_TOKEN
+#   2. Openbaar kanaal maken, bot als beheerder toevoegen
+#   3. Secrets zetten: TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID ('@kanaalnaam')
+#   4. Handmatige run met dry_run=true, daarna false
+#   5. Onderstaand blok uit commentaar halen
+#
+# on:
+#   schedule:
+#     - cron: '11 6 * * *'   # 08:11 CEST — product
+#     - cron: '11 8 * * *'   # 10:11 CEST — product
+#     - cron: '11 11 * * *'  # 13:11 CEST — product
+#     - cron: '11 15 * * *'  # 17:11 CEST — product
+#     - cron: '11 18 * * *'  # 20:11 CEST — product
+#     - cron: '11 7 * * *'   # 09:11 CEST — affiliate
+#     - cron: '11 10 * * *'  # 12:11 CEST — affiliate
+#     - cron: '11 13 * * *'  # 15:11 CEST — affiliate
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Alleen tonen wat verstuurd zou worden (verstuurt niets)'
+        type: boolean
+        default: true
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      # Geen npm install: het script gebruikt alleen de ingebouwde fetch.
+      - name: Send to Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: node scripts/telegram-sender.mjs ${{ inputs.dry_run && '--dry' || '' }}

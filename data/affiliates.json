@@ -8,7 +8,8 @@
   "programId": null,
   "linkId": null,
   "kanallar": [
-   "whatsapp"
+   "whatsapp",
+   "telegram"
   ]
  },
  {
@@ -20,7 +21,8 @@
   "programId": null,
   "linkId": null,
   "kanallar": [
-   "whatsapp"
+   "whatsapp",
+   "telegram"
   ]
  },
  {
@@ -32,7 +34,8 @@
   "programId": 17174,
   "linkId": 1742299,
   "kanallar": [
-   "whatsapp"
+   "whatsapp",
+   "telegram"
   ]
  },
  {
@@ -44,7 +47,8 @@
   "programId": 19949,
   "linkId": 1850890,
   "kanallar": [
-   "whatsapp"
+   "whatsapp",
+   "telegram"
   ]
  },
  {
@@ -56,7 +60,8 @@
   "programId": 3366,
   "linkId": 1161224,
   "kanallar": [
-   "whatsapp"
+   "whatsapp",
+   "telegram"
   ]
  },
  {
@@ -68,7 +73,8 @@
   "programId": 21185,
   "linkId": 1902306,
   "kanallar": [
-   "whatsapp"
+   "whatsapp",
+   "telegram"
   ]
  },
  {
@@ -80,7 +86,8 @@
   "programId": 18433,
   "linkId": 1819889,
   "kanallar": [
-   "whatsapp"
+   "whatsapp",
+   "telegram"
   ]
  },
  {
@@ -92,7 +99,8 @@
   "programId": 20255,
   "linkId": 1864272,
   "kanallar": [
-   "whatsapp"
+   "whatsapp",
+   "telegram"
   ]
  },
  {
@@ -104,7 +112,8 @@
   "programId": 19142,
   "linkId": 1877489,
   "kanallar": [
-   "whatsapp"
+   "whatsapp",
+   "telegram"
   ]
  },
  {
@@ -116,7 +125,8 @@
   "programId": 15805,
   "linkId": 1684191,
   "kanallar": [
-   "whatsapp"
+   "whatsapp",
+   "telegram"
   ]
  }
 ]
