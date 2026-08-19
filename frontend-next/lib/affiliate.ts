@@ -113,7 +113,12 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   MeerMetZiggo:         { destinationUrl: 'https://glp8.net/c/?si=21173&li=1901598&wi=420902',               network: 'daisycon', rel: REL }, // €50/sale · 100g
   'I-KOOK':             { destinationUrl: 'https://lt45.net/c/?si=11558&li=1513186&wi=420902',               network: 'daisycon', rel: REL }, // €50/sale · 100g
   Ziggo:                { destinationUrl: 'https://jf79.net/c/?si=17174&li=1742299&wi=420902',          network: 'daisycon',  rel: REL },
-  Vattenfall:           { destinationUrl: 'https://www.vattenfall.nl/',            network: 'direct',   rel: REL },
+  // KPN is marktleider in NL-telecom en ontbrak; programma stond al op "joined".
+  KPN:                  { destinationUrl: 'https://glp8.net/c/?si=19864&li=1846235&wi=420902',         network: 'daisycon',  rel: REL }, // €100 per lead
+  // 2026-08-19: stond op network 'direct' — een kale link zonder tracking, dus
+  // elke klik ging weg zonder commissie terwijl het Daisycon-programma al op
+  // "joined" stond. Nu de trackinglink (€96 per lead).
+  Vattenfall:           { destinationUrl: 'https://lt45.net/c/?si=2036&li=119986&wi=420902', network: 'daisycon', rel: REL },
   hollandsnieuwe:       { destinationUrl: 'https://glp8.net/c/?si=21994&li=1927639&wi=420902',        network: 'daisycon',  rel: REL },
 
   // ── Daisycon — 2026-06-26 onaylı, trackingBase Daisycon'dan alınacak ───────
@@ -171,6 +176,12 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
 
   // ── Energie — 2026-07-02/05 onaylı, trackingBase 2026-07-06 CSV export'undan doğrulandı ──
   Essent:              { destinationUrl: 'https://lt45.net/c/?si=9787&li=1437653&wi=420902',         network: 'daisycon', rel: REL },
+  // 2026-08-19: we hadden Essent (top-3) maar niet Eneco en Vattenfall, de twee
+  // andere grote Nederlandse leveranciers — precies de namen waar iemand die wil
+  // overstappen als eerste naar zoekt. Beide programma's stonden al op "joined"
+  // in Daisycon, dus geen aanvraag nodig; alleen de link ontbrak.
+  // Trackinglink één keer live gecontroleerd: 200 op eneco.nl met utm_term=420902.
+  Eneco:               { destinationUrl: 'https://lt45.net/c/?si=12392&li=1544210&wi=420902',        network: 'daisycon', rel: REL }, // €102 per lead
   'Essent Zakelijk':   { destinationUrl: 'https://lt45.net/c/?si=13190&li=1579477&wi=420902', network: 'daisycon', rel: REL },
   energiedirect:       { destinationUrl: 'https://lt45.net/c/?si=924&li=55221&wi=420902', network: 'daisycon', rel: REL },
   'Frank Energie':     { destinationUrl: 'https://jf79.net/c/?si=16978&li=1731992&wi=420902',  network: 'daisycon', rel: REL },

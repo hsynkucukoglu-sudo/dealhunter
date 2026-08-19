@@ -55,6 +55,9 @@ const DEALS = [
       { name: 'Powerpeers',       tagline: 'Deel lokale groene stroom',         cta: 'Bekijk aanbod',    color: '#6FCF97', url: M('Powerpeers') },
       // 2026-07-12 onaylı
       { name: 'Vandebron',        tagline: 'Groene stroom van eigen bodem',     cta: 'Vergelijk tarief', color: '#00A651', url: M('Vandebron') },
+      // 2026-08-19 toegevoegd: de twee grootste NL-leveranciers ontbraken nog
+      { name: 'Eneco',            tagline: 'Grote leverancier, groene stroom',  cta: 'Vergelijk tarief', color: '#E6007E', url: M('Eneco') },
+      { name: 'Vattenfall',       tagline: 'Stroom & gas, vaste of variabele',  cta: 'Vergelijk tarief', color: '#FFDA00', url: M('Vattenfall') },
     ],
   },
   {
@@ -69,6 +72,8 @@ const DEALS = [
       { name: 'Company Telecom', tagline: 'Voordelig bellen & internet', cta: 'Bekijk aanbod',    color: '#0073E6', url: 'https://glp8.net/c/?si=20673&li=1876628&wi=420902' },
       // 2026-07-16 onaylı — TradeTracker (Daisycon/Awin değil), site ID 511755
       { name: 'B2Ctelecom.nl', tagline: 'Mobiel & internet vergelijken', cta: 'Vergelijk aanbod', color: '#1D3557', url: 'https://partner.b2ctelecom.nl/c?c=4714&m=12&a=511755&r=&u=%2F' },
+      // 2026-08-19: marktleider ontbrak
+      { name: 'KPN',           tagline: 'Internet, TV & mobiel',        cta: 'Bekijk aanbod',    color: '#00C300', url: M('KPN') },
       // 2026-07-22 onaylı — li bevestigd via Daisycon 2026-07-24 campaigns export, tracking actief
       { name: 'Canal+',        tagline: 'Films, series & sport streamen', cta: 'Bekijk abonnement', color: '#000000', url: M('Canal+') },
     ],
