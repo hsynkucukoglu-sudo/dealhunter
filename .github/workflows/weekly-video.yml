@@ -1,4 +1,4 @@
-name: Weekly Deals Video
+name: Daily Deals Video
 
 # Maakt elke maandag de "Top 5 Supermarkt Deals"-video en levert die op twee manieren:
 #   1. als artifact, om handmatig naar TikTok/Reels te zetten mét trending audio
@@ -24,13 +24,31 @@ name: Weekly Deals Video
 # De videogenerator zelf werkt en blijft staan — draai hem met de hand wanneer
 # je een video wil. Zet de cron pas terug als de YouTube-app "In production"
 # staat én een handmatige run slaagt.
+# ─── DAGELIJKS PLAN (klaargezet 2026-08-19, cron nog uit) ────────────────────
+# make-video.mjs kiest de editie op weekdag (zie tools/tiktok-video/editions.mjs):
+#   zo actie · ma top5 · di categorie · wo markt · do kassakoopjes ·
+#   vr bespaar · za categorie (andere rotatie)
+# Zeven keer dezelfde top-5 uploaden zou als duplicaat lezen; dit zijn zeven
+# verschillende doorsnedes van dezelfde dataset.
+#
+# Zet de cron pas aan als BEIDE waar zijn:
+#   1. YOUTUBE_CLIENT_ID / _SECRET / _REFRESH_TOKEN staan in de repo-secrets
+#   2. de OAuth-app staat op "In production" — op "Testing" verloopt de refresh
+#      token na 7 dagen en faalt elke cron daarna
+# Zie docs/youtube-shorts-plan.md voor het stappenplan.
+#
 # on:
 #   schedule:
-#     - cron: '30 6 * * 1'
+#     - cron: '30 6 * * *'   # elke dag 06:30 UTC (08:30 NL)
 
 on:
   workflow_dispatch:
     inputs:
+      editie:
+        description: 'Welke editie? Leeg = automatisch op weekdag'
+        type: choice
+        options: ['', 'top5', 'categorie', 'markt', 'kassakoopjes', 'bespaar', 'actie']
+        default: ''
       upload_youtube:
         description: 'Ook naar YouTube uploaden? (vereist YOUTUBE_*-secrets)'
         type: boolean
@@ -60,6 +78,8 @@ jobs:
 
       - name: Generate video
         working-directory: tools/tiktok-video
+        env:
+          EDITIE: ${{ inputs.editie }}
         run: node make-video.mjs
 
       # Altijd bewaren, ook als de YouTube-stap faalt — de handmatige route naar
@@ -67,8 +87,10 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: dealhunter-weekly-video
-          path: tools/tiktok-video/out/*.mp4
+          name: dealhunter-daily-video
+          path: |
+            tools/tiktok-video/out/*.mp4
+            tools/tiktok-video/out/*.json
           retention-days: 30
           if-no-files-found: error
 

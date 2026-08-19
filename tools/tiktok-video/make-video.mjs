@@ -9,6 +9,7 @@ import path from 'node:path'
 import { execFileSync } from 'node:child_process'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { createRequire } from 'node:module'
+import { EDITIES, planVoorDag, isoWeek } from './editions.mjs'
 
 const DIR = path.dirname(fileURLToPath(import.meta.url))
 const OUT = path.join(DIR, 'out')
@@ -35,12 +36,12 @@ const MARKET_COLORS = {
 const MAX_DISCOUNT = Number(process.env.MAX_DISCOUNT ?? 70)
 const MIN_DISCOUNT = Number(process.env.MIN_DISCOUNT ?? 20)
 
-// ─── 1. Veri: market başına 1 ürün, görselli, top 5 ───────────────────────────
-async function fetchTop5() {
+// ─── 1. Veri: kullanılabilir ürün havuzu (seçimi editie yapar) ───────────────
+async function fetchPool() {
   const res = await fetch(`${API}/api/products`)
   if (!res.ok) throw new Error(`API ${res.status}`)
   const all = await res.json()
-  const byMarket = {}
+  const pool = []
   const dropped = []
   for (const p of all) {
     if (!p.imageUrl || !p.originalPrice || p.originalPrice <= p.discountedPrice) continue
@@ -51,15 +52,16 @@ async function fetchTop5() {
       dropped.push(`${p.market} ${p.name} -${disc}% (€${p.originalPrice}→€${p.discountedPrice})`)
       continue
     }
-    if (!byMarket[p.market] || disc > byMarket[p.market].disc) {
-      byMarket[p.market] = { name: p.name, market: p.market, orig: p.originalPrice, price: p.discountedPrice, disc, img: p.imageUrl }
-    }
+    pool.push({
+      name: p.name, market: p.market, orig: p.originalPrice, price: p.discountedPrice,
+      disc, img: p.imageUrl, category: p.category, campaignType: p.campaignType,
+    })
   }
   if (dropped.length) {
     console.log(`⚠️  ${dropped.length} product overgeslagen (korting ≥ ${MAX_DISCOUNT}%, niet te verifiëren):`)
     dropped.forEach(d => console.log(`     ${d}`))
   }
-  return Object.values(byMarket).sort((a, b) => b.disc - a.disc).slice(0, 5)
+  return pool
 }
 
 // ─── 2. HTML şablonu ──────────────────────────────────────────────────────────
@@ -70,12 +72,18 @@ const imgSrc = (url) => PROXY_HOSTS.some(h => url.includes(h))
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;')
 const fmt = (n) => '€' + n.toFixed(2).replace('.', ',')
 
-function isoWeek(d = new Date()) {
-  const jan4 = new Date(d.getFullYear(), 0, 4)
-  return Math.ceil((((d - jan4) / 86400000) + jan4.getDay() + 1) / 7)
+// De hook-titel wisselt per editie: "TOP 5" is kort, "KASSAKOOPJES" of
+// "GROENTE & FRUIT" niet. Met een vaste 230px liep de tekst buiten beeld
+// (gemeten 2026-08-19 op de kassakoopjes-editie), dus schaalt hij mee.
+function hookFontSize(titel) {
+  const zichtbaar = titel.replace(/<[^>]+>/g, '')
+  if (zichtbaar.length <= 6) return 230
+  if (zichtbaar.length <= 9) return 165
+  if (zichtbaar.length <= 13) return 122
+  return 96
 }
 
-function buildHtml(deals, week) {
+function buildHtml(deals, week, hook) {
   const ranked = [...deals].sort((a, b) => a.disc - b.disc) // #5'ten #1'e
   const total = HOOK + ranked.length * CARD + OUTRO
 
@@ -118,7 +126,8 @@ body.play .scene.last { animation-play-state: running; }
 @keyframes sceneIn  { from { opacity:0; transform:translateY(70px) scale(.96); } to { opacity:1; transform:none; } }
 @keyframes sceneOut { to { opacity:0; transform:translateY(-60px) scale(.97); } }
 .hook .fire { font-size:150px; }
-.hook h1 { font-size:230px; font-weight:900; color:#1A1A1A; line-height:.95; letter-spacing:-8px; }
+.hook h1 { font-weight:900; color:#1A1A1A; line-height:.95; letter-spacing:-6px;
+  padding:0 40px; max-width:1080px; }
 .hook h1 b { color:#E33D26; }
 .hook h2 { font-size:82px; font-weight:900; color:#1A1A1A; margin-top:8px; letter-spacing:2px; }
 .hook p { font-size:52px; color:#6B6259; margin-top:28px; font-weight:600; }
@@ -151,10 +160,10 @@ body.play .scene.last { animation-play-state: running; }
 </style></head><body>
 <div class="topbar"><div class="logo">🛒 Deal<b>Hunter</b>4U</div><div class="weekpill">WEEK ${week}</div></div>
 <div class="scene hook" style="animation-delay:0s, ${HOOK - 0.35}s">
-  <div class="fire">🔥</div>
-  <h1>TOP <b>5</b></h1>
-  <h2>SUPERMARKT DEALS</h2>
-  <p>van deze week — tot ${Math.max(...deals.map(d => d.disc))}% korting</p>
+  <div class="fire">${hook.emoji}</div>
+  <h1 style="font-size:${hookFontSize(hook.titel)}px">${hook.titel}</h1>
+  <h2>${hook.onder}</h2>
+  <p>${hook.note}</p>
 </div>
 ${cardScenes}
 <div class="scene outro last" style="animation-delay:${HOOK + ranked.length * CARD}s">
@@ -169,12 +178,31 @@ ${cardScenes}
 // ─── 3. Kayıt + mp4 ───────────────────────────────────────────────────────────
 async function main() {
   fs.mkdirSync(OUT, { recursive: true })
-  const week = isoWeek()
-  const deals = await fetchTop5()
-  console.log(`Week ${week} — top 5:`, deals.map(d => `${d.market} -${d.disc}%`).join(', '))
+  const nu = new Date()
+  const week = isoWeek(nu)
 
+  // EDITIE overschrijft de weekdagplanning — handig voor handmatige runs en tests.
+  const plan = process.env.EDITIE ? { editie: process.env.EDITIE, offset: 0 } : planVoorDag(nu)
+  const editie = EDITIES[plan.editie]
+  if (!editie) throw new Error(`Onbekende editie "${plan.editie}". Keuze: ${Object.keys(EDITIES).join(', ')}`)
+
+  const pool = await fetchPool()
+  const keuze = editie.kies ? editie.kies(week, plan.offset) : null
+  const ctx = { week, keuze }
+  const deals = editie.select(pool, ctx)
+
+  // Onder de vijf kaarten wordt de video mager en de hook klopt niet meer
+  // ("tot X% korting" boven twee producten). Liever niets uploaden dan dat.
+  if (deals.length < 5) {
+    throw new Error(`Editie "${editie.id}"${keuze ? ` (${keuze.label ?? keuze})` : ''} leverde maar ${deals.length} product(en) uit een pool van ${pool.length} — te weinig voor een video.`)
+  }
+
+  const etiket = keuze ? ` · ${keuze.label ?? keuze}` : ''
+  console.log(`Week ${week} — editie "${editie.id}"${etiket}:`, deals.map(d => `${d.market} -${d.disc}%`).join(', '))
+
+  const hook = editie.hook(deals, ctx)
   const htmlPath = path.join(OUT, 'video.html')
-  fs.writeFileSync(htmlPath, buildHtml(deals, week))
+  fs.writeFileSync(htmlPath, buildHtml(deals, week, hook))
 
   const browser = await chromium.launch()
   const context = await browser.newContext({
@@ -197,14 +225,25 @@ async function main() {
 
   const require = createRequire(import.meta.url)
   const ffmpeg = require('ffmpeg-static')
-  const mp4 = path.join(OUT, `dealhunter-top5-week${week}.mp4`)
+  const datum = nu.toISOString().slice(0, 10)
+  const slug = `dealhunter-${editie.id}-${datum}`
+  const mp4 = path.join(OUT, `${slug}.mp4`)
   execFileSync(ffmpeg, [
     '-y', '-ss', (leadMs / 1000).toFixed(2), '-i', webmPath,
     '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-r', '30', '-crf', '20',
     '-movflags', '+faststart', mp4,
   ], { stdio: 'ignore' })
   fs.unlinkSync(webmPath)
+
+  // Sidecar: upload-youtube.mjs leest hieruit welk bestand met welke titel de
+  // lucht in moet. Zonder dit zou de uploader de titel opnieuw moeten afleiden
+  // en dan lopen video en omschrijving uit elkaar zodra de editie wisselt.
+  const meta = { slug, bestand: path.basename(mp4), editie: editie.id, keuze: keuze?.label ?? keuze ?? null, week, datum, ...editie.youtube(deals, ctx) }
+  fs.writeFileSync(path.join(OUT, `${slug}.json`), JSON.stringify(meta, null, 1))
+  fs.writeFileSync(path.join(OUT, 'laatste.json'), JSON.stringify(meta, null, 1))
+
   console.log('✅ MP4 hazır:', mp4)
+  console.log('   YouTube titel:', meta.title)
 }
 
 main().catch(e => { console.error(e); process.exit(1) })

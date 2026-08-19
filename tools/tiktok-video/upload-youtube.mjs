@@ -32,11 +32,14 @@ if (!['private', 'unlisted', 'public'].includes(PRIVACY)) {
   process.exit(1)
 }
 
-function isoWeek(d = new Date()) {
-  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()))
-  t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7))
-  const start = new Date(Date.UTC(t.getUTCFullYear(), 0, 1))
-  return Math.ceil(((t - start) / 86400000 + 1) / 7)
+// Titel en bestand komen uit out/laatste.json, geschreven door make-video.mjs.
+// Eerder leidde deze uploader de weeknummer-titel zelf af; sinds de video per
+// weekdag een andere editie is (categorie, markt, kassakoopjes...) zou dat een
+// video met de verkeerde titel publiceren.
+function leesMeta() {
+  const p = path.join(OUT, 'laatste.json')
+  if (!fs.existsSync(p)) throw new Error('out/laatste.json ontbreekt - draait make-video.mjs wel eerst?')
+  return JSON.parse(fs.readFileSync(p, 'utf8'))
 }
 
 async function accessToken() {
@@ -61,11 +64,12 @@ async function accessToken() {
 }
 
 async function main() {
-  const week = isoWeek()
-  const file = path.join(OUT, `dealhunter-top5-week${week}.mp4`)
+  const meta = leesMeta()
+  const file = path.join(OUT, meta.bestand)
   if (!fs.existsSync(file)) {
     throw new Error(`Video niet gevonden: ${file} — draait make-video.mjs wel eerst?`)
   }
+  console.log(`Editie: ${meta.editie}${meta.keuze ? ` · ${meta.keuze}` : ''} (week ${meta.week}, ${meta.datum})`)
   const bytes = fs.readFileSync(file)
   console.log(`Video: ${path.basename(file)} (${(bytes.length / 1048576).toFixed(1)} MB)`)
 
@@ -73,15 +77,9 @@ async function main() {
 
   const metadata = {
     snippet: {
-      title: `Top 5 Supermarkt Deals — Week ${week} 🛒 #Shorts`,
-      description: [
-        `De 5 scherpste supermarktaanbiedingen van week ${week}, uit de actuele folders van Albert Heijn, Jumbo, Lidl, Aldi, Dirk en meer.`,
-        '',
-        'Alle actuele aanbiedingen op één plek: https://www.dealhunter4u.nl',
-        '',
-        '#aanbiedingen #besparen #boodschappen #supermarkt #shorts',
-      ].join('\n'),
-      tags: ['aanbiedingen', 'besparen', 'boodschappen', 'supermarkt', 'albert heijn', 'jumbo', 'lidl', 'aldi'],
+      title: meta.title,
+      description: meta.description,
+      tags: meta.tags,
       categoryId: '26', // Howto & Style
       defaultLanguage: 'nl',
     },
