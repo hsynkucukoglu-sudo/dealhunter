@@ -20,15 +20,16 @@ const SITE_URL    = 'https://www.dealhunter4u.nl'
 // Affiliate deals (sourced from MeerBesparenWidget)
 // ---------------------------------------------------------------------------
 const AFFILIATE_DEALS = [
-  { name: 'Bol.com',          emoji: '📦', tagline: 'Dagelijks nieuwe topdeals',         url: `${SITE_URL}/supermarkt/albert-heijn` },
-  { name: 'Holland & Barrett', emoji: '🌿', tagline: 'Megaweek 3=1 t/m 12 juli!',         url: 'https://www.awin1.com/cread.php?awinmid=8108&awinaffid=2932569&ued=' + encodeURIComponent('https://www.hollandandbarrett.nl/shop/aanbiedingen/') },
+  // 2026-08-19: wees naar /supermarkt/albert-heijn — geen Bol-link en geen commissie.
+  // Nu dezelfde partnerlink als op de site (lib/affiliate.ts, site id 1527078).
+  { name: 'Bol.com',          emoji: '📦', tagline: 'Dagelijks nieuwe topdeals',         url: 'https://partner.bol.com/click/click?p=2&t=url&s=1527078&url=' + encodeURIComponent('https://www.bol.com/nl/nl/') },
+  { name: 'Holland & Barrett', emoji: '🌿', tagline: 'Vitamines & supplementen aanbiedingen',         url: 'https://www.awin1.com/cread.php?awinmid=8108&awinaffid=2932569&ued=' + encodeURIComponent('https://www.hollandandbarrett.nl/shop/aanbiedingen/') },
   { name: 'Ziggo',             emoji: '📡', tagline: 'Internet, TV & bellen aanbieding',  url: 'https://jf79.net/c/?si=17174&li=1742299&wi=420902&dl=' + encodeURIComponent('https://www.meervoordeel.nl/providers/ziggo/') },
   { name: "Levi's",            emoji: '👖', tagline: 'Jeans & kleding sale',              url: 'https://glp8.net/c/?si=19949&li=1850890&wi=420902' },
   { name: 'Plein.nl',          emoji: '💊', tagline: 'Drogist & gezondheid online',       url: 'https://fr135.net/c/?si=3366&li=1161224&wi=420902&dl=' + encodeURIComponent('https://www.plein.nl/') },
-  { name: 'Smartbox & Bongo',  emoji: '🎁', tagline: 'Cadeaubon voor een beleving',      url: 'https://glp8.net/c/?si=21185&li=1902306&wi=420902&dl=' + encodeURIComponent('https://www.smartbox.com/nl-nl/') },
-  { name: 'Bjorn Borg',        emoji: '👟', tagline: 'Sportkleding & ondergoed sale',    url: 'https://bdt9.net/c/?si=18683&li=1810656&wi=420902&dl=' + encodeURIComponent('https://www.bjornborg.com/nl-nl/') },
+  // 2026-08-19: dl=smartbox.com/nl-nl/ geeft 503 (NL-site verhuisd), kale trackinglink werkt wel
+  { name: 'Smartbox & Bongo',  emoji: '🎁', tagline: 'Cadeaubon voor een beleving',      url: 'https://glp8.net/c/?si=21185&li=1902306&wi=420902' },
   { name: 'Oakley',            emoji: '🕶️', tagline: 'Sport brillen & kleding',          url: 'https://bdt9.net/c/?si=18433&li=1819889&wi=420902&dl=' + encodeURIComponent('https://www.oakley.com/nl-nl/') },
-  { name: 'McAfee',            emoji: '🔒', tagline: 'Antivirus & internetsecurity deal', url: 'https://glp8.net/c/?si=20283&li=1865780&wi=420902&dl=' + encodeURIComponent('https://www.mcafee.com/nl-nl/') },
   { name: 'XLLease',           emoji: '🚗', tagline: 'Private lease aanbiedingen',        url: 'https://fr135.net/c/?si=20255&li=1864272&wi=420902&dl=' + encodeURIComponent('https://www.xllease.nl/') },
   { name: 'noSun',             emoji: '☀️', tagline: 'Zonnepanelen voor thuis',           url: 'https://dt51.net/c/?si=19142&li=1877489&wi=420902&dl=' + encodeURIComponent('https://www.nosun.nl/') },
   { name: 'Leukstetickets',    emoji: '🎭', tagline: 'Uitjes, events & shows',            url: 'https://lt45.net/c/?si=15805&li=1684191&wi=420902&dl=' + encodeURIComponent('https://www.leukstetickets.nl/') },
