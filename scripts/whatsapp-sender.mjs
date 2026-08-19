@@ -10,45 +10,27 @@
  *   WHATSAPP_GROUP_ID      - WhatsApp group chat ID (format: 120363XXXXXXXXX@g.us)
  */
 
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { productKaart, affiliateKaart } from './lib/deal-card.mjs'
+
+const DIR = path.dirname(fileURLToPath(import.meta.url))
+
 const INSTANCE_ID = process.env.GREEN_API_INSTANCE_ID
 const API_TOKEN   = process.env.GREEN_API_TOKEN
 const GROUP_ID    = process.env.WHATSAPP_GROUP_ID
 const RAILWAY_API = 'https://dealhunter-production-d900.up.railway.app'
-const SITE_URL    = 'https://www.dealhunter4u.nl'
 
 // ---------------------------------------------------------------------------
-// Affiliate deals (sourced from MeerBesparenWidget)
+// Affiliate deals — ENIGE bron: data/affiliates.json
+// Stond hier als hardgecodeerde lijst; die liep uit de pas met de site en op
+// 2026-08-19 waren 3 van de 12 links dood (Bjorn Borg en McAfee opgeheven,
+// Smartbox 503) terwijl ze 3x per dag de groep in gingen.
 // ---------------------------------------------------------------------------
-const AFFILIATE_DEALS = [
-  // 2026-08-19: wees naar /supermarkt/albert-heijn — geen Bol-link en geen commissie.
-  // Nu dezelfde partnerlink als op de site (lib/affiliate.ts, site id 1527078).
-  { name: 'Bol.com',          emoji: '📦', tagline: 'Dagelijks nieuwe topdeals',         url: 'https://partner.bol.com/click/click?p=2&t=url&s=1527078&url=' + encodeURIComponent('https://www.bol.com/nl/nl/') },
-  { name: 'Holland & Barrett', emoji: '🌿', tagline: 'Vitamines & supplementen aanbiedingen',         url: 'https://www.awin1.com/cread.php?awinmid=8108&awinaffid=2932569&ued=' + encodeURIComponent('https://www.hollandandbarrett.nl/shop/aanbiedingen/') },
-  { name: 'Ziggo',             emoji: '📡', tagline: 'Internet, TV & bellen aanbieding',  url: 'https://jf79.net/c/?si=17174&li=1742299&wi=420902&dl=' + encodeURIComponent('https://www.meervoordeel.nl/providers/ziggo/') },
-  { name: "Levi's",            emoji: '👖', tagline: 'Jeans & kleding sale',              url: 'https://glp8.net/c/?si=19949&li=1850890&wi=420902' },
-  { name: 'Plein.nl',          emoji: '💊', tagline: 'Drogist & gezondheid online',       url: 'https://fr135.net/c/?si=3366&li=1161224&wi=420902&dl=' + encodeURIComponent('https://www.plein.nl/') },
-  // 2026-08-19: dl=smartbox.com/nl-nl/ geeft 503 (NL-site verhuisd), kale trackinglink werkt wel
-  { name: 'Smartbox & Bongo',  emoji: '🎁', tagline: 'Cadeaubon voor een beleving',      url: 'https://glp8.net/c/?si=21185&li=1902306&wi=420902' },
-  { name: 'Oakley',            emoji: '🕶️', tagline: 'Sport brillen & kleding',          url: 'https://bdt9.net/c/?si=18433&li=1819889&wi=420902&dl=' + encodeURIComponent('https://www.oakley.com/nl-nl/') },
-  { name: 'XLLease',           emoji: '🚗', tagline: 'Private lease aanbiedingen',        url: 'https://fr135.net/c/?si=20255&li=1864272&wi=420902&dl=' + encodeURIComponent('https://www.xllease.nl/') },
-  { name: 'noSun',             emoji: '☀️', tagline: 'Zonnepanelen voor thuis',           url: 'https://dt51.net/c/?si=19142&li=1877489&wi=420902&dl=' + encodeURIComponent('https://www.nosun.nl/') },
-  { name: 'Leukstetickets',    emoji: '🎭', tagline: 'Uitjes, events & shows',            url: 'https://lt45.net/c/?si=15805&li=1684191&wi=420902&dl=' + encodeURIComponent('https://www.leukstetickets.nl/') },
-]
-
-// Market slug mapping for site URLs
-const MARKET_SLUGS = {
-  'Albert Heijn': 'albert-heijn',
-  'Jumbo':        'jumbo',
-  'Lidl':         'lidl',
-  'Dirk':         'dirk',
-  'Aldi':         'aldi',
-  'Hoogvliet':    'hoogvliet',
-  'Vomar':        'vomar',
-  'DekaMarkt':    'dekamarkt',
-  'Coop':         'coop',
-  'Plus':         'plus',
-  'Kruidvat':     'kruidvat',
-}
+const AFFILIATE_DEALS = JSON.parse(
+  fs.readFileSync(path.join(DIR, '..', 'data', 'affiliates.json'), 'utf8')
+).filter(d => (d.kanallar ?? ['whatsapp']).includes('whatsapp') && d.url)
 
 // ---------------------------------------------------------------------------
 // Fetch random supermarket product (prefer high-discount items)
@@ -66,41 +48,6 @@ async function getRandomProduct() {
   } catch {
     return null
   }
-}
-
-// ---------------------------------------------------------------------------
-// Message formatters
-// ---------------------------------------------------------------------------
-function formatProductMessage(p) {
-  const slug = MARKET_SLUGS[p.market] ?? p.market.toLowerCase().replace(/\s+/g, '-')
-  const link = `${SITE_URL}/supermarkt/${slug}`
-  const orig = `€${p.originalPrice.toFixed(2).replace('.', ',')}`
-  const disc = `€${p.discountedPrice.toFixed(2).replace('.', ',')}`
-  const exp  = p.expiresAt ? new Date(p.expiresAt).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long' }) : null
-
-  const lines = [
-    `🔥 *Aanbieding van de dag!*`,
-    ``,
-    `🛒 *${p.name}*`,
-    `🏪 ${p.market}  |  📉 -*${p.discount}%* korting`,
-    `💰 ~${orig}~ → *${disc}*`,
-  ]
-  if (exp) lines.push(`📅 Geldig t/m ${exp}`)
-  lines.push(``, `👉 Meer deals: ${link}`, ``, `🤖 _DealHunter4U · Elke dag besparen_`)
-  return lines.join('\n')
-}
-
-function formatAffiliateMessage(deal) {
-  return [
-    `💡 *Deal tip van DealHunter4U!*`,
-    ``,
-    `${deal.emoji} *${deal.name}*`,
-    `${deal.tagline}`,
-    ``,
-    `👉 ${deal.url}`,
-    ``,
-    `🤖 _DealHunter4U · Elke dag besparen_`,
-  ].join('\n')
 }
 
 // ---------------------------------------------------------------------------
@@ -136,17 +83,17 @@ async function main() {
 
   if (affiliateHours.has(utcHour)) {
     const deal = AFFILIATE_DEALS[Math.floor(Math.random() * AFFILIATE_DEALS.length)]
-    message = formatAffiliateMessage(deal)
-    console.log(`Sending affiliate: ${deal.name}`)
+    message = affiliateKaart(deal, { kanaal: 'whatsapp' })
+    console.log(`Sending affiliate: ${deal.naam}`)
   } else {
     const product = await getRandomProduct()
     if (product) {
-      message = formatProductMessage(product)
+      message = productKaart(product, { kanaal: 'whatsapp' })
       console.log(`Sending product: ${product.name} (${product.market}, -${product.discount}%)`)
     } else {
       const deal = AFFILIATE_DEALS[Math.floor(Math.random() * AFFILIATE_DEALS.length)]
-      message = formatAffiliateMessage(deal)
-      console.log(`API empty, fallback affiliate: ${deal.name}`)
+      message = affiliateKaart(deal, { kanaal: 'whatsapp' })
+      console.log(`API empty, fallback affiliate: ${deal.naam}`)
     }
   }
 
