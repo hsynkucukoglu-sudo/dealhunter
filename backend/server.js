@@ -826,7 +826,15 @@ async function replaceMarketProducts(market, products) {
       // sturen rauwe merkwaarden ("Pepsi," van Plus) en de oude heuristiek maakte
       // van elk hoofdletterwoord een merk. Hier is het enige punt waar álle
       // scrapers langskomen, dus hier wordt het merk gevalideerd.
-      brand: canonicalBrand(p.brand) ?? extractBrand(p.name),
+      // brandVerified: de parser haalde het merk uit een echt merkveld van de bron
+      // (Aldi brandName, AH brand, Jumbo GraphQL brand). Die waarde is al schoon
+      // en mag NIET nog eens door de whitelist: canonicalBrand doet een substring-
+      // match en maakte van "Sun Snacks" (Aldi's eigen snackmerk) "Sun" (het
+      // vaatwasmerk). Gemeten 2026-08-19: van 189 Aldi-producten hielden er zo
+      // maar 22 een merk over, terwijl de bron er 143 levert.
+      // Zonder vlag blijft de oude controle staan — die is er niet voor niets:
+      // de standalone Actions-scrapers sturen rauwe waarden ("Pepsi," van Plus).
+      brand: p.brandVerified ? (p.brand ?? null) : (canonicalBrand(p.brand) ?? extractBrand(p.name)),
       // Eenheidsvelden werden hier niet doorgegeven, terwijl de GitHub
       // Actions-scrapers (Plus, Kruidvat, Dirk) hun markt via deze route volledig
       // vervangen. De backend-scraper vult ze om 08:02 wel, waarna de Actions-run
