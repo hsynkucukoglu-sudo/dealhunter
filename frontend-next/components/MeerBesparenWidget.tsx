@@ -193,7 +193,6 @@ const DEALS = [
       { name: 'Wolfswinkel NL',    tagline: 'Outdoor gear & sportmode',   cta: 'Bekijk aanbod',    color: '#388E3C', url: M('Wolfswinkel NL') },
       { name: '123watches',        tagline: 'Horloges & accessoires',     cta: 'Bekijk collectie', color: '#C62828', url: M('123watches') },
       { name: 'Erverte Paris',     tagline: 'Duurzame heren mode uit Parijs', cta: 'Bekijk collectie', color: '#2F4F3E', url: M('Erverte Paris') },
-      { name: 'Bjorn Borg',  tagline: 'Sportkleding & ondergoed',    cta: 'Bekijk collectie', color: '#003594', url: DC('https://bdt9.net/c/?si=18683&li=1810656&wi=420902',  'https://www.bjornborg.com/nl/') }, // 2026-08-19: /nl-nl/ gaf 404 (redirect naar /nl/nl-nl/), juiste pad is /nl/
       { name: 'Tsar Bomba',      tagline: 'Horloges & premium accessoires', cta: 'Bekijk collectie', color: '#8B0000', url: 'https://glp8.net/c/?si=21716&li=1916762&wi=420902' },
       { name: 'Sportiek.com',    tagline: 'Sportschoenen & kleding',       cta: 'Bekijk aanbod',    color: '#F97316', url: 'https://ds1.nl/c/?si=8485&li=1389201&wi=420902' },
       { name: 'Primal Focus EU', tagline: 'Focus & energie supplementen',  cta: 'Bekijk aanbod',    color: '#0F766E', url: 'https://glp8.net/c/?si=21577&li=1913855&wi=420902' },
@@ -231,7 +230,6 @@ const DEALS = [
     id: 'tech',
     category: '💻 Tech & Software',
     items: [
-      { name: 'McAfee',       tagline: 'Antivirus & internetsecurity', cta: 'Bekijk aanbod', color: '#C8102E', url: DC('https://glp8.net/c/?si=20283&li=1865780&wi=420902', 'https://www.mcafee.com/nl-nl/') },
       { name: '1blu',        tagline: 'Webhosting & domeinen',        cta: 'Bekijk aanbod', color: '#1A5FA8', url: 'https://glp8.net/c/?si=21031&li=1894705&wi=420902' },
       { name: 'Plaud',       tagline: 'AI-gestuurde voicerecorder',   cta: 'Bekijk aanbod', color: '#2C2C54', url: DC('https://glp8.net/c/?si=21213&li=1903643&wi=420902', 'https://www.plaud.ai/') },
       { name: 'Amazon Music', tagline: 'Muziek streamen zonder limits', cta: 'Probeer gratis', color: '#00A8E1', url: 'https://glp8.net/c/?si=20174&li=1861301&wi=420902' },
