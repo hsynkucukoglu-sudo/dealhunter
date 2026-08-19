@@ -109,7 +109,6 @@ const DEALS = [
       { name: 'Campings.com',            tagline: 'Campings & bungalows boeken',   cta: 'Zoek camping',   color: '#3A8C3F', url: 'https://jf79.net/c/?si=16264&li=1698129&wi=420902' },
       { name: 'Landgoed Ruwinkel',       tagline: 'Verblijf in de natuur',         cta: 'Bekijk verblijf', color: '#5C7A3E', url: 'https://ds1.nl/c/?si=8921&li=1410027&wi=420902' },
       { name: 'Thermae 2000',            tagline: 'Wellness & thermaalbadenpark',  cta: 'Bekijk aanbod',  color: '#7B9DC4', url: 'https://lt45.net/c/?si=11710&li=1519100&wi=420902' },
-      { name: 'Vipio',                   tagline: 'Unieke ervaringen & uitjes',    cta: 'Bekijk ervaringen', color: '#8B5CF6', url: 'https://fr135.net/c/?si=15569&li=1672748&wi=420902' },
       { name: '123Helikoptervluchten',   tagline: 'Helikoptervlucht cadeau',       cta: 'Bekijk vluchten', color: '#F59E0B', url: 'https://jdt8.net/c/?si=17893&li=1774970&wi=420902' },
       // 2026-08-19: smartbox.com/nl-nl/, /nl/ en /nl-be/ geven allemaal 503 — de NL-site is
       // naar bongo.nl verhuisd (smartbox.com linkt er zelf naartoe). dl=bongo.nl is

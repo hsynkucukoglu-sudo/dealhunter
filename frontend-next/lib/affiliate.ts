@@ -95,7 +95,6 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   Leukstetickets:       { destinationUrl: 'https://lt45.net/c/?si=15805&li=1684191&wi=420902',        network: 'daisycon',  rel: REL },
   'AD Webwinkel':       { destinationUrl: 'https://lt45.net/c/?si=13048&li=1574297&wi=420902',               network: 'daisycon',  rel: REL },
   'Volkskrant Webwinkel': { destinationUrl: 'https://lt45.net/c/?si=15810&li=1684197&wi=420902',    network: 'daisycon',  rel: REL },
-  'Nu.nl Shop':         { destinationUrl: 'https://lt45.net/c/?si=15818&li=1684335&wi=420902',                   network: 'daisycon',  rel: REL },
   // shop.libelle.nl bestaat niet meer (DNS lost niet op, gemeten 2026-08-15). De
   // winkel draaide door onder winkelen.libelle.nl — bevestigd door de tracking-link
   // zónder dl-parameter aan te roepen: Daisycon stuurt dan naar de bestemming die
