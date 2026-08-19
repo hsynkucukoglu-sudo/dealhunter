@@ -1108,6 +1108,22 @@ async function scrapeAlbertHeijn() {
   }
 }
 
+// Aldi'nin feed'i her urunde `brandName` veriyor (PHILADELPHIA, HARIBO, MILSANI…),
+// dus hier hoeft het merk niet uit de productnaam geraden te worden. Bewust NIET
+// via canonicalBrand(): die kent maar 18 van de 83 Aldi-merken en mapt bovendien
+// "SUN SNACKS" (Aldi's eigen snackmerk) fout naar "Sun" (het vaatwasmerk).
+// Gemeten 2026-08-19: alle 147 Aldi-producten stonden zonder merk in de database,
+// waardoor zoeken op "haribo", "doritos" of "philadelphia" 0 resultaten gaf —
+// terwijl die producten er wél zijn. Zoeken is de meest gebruikte interactie
+// van de site (docs/clarity-takip.md), dus dit woog zwaar.
+function aldiBrand(brandName) {
+  const s = (brandName || '').trim()
+  if (!s || s.toLowerCase() === 'aldi') return undefined
+  // ALL CAPS → Title Case. Bewust NIET na een apostrof kapitaliseren: dan wordt
+  // "TRADER JOE'S" → "Trader Joe'S". "D'AUCY" → "D'aucy" is de kleinere fout.
+  return s.toLowerCase().replace(/(^|[\s\-])(\p{L})/gu, (_, sep, ch) => sep + ch.toUpperCase())
+}
+
 // ─── ALDI — /api/offer/nl/{week} JSON API ────────────────────────────────────
 /**
  * Aldi'nin ham algoliaDataMap'ini bizim urun nesnelerimize cevirir.
@@ -1181,6 +1197,7 @@ export function parseAldiProducts(algoliaMap, expiresAtDefault = EXPIRES_AT) {
       results.push({
         name: p.name,
         market: 'Aldi',
+        brand: aldiBrand(p.brandName),
         category,
         originalPrice,
         discountedPrice,
