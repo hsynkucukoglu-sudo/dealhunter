@@ -944,7 +944,7 @@ export function parseAhProducts(rawProducts, expiresAtDefault = EXPIRES_AT) {
     let expiresAt = expiresAtDefault
     if (p.bonus?.endDate) expiresAt = p.bonus.endDate
 
-    candidates.push({ ...promo, name: p.title, imageUrl, ...unitInfo, expiresAt, sourceId: p.webshopId != null ? String(p.webshopId) : null })
+    candidates.push({ ...promo, name: p.title, brand: sourceBrand(p.brand), imageUrl, ...unitInfo, expiresAt, sourceId: p.webshopId != null ? String(p.webshopId) : null })
   }
 
   if (!candidates.length) return []
@@ -958,6 +958,7 @@ export function parseAhProducts(rawProducts, expiresAtDefault = EXPIRES_AT) {
   return candidates.map(p => ({
     name: p.name,
     market: 'Albert Heijn',
+    brand: p.brand,
     originalPrice: p.originalPrice,
     discountedPrice: p.discountedPrice,
     imageUrl: p.imageUrl,
@@ -1108,20 +1109,33 @@ async function scrapeAlbertHeijn() {
   }
 }
 
-// Aldi'nin feed'i her urunde `brandName` veriyor (PHILADELPHIA, HARIBO, MILSANI…),
-// dus hier hoeft het merk niet uit de productnaam geraden te worden. Bewust NIET
-// via canonicalBrand(): die kent maar 18 van de 83 Aldi-merken en mapt bovendien
-// "SUN SNACKS" (Aldi's eigen snackmerk) fout naar "Sun" (het vaatwasmerk).
+// Sommige bronnen leveren het merk zélf (Aldi: `brandName`, AH: `brand`). Dat is
+// betrouwbaarder dan raden uit de productnaam, dus gebruiken we het rechtstreeks.
+//
+// Bewust NIET via canonicalBrand(): dat is een whitelist die maar 18 van de 83
+// Aldi-merken kent én "SUN SNACKS" (Aldi's eigen snackmerk) fout mapt naar "Sun"
+// (het vaatwasmerk).
+//
 // Gemeten 2026-08-19: alle 147 Aldi-producten stonden zonder merk in de database,
 // waardoor zoeken op "haribo", "doritos" of "philadelphia" 0 resultaten gaf —
-// terwijl die producten er wél zijn. Zoeken is de meest gebruikte interactie
-// van de site (docs/clarity-takip.md), dus dit woog zwaar.
-function aldiBrand(brandName) {
-  const s = (brandName || '').trim()
-  if (!s || s.toLowerCase() === 'aldi') return undefined
+// terwijl die producten er wél zijn (hun naam is generiek: "Chips", "Snoep").
+// Zoeken is de meest gebruikte interactie van de site (docs/clarity-takip.md).
+// 'ah' staat er ook in: dat is Albert Heijns huismerk, feitelijk de winkelnaam.
+// Zonder deze regel kreeg elk AH-huismerkproduct brand "AH" en een /merk/ah-link.
+const _WINKELNAMEN = new Set(['aldi', 'ah', 'albert heijn', 'jumbo', 'lidl', 'dirk', 'plus', 'vomar', 'dekamarkt', 'hoogvliet', 'kruidvat', 'coop'])
+
+function sourceBrand(raw) {
+  const s = (raw || '').trim()
+  if (!s || _WINKELNAMEN.has(s.toLowerCase())) return undefined
+  // Korte afkortingen (TUC, HAK) blijven staan; "AH" → "Ah" zou fout zijn.
+  if (s.length <= 3 && s === s.toUpperCase()) return s
   // ALL CAPS → Title Case. Bewust NIET na een apostrof kapitaliseren: dan wordt
   // "TRADER JOE'S" → "Trader Joe'S". "D'AUCY" → "D'aucy" is de kleinere fout.
-  return s.toLowerCase().replace(/(^|[\s\-])(\p{L})/gu, (_, sep, ch) => sep + ch.toUpperCase())
+  // Bronnen die al netjes gekapitaliseerd zijn (AH) blijven ongewijzigd.
+  if (s === s.toUpperCase()) {
+    return s.toLowerCase().replace(/(^|[\s\-])(\p{L})/gu, (_, sep, ch) => sep + ch.toUpperCase())
+  }
+  return s
 }
 
 // ─── ALDI — /api/offer/nl/{week} JSON API ────────────────────────────────────
@@ -1197,7 +1211,7 @@ export function parseAldiProducts(algoliaMap, expiresAtDefault = EXPIRES_AT) {
       results.push({
         name: p.name,
         market: 'Aldi',
-        brand: aldiBrand(p.brandName),
+        brand: sourceBrand(p.brandName),
         category,
         originalPrice,
         discountedPrice,
