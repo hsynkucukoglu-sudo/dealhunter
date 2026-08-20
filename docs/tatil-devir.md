@@ -88,6 +88,21 @@ token 7 günde ölür) → `tools/tiktok-video/get-youtube-token.mjs` → 3 secr
 
 ---
 
+## "Geri dönen kullanıcı 0" — dönüşte yanlış okuma tuzağı
+
+`gunluk-takip.md`'de geri dönen kullanıcı hâlâ **0** görünüyor. Bu bir arıza
+değil, henüz ölçüm penceresi açılmadı.
+
+2026-08-20'de canlı sitede doğrulandı: CMP'de "Alles accepteren"e tıklandığında
+`clarity('consent')` **ateşleniyor**. Köprü çalışıyor.
+
+Sayının kıpırdaması için birinin onay verip `_clck` çerezini alması ve **sonraki
+bir gün** geri gelmesi gerekiyor. Düzeltme 19 Ağustos'ta yayına girdiği için 7 ve
+30 günlük pencereler hâlâ ağırlıklı olarak düzeltme öncesi oturum taşıyor.
+
+> Not: onay verilmeden test edilirse hiçbir çağrı görünmez — bu beklenen
+> davranış, arıza değil. İlk denemede tam bu yüzden yanlış alarm verilmişti.
+
 ## Takvim
 
 | Tarih | Ne |
