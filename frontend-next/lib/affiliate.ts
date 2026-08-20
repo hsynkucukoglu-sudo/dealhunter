@@ -51,12 +51,19 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   // Flink App (NL) — Daisycon onaylı (si=16070=program ID, li=1691645, jf79.net)
   Flink: { destinationUrl: 'https://jf79.net/c/?si=16070&li=1691645&wi=420902', network: 'daisycon', rel: REL },
   // Holland & Barrett NL — Awin onaylı (merchant ID 8108)
-  // /aanbiedingen gaf 404 (gemeten 2026-08-15, ook via de Awin-redirect: die geeft
-  // de ued-parameter gewoon door en de bezoeker landt op de 404). De juiste pad is
-  // /shop/aanbiedingen/ — dat was in MeerBesparenWidget.tsx al correct, alleen deze
-  // kopie liep achter. Let op: dit merk staat op twee plekken (hier + de DEALS-lijst
-  // in dat widget); die twee zijn geen gedeelde bron en kunnen dus uit elkaar lopen.
-  'Holland & Barrett': { destinationUrl: 'https://www.hollandandbarrett.nl/shop/aanbiedingen/', network: 'awin', programId: '8108', rel: REL },
+  // Padgeschiedenis: /aanbiedingen gaf 404 (2026-08-15), daarna /shop/aanbiedingen/.
+  // Inmiddels heet de pagina /shop/offers/ en is /shop/aanbiedingen/ een redirect.
+  //
+  // 2026-08-20: die redirect breekt zodra er een querystring aan hangt —
+  //   /shop/aanbiedingen/                      -> /shop/offers/   (goed)
+  //   /shop/aanbiedingen/?utm_source=awin&...  -> /              (homepage!)
+  // Awin plakt er altijd utm-parameters aan, dus élke echte bezoeker kwam op de
+  // homepage uit in plaats van bij de aanbiedingen. Kale URL's testen liet dat niet
+  // zien; die conditie bestaat in productie niet. Daarom nu direct /shop/offers/.
+  //
+  // Let op: dit merk staat op twee plekken (hier + data/affiliates.json voor de
+  // WhatsApp/Telegram-kaarten); die twee zijn geen gedeelde bron en lopen uit elkaar.
+  'Holland & Barrett': { destinationUrl: 'https://www.hollandandbarrett.nl/shop/offers/', network: 'awin', programId: '8108', rel: REL },
   // Bol.com — kendi partner ağı (site ID 1527078)
   // /nl/nl/ i.p.v. / — bol.com stuurt / tóch daarheen, dit scheelt een redirect.
   // (Was al de waarde in MeerBesparenWidget; hier gelijkgetrokken bij het
