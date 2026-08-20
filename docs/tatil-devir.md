@@ -103,6 +103,85 @@ bir gün** geri gelmesi gerekiyor. Düzeltme 19 Ağustos'ta yayına girdiği iç
 > Not: onay verilmeden test edilirse hiçbir çağrı görünmez — bu beklenen
 > davranış, arıza değil. İlk denemede tam bu yüzden yanlış alarm verilmişti.
 
+---
+
+# 🔖 DÖNÜŞTE BURADAN DEVAM — bu bilgisayar
+
+Son oturum: **2026-08-20 20:30**. Aşağısı bu makinedeki duruma özel.
+
+## İlk iş: AdSense oturumu (bozuk, sebebi ben)
+
+`gsc-profile` (hyuseyink@gmail.com) oturumu **düştü** — profil kilidini
+temizlerken Chrome süreçlerini zorla öldürdüm ve oturum uçtu.
+
+**Her sabah 08:30'daki metrik görevi bu oturuma bağlı**, yani tatil boyunca
+AdSense rakamları eksik yazılacak. Clarity ve GSC etkilenmedi.
+
+```
+chrome --user-data-dir=C:\Users\ASUS\Downloads\gsc-profile
+```
+
+## Oturum durumu (2026-08-20 ölçümü)
+
+| Kaynak | Durum | Ömür |
+|---|---|---|
+| GSC · Clarity (`metrics-profile`) | ✅ açık | günlerce dayanıyor |
+| TradeTracker | ✅ açık | temmuzdan beri |
+| Daisycon · Awin | ⛔ düşer | **40 dakika** — önceden giriş yapma, tarama anında yap |
+| AdSense (`gsc-profile`) | 🔴 düşük | yukarı bak |
+
+Kısa ömürlü panellerde çalışan yöntem: profili `--remote-debugging-port` ile
+aç, giriş yap, **pencereyi kapatma**, `puppeteer.connect({browserURL})` ile
+canlı pencereye bağlan.
+
+## Yarım kalan tek iş
+
+**Genel kontrol** — 20 Ağustos'ta beş ayaktan dördü tamamlandı:
+
+| Ayak | Sonuç |
+|---|---|
+| Mailler (8 gün, 40 thread) | ✅ bildirilen 15 programın hiçbiri bizde değil |
+| Daisycon | ✅ 600 program tarandı, ölü program yok |
+| Awin | ✅ 10 programın hepsi Joined + Online |
+| GSC | ✅ 404'ler bulundu (aşağıda) |
+| **AdSense politika + ödeme** | ⛔ **yapılamadı — oturum yok** |
+
+## Karar bekleyen üç konu
+
+**1. `/merk/` sayfaları geçici.** GSC 404 uyarısının kaynağı bu:
+`/merk/kokosdeurmat` 404, `/merk/mora` şu an 200. Marka sayfaları haftalık
+ürün verisinden üretiliyor; marka fırsattan çıkınca sayfa kayboluyor.
+Sitemap'te hiç `/merk/` yok, Google iç linkten buluyor. Seçenekler: 404
+bırakmak (doğru HTTP semantiği), ya da sayfayı kalıcı yapıp "şu an bu markada
+fırsat yok" göstermek.
+
+**2. Coop ölü yapılandırma.** `types.ts`'te market olarak tanımlı ama ürünü
+yok, `/supermarkt/coop` canlıda 404. Ayrıca `coop.nl` tamamen `plus.nl`'e
+yönleniyor (Coop, PLUS'a katıldı). Kaydı silmek mi, PLUS'a mı bağlamak?
+
+**3. Repo herkese açık.** `hsynkucukoglu-sudo/dealhunter` public, yani
+`docs/gunluk-takip.md` üzerinden **AdSense gelirin ve trafik verilerin
+görünür durumda**. Bilinçli tercih mi, bilmiyorum — tek taraflı değiştirmedim.
+
+## Kapanan maddeler (tekrar bakma)
+
+- ✅ **Aldi `brandVerified`** — 20 Ağu 08:58 scrape'inde doğrulandı: marka dolu
+  22/189 → **143/189**, kısaltılmış marka 0.
+- ✅ **Holland & Barrett** — UTM'li yönlendirme ana sayfaya düşürüyordu,
+  `/shop/offers/` ile düzeltildi ve tarayıcıyla doğrulandı.
+- ✅ **Consent köprüsü** — çalışıyor; "geri dönen 0" arıza değil, ölçüm
+  penceresi henüz açılmadı.
+- ✅ **Karşılaştırma içerik açığı** — yok, yazısı olmayan çiftler toplam
+  21 gösterim. Yeni yazı yazma.
+
+## Yedek
+
+`D:\DealHunter-Yedek-2026-08-20\` (Intenso External USB 3.0) — proje +
+`.git` geçmişi + tatil paketi + hafıza, 5850 dosya, birebir doğrulandı.
+Chrome profilleri **kasıtlı alınmadı**, kullanıcı her seferinde elle giriyor.
+
+---
+
 ## Takvim
 
 | Tarih | Ne |
