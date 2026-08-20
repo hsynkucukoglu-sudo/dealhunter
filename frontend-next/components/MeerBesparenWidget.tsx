@@ -36,6 +36,27 @@ const DS = (si: string, li: string, dl: string) =>
 const DC = (base: string, dest: string) =>
   `${base}&dl=${encodeURIComponent(dest)}`
 
+// Tijdelijke bonusacties. Elke actie draagt verplicht een einddatum: zonder die
+// datum blijft een afgelopen aanbieding als harde claim op de site staan, en dat
+// is precies het soort belofte dat niemand op tijd weghaalt. Na `totEnMet`
+// verdwijnt de badge vanzelf — de regel hieronder mag dan blijven staan.
+//
+// ENGIE draait deze "WATT een VOORDEEL"-dagen periodiek (6 en 8 juli, 17-21 aug),
+// dus deze tabel wordt vaker gebruikt dan het nu lijkt.
+const PROMOS: Record<string, { tekst: string; totEnMet: string }> = {
+  // Daisycon-notificatie 2026-08-19: "t/m vrijdag ... bonus die kan oplopen tot
+  // wel € 750 bij een 3 jaar contract". Bewust "tot" — de volle € 750 geldt
+  // alleen bij 3 jaar, dus een kalere "€ 750 bonus" zou misleidend zijn.
+  ENGIE: { tekst: '⚡ Tot € 750 bonus', totEnMet: '2026-08-21' },
+}
+
+function actievePromo(naam: string) {
+  const promo = PROMOS[naam]
+  if (!promo) return undefined
+  const vandaag = new Date().toISOString().slice(0, 10)
+  return vandaag <= promo.totEnMet ? promo : undefined
+}
+
 const DEALS = [
   {
     id: 'energie',
@@ -509,6 +530,18 @@ export function MeerBesparenWidget({ open, onClose, onOpen, activeCategory }: Pr
                         <p className="text-[11px] leading-relaxed" style={{ color: '#9C9389' }}>
                           {item.tagline}
                         </p>
+                        {(() => {
+                          const promo = actievePromo(item.name)
+                          if (!promo) return null
+                          return (
+                            <span
+                              className="text-[10px] font-black px-2 py-1 rounded-full self-start"
+                              style={{ background: `${item.color}1A`, color: item.color }}
+                            >
+                              {promo.tekst}
+                            </span>
+                          )
+                        })()}
                         <span
                           className="text-[11px] font-bold mt-auto"
                           style={{ color: item.color }}
