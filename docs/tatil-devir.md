@@ -13,7 +13,19 @@ neyin çalışmaya devam ettiği, neyin durduğu, uzaktan neyin yapılabildiği.
 
 ---
 
-## Çalışmaya devam edenler — GitHub Actions (bulut)
+## Çalışmaya devam edenler
+
+Bulutta iki ayrı zamanlayıcı var. **İkisi de bu bilgisayardan bağımsız.**
+
+### 1. Railway backend — asıl iş burada (`backend/server.js`)
+
+| Zaman | İş |
+|---|---|
+| Her gün 08:00 UTC | `runScraperJob()` — AH, Jumbo, Lidl, Aldi, Hoogvliet, Vomar, DekaMarkt |
+| Her gün 08:00 UTC | `clearOrphanProducts()` + `clearExpiredProducts()` — süresi geçmiş ürün temizliği |
+| Pazartesi 09:00 UTC | Haftalık bülten e-postası |
+
+### 2. GitHub Actions
 
 | Workflow | Durum |
 |---|---|
@@ -22,6 +34,11 @@ neyin çalışmaya devam ettiği, neyin durduğu, uzaktan neyin yapılabildiği.
 | `whatsapp-sender` | cron açık, günde 8 mesaj |
 
 Site güncellenmeye ve WhatsApp grubu akmaya devam eder. Müdahale gerekmez.
+
+> ⚠️ `hoogvliet-scraper.yml`'nin cron'u kapalı olmasına bakıp "Hoogvliet ölü"
+> sonucuna varma — Railway tarafı onu topluyor ve **veri güncel** (19 Ağu'da
+> 16 ürün, o günün damgasıyla). GitHub workflow'larının durumu tek başına
+> neyin çalıştığını göstermiyor.
 
 ## Bilerek kapalı olanlar
 

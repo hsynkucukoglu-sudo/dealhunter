@@ -401,10 +401,33 @@ async function scrapeJumbo() {
   }
 }
 
+// Nederlandse en Duitse merknamen dragen geregeld een accent (Stëlz, Crème, Müller).
+// Die komen als benoemde entity binnen en alleen de vijf basisentiteiten stonden
+// hier: "St&euml;lz" haalde zo onvertaald de productlijst. Losse letters toevoegen
+// lost het per merk op maar niet als klasse, vandaar de hele Latin-1 accentset.
+const HTML_ENTITIES = {
+  auml: 'ä', euml: 'ë', iuml: 'ï', ouml: 'ö', uuml: 'ü', yuml: 'ÿ',
+  Auml: 'Ä', Euml: 'Ë', Iuml: 'Ï', Ouml: 'Ö', Uuml: 'Ü',
+  aacute: 'á', eacute: 'é', iacute: 'í', oacute: 'ó', uacute: 'ú',
+  Aacute: 'Á', Eacute: 'É', Iacute: 'Í', Oacute: 'Ó', Uacute: 'Ú',
+  agrave: 'à', egrave: 'è', igrave: 'ì', ograve: 'ò', ugrave: 'ù',
+  Agrave: 'À', Egrave: 'È',
+  acirc: 'â', ecirc: 'ê', icirc: 'î', ocirc: 'ô', ucirc: 'û',
+  Acirc: 'Â', Ecirc: 'Ê',
+  ccedil: 'ç', Ccedil: 'Ç', ntilde: 'ñ', Ntilde: 'Ñ', szlig: 'ß',
+  aring: 'å', Aring: 'Å', oslash: 'ø', Oslash: 'Ø', aelig: 'æ', AElig: 'Æ',
+  nbsp: ' ', deg: '°', euro: '€', pound: '£', copy: '©', reg: '®', trade: '™',
+  hellip: '…', ndash: '–', mdash: '—', lsquo: '‘', rsquo: '’', ldquo: '“', rdquo: '”',
+  lt: '<', gt: '>', quot: '"', apos: "'",
+}
+
 function decodeHtmlEntities(str) {
   return str
-    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(parseInt(code)))
-    .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(parseInt(code)))
+    .replace(/&([a-zA-Z]+);/g, (m, naam) => HTML_ENTITIES[naam] ?? m)
+    // &amp; als laatste: anders wordt "&amp;euml;" ten onrechte twee keer gedecodeerd.
+    .replace(/&amp;/g, '&')
 }
 
 // ─── HOOGVLIET — HTML scraper with LoadMore AJAX fallback ────────────────────
