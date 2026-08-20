@@ -118,5 +118,65 @@
    "son7": "€0,45",
    "buAy": "€1,18"
   }
+ },
+ {
+  "tarih": "2026-08-20",
+  "clarity": {
+   "dun": {
+    "oturum": 25,
+    "bot": 38,
+    "sayfaOturum": 1,
+    "kaydirma": 23.08,
+    "etkinSure": "35 sn",
+    "geriDonen": 0,
+    "oluTiklama": 8,
+    "giden": null,
+    "arama": null
+   },
+   "g7": {
+    "oturum": 126,
+    "bot": 278,
+    "sayfaOturum": 1.06,
+    "kaydirma": 29.44,
+    "etkinSure": "51 sn",
+    "geriDonen": 0,
+    "oluTiklama": 7.14,
+    "giden": 7,
+    "arama": 2
+   },
+   "g30": {
+    "oturum": 577,
+    "bot": 933,
+    "sayfaOturum": 1.01,
+    "kaydirma": 31.92,
+    "etkinSure": "36 sn",
+    "geriDonen": 0,
+    "oluTiklama": 6.07,
+    "giden": 29,
+    "arama": 10
+   }
+  },
+  "gscIndex": {
+   "eklenen": 168,
+   "eklenmeyen": 109,
+   "noindex": 33,
+   "robots": 32,
+   "kesfedildi": 27,
+   "tarandi": 8,
+   "kopya": 3
+  },
+  "gscPerf": {
+   "tiklama": "140",
+   "gosterim": "60 B",
+   "to": "0,2",
+   "konum": "9,9"
+  },
+  "adsense": {
+   "hesapIndex": 0,
+   "bugun": "€0,01",
+   "dun": "€0,06",
+   "son7": "€0,47",
+   "buAy": "€1,25"
+  }
  }
 ]

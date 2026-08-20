@@ -79,3 +79,20 @@ Dizine eklenen **168** · eklenmeyen **108** (noindex 32 · robots 32 · keşfed
 
 ### AdSense
 bugün €0,00 · dün €0,10 · son 7 gün €0,45 · bu ay €1,18 (hesap /u/0)
+
+## 2026-08-20
+
+### Clarity
+| Pencere | Oturum | Sayfa/ot | Kaydırma | Etkin süre | Geri dönen | Giden tık | Arama |
+|---|---|---|---|---|---|---|---|
+| Dün | 25 | 1 | 23.08% | 35 sn | 0 | — | — |
+| 7 gün | 126 | 1.06 | 29.44% | 51 sn | 0 | 7 | 2 |
+| 30 gün | 577 | 1.01 | 31.92% | 36 sn | 0 | 29 | 10 |
+
+### GSC
+Dizine eklenen **168** · eklenmeyen **109** (noindex 33 · robots 32 · keşfedildi 27 · tarandı 8 · kopya 3)
+
+28 gün: tıklama **140** · gösterim **60 B** · TO 0,2 · konum 9,9
+
+### AdSense
+bugün €0,01 · dün €0,06 · son 7 gün €0,47 · bu ay €1,25 (hesap /u/0)
