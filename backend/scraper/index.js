@@ -1758,9 +1758,28 @@ async function scrapeDekaMarkt() {
   }
 }
 
-// ─── COOP — JSON-LD + embedded script JSON + HTML fallback ───────────────────
+// ─── COOP — UITGEZET, het merk bestaat niet meer ─────────────────────────────
+//
+// Coop is opgegaan in PLUS. Sinds 2026-08-20 gemeten: het hele domein coop.nl
+// stuurt door naar plus.nl — de homepage, /aanbiedingen én /winkels.
+//
+// Dat maakt dit méér dan een dode scraper. `fetch` volgt redirects standaard,
+// dus deze functie haalde plus.nl-HTML op en probeerde die te parsen met
+// `market: 'Coop'` erop. Vandaag levert dat 0 producten op omdat de parser niet
+// op de opmaak van plus.nl past — maar dat is toeval, geen ontwerp. Zou plus.nl
+// ooit JSON-LD gaan serveren die hier wél op past, dan schrijven we PLUS-
+// producten als Coop de database in: dubbele producten die stilletjes
+// meetellen in de marktvergelijking.
+//
+// Daarom hier een harde stop in plaats van "we kijken er later nog eens naar"
+// (het stond als 403-probleem geparkeerd in docs/ajan-kurallari.md; het is geen
+// 403-probleem, het merk is weg). De functie zelf blijft staan zodat de
+// aanroep in de scrapejob ongewijzigd werkt — opruimen kan later, rustig.
 async function scrapeCoop() {
-  console.log('🏪 [Coop] coop.nl/aanbiedingen...')
+  console.log('🏪 [Coop] overgeslagen — coop.nl bestaat niet meer (→ plus.nl)')
+  return []
+
+  /* eslint-disable no-unreachable */
   try {
     const res = await fetch('https://www.coop.nl/aanbiedingen', {
       headers: { ...HEADERS, 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' },

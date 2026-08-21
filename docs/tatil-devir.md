@@ -170,9 +170,30 @@ yalnızca `MIN_DEALS_SITEMAP=5` eşiğini geçen 26'sı listeleniyor. Aldi marka
 düzeltmesinden sonra marka sayısı arttı, yani 404'ler tekrarlayacak — **ve bu
 sorun değil.**
 
-**2. Coop ölü yapılandırma.** `types.ts`'te market olarak tanımlı ama ürünü
-yok, `/supermarkt/coop` canlıda 404. Ayrıca `coop.nl` tamamen `plus.nl`'e
-yönleniyor (Coop, PLUS'a katıldı). Kaydı silmek mi, PLUS'a mı bağlamak?
+**2. Coop — ✅ KARAR: scraper kapatıldı, gerisi olduğu gibi kalıyor** (2026-08-20)
+
+Coop, PLUS'a katıldı: `coop.nl`'in **tamamı** `plus.nl`'e yönleniyor (ana sayfa,
+`/aanbiedingen`, `/winkels`). Yani "403 veriyor, sonra bakarız" değil, marka yok.
+
+**Bulunan gizli risk:** `fetch` yönlendirmeyi takip ettiği için `scrapeCoop()`
+plus.nl HTML'ini çekip `market: 'Coop'` etiketiyle parse etmeye çalışıyordu.
+Bugün 0 ürün dönüyor çünkü parser plus.nl'in yapısına uymuyor — ama bu tasarım
+değil şans. Parser tutsaydı **PLUS ürünleri Coop olarak veritabanına girer** ve
+market karşılaştırmasında sessizce çift sayılırdı. `scrapeCoop()` artık başta
+`return []` yapıyor.
+
+**Bilerek silinmeyenler:**
+- `_WINKELNAMEN` (scraper) ve `STORE_NAMES` (`brand.js`) içindeki `'coop'` —
+  orada marka **reddetmek** için duruyor. Silinirse "Coop" marka sayılır ve
+  `/merk/coop` üretilir. Regresyon olur.
+- `types.ts`'teki kayıt — zaten `hidden: true` ve `VISIBLE_MARKETS` filtreliyor,
+  yani arayüzde görünmüyor. Zararsız.
+- Scraper gövdesinin geri kalanı — tatil öncesi 140 satır silmenin riski
+  (11 marketin tamamının taranması bozulur, kimse bakmıyor) faydasından büyük.
+  Dönüşte rahat rahat temizlenebilir.
+
+SEO maliyeti yok: Coop **GSC'de tek gösterim bile almamış**, sitemap'te yok,
+`/supermarkt/coop` zaten 404.
 
 **3. Repo herkese açık.** `hsynkucukoglu-sudo/dealhunter` public, yani
 `docs/gunluk-takip.md` üzerinden **AdSense gelirin ve trafik verilerin

@@ -156,7 +156,7 @@ Bunlar veriyle birden fazla kez test edildi:
 | Head-term'ler (`lidl aanbiedingen` vb.) | **Kovalanmayacak** | ~20 B gösterim → 8 tıklama, konum 8-9, 1-2. sıra marketin kendi sitesi. 4 kez doğrulandı |
 | "Daha çok karşılaştırma yazısı yaz" | **Hayır** | 46 yazı var, 9'u karşılaştırma, konum 3-6 ama 3 ayda 30-100 gösterim — sorgu hacmi yok |
 | Fiyat endeksi ile otorite | **Hayır** | Kapsama yanlılığı + promosyon fiyatı, savunulabilir yorumu yok |
-| Coop scraper | **Park** | OutSystems SPA, 403, zaten gizli market |
+| Coop scraper | **Kapatıldı** | Marka yok oldu — `coop.nl`'in tamamı `plus.nl`'e yönleniyor (2026-08-20 ölçümü). 403 sorunu değil, deneme |
 | Hoogvliet | **Kovalanmayacak** | Imperva, cron kapatıldı, DB'de 0 ürün |
 | Sosyal medyada elle içerik | **Hayır** | Kullanıcının zaman bütçesi ~0 saat/hafta; sadece tam otomatik kanallar |
 
