@@ -148,12 +148,27 @@ canlı pencereye bağlan.
 
 ## Karar bekleyen üç konu
 
-**1. `/merk/` sayfaları geçici.** GSC 404 uyarısının kaynağı bu:
-`/merk/kokosdeurmat` 404, `/merk/mora` şu an 200. Marka sayfaları haftalık
-ürün verisinden üretiliyor; marka fırsattan çıkınca sayfa kayboluyor.
-Sitemap'te hiç `/merk/` yok, Google iç linkten buluyor. Seçenekler: 404
-bırakmak (doğru HTTP semantiği), ya da sayfayı kalıcı yapıp "şu an bu markada
-fırsat yok" göstermek.
+**1. `/merk/` 404'leri — ✅ KARAR: AKSİYON YOK** (2026-08-20)
+
+GSC'nin "Bulunamadı (404)" uyarısının kaynağı marka sayfaları. Ama incelemede
+çıktı ki **bu sayfalar zaten `noindex, follow`** — canlıda doğrulandı, sitemap'te
+de hiç `/merk/` yok.
+
+Yani Google, bizim **bilerek indeksten uzak tuttuğumuz** sayfaların kaybolduğunu
+bildiriyor. Sıralamada zaten yoklardı; kaybolmaları hiçbir şey kaybettirmiyor.
+Uyarı kozmetik.
+
+Kalıcı sayfa yapmak **ters yönde** bir hamle olurdu: noindex gerekçesi kodda
+yazılı — sayfalar 342-396 kelime, benzersiz kısmı tek cümle + birkaç ürün kartı
+(karşılaştırma: `/product/*` 671-1011, `/supermarkt/*` ~2600 kelime) ve
+**AdSense 2026-07-13'te siteyi "düşük değerli içerik" diye reddetmişti**, bu
+sayfalar en açık adaydı. Kalıcı hâle getirmek o ince sayfaları çoğaltırdı.
+
+Ölçüm: 195 benzersiz marka, 94'ü tek ürünlü (en kırılgan grup);
+`MIN_DEALS_EXIST=1` olduğu için hepsinin sayfası var, `/merk` indeksinde ise
+yalnızca `MIN_DEALS_SITEMAP=5` eşiğini geçen 26'sı listeleniyor. Aldi marka
+düzeltmesinden sonra marka sayısı arttı, yani 404'ler tekrarlayacak — **ve bu
+sorun değil.**
 
 **2. Coop ölü yapılandırma.** `types.ts`'te market olarak tanımlı ama ürünü
 yok, `/supermarkt/coop` canlıda 404. Ayrıca `coop.nl` tamamen `plus.nl`'e
