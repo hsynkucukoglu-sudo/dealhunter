@@ -4,43 +4,63 @@ import https from 'https'
 import http from 'http'
 
 // trackingBase: affiliate.ts / MeerBesparenWidget.tsx ile birebir aynı
-// dest: null = dl= parametresi gönderilmez (Levi's / Rakuten özel durumu)
+// dest: null = dl= parametresi gönderilmez (Rakuten/deeplink-kırıcı programlar — bkz. affiliate.ts wrapAffiliate)
+//
+// 2026-08-26 güncellemesi: bu liste bayattı — affiliate.ts/MeerBesparenWidget.tsx'te
+// çift-URL bug'ı fark edilip dl= kaldırılan ~15 marka burada hâlâ eski (kırık) dl=
+// değerleriyle duruyordu, script çalıştırılınca yanlış alarm veriyordu. Üretimle
+// birebir eşitlendi + o taraflı doğrulanan 8 marka (CheapTickets..Plaud) eklendi.
 const links = [
   // ── Widget — Supermarkt ──────────────────────────────────────────────────
-  { name: 'Flink',              base: 'https://jf79.net/c/?si=16070&li=1691645&wi=420902',    dest: 'https://www.goflink.com/' },
+  // Flink: dl= JS/Adjust deeplink zincirinde takılıyor (goflink "STUCK" — ayrı ele alınır),
+  // üretimde de dl= gönderilmiyor (affiliate.ts: trackingBase yok → bare link)
+  { name: 'Flink',              base: 'https://jf79.net/c/?si=16070&li=1691645&wi=420902',    dest: null },
 
   // ── Widget — Telecom ─────────────────────────────────────────────────────
-  { name: 'Ziggo',              base: 'https://jf79.net/c/?si=17174&li=1742299&wi=420902',    dest: 'https://www.meervoordeel.nl/providers/ziggo/' },
-  { name: 'hollandsnieuwe',     base: 'https://glp8.net/c/?si=21994&li=1927639&wi=420902',    dest: 'https://www.hollandsnieuwe.nl/abonnementen/' },
+  { name: 'Ziggo',              base: 'https://jf79.net/c/?si=17174&li=1742299&wi=420902',    dest: null },
+  { name: 'hollandsnieuwe',     base: 'https://glp8.net/c/?si=21994&li=1927639&wi=420902',    dest: null },
   { name: 'Lycamobile',         base: 'https://bdt9.net/c/?si=19078&li=1819944&wi=420902',    dest: 'https://www.lycamobile.nl/nl/' },
 
   // ── Widget — Reizen ──────────────────────────────────────────────────────
-  { name: 'Smartbox & Bongo',   base: 'https://glp8.net/c/?si=21185&li=1902306&wi=420902',    dest: 'https://www.smartbox.com/nl-nl/' },
-  { name: 'Leukstetickets',     base: 'https://lt45.net/c/?si=15805&li=1684191&wi=420902',    dest: 'https://www.leukstetickets.nl/' },
+  { name: 'Smartbox & Bongo',   base: 'https://glp8.net/c/?si=21185&li=1902306&wi=420902',    dest: null },
+  { name: 'Leukstetickets',     base: 'https://lt45.net/c/?si=15805&li=1684191&wi=420902',    dest: null },
+  { name: 'CheapTickets',       base: 'https://ds1.nl/c/?si=16070&li=70202&wi=420902',        dest: 'https://www.cheaptickets.nl/vluchten' },
+  { name: 'Prijsvrij',          base: 'https://ds1.nl/c/?si=16070&li=168050&wi=420902',       dest: 'https://www.prijsvrij.nl/last-minute' },
+  { name: 'Oad',                base: 'https://ds1.nl/c/?si=16070&li=1352504&wi=420902',      dest: 'https://www.oad.nl/aanbiedingen' },
+  { name: 'Kiwi.com',           base: 'https://glp8.net/c/?si=20714&li=1878051&wi=420902',    dest: 'https://www.kiwi.com/nl/' },
 
   // ── Widget — Wonen ───────────────────────────────────────────────────────
-  { name: '999Games',           base: 'https://lt45.net/c/?si=13450&li=1593002&wi=420902',    dest: 'https://www.999games.nl/' },
-  { name: 'Tuinmeubelwereld',   base: 'https://bdt9.net/c/?si=19167&li=1822967&wi=420902',    dest: 'https://www.tuinmeubelwereld.nl/' },
-  { name: 'Miss Towels',        base: 'https://glp8.net/c/?si=21226&li=1904846&wi=420902',    dest: 'https://www.misstowels.nl/' },
-  { name: 'Florafy',            base: 'https://d.florafy.eu/c/?si=21211&li=1903580&wi=420902', dest: 'https://www.florafy.eu/nl/' },
-  { name: 'Petgamma',           base: 'https://fr135.net/c/?si=20686&li=1877039&wi=420902',    dest: 'https://www.petgamma.com/' },
+  { name: '999Games',           base: 'https://lt45.net/c/?si=13450&li=1593002&wi=420902',    dest: null },
+  { name: 'Tuinmeubelwereld',   base: 'https://bdt9.net/c/?si=19167&li=1822967&wi=420902',    dest: null },
+  { name: 'Miss Towels',        base: 'https://glp8.net/c/?si=21226&li=1904846&wi=420902',    dest: null },
+  { name: 'Florafy',            base: 'https://d.florafy.eu/c/?si=21211&li=1903580&wi=420902', dest: null },
+  { name: 'Petgamma',           base: 'https://fr135.net/c/?si=20686&li=1877039&wi=420902',    dest: null },
 
   // ── Widget — Sport & Mode ────────────────────────────────────────────────
-  { name: 'Happy Mammoth',      base: 'https://glp8.net/c/?si=19600&li=1839644&wi=420902',    dest: 'https://eu.happymammoth.com/' },
-  { name: 'Plein.nl',           base: 'https://fr135.net/c/?si=3366&li=1161224&wi=420902',    dest: 'https://www.plein.nl/' },
+  { name: 'Happy Mammoth',      base: 'https://glp8.net/c/?si=19600&li=1839644&wi=420902',    dest: null },
+  { name: 'Plein.nl',           base: 'https://fr135.net/c/?si=3366&li=1161224&wi=420902',    dest: null },
   // Levi's: dl= yok — Rakuten/LinkShare tek-slash redirect → SSR crash
   { name: "Levi's",             base: 'https://glp8.net/c/?si=19949&li=1850890&wi=420902',    dest: null },
+  // Dr. Martens/Foreo: dl= çift-URL 404/503 veriyordu, 2026-08-26'da dl= kaldırıldı (bkz. MeerBesparenWidget.tsx)
+  { name: 'Dr. Martens',        base: 'https://fr135.net/c/?si=15138&li=1656908&wi=420902',   dest: null },
+  { name: 'Foreo',              base: 'https://jf79.net/c/?si=16254&li=1697784&wi=420902',    dest: null },
+  // Eastpak: hem dl= ile hem dl= olmadan curl'de 403 — Dr.Martens/Foreo'daki çift-URL değil,
+  // muhtemelen bot-tespiti. dl= henüz kaldırılmadı, canlı tarayıcıda doğrulanması gerekiyor.
+  { name: 'Eastpak',            base: 'https://glp8.net/c/?si=20076&li=1857675&wi=420902',    dest: 'https://www.eastpak.com/nl-nl/' },
 
   // ── Widget — Auto Lease ──────────────────────────────────────────────────
-  { name: 'XLLease',            base: 'https://fr135.net/c/?si=20255&li=1864272&wi=420902',   dest: 'https://www.xllease.nl/' },
-  { name: 'DutchLease',         base: 'https://fr135.net/c/?si=20456&li=1868213&wi=420902',   dest: 'https://www.dutchlease.nl/' },
-  { name: 'XLEasy',             base: 'https://fr135.net/c/?si=15775&li=1682823&wi=420902',   dest: 'https://www.xleasy.nl/' },
+  { name: 'XLLease',            base: 'https://fr135.net/c/?si=20255&li=1864272&wi=420902',   dest: null },
+  { name: 'DutchLease',         base: 'https://fr135.net/c/?si=20456&li=1868213&wi=420902',   dest: null },
+  { name: 'XLEasy',             base: 'https://fr135.net/c/?si=15775&li=1682823&wi=420902',   dest: null },
+
+  // ── Widget — Tech & Software ─────────────────────────────────────────────
+  { name: 'Plaud',              base: 'https://glp8.net/c/?si=21213&li=1903643&wi=420902',    dest: 'https://www.plaud.ai/' },
 
   // ── affiliate.ts — widget'ta yok ama tracking aktif ─────────────────────
-  { name: 'AD Webwinkel',         base: 'https://lt45.net/c/?si=13048&li=1574297&wi=420902',  dest: 'https://adwebwinkel.nl/' },
-  { name: 'Volkskrant Webwinkel', base: 'https://lt45.net/c/?si=15810&li=1684197&wi=420902',  dest: 'https://webwinkel.volkskrant.nl/' },
-  { name: 'Nu.nl Shop',           base: 'https://lt45.net/c/?si=15818&li=1684335&wi=420902',  dest: 'https://shop.nu.nl/' },
-  { name: 'Libelle Shop',         base: 'https://lt45.net/c/?si=15819&li=1684336&wi=420902',  dest: 'https://shop.libelle.nl/' },
+  { name: 'AD Webwinkel',         base: 'https://lt45.net/c/?si=13048&li=1574297&wi=420902',  dest: null },
+  { name: 'Volkskrant Webwinkel', base: 'https://lt45.net/c/?si=15810&li=1684197&wi=420902',  dest: null },
+  // Libelle Shop: destinationUrl winkelen.libelle.nl'e taşındı (eski shop.libelle.nl değil) — affiliate.ts
+  { name: 'Libelle Shop',         base: 'https://lt45.net/c/?si=15819&li=1684336&wi=420902',  dest: 'https://winkelen.libelle.nl/' },
 ]
 
 function buildUrl(base, dest) {
@@ -110,7 +130,7 @@ for (const { name, base, dest } of links) {
     console.log(`⚠️  [MISMATCH] ${name.padEnd(22)} ${tag} → expected ${expectDomain}, got ${finalDomain}`)
     warn++
   } else {
-    const note = dest ? finalDomain : 'no dl= (Rakuten fix)'
+    const note = dest ? finalDomain : `no dl= → ${finalDomain}`
     console.log(`✅ [OK]       ${name.padEnd(22)} ${tag} → ${note}`)
     ok++
   }

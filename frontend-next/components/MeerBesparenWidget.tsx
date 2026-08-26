@@ -222,9 +222,17 @@ const DEALS = [
       { name: 'Sportiek.com',    tagline: 'Sportschoenen & kleding',       cta: 'Bekijk aanbod',    color: '#F97316', url: 'https://ds1.nl/c/?si=8485&li=1389201&wi=420902' },
       { name: 'Primal Focus EU', tagline: 'Focus & energie supplementen',  cta: 'Bekijk aanbod',    color: '#0F766E', url: 'https://glp8.net/c/?si=21577&li=1913855&wi=420902' },
       { name: 'Pulsetto',        tagline: 'Vagus zenuw stimulator & stress', cta: 'Bekijk aanbod',  color: '#6366F1', url: M('Pulsetto') },
-      { name: 'Dr. Martens',     tagline: 'Iconische boots & schoenen',    cta: 'Bekijk collectie', color: '#FFC72C', url: DC('https://fr135.net/c/?si=15138&li=1656908&wi=420902', 'https://www.drmartens.com/nl/nl/') },
+      // dl= parameter breekt (dubbele URL → 404, canlı test 2026-08-26) — geen dl,
+      // gaat naar drmartens.com homepage i.p.v. /nl/nl/ (zelfde patroon als Kwantum/Levi's)
+      { name: 'Dr. Martens',     tagline: 'Iconische boots & schoenen',    cta: 'Bekijk collectie', color: '#FFC72C', url: 'https://fr135.net/c/?si=15138&li=1656908&wi=420902' },
+      // Eastpak.com blokt curl/headless (403) zowel mét als zonder dl= — geen dubbele-URL
+      // bug zoals Dr. Martens/Foreo, waarschijnlijk gewoon bot-detectie. Niet gewijzigd,
+      // canlı browser'da handmatig geverifieerd worden gerekiyor (2026-08-26, browser MCP
+      // oturum sırasında koptu, doğrulanamadı).
       { name: 'Eastpak',         tagline: 'Rugzakken & tassen sale',       cta: 'Bekijk collectie', color: '#FF6B00', url: DC('https://glp8.net/c/?si=20076&li=1857675&wi=420902',  'https://www.eastpak.com/nl-nl/') },
-      { name: 'Foreo',           tagline: 'Gezichtsreiniging & beauty tech', cta: 'Bekijk aanbod',  color: '#00BCD4', url: DC('https://jf79.net/c/?si=16254&li=1697784&wi=420902',  'https://www.foreo.com/nl') },
+      // dl= parameter breekt (dubbele URL → 503, canlı test 2026-08-26) — geen dl,
+      // gaat naar foreo.com homepage i.p.v. /nl (zelfde patroon als Dr. Martens hierboven)
+      { name: 'Foreo',           tagline: 'Gezichtsreiniging & beauty tech', cta: 'Bekijk aanbod',  color: '#00BCD4', url: 'https://jf79.net/c/?si=16254&li=1697784&wi=420902' },
       // 2026-07-12 onaylı
       { name: 'Sif Jakobs',      tagline: 'Sieraden uit Denemarken',       cta: 'Bekijk collectie', color: '#B08D57', url: M('Sif Jakobs') },
       { name: 'Freewear.nl',     tagline: 'Kleding & accessoires',         cta: 'Shop collectie',   color: '#2D2D2D', url: M('Freewear.nl') },
