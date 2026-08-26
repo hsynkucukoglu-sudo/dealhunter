@@ -44,8 +44,8 @@ const links = [
   // Dr. Martens/Foreo: dl= çift-URL 404/503 veriyordu, 2026-08-26'da dl= kaldırıldı (bkz. MeerBesparenWidget.tsx)
   { name: 'Dr. Martens',        base: 'https://fr135.net/c/?si=15138&li=1656908&wi=420902',   dest: null },
   { name: 'Foreo',              base: 'https://jf79.net/c/?si=16254&li=1697784&wi=420902',    dest: null },
-  // Eastpak: hem dl= ile hem dl= olmadan curl'de 403 — Dr.Martens/Foreo'daki çift-URL değil,
-  // muhtemelen bot-tespiti. dl= henüz kaldırılmadı, canlı tarayıcıda doğrulanması gerekiyor.
+  // Eastpak: curl'de 403 veriyordu ama bu script'in kendi Node https modülüyle OK —
+  // curl'e özgü bot-tespitiymiş, gerçek sorun degil (2026-08-26 doğrulandı)
   { name: 'Eastpak',            base: 'https://glp8.net/c/?si=20076&li=1857675&wi=420902',    dest: 'https://www.eastpak.com/nl-nl/' },
 
   // ── Widget — Auto Lease ──────────────────────────────────────────────────

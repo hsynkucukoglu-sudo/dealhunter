@@ -225,10 +225,9 @@ const DEALS = [
       // dl= parameter breekt (dubbele URL → 404, canlı test 2026-08-26) — geen dl,
       // gaat naar drmartens.com homepage i.p.v. /nl/nl/ (zelfde patroon als Kwantum/Levi's)
       { name: 'Dr. Martens',     tagline: 'Iconische boots & schoenen',    cta: 'Bekijk collectie', color: '#FFC72C', url: 'https://fr135.net/c/?si=15138&li=1656908&wi=420902' },
-      // Eastpak.com blokt curl/headless (403) zowel mét als zonder dl= — geen dubbele-URL
-      // bug zoals Dr. Martens/Foreo, waarschijnlijk gewoon bot-detectie. Niet gewijzigd,
-      // canlı browser'da handmatig geverifieerd worden gerekiyor (2026-08-26, browser MCP
-      // oturum sırasında koptu, doğrulanamadı).
+      // Eastpak.com curl'e 403 dönüyordu ama bu curl'e özgü bot-tespitiymiş — Node'un
+      // https modülüyle (gerçek browser'a daha yakın TLS/header) 2026-08-26'da OK,
+      // dl= sorunsuz çalışıyor. Dr. Martens/Foreo'daki çift-URL bug'ı bunda yok.
       { name: 'Eastpak',         tagline: 'Rugzakken & tassen sale',       cta: 'Bekijk collectie', color: '#FF6B00', url: DC('https://glp8.net/c/?si=20076&li=1857675&wi=420902',  'https://www.eastpak.com/nl-nl/') },
       // dl= parameter breekt (dubbele URL → 503, canlı test 2026-08-26) — geen dl,
       // gaat naar foreo.com homepage i.p.v. /nl (zelfde patroon als Dr. Martens hierboven)
