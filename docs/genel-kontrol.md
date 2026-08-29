@@ -581,3 +581,50 @@ yaymasın diye ölçüm sonucu koda işlendi.
 `is jumbo goedkoper dan ah` 0→2 tıklama (%3,7, konum 5,4),
 `jumbo vs albert heijn` 0→1 (%1,8, konum 5,7). Plan §10'un 2. maddesi
 (karşılaştırma içeriğini çoğalt) tek ayakta kalan büyüme yolu.
+
+---
+
+## 12. Karşılaştırma içeriği — talep analizi ve ilk yazı (2026-08-29)
+
+§10'un 2. maddesi ("karşılaştırma içeriğini çoğalt") uygulanmadan önce **hangi
+ikilinin yazılacağı** GSC 3 aylık veriyle belirlendi. Sonuç, naif beklentiyi
+bozdu: talep zaten kapsanan ikililerde toplanmış.
+
+| İkili | Gösterim (3 ay) | Tıklama | Blog var mı |
+|---|---|---|---|
+| albert-heijn + jumbo | **2.415** | 20 | 3'lü yazıda |
+| albert-heijn + lidl | 329 | 4 | ✅ |
+| jumbo + lidl | 266 | 6 | ✅ |
+| aldi + lidl | 66 | 0 | ✅ |
+| **albert-heijn + vomar** | **29** | 0 | ❌ |
+| etos + kruidvat | 17 | 0 | ✅ |
+| albert-heijn + aldi | 13 | 0 | ❌ (/vergelijk indexli) |
+| albert-heijn + hoogvliet | 10 | 0 | ❌ (/vergelijk indexli) |
+
+**AH+Jumbo için ayrı yazı YAZILMADI.** Git geçmişi bunun denenip geri alındığını
+gösteriyor: `22c98fb` (10 Tem) ayrı "Jumbo vs AH" yazısını ekliyor, `521c97d`
+(24 Tem) `fix(seo): AH-vs-Jumbo keyword-kannibalisatie opgelost` ile geri alıyor.
+Talep 3'lü yazıya akıyor ve o konum 5,2'de çalışıyor; ikinci bir sayfa sinyali
+böler. Geri alınmış bir karar tekrarlanmamalı.
+
+**Yazılan:** `is-vomar-goedkoper-dan-albert-heijn` — repo'nun kendi kuralına
+(talep var + blog karşılığı yok + kanibalizasyon riski yok) uyan tek temiz aday.
+`/vergelijk/albert-heijn-vs-vomar` zaten `INDEXED_PAIR_SLUGS` dışında (noindex),
+yani 25 Tem kuralıyla da tutarlı — değişiklik gerekmedi.
+
+İçerik sitenin kendi verisine dayandırıldı, uydurulmadı: Consumentenbond 2026
+(Vomar %10-15 AH'den ucuz), ~60 filiale/Noord-Holland, N+M gratis ve dagknallers,
+huismerk %20-30 ucuz — hepsi `marketFaqs.ts` / `marketContent.ts` içinde zaten
+yazılı. AH tarafı: 1.000+ şube, Bonuskaart, 1+1 gratis = etkin %50, ~30.000 ürün,
+Jumbo'dan %2-5 pahalı. Yazının tezi bu ikisinin çatışmasından çıkıyor: **temel
+fiyatta Vomar, promosyonda AH kazanıyor; ve Vomar Noord-Holland dışında yok, yani
+çoğu okuyucu için posta kodu hesap makinesinden önce karar veriyor.**
+
+996 kelime (repo hedefi 800+), 6 bölüm, 4 SSS, 4 iç link. İkisi bilerek
+**girişe yakın** konuldu — §10'daki ölçüm alt yarıdaki linklerin görülmediğini
+gösteriyordu. Intro 375 karakter, şablonun ilk `<h2>` bölme mantığının beklediği
+211-558 bandında. Sitemap `getAllPosts()` üzerinden otomatik.
+
+**Beklenti:** 29 gösterimlik bir ikili; tek başına trafiği değiştirmez. Değeri,
+formatın doğrulanmış olması — blog karşılıkları konum 3-6'da çalışırken
+`/vergelijk` eşleri 10,8'de kalıyor. Asıl kısıt hâlâ hacim, içerik değil.

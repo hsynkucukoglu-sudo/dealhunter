@@ -4900,6 +4900,74 @@ export const POSTS: BlogPost[] = [
     `.trim(),
   },
   {
+    slug: 'is-vomar-goedkoper-dan-albert-heijn',
+    relatedMarkets: ['vomar', 'albert-heijn'],
+    title: 'Is Vomar Goedkoper dan Albert Heijn? ✓ Vergelijking 2026',
+    description: '✓ Vomar is op basisprijzen gemiddeld 10-15% goedkoper dan Albert Heijn, maar AH wint op promoties en bereik. Wanneer welke keten voordeliger is — bijgewerkt 2026.',
+    date: '2026-08-29',
+    readTime: 6,
+    category: 'Vergelijking',
+    faqs: [
+      {
+        question: 'Is Vomar goedkoper dan Albert Heijn?',
+        answer: 'Op basisprijzen wel. Volgens de Consumentenbond (2026) behoort Vomar tot de goedkoopste supermarkten van Nederland en ligt de keten gemiddeld 10-15% onder Albert Heijn op alledaagse boodschappen. Dat voordeel geldt vooral op vlees, dranken en huismerkproducten. Op individuele actieproducten kan Albert Heijn met een 1+1 gratis-Bonus juist goedkoper uitpakken — dan is de effectieve korting 50%, wat Vomar met een vaste lage prijs zelden evenaart.',
+      },
+      {
+        question: 'Waar kan ik bij Vomar boodschappen doen?',
+        answer: 'Vomar Voordeelmarkt heeft ruim 60 filialen, vrijwel uitsluitend in Noord-Holland en Flevoland — van Alkmaar en Haarlem tot Zaandam, Purmerend en de regio Amsterdam-Noord. Woon je buiten dat gebied, dan is de vergelijking academisch: Albert Heijn heeft meer dan 1.000 vestigingen door heel Nederland en is vrijwel overal bereikbaar.',
+      },
+      {
+        question: 'Wanneer wisselen de aanbiedingen bij Vomar en Albert Heijn?',
+        answer: 'Bij allebei op woensdag. De Vomar-folder verschijnt dinsdagavond al online en de deals lopen tot en met de volgende dinsdag; de AH Bonus start eveneens op woensdag. Dat maakt vergelijken eenvoudig: je kunt beide weekaanbiedingen op hetzelfde moment naast elkaar leggen voordat je je boodschappenlijst maakt.',
+      },
+      {
+        question: 'Wat is het verschil tussen de acties van Vomar en Albert Heijn?',
+        answer: 'Vomar leunt op N+M gratis-acties — 2+1 gratis of 3 halen 2 betalen — die vooral lonen als je grotere hoeveelheden koopt en kunt bewaren. Albert Heijn werkt met de Bonuskaart en persoonlijke coupons in de app, met 1+1 gratis en tweede halve prijs als bekendste vormen. Zonder Bonuskaart betaal je bij AH de volledige prijs, terwijl de Vomar-actieprijs voor iedereen aan het schap geldt.',
+      },
+    ],
+    content: `
+<p>Vomar Voordeelmarkt en Albert Heijn spelen een heel ander spel. Vomar is een regionale keten die het van structureel lage basisprijzen moet hebben; Albert Heijn is marktleider en compenseert een hoger prijspeil met diepe weekpromoties. De vraag <strong>is Vomar goedkoper dan Albert Heijn</strong> heeft daarom geen enkel antwoord — het hangt af van je boodschappenlijst én van waar je woont.</p>
+
+<h2>Prijsniveau: wat zeggen de cijfers?</h2>
+<p>Op alledaagse boodschappen ligt Vomar gemiddeld <strong>10-15% onder Albert Heijn</strong>. De Consumentenbond plaatste Vomar in 2026 in de kopgroep van goedkoopste supermarkten, samen met Dirk en Hoogvliet. Dat verschil zit niet in één uitschieter, maar in het hele mandje: vlees, dranken, zuivel en huismerkproducten liggen er stuk voor stuk lager — zichtbaar in de wekelijkse <a href="/supermarkt/vomar">Vomar aanbiedingen</a>.</p>
+<p>Het <strong>Vomar huismerk</strong> — pasta, rijst, conserven, zuivel, verzorging — is gemiddeld 20-30% goedkoper dan vergelijkbare A-merken. Albert Heijn zit met zijn basisprijzen juist aan de andere kant van het spectrum: zo'n 2-5% boven Jumbo en 15-20% boven Lidl op huismerken.</p>
+
+<h2>Waar Vomar wint: vlees en N+M gratis</h2>
+<p>De <strong>Vomar vlees aanbieding</strong> is wekelijks een sterk punt, met name kipfilet en rundergehakt. Het prijsniveau is vergelijkbaar met Dirk en Hoogvliet en daarmee structureel lager dan bij Albert Heijn.</p>
+<p>Kenmerkender nog is de actievorm. Vomar staat in Noord-Holland bekend om <strong>N+M gratis</strong>: 2+1 gratis, of 3 halen 2 betalen. Die acties komen er vaker voor dan bij de landelijke ketens en leveren het meeste op bij producten die je toch in voorraad houdt — frisdrank, wasmiddel, houdbare zuivel. Daarnaast heeft Vomar <strong>dagknallers</strong>: kortingen die maar één dag gelden.</p>
+
+<h2>Waar Albert Heijn wint: Bonus, assortiment en bereik</h2>
+<p>Albert Heijn maakt het verschil op drie punten. Ten eerste de <strong>diepte van de promoties</strong>: een 1+1 gratis-Bonus is effectief 50% korting, en dat haalt een vaste lage prijs zelden. Wie gericht op de <a href="/supermarkt/albert-heijn">AH Bonus</a> inkoopt, kan op die specifieke producten onder het Vomar-niveau uitkomen.</p>
+<p>Ten tweede het <strong>assortiment</strong>: AH voert ruwweg 30.000 artikelen tegenover een beduidend smaller schap bij Vomar. Voor speciaalproducten, een breed vega-aanbod of specifieke merken is dat doorslaggevend.</p>
+<p>Ten derde de <strong>persoonlijke kortingen</strong> via de AH-app, die zijn afgestemd op wat je vaak koopt. Let wel op de keerzijde: zonder Bonuskaart betaal je bij Albert Heijn gewoon de volle prijs, terwijl de actieprijs bij Vomar voor iedereen aan het schap geldt.</p>
+
+<h2>De beslissende factor: waar woon je?</h2>
+<p>Voor veel huishoudens is dit belangrijker dan elk prijsverschil. Vomar heeft ruim <strong>60 filialen</strong>, vrijwel allemaal in Noord-Holland en Flevoland. Albert Heijn heeft er meer dan <strong>1.000</strong>, verspreid over het hele land.</p>
+<p>Woon je in Alkmaar, Haarlem, Zaandam, Purmerend of Amsterdam-Noord, dan is Vomar een reële concurrent van de AH om de hoek. Daarbuiten is de vergelijking theoretisch — en is de vraag eerder welke landelijke keten het beste bij je past.</p>
+
+<h2>Praktisch advies: hoe combineer je beide?</h2>
+<p>Wie toegang heeft tot allebei, haalt het meeste voordeel uit deze volgorde:</p>
+<ol>
+  <li><strong>Doe je basisboodschappen bij Vomar</strong> — vlees, dranken, zuivel en huismerk liggen daar structureel lager</li>
+  <li><strong>Koop de AH Bonus gericht</strong> — alleen de 1+1 gratis- en tweede-halve-prijs-producten die je toch al gebruikt</li>
+  <li><strong>Stapel de N+M gratis-acties</strong> bij Vomar op houdbare producten, niet op vers dat je niet op krijgt</li>
+  <li><strong>Vergelijk per week</strong> op DealHunter4U welke van de twee die week de scherpste prijs heeft op wat jij nodig hebt</li>
+</ol>
+<p>Beide ketens wisselen op woensdag, dus je kunt de weekaanbiedingen op hetzelfde moment naast elkaar leggen.</p>
+
+<h2>Conclusie: is Vomar goedkoper dan Albert Heijn?</h2>
+<p><strong>Ja, op basisprijzen — en nee, op promoties.</strong> Vomar ligt gemiddeld 10-15% lager op een normale boodschappenlijst en is daarmee de voordeligere keuze voor wie wekelijks hetzelfde mandje afrekent. Albert Heijn wint op losse actieproducten, op assortimentsbreedte en op bereik. En omdat Vomar buiten Noord-Holland en Flevoland nauwelijks te vinden is, beslist je postcode vaak eerder dan je rekenmachine.</p>
+<p>Bekijk de actuele deals van <a href="/supermarkt/vomar">Vomar aanbiedingen</a> en <a href="/supermarkt/albert-heijn">Albert Heijn Bonus</a> naast elkaar.</p>
+    `.trim(),
+    dealEmbed: {
+      title: 'Vomar vs Albert Heijn — actuele deals',
+      markets: ['Vomar', 'Albert Heijn'],
+      limit: 3,
+      ctaHref: '/supermarkt/vomar',
+      ctaLabel: 'Alle Vomar aanbiedingen',
+    },
+  },
+  {
     slug: 'is-dekamarkt-goedkoper-dan-dirk',
     relatedMarkets: ['dekamarkt', 'dirk'],
     title: 'Is DekaMarkt Goedkoper dan Dirk? ✓ Vergelijking 2026',
