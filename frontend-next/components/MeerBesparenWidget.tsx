@@ -103,15 +103,22 @@ const DEALS = [
     id: 'verzekering',
     category: '🏥 Verzekering',
     items: [
+      // 2026-08-29: taglines mogen hier NIET het woord "vergelijken" bevatten.
+      // In de Daisycon financial-service compliance declaration is vraag 6
+      // ("Vergelijk je financiele producten?") beantwoord met "Nee, enkel banners
+      // of tekstlinks" -- wat klopt: de vergelijking gebeurt op de site van de
+      // aanbieder, wij linken alleen door. Teksten als "Hypotheek vergelijken"
+      // suggereren het tegendeel en maken die verklaring aanvechtbaar.
+      // Zie docs/genel-kontrol.md sectie 9.
       // dl= parameter breekt bij deze 4 (dubbele URL → 404/foutpagina, canlı test 2026-07-06) — geen dl
-      { name: 'ONVZ',                  tagline: 'Zorgverzekering vergelijken', cta: 'Bereken premie', color: '#E4002B', url: 'https://ds1.nl/c/?si=16070&li=1332385&wi=420902' },
+      { name: 'ONVZ',                  tagline: 'Zorgverzekering bij ONVZ',    cta: 'Bereken premie', color: '#E4002B', url: 'https://ds1.nl/c/?si=16070&li=1332385&wi=420902' },
       { name: 'Nationale-Nederlanden', tagline: 'Zorg & aanvullend pakket',    cta: 'Bereken premie', color: '#FF6200', url: 'https://ds1.nl/c/?si=16070&li=1362622&wi=420902' },
       { name: 'DELA',                  tagline: 'Uitvaartverzekering',         cta: 'Bekijk aanbod',  color: '#003087', url: 'https://ds1.nl/c/?si=16070&li=1414707&wi=420902' },
       { name: 'Monuta',                tagline: 'Uitvaartzorg geregeld',       cta: 'Bekijk aanbod',  color: '#2C5F8A', url: 'https://ds1.nl/c/?si=16070&li=1414357&wi=420902' },
       // Deeplink desteklemiyor (Advertisements > Landing Page reklam materyali) — dl= eklenmez, DC() kullanılmaz
-      { name: 'Housefinan',            tagline: 'Hypotheek vergelijken (DE)',  cta: 'Vergelijk rente', color: '#0A5C36', url: 'https://glp8.net/c/?si=21988&li=1926905&wi=420902' },
-      { name: 'Kredanta',              tagline: 'Krediet vergelijken (DACH)',  cta: 'Vergelijk krediet', color: '#1A3E6F', url: 'https://glp8.net/c/?si=21987&li=1926881&wi=420902' },
-      { name: 'JW Verzekeringen',      tagline: 'Autoverzekering vergelijken', cta: 'Bereken premie', color: '#B71C1C', url: 'https://partners.jwverzekeringen.nl/c/?si=21167&li=1901301&wi=420902' },
+      { name: 'Housefinan',            tagline: 'Hypotheek afsluiten (DE)',    cta: 'Bekijk rente', color: '#0A5C36', url: 'https://glp8.net/c/?si=21988&li=1926905&wi=420902' },
+      { name: 'Kredanta',              tagline: 'Krediet aanvragen (DACH)',    cta: 'Bekijk aanbod', color: '#1A3E6F', url: 'https://glp8.net/c/?si=21987&li=1926881&wi=420902' },
+      { name: 'JW Verzekeringen',      tagline: 'Autoverzekering afsluiten',   cta: 'Bereken premie', color: '#B71C1C', url: 'https://partners.jwverzekeringen.nl/c/?si=21167&li=1901301&wi=420902' },
     ],
   },
   {

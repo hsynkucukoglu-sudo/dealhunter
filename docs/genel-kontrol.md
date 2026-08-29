@@ -429,3 +429,29 @@ sürecinin sürmesi. Panelin arayüzü doğru mesajı gösteriyor.
 Monuta (€145) ve DELA (€145) aboneliği açılabilir hale gelecek. Onay geldiğinde
 tek yapılacak: `/api/publishers/478402/programs/{id}/subscriptions/420902` POST.
 Şartlar zaten kabul edilmiş durumda, tekrar gerekmiyor.
+
+### Tagline düzeltmesi — "vergelijken" belirsizliği kapatıldı (2026-08-29)
+
+§9'da açık bırakılan risk giderildi. Ankette 6. soru ("Vergelijk je financiële
+producten?") **"Nee, enkel banners of tekstlinks"** diye cevaplandı; buna karşın
+widget'taki finansal kartlar "…vergelijken" diyordu. Beyanla metin artık uyumlu:
+
+| Kart | Eski | Yeni |
+|---|---|---|
+| ONVZ | Zorgverzekering **vergelijken** | Zorgverzekering bij ONVZ |
+| Housefinan | Hypotheek **vergelijken** (DE) · cta *Vergelijk rente* | Hypotheek afsluiten (DE) · cta *Bekijk rente* |
+| Kredanta | Krediet **vergelijken** (DACH) · cta *Vergelijk krediet* | Krediet aanvragen (DACH) · cta *Bekijk aanbod* |
+| JW Verzekeringen | Autoverzekering **vergelijken** | Autoverzekering afsluiten |
+
+DELA, Monuta ve Nationale-Nederlanden zaten "vergelijken" içermiyordu, dokunulmadı.
+
+**Kapsam kararı:** Enerji/telecom kartlarındaki "Vergelijk tarief" **bilerek
+korundu** — enerji AFM'nin finansal ürün tanımına girmiyor, bu anketin kapsamı
+dışında. Sadece finansal ürünler düzeltildi.
+
+Kod içine gerekçe yorumu eklendi (kategori başında), ileride biri "vergelijken"
+kelimesini geri getirmesin diye. Site geneli tarandı: finansal ürün + "vergelijk"
+birlikte geçen başka yer kalmadı.
+
+**Hâlâ açık:** Housefinan (21988) programı Daisycon'da erişilemiyor (API 204) —
+metni düzeltildi ama link ölü, kaldırılması ayrıca değerlendirilmeli.
