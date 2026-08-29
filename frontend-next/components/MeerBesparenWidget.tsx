@@ -116,7 +116,6 @@ const DEALS = [
       { name: 'DELA',                  tagline: 'Uitvaartverzekering',         cta: 'Bekijk aanbod',  color: '#003087', url: 'https://ds1.nl/c/?si=16070&li=1414707&wi=420902' },
       { name: 'Monuta',                tagline: 'Uitvaartzorg geregeld',       cta: 'Bekijk aanbod',  color: '#2C5F8A', url: 'https://ds1.nl/c/?si=16070&li=1414357&wi=420902' },
       // Deeplink desteklemiyor (Advertisements > Landing Page reklam materyali) — dl= eklenmez, DC() kullanılmaz
-      { name: 'Housefinan',            tagline: 'Hypotheek afsluiten (DE)',    cta: 'Bekijk rente', color: '#0A5C36', url: 'https://glp8.net/c/?si=21988&li=1926905&wi=420902' },
       { name: 'Kredanta',              tagline: 'Krediet aanvragen (DACH)',    cta: 'Bekijk aanbod', color: '#1A3E6F', url: 'https://glp8.net/c/?si=21987&li=1926881&wi=420902' },
       { name: 'JW Verzekeringen',      tagline: 'Autoverzekering afsluiten',   cta: 'Bereken premie', color: '#B71C1C', url: 'https://partners.jwverzekeringen.nl/c/?si=21167&li=1901301&wi=420902' },
     ],

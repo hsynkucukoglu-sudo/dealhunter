@@ -455,3 +455,25 @@ birlikte geçen başka yer kalmadı.
 
 **Hâlâ açık:** Housefinan (21988) programı Daisycon'da erişilemiyor (API 204) —
 metni düzeltildi ama link ölü, kaldırılması ayrıca değerlendirilmeli.
+
+### Ölü kayıtlar temizlendi (2026-08-29)
+
+Bugünkü denetimlerde iki program "erişilemez" çıkmıştı; ikisi de siteden kaldırıldı.
+
+| Kayıt | Neden ölü | Nerede duruyordu |
+|---|---|---|
+| **Housefinan (DE)** — Daisycon 21988 | `/programs/21988` → **204**, abone olunamıyor; §8'de abonelik denemesi de başarısızdı | `affiliate.ts` (AFFILIATE_MAP) **+ widget'ta görünür kart** — ziyaretçi tıklayabiliyordu |
+| **Eonon** — Awin 2471 | `merchant-profile/2471` → **404**, "closed" sekmesinde de yok | Yalnızca `affiliate.ts`; hiçbir yerde render edilmiyordu (uykuda kayıt) |
+
+Housefinan'ın kaldırılması 🏥 Verzekering kategorisini 7 karttan 6'ya indiriyor —
+kalanlar: ONVZ, Nationale-Nederlanden, DELA, Monuta, Kredanta, JW Verzekeringen.
+
+`affiliate.ts`'teki "Housefinan/Kredanta deeplink desteklemiyor" yorumu yalnızca
+**Kredanta**'ya daraltıldı; Kredanta hâlâ aktif ve o kısıt onun için geçerli.
+Kod tarafında `Housefinan`, `Eonon`, `21988`, `1926905`, `si=2471` için kalıntı
+yok (grep ile doğrulandı). Docs/backlog dosyalarındaki tarihsel kayıtlar
+bilerek bırakıldı — onlar geçmişin kaydı.
+
+**Not:** Ölü linkler ziyaretçiye bozuk sayfa gösterdiği *ve* komisyon
+üretmediği için bu bir UX + gelir düzeltmesi; §8'deki "abonesiz link"
+sorunundan farklı bir kategori (orada program yaşıyordu, abonelik yoktu).

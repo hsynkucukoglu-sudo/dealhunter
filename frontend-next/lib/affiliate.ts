@@ -80,7 +80,6 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   // bezoekers de juiste taal — en tracking loopt gegarandeerd, want het is Awins
   // eigen bestemming voor dit programma.
   BioProphyl:       { destinationUrl: 'https://www.bioprophyl.be/',       network: 'awin', programId: '22561',  rel: REL },
-  Eonon:            { destinationUrl: 'https://www.eonon.com/',           network: 'awin', programId: '2471',   rel: REL },
   'Vitaepro NL':    { destinationUrl: 'https://www.vitaepro.nl/',         network: 'awin', programId: '18520',  rel: REL },
   'Direct Running': { destinationUrl: 'https://www.direct-running.nl/',   network: 'awin', programId: '71531',  rel: REL },
   'Direct Volley':  { destinationUrl: 'https://www.direct-volley.nl/',    network: 'awin', programId: '103041', rel: REL },
@@ -135,11 +134,10 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   'Oakley':             { destinationUrl: 'https://bdt9.net/c/?si=18433&li=1819889&wi=420902',   network: 'daisycon', rel: REL },
 
   // ── Daisycon — 2026-07-02 onaylı ────────────────────────────────────────────
-  // Housefinan/Kredanta: bu programlar deeplink desteklemiyor (Daisycon "Advertisements"
+  // Kredanta: bu program deeplink desteklemiyor (Daisycon "Advertisements"
   // bölümündeki tek link "Landing Page" reklam materyali) — Levi's/Rakuten ile aynı durum,
   // destinationUrl doğrudan tam tracking linki, trackingBase KULLANILMIYOR ki wrapAffiliate()
   // &dl= eklemesin (eklerse redirect zinciri bozulabilir).
-  'Housefinan (DE)':     { destinationUrl: 'https://glp8.net/c/?si=21988&li=1926905&wi=420902', network: 'daisycon', rel: REL },
   'Kredanta (DACH)':     { destinationUrl: 'https://glp8.net/c/?si=21987&li=1926881&wi=420902', network: 'daisycon', rel: REL },
   Hermie:                { destinationUrl: 'https://glp8.net/c/?si=20097&li=1858135&wi=420902',              network: 'daisycon', rel: REL },
   'Minisforum (FR)':     { destinationUrl: 'https://glp8.net/c/?si=20763&li=1880752&wi=420902', network: 'daisycon', rel: REL },
