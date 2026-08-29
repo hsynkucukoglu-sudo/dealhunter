@@ -367,3 +367,65 @@ bunun doğal sonucu.
 
 Yani sadece Daisycon'da teknik borç vardı. Awin ve TradeTracker'da yapılacak
 iş içerik/trafik tarafında — panel tarafında düzeltilecek bir şey yok.
+
+---
+
+## 9. Daisycon finans anketi — hazırlanan cevaplar (2026-08-29)
+
+**Neden önemli:** "Affiliate financial-service compliance declaration (NL)"
+anketi **106 programı** açıyor — sadece §8'de takılan 4 sigorta programını
+değil. Panelde yolu: Settings → Media → DealHunter4U → **Show questionnaires**
+→ Open → *Answer questionnaire* (soru soru ilerleyen sihirbaz).
+
+Cevapların çoğu sitenin gerçek davranışından doğrulandı, uydurulmadı:
+
+| # | Soru (NL) | Cevap | Dayanak |
+|---|---|---|---|
+| 1 | Tekenbevoegd? | Ja | Hesap sahibi teyit etti |
+| 2 | Welke financiële producten? | Hypotheek, Lening, Levensverzekering, Zorgverzekering, Schadeverzekering | Widget 🏥 Verzekering: ONVZ, NN, DELA, Monuta, Housefinan, Kredanta, JW Verzekeringen |
+| 3 | AFM vergunning? | Nee | Hesap sahibi teyit etti |
+| 4 | Vergunningnummer | `geen` | — |
+| 5 | Advies + bemiddeling? | Nee, geen AFM vergunning | — |
+| 6 | Vergelijk je fin. producten? | **Nee — enkel banners/tekstlinks** | Sitede `/verzekering` sayfası yok; sigortalar yalnızca dışa link veren kartlar, kullanıcı seçim/filtre yapamıyor |
+| 7 | Extra gegevens (leeftijd, inkomen)? | Nee | Finansal ürün için hiçbir form yok |
+| 8 | Anders betrokken bij overeenkomst? | Nee | Sadece yönlendirme |
+| 9 | Provisieverbod-producten vergelijken? | Nee | 6'nın doğal sonucu |
+| 10 | Complexe producten — reclame aangeven? | Ik vergelijk geen complexe fin. producten | 9'un doğal sonucu |
+| 11 | Oordeel (beste/goedkoopste)? | Nee | Tarandı: "goedkoopste" yalnızca süpermarketler için, finansal ürün için iddia yok |
+| 12 | Contactmogelijkheid? | Ja, geen vergunning **maar duidelijk aangegeven dat ik geen vragen mag beantwoorden** | `/contact` sayfasına eklenen AFM bloğu (bu commit'te) |
+
+**⚠️ 12. sorunun ön koşulu:** O seçenek ancak açıklama **canlı sitede**
+yazıyorsa doğru. Bu yüzden sıra şu: önce `contact/page.tsx` deploy edilir,
+`www.dealhunter4u.nl/contact` üzerinde doğrulanır, *sonra* anket gönderilir.
+
+**Açık risk — tagline'lardaki "vergelijken":** ONVZ "Zorgverzekering
+vergelijken", Housefinan "Hypotheek vergelijken", Kredanta "Krediet
+vergelijken", JW "Autoverzekering vergelijken" diyor; ankette ise
+"karşılaştırma yapmıyorum" cevabı veriliyor. Teknik olarak tutarlı
+(karşılaştırma reklamverenin sitesinde oluyor, biz link veriyoruz) ama bir
+denetçi çelişki görebilir. Tagline'ları "…afsluiten" / "Naar de vergelijker"
+gibi ifadelere çevirmek bu belirsizliği tamamen kaldırır — henüz yapılmadı.
+
+### Anket gönderildi — sonuç (2026-08-29)
+
+Sıra doğru işletildi: `contact/page.tsx` deploy edildi → `www.dealhunter4u.nl/contact`
+üzerinde AFM metni canlı doğrulandı → *sonra* anket gönderildi. Böylece 12. sorudaki
+"açıkça belirtiyorum" beyanı gönderildiği anda doğruydu.
+
+**Anket durumu:** `completed: true`, `status: pending`.
+Beyan `hsyn.kucukoglu@gmail.com` adına, 29 Ağu 2026 14:26'da kaydedildi.
+12 sorunun 12'si cevaplandı, cevapsız soru yok.
+
+**4 sigorta programının şartları kabul edildi** (ONVZ, Nationale-Nederlanden Zorg,
+Monuta, DELA — hepsi 201). Ancak abonelik henüz açılmadı:
+
+> **"Questionnaire is being reviewed by Daisycon"**
+
+API'nin verdiği `Not all questionnaire questions are answered for this media`
+hatası **yanıltıcı** — tüm sorular cevaplı; gerçek sebep Daisycon'un inceleme
+sürecinin sürmesi. Panelin arayüzü doğru mesajı gösteriyor.
+
+**Bekleyen:** Daisycon anketi onaylayınca ONVZ (€55), Nationale-Nederlanden (€50),
+Monuta (€145) ve DELA (€145) aboneliği açılabilir hale gelecek. Onay geldiğinde
+tek yapılacak: `/api/publishers/478402/programs/{id}/subscriptions/420902` POST.
+Şartlar zaten kabul edilmiş durumda, tekrar gerekmiyor.
