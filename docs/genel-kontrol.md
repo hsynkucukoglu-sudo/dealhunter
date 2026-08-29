@@ -534,3 +534,50 @@ kompakt bir şerit eklendi: `components/BlogSavingsStrip.tsx`.
 **Beklenti yönetimi:** En yüksek komisyonlu programlar hâlâ onayda. Yerleşim şimdi
 yapıldı ki onaylar gelince hazır olsun — ilk hafta rakamlarına bakıp "işe yaramadı"
 sonucu çıkarılmamalı.
+
+---
+
+## 11. `intentTerm` ölçümü — hipotez çürütüldü (2026-08-29)
+
+§10'daki plan maddesi "önce ölç, sonra yay" idi. Ölçüldü: **yaymayın.**
+
+**Kurulum:** `intentTerm` 2026-08-16'da eklendi (commit `000191f`), yalnızca Lidl
+("Dagdeal") ve Hoogvliet ("Dagdeals"). GSC'nin son verisi 26 Ağustos, dolayısıyla
+sonrası penceresi 16-26 Ağu (11 gün); öncesi eşit uzunlukta 5-15 Ağu alındı.
+Kontrol grubu olarak `intentTerm` verilmeyen 8 market sayfası da ölçüldü — aksi
+halde genel bir trend değişikliğin etkisi sanılabilirdi.
+
+**Hedef sorgu ailesinde sonuç:**
+
+| Sorgu | Gösterim sonra/önce | TO sonra/önce | Konum sonra/önce |
+|---|---|---|---|
+| `lidl dagdeal` | 174 / 164 | **%0 / %0** | 7,5 / 6,2 |
+| `dagdeal lidl` | 32 / 26 | %0 / %0 | 8,2 / 7,0 |
+| `lidl dagdeals` | 1 / 5 | %0 / %0 | 3,0 / 4,4 |
+| `lidl dagaanbieding` *(hipotezin dayandığı sorgu)* | 6 / 12 | **%0 / %8,3** | 5,5 / 4,0 |
+| `hoogvliet dagdeals` | 87 / 65 | %0 / %1,5 | 10,8 / 9,3 |
+| `dagdeals hoogvliet` | 50 / 20 | %0 / %0 | 11,7 / 8,9 |
+
+**Yorum:** `lidl dagdeal` değişiklikten sonra **174 gösterim** aldı — gerçek bir
+etki olsaydı görmeye yeterdi (konum 7,5'te %1-2 bile 2-3 tıklama demek). TO tam
+olarak %0'da kaldı. Hoogvliet'in sorguları 1-7 gösterimlik; oradaki oynamalar
+(`hoogvliet weekaanbieding` %0→%20) tek tıklamadan ibaret, gürültü.
+
+Sayfa düzeyinde de aynı: `/supermarkt/lidl` TO %0,1 → %0,1, konum 9,1 → 10,8.
+Kontrol grubu da genel olarak düşmüş, yani ayrı bir "işe yaradı" sinyali yok.
+
+**Kayıt için:** Hipotezin dayandığı gözlem (aynı SERP bölgesinde, sorgunun
+kelimesi başlıkta geçtiğinde TO 27 kat fark) **gerçekti** — ama müdahale onu
+üretmedi. Korelasyon nedensellik vermedi. Bu, bu sayfalardaki başlık
+denemelerinin **5.'si ve yine başarısız**. Önceki 4'ü konum 8-9 bandındaydı;
+burayı "4-6 bandı, kazanılabilir" varsaymıştık, oysa `lidl dagdeal` gerçekte
+6-7,5'te ve sonuç değişmedi.
+
+`app/supermarkt/[slug]/page.tsx` içindeki yorum buna göre düzeltildi — orada
+`intentTerm` "kanıtlanmış" diye duruyordu; sonraki okuyucu ona güvenip 8 markete
+yaymasın diye ölçüm sonucu koda işlendi.
+
+**Aynı pencerede kazanan ne?** Yine karşılaştırma sorguları:
+`is jumbo goedkoper dan ah` 0→2 tıklama (%3,7, konum 5,4),
+`jumbo vs albert heijn` 0→1 (%1,8, konum 5,7). Plan §10'un 2. maddesi
+(karşılaştırma içeriğini çoğalt) tek ayakta kalan büyüme yolu.

@@ -36,12 +36,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Rakiplerin hiçbiri hafta no kullanmıyor; hepsi "deze week" evergreen ifadesinde.
   const brandTerm = (market as { dealBrandTerm?: string }).dealBrandTerm
   const brandPrefix = brandTerm ? `${brandTerm} ` : ''
-  // intentTerm: bu markette GSC'de kanıtlanmış AYRI bir sorgu ailesi varsa başlığa
-  // girer (şu an Lidl "Dagdeal", Hoogvliet "Dagdeals"). Sebep: aynı sayfa, aynı
-  // SERP bölgesi, ama sorgunun kelimesi başlıkta geçmediğinde TO 27 kata kadar
-  // düşüyor (`lidl dagaanbieding` %5,5 / konum 4,3 ↔ `lidl dagdeal` %0,2 / 5,6).
-  // Head-term title optimizasyonuyla KARIŞTIRILMAMALI — o 4 kez çürütüldü ve
-  // konum 8-9 bandındaydı; burası 4-6 bandı, yani kazanılabilir bölge.
+  // intentTerm: sorgu ailesinin kelimesini başlığa taşır (şu an Lidl "Dagdeal",
+  // Hoogvliet "Dagdeals", 2026-08-16'da eklendi — commit 000191f).
+  //
+  // ⚠️ ÖLÇÜLDÜ VE TUTMADI (2026-08-29). Hipotez şu gözleme dayanıyordu: aynı
+  // sayfa, aynı SERP bölgesi, ama sorgunun kelimesi başlıkta geçmediğinde TO 27
+  // kata kadar düşüyordu (`lidl dagaanbieding` %5,5 / konum 4,3 ↔ `lidl dagdeal`
+  // %0,2 / 5,6). Korelasyon gerçekti; müdahale onu ÜRETMEDİ.
+  //
+  // GSC öncesi/sonrası (16-26 Ağu ↔ 5-15 Ağu, eşit uzunlukta pencere):
+  //   `lidl dagdeal`        174 gösterim, TO %0 → %0   (konum 6,2 → 7,5)
+  //   `dagdeal lidl`         32 gösterim, TO %0 → %0
+  //   `lidl dagaanbieding`    6 gösterim, TO %8,3 → %0
+  //   `hoogvliet dagdeals`   87 gösterim, TO %1,5 → %0
+  // 174 gösterim gerçek bir etkiyi görmeye yeterdi; sıfır kaldı. Hoogvliet'in
+  // sorguları 1-7 gösterimlik, hüküm için çok küçük.
+  //
+  // Yani bu, head-term başlık denemelerinin 5.'si ve yine başarısız. O deneyler
+  // konum 8-9 bandındaydı; burayı "4-6 bandı, kazanılabilir" sanmıştık ama
+  // `lidl dagdeal` gerçekte 6-7,5'te ve aynı sonucu verdi.
+  // DİĞER MARKETLERE YAYMAYIN. Kanıtlanmış tek kazanan alan karşılaştırma
+  // sorguları (`jumbo vs lidl` %20, `jumbo of ah` %25) — bkz. docs/genel-kontrol.md §10-11.
   // "Vandaag" doğru bir ifade: gösterilen tüm aanbiedingen bugün geçerli.
   const intentTerm = (market as { intentTerm?: string }).intentTerm
   const baseTitle = market.ctaTitle ?? `${market.name} Aanbiedingen Deze Week | DealHunter4U`
