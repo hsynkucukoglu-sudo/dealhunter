@@ -7,6 +7,7 @@ import { getCategoryStyle } from '@/lib/postImages'
 import { buildBreadcrumbSchema, buildFaqSchema } from '@/lib/schema'
 import { MARKETS } from '@/lib/types'
 import { AdBanner } from '@/components/AdBanner'
+import { BlogSavingsStrip } from '@/components/BlogSavingsStrip'
 import { NewsletterCTA } from '@/components/NewsletterCTA'
 import { ShareButton } from '@/components/ShareButton'
 
@@ -164,7 +165,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <h2>, dus splitsen op de eerste <h2> is een veilig, uniform snijpunt:
             intro → actuele deals → rest van het artikel. */}
         {(() => {
-          const cut = post.dealEmbed ? post.content.indexOf('<h2') : -1
+          // Kesme noktasi bewust NIET meer afhankelijk van dealEmbed: slechts 6 van
+          // de 46 posts heeft er een, terwijl de savings-strip op elke post in de
+          // zichtbare zone hoort. Valt terug op één blok als er geen <h2> is.
+          const cut = post.content.indexOf('<h2')
           if (cut <= 0) {
             return (
               <div
@@ -182,7 +186,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 dangerouslySetInnerHTML={{ __html: post.content.slice(0, cut) }}
               />
               <div style={{ background: 'white', padding: '0 40px', borderLeft: '1px solid rgba(201,193,182,0.3)', borderRight: '1px solid rgba(201,193,182,0.3)' }}>
-                <EmbeddedDeals config={post.dealEmbed!} />
+                {post.dealEmbed && <EmbeddedDeals config={post.dealEmbed} />}
+                <BlogSavingsStrip />
               </div>
               <div
                 style={{ background: 'white', borderRadius: '0 0 20px 20px', padding: '8px 40px 36px', boxShadow: '0 4px 0 #DDD0C4', borderLeft: '1px solid rgba(201,193,182,0.3)', borderRight: '1px solid rgba(201,193,182,0.3)', borderBottom: '1px solid rgba(201,193,182,0.3)' }}

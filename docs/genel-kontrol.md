@@ -477,3 +477,60 @@ bilerek bırakıldı — onlar geçmişin kaydı.
 **Not:** Ölü linkler ziyaretçiye bozuk sayfa gösterdiği *ve* komisyon
 üretmediği için bu bir UX + gelir düzeltmesi; §8'deki "abonesiz link"
 sorunundan farklı bir kategori (orada program yaşıyordu, abonelik yoktu).
+
+---
+
+## 10. Trafik teşhisi ve blog savings-strip (2026-08-29)
+
+### GSC + Clarity birlikte okunduğunda: üç halkalı sızıntı
+
+**49.800 gösterim → 187 tıklama → 533 oturum → 6 affiliate tıklaması → 0 dönüşüm**
+
+| Halka | Ölçüm | Sebep |
+|---|---|---|
+| Gösterim → tıklama (%0,4) | GSC 28 gün | Gösterimlerin ~2/3'ü kazanılamaz head-term'lerden: `aldi` 5.212 gösterim/%0 CTR, `aanbiedingen lidl` 1.356/%0,1, `dirk aanbiedingen` 1.071/%0,1. Konum 8-15. `/supermarkt/lidl` tek başına gösterimlerin %22'si, 8 tıklama. |
+| Tıklama → affiliate (%1,1) | Clarity 30 gün | Yüksek değerli linkler `MeerBesparenWidget`'te, o da yalnızca `ProductsPage`'de (`/`, `/deals`, `/tr`) ve varsayılan kapalı. `meer_besparen_open` = 3/533 oturum (%0,56). |
+| Affiliate → gelir | §8 | Linklerin 14'ü abone olunmamış programlara gidiyordu — bugün düzeltildi. |
+
+### Kazanan ve kaybeden sorgu aileleri
+
+Aynı sitede, aynı dönemde:
+
+| Kaybeden (marka/folder) | | Kazanan (karşılaştırma) | |
+|---|---|---|---|
+| `aldi` | %0 CTR, konum 8,6 | `jumbo vs lidl` | **%20**, konum 1,4 |
+| `aanbiedingen lidl` | %0,1, konum 9,2 | `jumbo of ah` | **%25**, konum 5,0 |
+| `dirk aanbiedingen` | %0,1, konum 9,4 | `is jumbo duur` | **%33**, konum 4,3 |
+| `plus aanbiedingen` | %0,1, konum 9,2 | `is ah duurder dan jumbo` | %8, konum 5,3 |
+
+Perakendeci kendi marka sorgusunu sahipleniyor; "Jumbo AH'den ucuz mu?" sorusuna ise
+cevap veremiyor. **Kazanılabilir alan karşılaştırma sorguları.** Bu, `supermarkt/[slug]`
+içindeki "head-term title optimizasyonu 4 kez çürütüldü, konum 8-9 bandındaydı"
+notuyla birebir örtüşüyor — o ders burada bağımsız olarak doğrulandı.
+
+### Yapılan: blog savings-strip
+
+**Tespit:** Arama tıklamalarının ~%68'i blog karşılaştırma yazılarına iniyor,
+yalnızca ~%14'ü çekmecenin bulunduğu `/` ve `/tr`'ye. Yani yüksek değerli linkler
+trafiğin indiği sayfalarda **hiç yoktu**.
+
+Çözüm olarak ana sayfadaki çekmeceyi zorla açmak yerine (ziyaretçilerin %86'sına
+dokunmaz, üstelik ~60 kartlık blok asıl içeriği aşağı iter), blog şablonuna
+kompakt bir şerit eklendi: `components/BlogSavingsStrip.tsx`.
+
+- Yerleşim `dealEmbed` ile aynı desende — ilk `<h2>`'den önce, yani ölçülen
+  %32 kaydırma bandının içinde. Şablondaki mevcut yorum bu dersi zaten
+  belgeliyordu ("marktlinks zaten in de onderste helft en werden dus nooit gezien").
+- Kesme noktası artık `dealEmbed`'e bağlı değil: 46 yazının yalnızca 6'sında
+  dealEmbed var, şerit ise hepsinde görünmeli. `<h2>` yoksa tek bloğa düşüyor.
+- **Yalnızca aboneliği `approved` olan programlar:** Frank Energie (si 16978),
+  Pure Energie (9321), Ziggo (17174), hollandsnieuwe (21994). Dördü de bugünkü
+  §8 taramasının "abone değil" listesinde yok. Eneco/KPN/Vattenfall/ENGIE/Oxxio
+  ve 4 sigorta programı **bilerek dışarıda** — onay bekliyorlar, eklenirse §8'de
+  düzelttiğimiz hatanın aynısı üretilirdi. Component yorumunda bu uyarı yazıyor.
+- "Advertentie" etiketi eklendi; `/contact`'taki AFM metni ve `/over-ons`'taki
+  affiliate açıklamasıyla tutarlı.
+
+**Beklenti yönetimi:** En yüksek komisyonlu programlar hâlâ onayda. Yerleşim şimdi
+yapıldı ki onaylar gelince hazır olsun — ilk hafta rakamlarına bakıp "işe yaramadı"
+sonucu çıkarılmamalı.
