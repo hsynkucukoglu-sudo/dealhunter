@@ -17,19 +17,44 @@ declare global {
 }
 
 export function AdBanner({ slot, format = 'auto', className = '', minHeight = 280 }: AdBannerProps) {
+  const wrapperRef = useRef<HTMLDivElement>(null)
   const adRef = useRef<HTMLModElement>(null)
   const initialized = useRef(false)
 
   useEffect(() => {
     if (initialized.current) return
-    initialized.current = true
-    try {
-      ;(window.adsbygoogle = window.adsbygoogle || []).push({})
-    } catch {}
+    const wrapper = wrapperRef.current
+    if (!wrapper) return
+
+    const push = () => {
+      if (initialized.current) return
+      initialized.current = true
+      try {
+        ;(window.adsbygoogle = window.adsbygoogle || []).push({})
+      } catch {}
+    }
+
+    // adsbygoogle okur push() anında ins'in üst konteynerinin render genişliğini;
+    // o an 0 ise (kapalı drawer/tab, henüz layout oturmamış flex/grid atası) "No
+    // slot size for availableWidth=0" hatası atıyor ve slot bir daha kurtulmuyor
+    // (Clarity'de 2026-08-26 tespit edildi). Gerçek bir genişlik oluşana kadar bekle.
+    if (wrapper.offsetWidth > 0) {
+      push()
+      return
+    }
+    const observer = new ResizeObserver((entries) => {
+      if (entries[0]?.contentRect.width > 0) {
+        observer.disconnect()
+        push()
+      }
+    })
+    observer.observe(wrapper)
+    return () => observer.disconnect()
   }, [])
 
   return (
     <div
+      ref={wrapperRef}
       className={`adsense-wrapper text-center ${className}`}
       style={{ minHeight }}
     >
