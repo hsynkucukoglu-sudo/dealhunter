@@ -23,8 +23,14 @@ import Link from 'next/link'
  * 2026-08-29 bleek dat 14 links op de site naar niet-geabonneerde programma's
  * wezen en dus nul commissie opleverden (zie docs/genel-kontrol.md §8).
  * Voeg hier dus NIETS toe zonder de subscriptionstatus in het Daisycon-panel
- * te controleren. Nog niet bruikbaar omdat ze in review staan: Eneco, KPN,
- * Vattenfall, ENGIE, Oxxio, Monuta, DELA, ONVZ, Nationale-Nederlanden.
+ * te controleren.
+ *
+ * Stand 2026-09-03 (§13): Vattenfall is er inmiddels bij gekomen als `approved`
+ * en kan hier dus veilig bij. Nog in review (`open`): Eneco, Monuta, DELA,
+ * Nationale-Nederlanden, Sinner, Vitaminstore, De Vakantiediscounter.
+ * Definitief niet bruikbaar en van de site verwijderd: ENGIE en Kwantum
+ * (mediatype geweigerd), KPN (afgekeurd), Oxxio (eigen copy niet toegestaan),
+ * ONVZ (programma bestaat niet meer).
  */
 
 type SavingsItem = {

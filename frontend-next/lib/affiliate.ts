@@ -118,8 +118,8 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   MeerMetZiggo:         { destinationUrl: 'https://glp8.net/c/?si=21173&li=1901598&wi=420902',               network: 'daisycon', rel: REL }, // €50/sale · 100g
   'I-KOOK':             { destinationUrl: 'https://lt45.net/c/?si=11558&li=1513186&wi=420902',               network: 'daisycon', rel: REL }, // €50/sale · 100g
   Ziggo:                { destinationUrl: 'https://jf79.net/c/?si=17174&li=1742299&wi=420902',          network: 'daisycon',  rel: REL },
-  // KPN is marktleider in NL-telecom en ontbrak; programma stond al op "joined".
-  KPN:                  { destinationUrl: 'https://glp8.net/c/?si=19864&li=1846235&wi=420902',         network: 'daisycon',  rel: REL }, // €100 per lead
+  // KPN verwijderd 2026-09-03: abonnement door de adverteerder afgekeurd (31-08),
+  // dus elke klik was gratis verkeer. Zie docs/genel-kontrol.md §13.
   // 2026-08-19: stond op network 'direct' — een kale link zonder tracking, dus
   // elke klik ging weg zonder commissie terwijl het Daisycon-programma al op
   // "joined" stond. Nu de trackinglink (€96 per lead).
@@ -152,7 +152,7 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
 
   // ── Daisycon/Awin — 2026-07-13 onaylı, deeplink panelden alındı ──
   // Zwemshop + Degrootmeesters: dl= çift-URL 404'ü veriyor (canlı test) —
-  // ENGIE/Kwantum deseni: tam tracking linki, trackingBase yok.
+  // Aynı desen: tam tracking linki, trackingBase yok.
   'Zwemshop.com':    { destinationUrl: 'https://rkn3.net/c/?si=14485&li=1622288&wi=420902', network: 'daisycon', rel: REL },
   Degrootmeesters:   { destinationUrl: 'https://rkn3.net/c/?si=14804&li=1639024&wi=420902', network: 'daisycon', rel: REL },
   'Sneakids NL':     { destinationUrl: 'https://sneakids.nl/',             network: 'awin', programId: '103061', rel: REL },
@@ -166,14 +166,18 @@ const AFFILIATE_MAP: Record<string, MarketAffiliate> = {
   'Freewear.nl':         { destinationUrl: 'https://lt45.net/c/?si=13066&li=1574630&wi=420902',            network: 'daisycon', rel: REL },
 
   // ── Energie — widget'tan (MeerBesparenWidget) taşındı, /energie pilot sayfası için tek kaynak ──
-  // ENGIE/Oxxio/Pure Energie: dl= (deeplink) parametresi bu 3 programın kendi redirect'inde
-  // çift URL'e yol açıp 404/hata sayfasına düşürüyordu (Kwantum/Levi's ile aynı bug, canlı
-  // test edildi 2026-07-06) — destinationUrl doğrudan tam tracking linki, trackingBase KULLANILMIYOR.
-  ENGIE:          { destinationUrl: 'https://ds1.nl/c/?si=16070&li=20757&wi=420902',   network: 'daisycon', rel: REL },
-  Oxxio:          { destinationUrl: 'https://ds1.nl/c/?si=16070&li=119834&wi=420902',  network: 'daisycon', rel: REL },
+  // dl= (deeplink) parametresi de energieprogramma's eigen redirect'inde çift URL'e
+  // yol açıp 404/hata sayfasına düşürüyordu (Levi's ile aynı bug, canlı test 2026-07-06)
+  // — destinationUrl doğrudan tam tracking linki, trackingBase KULLANILMIYOR.
+  //
+  // ENGIE en Oxxio verwijderd 2026-09-03: ENGIE weigert ons mediatype ("media type
+  // not permitted"), Oxxio eist door de adverteerder goedgekeurde advertentietekst
+  // terwijl de site eigen copy voert. Beide konden dus nooit commissie opleveren.
+  // Vervangen door Vattenfall en Frank Energie (beide `approved`). Zie §13.
+  //
   // 2026-07-13: Pure Energie'nin KENDİ programı (9321) onaylandı — legacy toplu
   // linkten (si=16070) yükseltildi. dl= hâlâ çift-URL 404'ü veriyor (canlı test
-  // edildi), o yüzden ENGIE/Oxxio deseni: tam tracking linki, trackingBase yok.
+  // edildi), o yüzden aynı desen: tam tracking linki, trackingBase yok.
   'Pure Energie': { destinationUrl: 'https://jdt8.net/c/?si=9321&li=1420973&wi=420902', network: 'daisycon', rel: REL },
   noSun:          { destinationUrl: 'https://dt51.net/c/?si=19142&li=1877489&wi=420902',      network: 'daisycon', rel: REL },
   Renogy:         { destinationUrl: 'https://glp8.net/c/?si=21168&li=1901324&wi=420902', network: 'daisycon', rel: REL },

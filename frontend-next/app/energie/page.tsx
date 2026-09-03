@@ -5,26 +5,31 @@ import { buildBreadcrumbSchema, buildFaqSchema } from '@/lib/schema'
 const SLUG = 'energie'
 
 const SUPPLIERS = [
+  // ENGIE en Oxxio vervangen op 2026-09-03: ENGIE weigert ons mediatype en Oxxio
+  // eist door de adverteerder aangeleverde advertentietekst, dus beide konden nooit
+  // commissie opleveren. Vattenfall en Frank Energie staan wél op `approved`.
+  // De teksten zijn opnieuw geschreven — Frank Energie is juist géén vaste-tarief-
+  // aanbieder, dus alleen de naam wisselen zou feitelijk onjuist zijn geweest.
   {
-    name: 'ENGIE',
-    market: 'ENGIE',
-    tagline: 'Gevestigde energieleverancier met vaste én variabele contracten',
-    color: '#0064A8',
+    name: 'Vattenfall',
+    market: 'Vattenfall',
+    tagline: 'Grote landelijke leverancier met vaste én variabele contracten',
+    color: '#FFDA00',
     points: [
       'Keuze uit vast en variabel contract',
-      'Landelijke dekking, grote klantenservice',
+      'Landelijke dekking en een groot serviceapparaat',
       'Ook zakelijke energie en laadpalen',
     ],
   },
   {
-    name: 'Oxxio',
-    market: 'Oxxio',
-    tagline: 'Focus op lage vaste tarieven zonder poespas',
-    color: '#E4002B',
+    name: 'Frank Energie',
+    market: 'Frank Energie',
+    tagline: 'Energie tegen inkoopprijs, met een vast maandbedrag erbovenop',
+    color: '#1A1A2E',
     points: [
-      'Bekend om scherpe vaste tarieven',
-      'Alles-in-1 pakket (stroom + gas + slimme meter)',
-      'Overstappen zonder eigen bezoek — Oxxio regelt het',
+      'Dynamisch tarief dat de markt volgt in plaats van een vaste prijs',
+      'Transparante opbouw: inkoopprijs plus een vaste vergoeding',
+      'Aantrekkelijk als je verbruik kunt verschuiven naar goedkope uren',
     ],
   },
   {
@@ -57,7 +62,7 @@ const SOLAR = [
 
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'Energie Vergelijken 2026 ✓ Gas, Stroom & Zonnepanelen | DealHunter4U'
-  const description = '✓ Vergelijk energieleveranciers (ENGIE, Oxxio, Pure Energie) en zonnepanelen-aanbieders op één plek. Vast of variabel contract, groene stroom en besparen op je energierekening.'
+  const description = '✓ Vergelijk energieleveranciers (Vattenfall, Frank Energie, Pure Energie) en zonnepanelen-aanbieders op één plek. Vast of variabel contract, groene stroom en besparen op je energierekening.'
   const keywords = 'energie vergelijken, energieleverancier vergelijken, goedkoopste energieleverancier, overstappen energie, energie aanbieding, zonnepanelen vergelijken, groene stroom'
 
   return {

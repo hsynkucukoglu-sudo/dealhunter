@@ -4571,8 +4571,8 @@ export const POSTS: BlogPost[] = [
 <h2>Drie leveranciers om te vergelijken</h2>
 <p>DealHunter4U werkt samen met de volgende energieleveranciers — vergelijk hun actuele voorwaarden direct via onderstaande links:</p>
 <ul>
-  <li><strong><a href="/go?m=ENGIE&c=blog" rel="nofollow">ENGIE</a></strong> — gevestigde landelijke leverancier met keuze uit vaste en variabele contracten, ook geschikt voor zakelijke energie en laadpalen.</li>
-  <li><strong><a href="/go?m=Oxxio&c=blog" rel="nofollow">Oxxio</a></strong> — bekend om scherpe vaste tarieven en een alles-in-1 pakket inclusief slimme meter, zonder gedoe bij de overstap.</li>
+  <li><strong><a href="/go?m=Vattenfall&c=blog" rel="nofollow">Vattenfall</a></strong> — grote landelijke leverancier met keuze uit vaste en variabele contracten, ook geschikt voor zakelijke energie en laadpalen.</li>
+  <li><strong><a href="/go?m=Frank Energie&c=blog" rel="nofollow">Frank Energie</a></strong> — levert tegen inkoopprijs met een vast maandbedrag erbovenop; interessant als je verbruik kunt verschuiven naar goedkope uren.</li>
   <li><strong><a href="/go?m=Pure Energie&c=blog" rel="nofollow">Pure Energie</a></strong> — 100% Nederlandse groene stroom van eigen windmolens en zonneparken, met transparante tariefopbouw.</li>
 </ul>
 <p>Bekijk de volledige vergelijking, inclusief zonnepanelen-aanbieders, op onze <a href="/energie">energie vergelijken pagina</a>.</p>
@@ -4597,7 +4597,7 @@ export const POSTS: BlogPost[] = [
 <p>Een veelgehoord misverstand is dat overstappen ingewikkeld is. In de praktijk regelt de nieuwe leverancier vrijwel het volledige proces: van de opzegging bij je huidige leverancier tot de meterstanden-overdracht. Jij hoeft alleen het nieuwe contract af te sluiten. Reken op enkele weken voordat de overstap daadwerkelijk actief wordt — je energielevering wordt in de tussentijd nooit onderbroken.</p>
 
 <h2>Conclusie</h2>
-<p>Energie vergelijken is laagdrempelig en kan structureel schelen op je jaarrekening. Begin met het bepalen van je contractvoorkeur (vast of variabel), let bij het vergelijken op vastrecht en terugleververgoeding naast het kale tarief, vergelijk vervolgens de actuele voorwaarden van ENGIE, Oxxio en Pure Energie, en laat de nieuwe leverancier de overstap voor je regelen.</p>
+<p>Energie vergelijken is laagdrempelig en kan structureel schelen op je jaarrekening. Begin met het bepalen van je contractvoorkeur (vast of variabel), let bij het vergelijken op vastrecht en terugleververgoeding naast het kale tarief, vergelijk vervolgens de actuele voorwaarden van Vattenfall, Frank Energie en Pure Energie, en laat de nieuwe leverancier de overstap voor je regelen.</p>
 <p>→ Bekijk alle leveranciers en zonnepanelen-aanbieders op onze <a href="/energie">energie vergelijken pagina</a>.</p>
     `.trim(),
   },
@@ -4664,7 +4664,7 @@ export const POSTS: BlogPost[] = [
 <p>Een huurder met een strak maandbudget en weinig buffer voor tegenvallers kiest doorgaans voor een <strong>vast contract</strong> — de voorspelbaarheid weegt zwaarder dan een mogelijk iets lagere prijs. Een huiseigenaar met zonnepanelen en een thuisbatterij, die zijn verbruik kan afstemmen op goedkope momenten, overweegt eerder een <strong>variabel of dynamisch contract</strong> om te profiteren van prijsschommelingen. De juiste keuze hangt dus niet alleen af van risicobereidheid, maar ook van hoeveel controle je hebt over wanneer je energie verbruikt.</p>
 
 <h2>Vergelijk beide contractvormen</h2>
-<p>Niet elke leverancier biedt beide vormen even scherp aan. <a href="/go?m=ENGIE&c=blog" rel="nofollow">ENGIE</a> biedt bijvoorbeeld keuze uit vast én variabel, terwijl <a href="/go?m=Oxxio&c=blog" rel="nofollow">Oxxio</a> zich vooral richt op scherpe vaste tarieven. Vergelijk de actuele voorwaarden van beide op onze <a href="/energie">energie vergelijken pagina</a> voordat je een keuze maakt.</p>
+<p>Niet elke leverancier biedt beide vormen even scherp aan. <a href="/go?m=Vattenfall&c=blog" rel="nofollow">Vattenfall</a> biedt bijvoorbeeld keuze uit vast én variabel, terwijl <a href="/go?m=Frank Energie&c=blog" rel="nofollow">Frank Energie</a> juist inzet op een dynamisch tarief dat de inkoopprijs volgt. Vergelijk de actuele voorwaarden van beide op onze <a href="/energie">energie vergelijken pagina</a> voordat je een keuze maakt.</p>
 
 <h2>Conclusie</h2>
 <p>Er is geen universeel beste keuze — vast en variabel dienen verschillende behoeften. Bepaal eerst hoeveel risico je wilt dragen en hoeveel controle je hebt over je verbruiksmomenten, en vergelijk daarna de leveranciers die de contractvorm van jouw voorkeur het scherpst aanbieden.</p>

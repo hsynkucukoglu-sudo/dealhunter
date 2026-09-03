@@ -44,10 +44,9 @@ const DC = (base: string, dest: string) =>
 // ENGIE draait deze "WATT een VOORDEEL"-dagen periodiek (6 en 8 juli, 17-21 aug),
 // dus deze tabel wordt vaker gebruikt dan het nu lijkt.
 const PROMOS: Record<string, { tekst: string; totEnMet: string }> = {
-  // Daisycon-notificatie 2026-08-19: "t/m vrijdag ... bonus die kan oplopen tot
-  // wel € 750 bij een 3 jaar contract". Bewust "tot" — de volle € 750 geldt
-  // alleen bij 3 jaar, dus een kalere "€ 750 bonus" zou misleidend zijn.
-  ENGIE: { tekst: '⚡ Tot € 750 bonus', totEnMet: '2026-08-21' },
+  // Leeg sinds 2026-09-03: de enige promo (ENGIE, "tot € 750 bonus") liep af op
+  // 2026-08-21 en het ENGIE-programma is verwijderd omdat het ons mediatype weigert.
+  // Structuur blijft staan — nieuwe tijdelijke acties horen hier.
 }
 
 function actievePromo(naam: string) {
@@ -62,9 +61,8 @@ const DEALS = [
     id: 'energie',
     category: '⚡ Energie',
     items: [
-      // dl= parameter breekt bij deze 3 (dubbele URL → 404/foutpagina, canlı test 2026-07-06) — geen dl
-      { name: 'ENGIE',        tagline: 'Gas & stroom vergelijken', cta: 'Vergelijk tarief', color: '#0064A8', url: M('ENGIE') },
-      { name: 'Oxxio',        tagline: 'Vaste lage tarieven',      cta: 'Vergelijk tarief', color: '#E4002B', url: M('Oxxio') },
+      // dl= parameter breekt hier (dubbele URL → 404/foutpagina, canlı test 2026-07-06) — geen dl
+      // ENGIE en Oxxio verwijderd 2026-09-03 (mediatype geweigerd / eigen copy niet toegestaan)
       { name: 'Pure Energie', tagline: 'Goedkoop & transparant',   cta: 'Vergelijk tarief', color: '#F7941D', url: M('Pure Energie') },
       { name: 'noSun',   tagline: 'Zonnepanelen voor thuis',      cta: 'Bekijk aanbod', color: '#F59B00', url: M('noSun') },
       { name: 'Renogy', tagline: 'Zonnepanelen & accu\'s voor thuis', cta: 'Bekijk aanbod', color: '#E87722', url: M('Renogy') },
@@ -94,7 +92,6 @@ const DEALS = [
       // 2026-07-16 onaylı — TradeTracker (Daisycon/Awin değil), site ID 511755
       { name: 'B2Ctelecom.nl', tagline: 'Mobiel & internet vergelijken', cta: 'Vergelijk aanbod', color: '#1D3557', url: 'https://partner.b2ctelecom.nl/c?c=4714&m=12&a=511755&r=&u=%2F' },
       // 2026-08-19: marktleider ontbrak
-      { name: 'KPN',           tagline: 'Internet, TV & mobiel',        cta: 'Bekijk aanbod',    color: '#00C300', url: M('KPN') },
       // 2026-07-22 onaylı — li bevestigd via Daisycon 2026-07-24 campaigns export, tracking actief
       { name: 'Canal+',        tagline: 'Films, series & sport streamen', cta: 'Bekijk abonnement', color: '#000000', url: M('Canal+') },
     ],
@@ -111,7 +108,6 @@ const DEALS = [
       // suggereren het tegendeel en maken die verklaring aanvechtbaar.
       // Zie docs/genel-kontrol.md sectie 9.
       // dl= parameter breekt bij deze 4 (dubbele URL → 404/foutpagina, canlı test 2026-07-06) — geen dl
-      { name: 'ONVZ',                  tagline: 'Zorgverzekering bij ONVZ',    cta: 'Bereken premie', color: '#E4002B', url: 'https://ds1.nl/c/?si=16070&li=1332385&wi=420902' },
       { name: 'Nationale-Nederlanden', tagline: 'Zorg & aanvullend pakket',    cta: 'Bereken premie', color: '#FF6200', url: 'https://ds1.nl/c/?si=16070&li=1362622&wi=420902' },
       { name: 'DELA',                  tagline: 'Uitvaartverzekering',         cta: 'Bekijk aanbod',  color: '#003087', url: 'https://ds1.nl/c/?si=16070&li=1414707&wi=420902' },
       { name: 'Monuta',                tagline: 'Uitvaartzorg geregeld',       cta: 'Bekijk aanbod',  color: '#2C5F8A', url: 'https://ds1.nl/c/?si=16070&li=1414357&wi=420902' },
@@ -163,7 +159,6 @@ const DEALS = [
       { name: 'Bol.com',          tagline: 'Dagelijks nieuwe topdeals',    cta: 'Bekijk deals',    color: '#0000A4', url: M('Bol.com') },
       // Kwantum's eigen redirect breekt op de dl= deeplink parameter (dubbele URL → 404,
       // zelfde probleem als Levi's/Rakuten) — geen dl, gaat naar kwantum.nl homepage i.p.v. /sale
-      { name: 'Kwantum',          tagline: 'Gordijnen, vloeren & meer',    cta: 'Bekijk sale',     color: '#E2001A', url: 'https://ds1.nl/c/?si=16070&li=1360074&wi=420902' },
       // Goedgekeurd maar nooit aangesloten; li bevestigd via export 2026-07-26 (€50/sale, 100g)
       { name: 'I-KOOK',           tagline: 'Keukens op maat',              cta: 'Bekijk keukens',  color: '#C8102E', url: M('I-KOOK') },
       // 2026-07-07 onaylı — li bevestigd via Daisycon 2026-07-16 campaigns export, tracking actief
@@ -286,7 +281,7 @@ const FEATURED_BRANDS = [
   { name: 'Holland & Barrett', category: 'mode',        color: '#007A3D' },
   { name: 'Bol.com',           category: 'wonen',       color: '#0000A4' },
   { name: 'Ziggo',             category: 'telecom',     color: '#FF6600' },
-  { name: 'ENGIE',             category: 'energie',     color: '#0064A8' },
+  { name: 'Vattenfall',        category: 'energie',     color: '#FFDA00' },
   { name: 'CheapTickets',      category: 'reizen',      color: '#D9251D' },
   { name: "Levi's",            category: 'mode',        color: '#C8102E' },
 ]

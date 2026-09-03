@@ -628,3 +628,55 @@ gösteriyordu. Intro 375 karakter, şablonun ilk `<h2>` bölme mantığının be
 **Beklenti:** 29 gösterimlik bir ikili; tek başına trafiği değiştirmez. Değeri,
 formatın doğrulanmış olması — blog karşılıkları konum 3-6'da çalışırken
 `/vergelijk` eşleri 10,8'de kalıyor. Asıl kısıt hâlâ hacim, içerik değil.
+
+---
+
+## 13. Beş gün sonrası — onaylar, redler ve ölü link temizliği (2026-09-03)
+
+29 Ağustos'taki işlerin sonucu bekleniyordu. 5 gün sonra tablo:
+
+### Kazanımlar
+
+| Ne | Sonuç |
+|---|---|
+| **Finans uyum anketi** | ✅ **Onaylandı** 31 Ağu 12:54 — *"as of now you can apply for Finance campaigns on the Dutch market"* |
+| **Vattenfall** | ✅ **approved** 2 Eyl 15:47 — hesabın ilk gerçek program onayı |
+| Monuta (€145), DELA (€145), Nationale-Nederlanden (€50) | Anket açılınca abone olundu, üçü de `open` |
+| €1,87 bakiye | `released`, ödeme 15 Eylül |
+
+Hâlâ `open` (reklamveren onayında): Sinner, Vitaminstore, De Vakantiediscounter, Eneco.
+
+### Redler — ve sitedeki karşılıkları kaldırıldı
+
+Kullanıcı onayıyla **5 kayıt siteden çıkarıldı**. Hepsi §8'de düzelttiğimizle
+aynı sınıf: ziyaretçi tıklıyor, hiçbir şey kazanmıyoruz.
+
+| Program | Neden kazanamıyor | Kaldırılan yerler |
+|---|---|---|
+| **ONVZ** (7185) | Program artık yok — API 204, abonelik denemesi `404 Program not found` | Verzekering kartı |
+| **KPN** (19864) | Program aktif ama **abonelik reddedildi** (31 Ağu) | `AFFILIATE_MAP` + Telecom kartı |
+| **ENGIE** (365) | Medya tipimiz kabul edilmiyor | Map + Energie kartı + FEATURED_BRANDS + süresi dolmuş promo |
+| **Kwantum** (7762) | Medya tipimiz kabul edilmiyor | Thuis & Wonen kartı |
+| **Oxxio** (2028) | Reklamverenin onayladığı metin zorunlu, sitede kendi metnimiz var | Map + Energie kartı + `/energie` + blog linkleri |
+
+Yan bulgu: ENGIE'nin `⚡ Tot € 750 bonus` promosyonu `totEnMet: '2026-08-21'` ile
+kodda duruyordu — 13 gündür süresi dolmuş. `PROMOS` tablosu boşaltıldı ama yapısı
+korundu (yorumu yeni akıcı aksiyonlar için yerinde bırakıyor).
+
+### İsim değiştirmek yetmezdi — metinler de düzeltildi
+
+`/energie` sayfası ENGIE + Oxxio + Pure Energie ile 3 sağlayıcılı bir karşılaştırmaydı.
+İkisi çıkınca tek seçenek kalacaktı, ki bu "karşılaştırma" sayfası olmaktan çıkarırdı.
+Yerlerine **Vattenfall** ve **Frank Energie** kondu (ikisi de `approved`).
+
+Kritik nokta: **sadece isim değiştirilmedi.** Oxxio "scherpe vaste tarieven" ile
+anılıyordu; Frank Energie ise tam tersi — inkoopprijs + sabit maandbedrag, yani
+dinamik tarife. İsmi değiştirip açıklamayı bırakmak siteye yanlış bilgi koymak
+olurdu. Aynı düzeltme blog yazısındaki iki paragrafta da yapıldı; oradaki
+"vast ↔ vaste tarieven" karşıtlığı artık "vast ↔ dinamik" olarak yeniden yazıldı,
+ki bu aslında daha anlamlı bir karşılaştırma.
+
+Enerji kategorisi kart olarak zayıflamadı: Pure Energie, Vattenfall, Frank Energie,
+Eneco, Essent, energiedirect, Gewoon Energie, Powerpeers, Vandebron hâlâ duruyor.
+
+`tsc --noEmit` temiz; `M('ENGIE')` / `M('Oxxio')` / `M('KPN')` çağrılarında kalıntı yok.
