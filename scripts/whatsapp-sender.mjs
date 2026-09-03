@@ -35,19 +35,39 @@ const AFFILIATE_DEALS = JSON.parse(
 // ---------------------------------------------------------------------------
 // Fetch random supermarket product (prefer high-discount items)
 // ---------------------------------------------------------------------------
-async function getRandomProduct() {
+// 2026-09-03: de catch slikte elke fout. Dit script draait 8x per dag en valt bij
+// een lege API terug op een affiliate — dus een haperende fetch betekent stilletjes
+// alléén nog affiliate-posts, met "API empty" in de log terwijl er in werkelijkheid
+// niets opgehaald kón worden. Dat verschil is maanden onzichtbaar. Nu één retry en
+// een expliciete reden in de log.
+async function fetchProducts(attempt = 1) {
   try {
-    const res = await fetch(`${RAILWAY_API}/api/products`, { signal: AbortSignal.timeout(10000) })
-    if (!res.ok) return null
+    const res = await fetch(`${RAILWAY_API}/api/products`, { signal: AbortSignal.timeout(15000) })
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const products = await res.json()
-    if (!Array.isArray(products) || products.length === 0) return null
-
-    const highDiscount = products.filter(p => p.discount >= 30)
-    const pool = highDiscount.length >= 5 ? highDiscount : products
-    return pool[Math.floor(Math.random() * pool.length)]
-  } catch {
+    if (!Array.isArray(products)) throw new Error('no array returned')
+    return products
+  } catch (err) {
+    if (attempt === 1) {
+      console.warn(`Product fetch failed (${err.message}) — retrying once`)
+      return fetchProducts(2)
+    }
+    console.error(`Product fetch failed permanently: ${err.message}`)
     return null
   }
+}
+
+async function getRandomProduct() {
+  const products = await fetchProducts()
+  if (!products) return null
+  if (products.length === 0) {
+    console.error('API returned 0 products')
+    return null
+  }
+
+  const highDiscount = products.filter(p => p.discount >= 30)
+  const pool = highDiscount.length >= 5 ? highDiscount : products
+  return pool[Math.floor(Math.random() * pool.length)]
 }
 
 // ---------------------------------------------------------------------------

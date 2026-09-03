@@ -32,19 +32,42 @@ const AFFILIATE_DEALS = JSON.parse(
   fs.readFileSync(path.join(DIR, '..', 'data', 'affiliates.json'), 'utf8')
 ).filter(d => (d.kanallar ?? ['whatsapp']).includes('telegram') && d.url)
 
-async function willekeurigProduct() {
+// 2026-09-03: de catch slikte elke fout en gaf null terug, waarna main() meldde
+// "Geen product met afbeelding" — een misleidende boodschap, want de echte oorzaak
+// was meestal een hapering in het ophalen. Bij een droogloop op 03-09 faalde de
+// eerste poging en slaagden de drie volgende: puur transient. Nu één retry en een
+// logregel die de werkelijke reden noemt, zodat een stille uitval opvalt.
+async function haalProducten(poging = 1) {
   try {
-    const res = await fetch(`${RAILWAY_API}/api/products`, { signal: AbortSignal.timeout(10000) })
-    if (!res.ok) return null
+    const res = await fetch(`${RAILWAY_API}/api/products`, { signal: AbortSignal.timeout(15000) })
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const producten = await res.json()
-    if (!Array.isArray(producten) || !producten.length) return null
-    const hoog = producten.filter(p => p.discount >= 30 && p.imageUrl)
-    const pool = hoog.length >= 5 ? hoog : producten.filter(p => p.imageUrl)
-    if (!pool.length) return null
-    return pool[Math.floor(Math.random() * pool.length)]
-  } catch {
+    if (!Array.isArray(producten)) throw new Error('geen array terug')
+    return producten
+  } catch (err) {
+    if (poging === 1) {
+      console.warn(`API ophalen mislukt (${err.message}) — één retry`)
+      return haalProducten(2)
+    }
+    console.error(`API ophalen definitief mislukt: ${err.message}`)
     return null
   }
+}
+
+async function willekeurigProduct() {
+  const producten = await haalProducten()
+  if (!producten) return null
+  if (!producten.length) {
+    console.error('API gaf 0 producten terug')
+    return null
+  }
+  const hoog = producten.filter(p => p.discount >= 30 && p.imageUrl)
+  const pool = hoog.length >= 5 ? hoog : producten.filter(p => p.imageUrl)
+  if (!pool.length) {
+    console.error(`API gaf ${producten.length} producten, maar geen enkele met imageUrl`)
+    return null
+  }
+  return pool[Math.floor(Math.random() * pool.length)]
 }
 
 async function telegram(methode, body) {
