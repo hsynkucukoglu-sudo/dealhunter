@@ -1,4 +1,6 @@
+'use client'
 import Link from 'next/link'
+import { trackAffiliateClick } from '@/lib/analytics'
 
 /**
  * Compacte "meer besparen"-strip voor blogposts.
@@ -18,6 +20,13 @@ import Link from 'next/link'
  *
  * BEWUST KLEIN: die toelichting waarschuwt dat paginalengte precies het
  * probleem is dat we oplossen. Eén rij, vier kaarten, geen afbeeldingen.
+ *
+ * MEETBAARHEID (2026-09-03): deze strip linkt via /go, en /go stuurt alléén een
+ * first-party beacon naar /api/track — géén Clarity-event. Daardoor bleef
+ * `affiliate_click` in Clarity op 0 staan en leek de strip niets te doen, terwijl
+ * we simpelweg het verkeerde instrument aflazen. Nu vuurt de strip zelf
+ * `trackAffiliateClick(...)` met source 'blog-strip', zodat hij in Clarity
+ * zichtbaar is én te onderscheiden van kliks uit de MeerBesparenWidget.
  *
  * Alleen programma's waarvoor de subscription ook echt `approved` is — op
  * 2026-08-29 bleek dat 14 links op de site naar niet-geabonneerde programma's
@@ -77,6 +86,7 @@ export function BlogSavingsStrip() {
             key={item.market}
             href={`/go?m=${encodeURIComponent(item.market)}&c=blog`}
             rel="nofollow sponsored"
+            onClick={() => trackAffiliateClick(item.label, 'vaste-lasten', 'blog-strip')}
             style={{
               display: 'block',
               padding: '10px 12px',

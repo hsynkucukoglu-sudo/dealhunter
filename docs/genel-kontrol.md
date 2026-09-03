@@ -680,3 +680,38 @@ Enerji kategorisi kart olarak zayıflamadı: Pure Energie, Vattenfall, Frank Ene
 Eneco, Essent, energiedirect, Gewoon Energie, Powerpeers, Vandebron hâlâ duruyor.
 
 `tsc --noEmit` temiz; `M('ENGIE')` / `M('Oxxio')` / `M('KPN')` çağrılarında kalıntı yok.
+
+### Şerit ölçümü — yanlış aletle bakmışım (2026-09-03)
+
+§10'da eklenen `BlogSavingsStrip` 5 gündür canlıydı; Clarity'de `affiliate_click`
+**7 günde 0 oturum** görünüyordu. İlk okuma "şerit işe yaramadı" olurdu — yanlış.
+
+**Sebep:** `affiliate_click` Clarity olayını yalnızca `MeerBesparenWidget`
+tetikliyor (`trackAffiliateClick`). Şeridin linkleri `/go` üzerinden gidiyor ve
+`GoContent` sadece first-party beacon (`/api/track`) + GA4 `deal_redirect`
+gönderiyor — **Clarity'ye custom event atmıyor**. Yani şerit Clarity'de
+görünmüyordu; sıfır, "tıklama yok" değil "ölçüm yok" demekti.
+
+**Düzeltme:** Şerit artık kendi `trackAffiliateClick(label, 'vaste-lasten',
+'blog-strip')` çağrısını yapıyor. Böylece Clarity'de görünür hale geliyor **ve**
+`affiliate_source` sayesinde widget tıklamalarından ayırt edilebiliyor.
+Component `'use client'` oldu (onClick gerektiği için).
+
+**Geriye dönük veri:** İlk 5 günün tıklamaları yalnızca first-party log'da.
+Okumak için: `curl -H "Authorization: Bearer $TRACK_STATS_KEY"
+https://<api>/api/track/stats?days=14` — anahtar Railway ortam değişkeninde,
+oturumda mevcut değil. `channel: 'blog'` kayıtları şeridin gerçek performansını
+verir.
+
+**Ders:** Yeni bir yüzey eklerken "hangi olay hangi koşulda tetikleniyor"
+doğrulanmadan metrik okunmamalı. Sıfır bir metrik, önce ölçüm hatası varsayılmalı.
+
+### Diğer 5 günlük gözlemler
+
+| Metrik | 29 Ağu | 3 Eyl (7 gün) | Not |
+|---|---|---|---|
+| AdSense `availableWidth=0` | hata listesinde | **yok** | Düzeltme tuttu |
+| CLS | 0,051 | 0,057 | İyi. *(3 günlük 0,16 vardı ama 19 sayfa görüntülemeye dayanıyordu — örneklem gürültüsü, regresyon değil)* |
+| LCP / INP | 1,8sn / 190ms | 1,7sn / 180ms | İyi |
+| ResizeObserver loop | 30 günde 8 | 7 günde 4 | Oran ~2× artmış; tek kalan hata türü. AdBanner'daki observer şüpheli — `push()` callback içinde layout değiştiriyor olabilir. Zararsız tarayıcı uyarısı ama izlenmeli |
+| Yeni Vomar yazısı | — | 3 günde 4 görüntüleme | 29 gösterimlik bir ikili için beklenen düzeyde |
