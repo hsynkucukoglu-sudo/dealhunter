@@ -3,6 +3,9 @@ import { VISIBLE_MARKETS } from './types'
 import type { Product } from './types'
 import { detectCampaignType } from './campaignType'
 
+/** Vergaarbakcategorie -- zie de toelichting bij topCategory hieronder. */
+const CATCH_ALL_CATEGORY = 'overig'
+
 export type MarketInfo = (typeof VISIBLE_MARKETS)[number]
 
 export interface MarketPair {
@@ -68,6 +71,12 @@ export function parsePairSlug(slug: string): { a: MarketInfo; b: MarketInfo } | 
 
 export interface MarketStats {
   dealCount: number
+  /**
+   * Aantal producten dat we van deze keten volgen, afgeprijsd of niet.
+   * `dealCount / assortmentCount` is de dekkingsgraad, en die is nodig om te
+   * bepalen of twee gemiddelden uberhaupt naast elkaar mogen (zie isComparable).
+   */
+  assortmentCount: number
   avgDiscount: number
   maxDiscount: number
   topDeal: Product | null
@@ -80,7 +89,7 @@ export async function getMarketStats(market: MarketInfo): Promise<MarketStats> {
   const withDiscount = products.filter(p => p.discount > 0)
 
   if (withDiscount.length === 0) {
-    return { dealCount: 0, avgDiscount: 0, maxDiscount: 0, topDeal: null, topCategory: '-', onePlusOneCount: 0 }
+    return { dealCount: 0, assortmentCount: products.length, avgDiscount: 0, maxDiscount: 0, topDeal: null, topCategory: '-', onePlusOneCount: 0 }
   }
 
   const avgDiscount = Math.round(
@@ -88,8 +97,18 @@ export async function getMarketStats(market: MarketInfo): Promise<MarketStats> {
   )
   const topDeal = [...withDiscount].sort((a, b) => b.discount - a.discount)[0]
 
+  // 'overig' is de vergaarbak en wint daardoor bijna altijd: gemeten 2026-09-14
+  // was het bij 8 van de 9 ketens de grootste categorie (35-56% van alle deals),
+  // waardoor de tabelrij "Sterkste categorie" op BEIDE kolommen "Overig" zette --
+  // een niet-antwoord op precies de vraag waarvoor de bezoeker komt. Uitsluiten
+  // levert overal een echte categorie op (AH zuivel 77, Jumbo dranken 22,
+  // Kruidvat verzorging 9, ...). Blijft er niets over, dan '-' en verbergt de
+  // pagina de rij liever dan een vergaarbak te tonen.
   const catCount = new Map<string, number>()
-  withDiscount.forEach(p => catCount.set(p.category, (catCount.get(p.category) ?? 0) + 1))
+  withDiscount.forEach(p => {
+    if (p.category === CATCH_ALL_CATEGORY) return
+    catCount.set(p.category, (catCount.get(p.category) ?? 0) + 1)
+  })
   const topCategory = [...catCount.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? '-'
 
   const onePlusOneCount = withDiscount.filter(
@@ -98,6 +117,7 @@ export async function getMarketStats(market: MarketInfo): Promise<MarketStats> {
 
   return {
     dealCount: withDiscount.length,
+    assortmentCount: products.length,
     avgDiscount,
     maxDiscount: topDeal.discount,
     topDeal,
@@ -113,8 +133,57 @@ export interface Winner {
   loserStats: MarketStats
 }
 
+/**
+ * Mogen de twee gemiddelde kortingen naast elkaar?
+ *
+ * `avgDiscount` gaat alleen over producten MET korting. Hoe kleiner het deel van
+ * het assortiment dat wij afgeprijsd zien, hoe selectiever dat gemiddelde is --
+ * het meet dan vooral wat wij ophalen, niet wat de winkel doet. /kortingsindex
+ * zegt dit al met zoveel woorden ("de gemiddelde korting is niet tussen
+ * supermarkten te vergelijken ... wij presenteren geen ranglijst") en sorteert
+ * daarom alfabetisch. Deze pagina deed precies wel wat daar verboden wordt, en
+ * riep bovendien een winnaar uit.
+ *
+ * Wat dat kostte, gemeten op de live data van 2026-09-14:
+ *   Albert Heijn 370/370 afgeprijsd (100%) -> gem. 15%
+ *   Aldi          44/205 afgeprijsd ( 21%) -> gem. 21%
+ * De pagina kroonde Aldi. Over het volledige assortiment staat het 15% tegen 4%
+ * en wint Albert Heijn -- de winnaar was dus omgedraaid, op het paar met veruit
+ * de meeste zoekvraag. En die zin stond niet alleen in beeld maar ook in het
+ * FAQ-schema, dus Google kon hem als rich result tonen.
+ *
+ * Vandaar deze poort. Verschillen de dekkingsgraden te veel, dan is er geen
+ * winnaar -- niet "gelijkspel", maar "niet te vergelijken". Bij gelijke vorm mag
+ * het wel: Lidl (22%) tegen Kruidvat (17%) vergelijkt appels met appels, ook al
+ * liggen beide gemiddelden hoog.
+ *
+ * 0,6 is gekozen omdat die grens op de 7 bestaande paren precies de scheefste
+ * eruit haalt (AH/Aldi 0,21 - Aldi/DekaMarkt 0,25 - Lidl/Plus 0,26) en de
+ * gelijkvormige laat staan (AH/DekaMarkt 0,85 - Lidl/Kruidvat 0,77 -
+ * Vomar/Plus 0,64).
+ *
+ * Dit is geen nieuw beleid maar het inhalen van de rest van de site: zowel
+ * lib/kortingsindex.ts (alfabetisch, met een waarschuwing in beeld) als
+ * components/MarketIndexWidget.tsx (sorteert op maxDiscount juist omdat het
+ * gemiddelde de goed uitgelezen ketens straft) trok deze conclusie al.
+ * /vergelijk was de enige plek die hem nog niet volgde.
+ */
+export const MIN_COVERAGE_RATIO = 0.6
+
+export function discountCoverage(s: MarketStats): number {
+  return s.assortmentCount > 0 ? s.dealCount / s.assortmentCount : 0
+}
+
+export function isComparable(sa: MarketStats, sb: MarketStats): boolean {
+  const ca = discountCoverage(sa)
+  const cb = discountCoverage(sb)
+  if (ca === 0 || cb === 0) return false
+  return Math.min(ca, cb) / Math.max(ca, cb) >= MIN_COVERAGE_RATIO
+}
+
 export function getWinner(a: MarketInfo, sa: MarketStats, b: MarketInfo, sb: MarketStats): Winner | null {
   if (sa.dealCount === 0 || sb.dealCount === 0 || sa.avgDiscount === sb.avgDiscount) return null
+  if (!isComparable(sa, sb)) return null
   return sa.avgDiscount > sb.avgDiscount
     ? { market: a, stats: sa, loser: b, loserStats: sb }
     : { market: b, stats: sb, loser: a, loserStats: sa }

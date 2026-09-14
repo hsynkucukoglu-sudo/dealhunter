@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { getAllPairs, parsePairSlug, getMarketStats, getWinner, isIndexedPair } from '@/lib/vergelijk'
+import { getAllPairs, parsePairSlug, getMarketStats, getWinner, isComparable, isIndexedPair } from '@/lib/vergelijk'
 import { CATEGORY_LABELS } from '@/lib/types'
 import { buildBreadcrumbSchema, buildFaqSchema, getISOWeek } from '@/lib/schema'
 import { DealHunterLogo } from '@/components/DealHunterLogo'
@@ -57,6 +57,11 @@ export default async function VergelijkPage({ params }: Props) {
 
   const [sa, sb] = await Promise.all([getMarketStats(a), getMarketStats(b)])
   const winner = getWinner(a, sa, b, sb)
+  // Drie toestanden, niet twee. "Geen winnaar" had maar een betekenis ("vrijwel
+  // gelijk"), maar sinds getWinner ook scheve steekproeven weigert kan het net
+  // zo goed "niet te vergelijken" betekenen -- en die twee door elkaar halen zou
+  // een nieuwe onwaarheid opleveren in plaats van de oude op te lossen.
+  const comparable = isComparable(sa, sb)
   const week = getISOWeek(new Date())
 
   const breadcrumb = buildBreadcrumbSchema([
@@ -70,7 +75,9 @@ export default async function VergelijkPage({ params }: Props) {
       question: `Wie heeft deze week de beste aanbiedingen: ${a.name} of ${b.name}?`,
       answer: winner
         ? `${winner.market.name} heeft deze week gemiddeld ${winner.stats.avgDiscount}% korting tegenover ${winner.loserStats.avgDiscount}% bij ${winner.loser.name} (week ${week}).`
-        : `Deze week zijn ${a.name} en ${b.name} vergelijkbaar qua gemiddelde korting (week ${week}).`,
+        : comparable
+          ? `Deze week zijn ${a.name} en ${b.name} vergelijkbaar qua gemiddelde korting (week ${week}).`
+          : `Daar is deze week geen eerlijk antwoord op te geven. Van ${a.name} volgen wij ${sa.dealCount} afgeprijsde producten van de ${sa.assortmentCount} die wij bijhouden, van ${b.name} ${sb.dealCount} van de ${sb.assortmentCount}. Die gemiddelden gaan over verschillend samengestelde groepen, dus een vergelijking meet vooral het verschil in wat wij ophalen. Kijk daarom naar het aantal deals en de topdeals hieronder (week ${week}).`,
     },
     {
       question: `Hoeveel aanbiedingen heeft ${a.name} deze week?`,
@@ -148,10 +155,23 @@ export default async function VergelijkPage({ params }: Props) {
                 🏆 Deze week wint <span style={{ color: winner.market.color }}>{winner.market.name}</span>:
                 gemiddeld <strong>{winner.stats.avgDiscount}% korting</strong> tegenover {winner.loserStats.avgDiscount}% bij {winner.loser.name}.
               </>
-            ) : (
+            ) : comparable ? (
               <>⚖️ Deze week zijn {a.name} en {b.name} vrijwel gelijk qua gemiddelde korting.</>
+            ) : (
+              <>
+                ⚖️ Deze week is er geen eerlijke winnaar aan te wijzen: van {a.name} zien wij{' '}
+                <strong>{sa.dealCount} van de {sa.assortmentCount}</strong> producten afgeprijsd, van {b.name}{' '}
+                <strong>{sb.dealCount} van de {sb.assortmentCount}</strong>. Die gemiddelden gaan over verschillend
+                samengestelde groepen. Vergelijk hieronder liever het aantal deals en de topdeals.
+              </>
             )}
           </p>
+          {!winner && !comparable && (
+            <p className="text-sm mt-3" style={{ color: '#6B6259', fontFamily: 'Hanken Grotesk' }}>
+              Zie ook de <Link href="/kortingsindex" style={{ color: '#E33D26', fontWeight: 600 }}>kortingsindex</Link>{' '}
+              voor de cijfers per supermarkt naast elkaar — bewust zonder ranglijst.
+            </p>
+          )}
         </div>
 
         {/* Statistiek tabel */}
@@ -166,11 +186,18 @@ export default async function VergelijkPage({ params }: Props) {
               <MarketLogo market={b.name} size={24} />
               {b.name}
             </div>
-            <StatRow label="Aantal deals" va={sa.dealCount} vb={sb.dealCount} />
+            <StatRow label="Aantal deals" va={`${sa.dealCount} van ${sa.assortmentCount}`} vb={`${sb.dealCount} van ${sb.assortmentCount}`} />
+            {/* De noemer staat er bewust bij: "gem. korting" gaat alleen over de
+                afgeprijsde producten, dus zonder die basis leest 44% bij Kruidvat
+                (30 van 176) als hetzelfde soort getal als 15% bij Albert Heijn
+                (370 van 370), terwijl het dat niet is. Zelfde reden als de
+                waarschuwing op /kortingsindex. */}
             <StatRow label="Gem. korting" va={`${sa.avgDiscount}%`} vb={`${sb.avgDiscount}%`} />
             <StatRow label="Hoogste korting" va={`${sa.maxDiscount}%`} vb={`${sb.maxDiscount}%`} />
             <StatRow label="1+1 Gratis acties" va={sa.onePlusOneCount} vb={sb.onePlusOneCount} />
-            <StatRow label="Sterkste categorie" va={categoryLabel(sa.topCategory)} vb={categoryLabel(sb.topCategory)} />
+            {(sa.topCategory !== '-' || sb.topCategory !== '-') && (
+              <StatRow label="Sterkste categorie" va={categoryLabel(sa.topCategory)} vb={categoryLabel(sb.topCategory)} />
+            )}
           </div>
         </div>
 
@@ -193,7 +220,11 @@ export default async function VergelijkPage({ params }: Props) {
                 className="mt-3 inline-block text-sm font-semibold"
                 style={{ color: '#E33D26' }}
               >
-                Alle {s.dealCount} {m.name}-aanbiedingen bekijken →
+                {/* assortmentCount, niet dealCount: deze link gaat naar
+                    /supermarkt/<markt>, en die pagina toont alles wat we volgen.
+                    Met dealCount beloofde de link "Alle 44 Aldi-aanbiedingen"
+                    terwijl de bestemming er 205 liet zien. */}
+                Alle {s.assortmentCount} {m.name}-aanbiedingen bekijken →
               </Link>
             </div>
           ))}
@@ -211,9 +242,11 @@ export default async function VergelijkPage({ params }: Props) {
           <p className="text-sm leading-relaxed" style={{ color: '#6B6259', fontFamily: 'Hanken Grotesk' }}>
             {a.description} {b.description} DealHunter4U verzamelt dagelijks alle folder-aanbiedingen van beide winkels
             — geen schattingen, maar echte actuele deals rechtstreeks uit de officiële folder. Deze week telt {a.name}{' '}
-            {sa.dealCount} aanbiedingen (gemiddeld {sa.avgDiscount}% korting, sterkste categorie{' '}
-            {categoryLabel(sa.topCategory)}) tegenover {sb.dealCount} bij {b.name} (gemiddeld {sb.avgDiscount}% korting,
-            sterkste categorie {categoryLabel(sb.topCategory)}).{' '}
+            {sa.dealCount} afgeprijsde producten van de {sa.assortmentCount} die wij volgen (gemiddeld{' '}
+            {sa.avgDiscount}% korting{sa.topCategory !== '-' ? `, sterkste categorie ${categoryLabel(sa.topCategory)}` : ''})
+            tegenover {sb.dealCount} van {sb.assortmentCount} bij {b.name} (gemiddeld {sb.avgDiscount}% korting
+            {sb.topCategory !== '-' ? `, sterkste categorie ${categoryLabel(sb.topCategory)}` : ''}).{' '}
+            {!comparable && `Die twee gemiddelden zijn niet met elkaar te vergelijken: ze gaan over verschillend samengestelde groepen. `}
             {sa.onePlusOneCount > 0 || sb.onePlusOneCount > 0
               ? `Op 1+1 gratis-acties loopt ${sa.onePlusOneCount >= sb.onePlusOneCount ? a.name : b.name} deze week voorop met ${Math.max(sa.onePlusOneCount, sb.onePlusOneCount)} van dit soort deals.`
               : `Geen van beide winkels heeft deze week een 1+1 gratis-actie lopen.`}
