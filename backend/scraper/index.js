@@ -470,6 +470,81 @@ function decodeHtmlEntities(str) {
 // verkeerde (zie de toelichting bij _fetchVomarImage).
 const HOOGVLIET_PUBLITAS_GROUP = 'hoogvliet'
 
+// Regexfallback voor Hoogvliet -- parseVomarPageText werkt hier NIET.
+//
+// Vomar zet de twee prijzen naast elkaar ("4.59 0.99"), Hoogvliet splitst ze om
+// de productnaam heen ("PER STUK 1. Van 2.39 / Naam 79" = van 2.39 voor 1.79).
+// Op de 31 pagina's van folder_2026_38 gaf de Vomar-parser dan ook 0 producten,
+// waardoor Hoogvliet volledig afhing van GEMINI_API_KEY: geen key of een
+// mislukte call betekende opnieuw een lege markt -- precies de stille storing
+// die hier vanaf 2026-07-29 maandenlang onopgemerkt bleef.
+//
+// Bewust alleen de twee kalmste patronen, niet de gesplitste prijs: die laatste
+// vraagt om het aan elkaar plakken van losse cijfers rond een naam en dat levert
+// te snel een verkeerde prijs op. Liever 9 kloppende producten dan 25 waarvan er
+// een paar liegen -- zelfde afweging als bij de Vomar-parser.
+//
+// De prijsparen zijn gemeten, niet aangenomen. Bij "Van 8.78 - 11.38 Voor
+// 4.39 - 5.69" horen laag bij laag en hoog bij hoog: beide combinaties geven
+// exact 50%. Zou je de hoogste `van` met de laagste `voor` pakken, dan meldt de
+// site 61% korting die niet bestaat. Vandaar de controle dat beide uiteinden
+// dezelfde kortingsvoet hebben; wijken ze af, dan is het geen variantbereik en
+// slaan we het over.
+// Let op: regexLITERAL, geen new RegExp('...'). In een string moet elke
+// backslash verdubbeld en gaat \d bij een slordige bewerking stilzwijgend over
+// in de letter d -- dan matcht niets meer op cijfers en merk je dat pas als de
+// namen er raar uitzien. Een literal heeft dat probleem niet.
+const HOOGVLIET_BOILER = /(?:HOOGVLIET\.COM|OP=OP|MESSENZEGELS?|GRATIS|UIT EIGEN OVEN|VERS VOORDEEL|PER (?:STUK|PAK|ZAK|FLES|KUIPJE|COMBINATIE)|Daar word je toch blij van!|Per combinatie kan de prijs verschillen\.|korting op de totaalprijs\.|Producten zijn niet in al onze winkels verkrijgbaar\.|Voor alle alcoholische artikelen geldt NIX18\.|Deze acties zijn geldig[^.]*\.|\d+%|\d+ STUKS?|\d+ PAKKEN|\d+ FLESSEN|\/\/|\/)/g
+const HOOGVLIET_GENERIC_NAME = /^(?:alle\s+\w+|per\s+\w+|van|voor)$/i
+
+function hoogvlietCleanName(raw) {
+  let s = String(raw).replace(/\s+/g, ' ').trim()
+  // Knip tot en met het LAATSTE stuk winkeltekst: de echte naam staat er altijd
+  // achter, ervoor staat de rommel van de vorige aanbieding op dezelfde pagina.
+  HOOGVLIET_BOILER.lastIndex = 0
+  let end = 0
+  for (let m = HOOGVLIET_BOILER.exec(s); m; m = HOOGVLIET_BOILER.exec(s)) end = m.index + m[0].length
+  if (end) s = s.slice(end)
+  return s.replace(/^[^A-Za-zÀ-ÿ]+/, '').replace(/^[\s\-–|·,]+|[\s\-–|·,]+$/g, '').trim()
+}
+
+function hoogvlietNameOk(n) {
+  if (n.length < 6 || n.length > 70) return false
+  if (HOOGVLIET_GENERIC_NAME.test(n)) return false
+  // "Kwekkeboom Alle soorten" is prima, kaal "Alle soorten" niet.
+  if (n.replace(/\balle\s+\w+\b/gi, '').trim().length < 3) return false
+  if (/\b(?:korting|totaalprijs|geldig|verkrijgbaar|combinatie)\b/i.test(n)) return false
+  return true
+}
+
+function parseHoogvlietPageText(text) {
+  const results = []
+  const push = (rawName, orig, disc) => {
+    const name = hoogvlietCleanName(rawName)
+    if (!hoogvlietNameOk(name)) return
+    if (!(orig > 0) || !(disc > 0) || disc > orig || orig >= 100) return
+    results.push({ name, orig, disc })
+  }
+
+  // "<naam> Van 8.78 - 11.38 Voor 4.39 - 5.69"
+  const range = /(.{0,90}?)\s+Van\s+(\d+\.\d{2})\s*-\s*(\d+\.\d{2})\s+Voor\s+(\d+\.\d{2})\s*-\s*(\d+\.\d{2})/g
+  for (let m = range.exec(text); m; m = range.exec(text)) {
+    const loO = parseFloat(m[2]), hiO = parseFloat(m[3])
+    const loD = parseFloat(m[4]), hiD = parseFloat(m[5])
+    if (!(loO > 0) || !(hiO > 0)) continue
+    if (Math.abs(loD / loO - hiD / hiO) > 0.05) continue
+    push(m[1], loO, loD)
+  }
+
+  // "<naam> 2.50 Van / Voor 1.25"
+  const pair = /(.{0,90}?)\s+(\d+\.\d{2})\s+Van\s*\/\s*Voor\s+(\d+\.\d{2})/g
+  for (let m = pair.exec(text); m; m = pair.exec(text)) {
+    push(m[1], parseFloat(m[2]), parseFloat(m[3]))
+  }
+
+  return results
+}
+
 async function scrapeHoogvliet() {
   console.log('🏪 [Hoogvliet] Publitas weekfolder...')
   folderLLMErrorLogged.delete('Hoogvliet')
@@ -487,7 +562,7 @@ async function scrapeHoogvliet() {
       const batch = pageEntries.slice(i, i + LLM_CONCURRENCY)
       const batchResults = await Promise.all(batch.map(async (text) => {
         const llmResult = await parseFolderPageWithLLM(text, 'Hoogvliet')
-        return llmResult ?? parseVomarPageText(text)
+        return llmResult ?? parseHoogvlietPageText(text)
       }))
       pageResultsList.push(...batchResults)
     }
