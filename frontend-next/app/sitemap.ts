@@ -66,7 +66,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             changeFrequency: 'daily',
             priority: 1.0,
     },
-    { url: `${base}/deals`, lastModified: today, changeFrequency: 'daily' as const, priority: 0.95 },
+    // /deals staat bewust NIET in de sitemap sinds 2026-09-14: noindex wegens
+    // 79% contentoverlap met `/` (zie app/deals/page.tsx).
     { url: `${base}/categories`, lastModified: today, changeFrequency: 'weekly' as const, priority: 0.85 },
     { url: `${base}/blog`, lastModified: today, changeFrequency: 'weekly' as const, priority: 0.8 },
     { url: `${base}/blog/beste-deals/${currentWeekSlug()}`, lastModified: today, changeFrequency: 'weekly' as const, priority: 0.85 },
