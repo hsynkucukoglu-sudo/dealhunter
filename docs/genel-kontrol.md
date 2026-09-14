@@ -764,10 +764,16 @@ http+www varyantlarının üçü de 301 ile `https://www.dealhunter4u.nl/`'e gid
 sitemap 106 URL ve yalnızca 7 indeksli `vergelijk` çifti içeriyor (INDEXED_PAIR_SLUGS
 ile birebir). Yani sorun yapılandırmada değil, `/deals`'in kendisinde.
 
-**Karar bekliyor** — iki seçenek: (a) `/deals`'i `noindex` + sitemap dışı yapmak
-(13 Tem'deki 46 ince sayfa kararının aynısı; sayfa kullanıcı için kalır),
-(b) içeriği gerçekten farklılaştırmak. Sayfa arama trafiği almadığı için (a)
-daha savunulabilir görünüyor.
+**Karar verildi ve uygulandı (commit `cc20dc4`):** (a) seçildi — `/deals` artık
+`robots: { index: false, follow: true }` ve sitemap dışında. 13 Tem'deki 46 ince
+sayfa kararıyla aynı yaklaşım: sayfa kullanıcı için kalıyor (PWA kısayolu + bir
+blog CTA'sı), yalnızca indeksten çıkıyor; `follow: true` çünkü üzerindeki
+linklerin taranmasında sakınca yok. Canlıda doğrulandı: `/deals` →
+`<meta name="robots" content="noindex, follow">`, sitemap'te 0 eşleşme.
+
+Beklenti: GSC'deki kopya uyarısının kaybolması bir sonraki tarama turunu alır
+(~2 hafta). Doğrulama **istenmemeli** — sayfa bilinçli olarak indeks dışı, yani
+"düzeltildi" diye doğrulatmak yine başarısız dönerdi.
 
 ### Kontrol edilemeyenler (panel gerektiriyor)
 
