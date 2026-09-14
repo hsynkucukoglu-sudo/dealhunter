@@ -784,3 +784,38 @@ Beklenti: GSC'deki kopya uyarısının kaybolması bir sonraki tarama turunu al�
   başarısız" ayrımı hâlâ cevapsız
 - Clarity'de `affiliate_click` (3 Eyl'de eklenen `blog-strip` kaynağıyla) veri
   üretti mi
+
+### Madde 2 — bekleyen aboneliklerin durumu (panel olmadan, mail üzerinden)
+
+Playwright bağlanamadığı için panel API'sine erişilemedi. Bunun yerine dolaylı
+yol kullanıldı: **Daisycon her abonelik kararını mail olarak bildiriyor**, o
+yüzden mailin yokluğu da bilgi.
+
+3–14 Eylül arasında gelen tüm `Campaign approval` bildirimleri:
+Vastelastenbond.nl (21190), Aroma King (16667), Colchones Aznar INT (21353),
+LEDLager DE/AT (20911), Henderson PL (21375), Capida DK+SE (20530/20531).
+
+**Bizim 7 bekleyen programımızdan hiçbiri listede yok** — ne onay ne red:
+Monuta (€145), DELA (€145), Nationale-Nederlanden (€50), Eneco, Sinner,
+Vitaminstore, De Vakantiediscounter. Daisycon Aroma King gibi küçük programlar
+için bile tek tek mail attığına göre, sessizlik **"hâlâ reklamveren onayında"**
+anlamına geliyor. 11 gün, sigorta reklamverenleri için olağandışı değil.
+
+⚠️ Bu bir *çıkarım*, panel kadar kesin değil. Panel erişimi gelince
+`/api/publishers/478402/subscriptions` ile doğrulanmalı.
+
+### 🟢 Yan bulgu: Vastelastenbond.nl (21190) onaylandı — şerit için birebir aday
+
+11 Eylül'de onaylandı, media DealHunter4U (420902). Vastelastenbond ev
+halkının **sabit giderlerini** (enerji, sigorta, telekom) düşürmeye yardım eden
+bir servis — yani `BlogSavingsStrip`'in başlığının (*"Meer besparen op je vaste
+lasten"*) tam karşılığı. Şu an şeritte Frank Energie, Pure Energie, Ziggo ve
+hollandsnieuwe var; hepsi tek tek ürün/abonelik satıyor, oysa Vastelastenbond
+doğrudan "vaste lasten düşürme" vaadi veriyor.
+
+Sitede hiç geçmiyor (`affiliate.ts`, widget, `affiliates.json` — üçünde de yok).
+
+**Eklenemez durumda:** tracking linki (si/li) panelin Materialen bölümünden
+alınmalı, o da tarayıcı gerektiriyor. Panel erişimi gelince ilk iş bu olmalı —
+§8'in kuralı gereği link ancak `approved` abonelikle eklenir, ve bu program
+zaten `approved`.
