@@ -446,8 +446,88 @@ function decodeHtmlEntities(str) {
 // Die scraper vindt ook 2 kortingen méér: de regexparser hieronder knipt elke kaart af
 // op 2500 tekens, en bij Aviko Churros (8346) en Page toiletpapier (8549) valt de
 // strikethrough-prijs buiten dat venster, waardoor ze als "geen korting" binnenkwamen.
+// ─── HOOGVLIET — Publitas weekfolder (primair sinds 2026-09-14) ─────────────
+// Waarom deze route: hoogvliet.com zit achter Imperva/Incapsula en gaf vanaf
+// datacenter-IP's stelselmatig 0 producten terug. Daarop is op 2026-08-09 besloten
+// "Hoogvliet niet verder najagen" en ging de cron uit — terecht, want de dagelijkse
+// faalmails trainden je om waarschuwingen uit deze repo weg te klikken (AH stond
+// daardoor 5 dagen stil).
+//
+// Maar de blokkade zit op hoogvliet.com, NIET op de folder zelf: die staat op
+// Publitas, precies zoals bij Vomar. Live geverifieerd op 2026-09-14:
+//   view.publitas.com/hoogvliet → 302 → /hoogvliet/folder_2026_38/
+//   search?q=gram&format=json   → 15 pagina's met bruikbare OCR-tekst
+// Daarmee is de challenge irrelevant en hoeft er niets "omzeild" te worden.
+//
+// Dit was geen cosmetisch probleem: /supermarkt/hoogvliet rankt (1.946 impressies
+// in 28 dagen, `hoogvliet weekdeals` 15,4% CTR) en beloofde in de title "Aanbiedingen
+// Deze Week", terwijl de pagina leeg was. Bezoekers die we al gewonnen hadden,
+// landden op niets.
+//
+// GEEN foto's: Vomar haalt die uit gateway.vomar.nl, Hoogvliet heeft daar geen
+// equivalent van. imageUrl blijft null en ProductCard valt terug op het marktlogo —
+// zoals ook bij Vomar gebeurt als er geen match is. Liever geen foto dan een
+// verkeerde (zie de toelichting bij _fetchVomarImage).
+const HOOGVLIET_PUBLITAS_GROUP = 'hoogvliet'
+
 async function scrapeHoogvliet() {
-  console.log('🏪 [Hoogvliet] hoogvliet.com/aanbiedingen (session+PromotionRange)...')
+  console.log('🏪 [Hoogvliet] Publitas weekfolder...')
+  folderLLMErrorLogged.delete('Hoogvliet')
+  try {
+    const pageTexts = await fetchPublitasFolderPages(HOOGVLIET_PUBLITAS_GROUP, 'Hoogvliet')
+    const pageEntries = Object.values(pageTexts)
+    if (!pageEntries.length) throw new Error("Publitas gaf 0 pagina's")
+
+    // Zelfde aanpak als Vomar: LLM ontwart de door elkaar gehusselde OCR-tekst
+    // betrouwbaarder dan regex; regex is de fallback per pagina (geen GEMINI_API_KEY
+    // of een mislukte call). Batches van 5 om binnen een redelijke looptijd te blijven.
+    const LLM_CONCURRENCY = 5
+    const pageResultsList = []
+    for (let i = 0; i < pageEntries.length; i += LLM_CONCURRENCY) {
+      const batch = pageEntries.slice(i, i + LLM_CONCURRENCY)
+      const batchResults = await Promise.all(batch.map(async (text) => {
+        const llmResult = await parseFolderPageWithLLM(text, 'Hoogvliet')
+        return llmResult ?? parseVomarPageText(text)
+      }))
+      pageResultsList.push(...batchResults)
+    }
+
+    const seen = new Set()
+    const results = []
+    for (const pageResults of pageResultsList) {
+      for (const { name, orig, disc } of pageResults) {
+        const key = name.toLowerCase().slice(0, 30)
+        if (seen.has(key)) continue
+        seen.add(key)
+        results.push({
+          name,
+          market: 'Hoogvliet',
+          originalPrice: orig,
+          discountedPrice: disc,
+          imageUrl: null,
+          isCampaign: true,
+          source: 'hoogvliet.nl/folder',
+          expiresAt: EXPIRES_AT,
+          campaignType: toCampaignType(name),
+          brand: null,
+        })
+      }
+    }
+
+    if (!results.length) throw new Error('folder geparsed maar 0 producten')
+    const withSavings = results.filter(r => r.originalPrice > r.discountedPrice)
+    console.log(`  ✅ Hoogvliet: ${results.length} product (${withSavings.length} met besparing)`)
+    return results
+  } catch (e) {
+    // Bewust géén stille lege return: een markt die 0 teruggeeft wordt niet
+    // leeggemaakt, dus zonder deze regel verdwijnt Hoogvliet opnieuw ongemerkt.
+    console.error('  ❌ Hoogvliet Publitas:', e.message, '— val terug op directe site')
+    return scrapeHoogvlietDirect()
+  }
+}
+
+async function scrapeHoogvlietDirect() {
+  console.log('🏪 [Hoogvliet] fallback: hoogvliet.com/aanbiedingen (session+PromotionRange)...')
   try {
     const res = await fetch('https://www.hoogvliet.com/aanbiedingen', {
       headers: HEADERS,
@@ -1308,7 +1388,6 @@ async function scrapeAldi() {
 
 // ─── VOMAR — Publitas weekfolder scraper ────────────────────────────────────
 const VOMAR_PUBLITAS_GROUP = 'folder-deze-week'
-const VOMAR_PUBLITAS_BASE = 'https://view.publitas.com'
 
 // Vomar's eigen productcatalogus — publiek, geen auth nodig (2026-08-15 gevonden
 // via DevTools Network tab, geen documentatie beschikbaar). Alleen voor foto's:
@@ -1393,12 +1472,34 @@ function vomarCleanName(raw) {
 // combinaties te riskeren. Een LLM kan de context gebruiken om dit wél te ontwarren.
 // Gemini (gratis tier, geen creditcard nodig via aistudio.google.com) — GEMINI_API_KEY
 // ontbreekt → functie retourneert null, aanroeper valt terug op regex.
-let vomarLLMErrorLogged = false
-async function parseVomarPageWithLLM(text) {
+// Per markt één keer loggen: anders spamt een ontbrekende GEMINI_API_KEY de log
+// met één regel per folderpagina en verbergt dat de échte fouten.
+const folderLLMErrorLogged = new Set()
+async function parseFolderPageWithLLM(text, marktLabel = 'Vomar') {
   const apiKey = process.env.GEMINI_API_KEY
   if (!apiKey || !text || text.length < 20) return null
 
-  const prompt = `Dit is ruwe, door elkaar gehusselde OCR-tekst van één pagina uit een Nederlandse supermarkt-folder (Vomar). Tekstvolgorde komt niet overeen met de visuele lay-out — namen en prijzen van verschillende producten kunnen door elkaar staan.
+  // Markt-specifieke regels. Bewust GESCHEIDEN per markt in plaats van één
+  // gedeelde lijst: Vomar levert live 94 producten met de bestaande prompt, en
+  // een extra regel kan de uitvoer van een werkende parser verschuiven. Vomar
+  // krijgt hier dus letterlijk dezelfde prompt als voorheen.
+  //
+  // De Hoogvliet-regels zijn niet bedacht maar afgelezen uit de echte OCR-tekst
+  // (folder_2026_38, opgehaald 2026-09-14). Hoogvliet zet de prijs in twee
+  // stukken RONDOM de productnaam — "PER STUK 1. Van 2.39 / Multikorn of
+  // Sallands Zonnepit 79" is één product van 2.39 voor 1.79. Geen enkele
+  // bestaande regel dekt dat, en de regexfallback (parseVomarPageText) gaf op
+  // deze 31 pagina's dan ook 0 producten.
+  const EXTRA_RULES = {
+    Hoogvliet: `
+- Hoogvliet splitst prijzen: het hele getal staat vóór de naam en de decimalen erna. "PER STUK 1. Van 2.39 / Naam 79" = originalPrice 2.39, discountedPrice 1.79. Plak de twee stukken aan elkaar als "X." en een los tweecijferig getal bij elkaar horen.
+- "Naam PRIJS Van / Voor PRIJS2" → originalPrice = PRIJS, discountedPrice = PRIJS2
+- "Van X / " zonder zichtbare tweede prijs → sla over, de nieuwe prijs is dan niet zeker
+- Negeer winkelteksten als "HOOGVLIET.COM", "UIT EIGEN OVEN", "Producten zijn niet in al onze winkels verkrijgbaar"`,
+  }
+  const extraRules = EXTRA_RULES[marktLabel] || ''
+
+  const prompt = `Dit is ruwe, door elkaar gehusselde OCR-tekst van één pagina uit een Nederlandse supermarkt-folder (${marktLabel}). Tekstvolgorde komt niet overeen met de visuele lay-out — namen en prijzen van verschillende producten kunnen door elkaar staan.
 
 Haal ALLEEN producten eruit waarbij je met hoge zekerheid een productnaam aan een prijs kunt koppelen. Sla dubbelzinnige of onduidelijke gevallen over — geen data is beter dan foute data.
 
@@ -1407,7 +1508,7 @@ Regels:
 - "N+M GRATIS TOTAAL Naam ... Per stuk van LAAG tot HOOG" → discountedPrice = TOTAAL/(N+M) afgerond op 2 decimalen, originalPrice = HOOG
 - "PRIJS1 PRIJS2 Naam" (twee prijzen vlak voor de naam) → originalPrice = hoogste, discountedPrice = laagste
 - Negeer decoratieve tekst, algemene categorieën zonder specifieke merknaam, en voorbeeldprijzen ("Prijsvoorbeeld: ...")
-- Productnamen: normale hoofdletter/kleine letter Nederlandse tekst, geen losse eenheidswoorden ("STUK", "KRAT") als naam
+- Productnamen: normale hoofdletter/kleine letter Nederlandse tekst, geen losse eenheidswoorden ("STUK", "KRAT") als naam${extraRules}
 
 Retourneer UITSLUITEND een JSON array, geen andere tekst, geen markdown code block:
 [{"name": "Productnaam", "originalPrice": 0.00, "discountedPrice": 0.00}]
@@ -1430,9 +1531,9 @@ ${text.slice(0, 2000)}`
       }
     )
     if (!res.ok) {
-      if (!vomarLLMErrorLogged) {
-        vomarLLMErrorLogged = true
-        console.error(`  ⚠️ [Vomar] LLM parsing HTTP ${res.status}, regex'e düşülüyor:`, (await res.text()).slice(0, 200))
+      if (!folderLLMErrorLogged.has(marktLabel)) {
+        folderLLMErrorLogged.add(marktLabel)
+        console.error(`  ⚠️ [${marktLabel}] LLM parsing HTTP ${res.status}, regex'e düşülüyor:`, (await res.text()).slice(0, 200))
       }
       return null
     }
@@ -1448,9 +1549,9 @@ ${text.slice(0, 2000)}`
         && p.originalPrice < 100 && !VOMAR_UNIT_ONLY_NAME.test(p.name.trim()))
       .map(p => ({ name: vomarCleanName(p.name), orig: p.originalPrice, disc: p.discountedPrice }))
   } catch (e) {
-    if (!vomarLLMErrorLogged) {
-      vomarLLMErrorLogged = true
-      console.error('  ⚠️ [Vomar] LLM parsing hatası, regex\'e düşülüyor:', e.message)
+    if (!folderLLMErrorLogged.has(marktLabel)) {
+      folderLLMErrorLogged.add(marktLabel)
+      console.error(`  ⚠️ [${marktLabel}] LLM parsing hatası, regex'e düşülüyor:`, e.message)
     }
     return null
   }
@@ -1499,39 +1600,55 @@ function parseVomarPageText(text) {
   return results
 }
 
+// ─── PUBLITAS FOLDER HARVEST (markt-onafhankelijk) ──────────────────────────
+// Publitas host de weekfolder van meerdere NL-ketens en serveert de OCR-tekst
+// per pagina via een publieke zoek-API — geen auth, geen bot-challenge.
+//
+// 2026-09-14: dit was eerst Vomar-only. Hoogvliet bleek exact dezelfde route te
+// hebben (view.publitas.com/hoogvliet → 302 → /hoogvliet/folder_YYYY_WW/), en dat
+// lost meteen het Imperva-probleem op: de blokkade zit op hoogvliet.com, niet op
+// Publitas. Daarom hier uitgetrokken in plaats van gekopieerd — één plek om te
+// repareren als Publitas zijn API verandert.
+//
+// Meerdere generieke zoektermen omdat de API per query maar een deel van de
+// pagina's teruggeeft; de union dekt de folder.
+const PUBLITAS_BASE = 'https://view.publitas.com'
+const PUBLITAS_SEARCH_QUERIES = ['OP', 'de', 'van', 'gram', 'kilo', 'GRATIS', 'prijs', 'liter', 'stuks']
+
+async function fetchPublitasFolderPages(group, marktLabel) {
+  const redirectRes = await fetch(`${PUBLITAS_BASE}/${group}`, {
+    redirect: 'manual',
+    signal: AbortSignal.timeout(10000),
+  })
+  const location = redirectRes.headers.get('location') || ''
+  const parts = location.replace(/\/+$/, '').split('/')
+  const pubSlug = parts[parts.length - 1]
+  if (!pubSlug) throw new Error(`Could not resolve current Publitas publication for ${group}`)
+  const pubBase = `${PUBLITAS_BASE}/${group}/${pubSlug}`
+  console.log(`  📖 ${marktLabel} folder: ${pubSlug}`)
+
+  const pageTexts = {}
+  for (const q of PUBLITAS_SEARCH_QUERIES) {
+    const sRes = await fetch(
+      `${pubBase}/search?q=${encodeURIComponent(q)}&format=json&per_page=50`,
+      { headers: HEADERS, signal: AbortSignal.timeout(10000) }
+    )
+    if (!sRes.ok) continue
+    const sData = await sRes.json()
+    for (const hit of sData.hits || []) {
+      const pg = hit.fields?.page_number
+      if (pg && !pageTexts[pg]) pageTexts[pg] = hit.fields.contents || ''
+    }
+  }
+  console.log(`  📄 ${Object.keys(pageTexts).length} pagina's gevonden`)
+  return pageTexts
+}
+
 async function scrapeVomar() {
   console.log('🏪 [Vomar] Publitas weekfolder...')
-  vomarLLMErrorLogged = false
+  folderLLMErrorLogged.delete('Vomar')
   try {
-    // Follow redirect to get current publication slug
-    const redirectRes = await fetch(`${VOMAR_PUBLITAS_BASE}/${VOMAR_PUBLITAS_GROUP}`, {
-      redirect: 'manual',
-      signal: AbortSignal.timeout(10000),
-    })
-    const location = redirectRes.headers.get('location') || ''
-    const parts = location.replace(/\/+$/, '').split('/')
-    const pubSlug = parts[parts.length - 1]
-    if (!pubSlug) throw new Error('Could not resolve current Publitas publication')
-    const pubBase = `${VOMAR_PUBLITAS_BASE}/${VOMAR_PUBLITAS_GROUP}/${pubSlug}`
-    console.log(`  📖 Vomar folder: ${pubSlug}`)
-
-    // Collect page text via search (multiple queries to maximize coverage)
-    const SEARCH_QUERIES = ['OP', 'de', 'van', 'gram', 'kilo', 'GRATIS', 'prijs', 'liter', 'stuks']
-    const pageTexts = {}
-    for (const q of SEARCH_QUERIES) {
-      const sRes = await fetch(
-        `${pubBase}/search?q=${encodeURIComponent(q)}&format=json&per_page=50`,
-        { headers: HEADERS, signal: AbortSignal.timeout(10000) }
-      )
-      if (!sRes.ok) continue
-      const sData = await sRes.json()
-      for (const hit of sData.hits || []) {
-        const pg = hit.fields?.page_number
-        if (pg && !pageTexts[pg]) pageTexts[pg] = hit.fields.contents || ''
-      }
-    }
-    const pageCount = Object.keys(pageTexts).length
-    console.log(`  📄 ${pageCount} pagina's gevonden`)
+    const pageTexts = await fetchPublitasFolderPages(VOMAR_PUBLITAS_GROUP, 'Vomar')
 
     // Parse products from all pages — LLM eerst (ontwart de door elkaar gehusselde
     // OCR-tekst betrouwbaarder dan regex), regex als fallback per pagina (geen key of
@@ -1542,7 +1659,7 @@ async function scrapeVomar() {
     for (let i = 0; i < pageEntries.length; i += LLM_CONCURRENCY) {
       const batch = pageEntries.slice(i, i + LLM_CONCURRENCY)
       const batchResults = await Promise.all(batch.map(async (text) => {
-        const llmResult = await parseVomarPageWithLLM(text)
+        const llmResult = await parseFolderPageWithLLM(text, 'Vomar')
         return llmResult ?? parseVomarPageText(text)
       }))
       pageResultsList.push(...batchResults)

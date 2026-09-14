@@ -15,6 +15,13 @@ name: Hoogvliet Scraper
 #
 # workflow_dispatch blijft staan — wil je het ooit opnieuw proberen, dan draai
 # je hem met de hand. Zet de cron pas terug als een handmatige run slaagt.
+#
+# ─── ACHTERHAALD (2026-09-14) ────────────────────────────────────────────────
+# Niet meer nodig: de weekfolder blijkt gewoon op Publitas te staan
+# (view.publitas.com/hoogvliet), net als bij Vomar, en dáár zit geen Imperva.
+# scrapeHoogvliet() in backend/scraper/index.js haalt hem nu daar op. Deze
+# workflow is puur nog een handmatige nooduitgang; zet de cron NIET terug
+# zonder eerst te kijken of de Publitas-route echt gefaald heeft.
 # on:
 #   schedule:
 #     - cron: '20 8 * * *'
