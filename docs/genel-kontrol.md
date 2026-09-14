@@ -819,3 +819,70 @@ Sitede hiç geçmiyor (`affiliate.ts`, widget, `affiliates.json` — üçünde d
 alınmalı, o da tarayıcı gerektiriyor. Panel erişimi gelince ilk iş bu olmalı —
 §8'in kuralı gereği link ancak `approved` abonelikle eklenir, ve bu program
 zaten `approved`.
+
+---
+
+## 15. Trafik: kazanılmış talebin boşa gitmesi — Hoogvliet (2026-09-14)
+
+Trafik tartışmasında yeni bir açı: "daha fazla ziyaretçi çekmek" yerine
+**zaten kazandığımız ziyaretçiyi kaybetmeyi durdurmak**.
+
+### Bulgu
+
+`/supermarkt/hoogvliet` Google'da sıralanıyor ve **iyi dönüşüyor** —
+`hoogvliet weekdeals` %15,4 CTR, `hoogvliet weekaanbieding` %20, sayfa 28 günde
+1.946 gösterim. Başlığı *"Hoogvliet Aanbiedingen Deze Week"*, açıklaması
+*"Vlees & zuivel tot 40% goedkoper dan AH"* diyor.
+
+**Ama arkasında 0 fırsat var.** API'de 1.511 deal / 9 market listesinde Hoogvliet
+hiç yok. Yani gerçek ziyaretçiler tıklayıp boş sayfaya iniyor.
+
+### Neden böyle olmuş — iki doğru karar, çelişen sonuç
+
+1. **9 Ağustos:** `hoogvliet-scraper.yml` cron'u kapatıldı. Gerekçe dosyada
+   yazılı: hoogvliet.com Imperva/Incapsula arkasında, Playwright+stealth bile
+   GitHub runner'ından geçemiyor, workflow her gün kırmızı düşüyordu. *"Hoogvliet'i
+   daha fazla kovalama"* kararı verildi — **doğru karar**, çünkü her gün gelen
+   hata maili insanı bu depodan gelen uyarıları görmezden gelmeye alıştırıyordu
+   (AH bu yüzden 5 gün sessizce durmuştu).
+2. **Site tarafı:** Hoogvliet `hidden` yapılmadı, çünkü `types.ts`'te gerekçesi
+   yazılı — arama talebi var (`hoogvliet dagdeals` 199 gösterim). **Bu da doğru
+   karar**; sayfayı 404'e düşürmek kazanılmış sıralamayı çöpe atardı.
+
+İkisi ayrı ayrı savunulabilir ama birleşince "dolu vaat eden boş sayfa" çıkıyor.
+
+### ✅ Çözüm doğrulandı: Publitas, Imperva'yı tamamen atlıyor
+
+Engel `hoogvliet.com`'du — ama **folder orada değil, Publitas'ta**:
+
+```
+view.publitas.com/hoogvliet  →  302  →  /hoogvliet/folder_2026_38/
+```
+
+Ve Publitas'ın arama API'si Hoogvliet için çalışıyor (canlı test, 2026-09-14):
+
+```
+GET /hoogvliet/folder_2026_38/search?q=gram&format=json&per_page=50
+→ 15 hit, 15 benzersiz sayfa, gerçek OCR metni:
+  "Melkan burrata 1.99 · G'woon pesto alla genovese · Beker van 400 gram ..."
+```
+
+Bu, `scrapeVomar()`'ın tükettiği veriyle **aynı yapı**. Vomar zaten
+`view.publitas.com/folder-deze-week` üzerinden aynı yöntemle besleniyor:
+redirect'ten slug al → jenerik sorgularla (`OP`, `de`, `gram`, `GRATIS`…)
+sayfa metinlerini topla → LLM ile ayrıştır, regex fallback.
+
+### Porta edilecekler (tahmini iş)
+
+| Parça | Durum |
+|---|---|
+| Publitas slug çözümleme + arama harvesti | ✅ Vomar kodunda hazır, grup adı değişecek (`folder-deze-week` → `hoogvliet`) |
+| Sayfa metni → ürün ayrıştırma | ⚠️ `parseVomarPageWithLLM` promptu Vomar'a göre ayarlı; Hoogvliet için test/ayar gerekir. LLM anahtarı yoksa regex fallback devrede (daha düşük kalite) |
+| Ürün görselleri | ❌ Vomar kendi gateway API'sini kullanıyor; Hoogvliet'te karşılığı yok. Görselsiz yayınlanabilir — boş sayfadan iyidir, ama Telegram sender `imageUrl` şartı arıyor |
+
+**Değeri:** Bu, bu görüşmedeki ilk trafik fikri ki *yeni talep yaratmıyor,
+mevcut talebi kurtarıyor* — dolayısıyla içerik/sosyal bahislerinden daha yüksek
+güvenilirlikte. Sayfa zaten sıralanıyor ve zaten tıklanıyor.
+
+**Karar bekliyor:** scraper portu yapılsın mı. Küçük bir iş değil (ayrıştırma
+ayarı + görsel kaynağı kararı), ama kazanımı ölçülebilir ve hazır.
