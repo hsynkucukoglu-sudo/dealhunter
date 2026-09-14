@@ -56,7 +56,10 @@ export default async function OgImage({ params }: { params: Promise<{ slug: stri
     name: string; color: string; dealCount: number; assortment: number; maxDiscount: number
   }) => (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 440 }}>
-      <div style={{ fontSize: name.length > 11 ? 52 : 64, fontWeight: 900, color, lineHeight: 1.05, display: 'flex', textAlign: 'center' }}>
+      {/* Vaste hoogte: een lange naam krijgt een kleinere fontgrootte, en zonder
+          deze hoogte zakken de regels eronder mee. "Albert Heijn" (52) naast
+          "Aldi" (64) stond daardoor scheef. */}
+      <div style={{ height: 80, alignItems: 'center', fontSize: name.length > 11 ? 52 : 64, fontWeight: 900, color, lineHeight: 1.05, display: 'flex', textAlign: 'center' }}>
         {name}
       </div>
       <div style={{ fontSize: 30, color: '#1A1A1A', marginTop: 20, fontWeight: 700, display: 'flex' }}>
