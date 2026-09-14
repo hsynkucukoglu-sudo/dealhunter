@@ -715,3 +715,66 @@ doğrulanmadan metrik okunmamalı. Sıfır bir metrik, önce ölçüm hatası va
 | LCP / INP | 1,8sn / 190ms | 1,7sn / 180ms | İyi |
 | ResizeObserver loop | 30 günde 8 | 7 günde 4 | Oran ~2× artmış; tek kalan hata türü. AdBanner'daki observer şüpheli — `push()` callback içinde layout değiştiriyor olabilir. Zararsız tarayıcı uyarısı ama izlenmeli |
 | Yeni Vomar yazısı | — | 3 günde 4 görüntüleme | 29 gösterimlik bir ikili için beklenen düzeyde |
+
+---
+
+## 14. Dördüncü çalıştırma (2026-09-14)
+
+**Kapsam kısıtı:** Playwright bu oturumda bağlanamadı (30 sn zaman aşımı), yani
+**§4 panel kontrolleri yapılamadı** — Daisycon, Awin, TradeTracker, Clarity ve
+GSC panellerine girilemedi. Aşağıdakiler yalnızca mail + kod + canlı site
+taramasına dayanıyor. Panel tarafı bir sonraki oturuma kalıyor.
+
+### Mail taraması (3–14 Eylül, 17 thread)
+
+Rutinin öngördüğü oran yine tuttu: **17 bildirimden 2'si eyleme değer**, ikisi de
+Google'dan.
+
+| Bildirim | Sonuç |
+|---|---|
+| 🔴 GSC: *"sayfaların dizine eklenmesini engelleyen yeni nedenler — Kopya, Google kullanıcıdan farklı bir standart sayfa seçti"* (6 Eyl) | **Gerçek sorun**, aşağıda incelendi |
+| 🔴 GSC: *"düzeltmeler başarısız oldu"* — `Tarandı, şu anda dizine eklenmiş değil` doğrulaması (6 Eyl) | **Beklenen sonuç.** Bu durum teknik hata değil, Google'ın "indekslemeye değmez" kararı. Sayfa değişmeden doğrulama istemek her zaman başarısız olur |
+| Daisycon kampanya durdurma: BALZY (10 Eyl), Vision Medical Online NL (7 Eyl) | Kullanılmıyor → aksiyon yok |
+| Awin kapanış: Crownie 109838 (9 Eyl'de kapandı) | Kullanılmıyor → aksiyon yok |
+| Awin komisyon değişikliği: UnitedConsumers NL, Joybuy BNL ×2, OutIn, Dowinx EU | Beşi de kullanılmıyor → aksiyon yok |
+| Daisycon ret bildirimleri (3, 4, 7, 8, 9, 14 Eyl) | Örneklendi: Tescoma (DE). Kalıp değişmedi — yurt dışı/niş otomatik abonelikler |
+
+📊 GSC Ağustos raporu: **213 tıklama / 51 B gösterim**. 29 Ağustos'taki 28 günlük
+ölçüm 187/49,8 B idi — yani ay genelinde yatay seyir, kırılma yok.
+
+### 🔴 Yeni bulgu: `/deals` ile ana sayfa kopya
+
+Kanonik uyarısının kaynağı büyük olasılıkla bu. Kanıtlar:
+
+- `/deals`, `/` ile **aynı `ProductsPage` bileşenini** render ediyor; tek fark
+  `defaultSort="expiring"` ve farklı hero metni
+- Sunucudan gelen görünür metin: `/` 16.988 karakter, `/deals` 16.839 karakter —
+  **kelime benzerliği %79**
+- `sitemap.ts:69` içinde **öncelik 0,95** ile duruyor (ana sayfadan sonraki en
+  yüksek değerlerden)
+- Navigasyonda **hiçbir linki yok**; yalnızca PWA manifest kısayolu ve tek bir
+  blog CTA'sı üzerinden erişiliyor
+- GSC'nin en çok tıklanan sayfalar listesinde hiç görünmedi (29 Ağu ölçümü)
+
+Yani Google iki neredeyse özdeş sayfa görüp birini (muhtemelen `/`) canonical
+seçiyor, `/deals`'i kopya olarak işaretliyor.
+
+**Kanonik/yönlendirme hijyeni bu arada temiz çıktı:** http, non-www ve
+http+www varyantlarının üçü de 301 ile `https://www.dealhunter4u.nl/`'e gidiyor;
+sitemap 106 URL ve yalnızca 7 indeksli `vergelijk` çifti içeriyor (INDEXED_PAIR_SLUGS
+ile birebir). Yani sorun yapılandırmada değil, `/deals`'in kendisinde.
+
+**Karar bekliyor** — iki seçenek: (a) `/deals`'i `noindex` + sitemap dışı yapmak
+(13 Tem'deki 46 ince sayfa kararının aynısı; sayfa kullanıcı için kalır),
+(b) içeriği gerçekten farklılaştırmak. Sayfa arama trafiği almadığı için (a)
+daha savunulabilir görünüyor.
+
+### Kontrol edilemeyenler (panel gerektiriyor)
+
+- 3 Eylül'de `open` olan abonelikler (Monuta €145, DELA €145, NN €50, Eneco,
+  Sinner, Vitaminstore, Vakantiediscounter) onaylandı mı
+- €1,87 ödemesi (15 Eylül vadeli) gerçekleşti mi
+- WhatsApp Actions run'ları yeşil mi — §13'teki "grup boş mu, gönderim mi
+  başarısız" ayrımı hâlâ cevapsız
+- Clarity'de `affiliate_click` (3 Eyl'de eklenen `blog-strip` kaynağıyla) veri
+  üretti mi
