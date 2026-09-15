@@ -1,5 +1,6 @@
 import { ImageResponse } from 'next/og'
 import { getPost, getAllPosts } from '@/lib/posts'
+import { ogSafeText } from '@/lib/ogText'
 
 
 export const size = { width: 1200, height: 630 }
@@ -13,7 +14,8 @@ export default async function OgImage({ params }: { params: Promise<{ slug: stri
   const { slug } = await params
   const post = getPost(slug)
 
-  const title = post?.title ?? 'DealHunter4U Blog'
+  // Zie ogSafeText: het vinkje uit de titel rendert hier als leeg blokje.
+  const title = ogSafeText(post?.title ?? 'DealHunter4U Blog')
   const category = post?.category ?? 'Tips'
 
   return new ImageResponse(
